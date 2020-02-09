@@ -22,16 +22,16 @@ public class Game extends Canvas implements Runnable{
 	private Random r;
 	
 	private Handler handler;
+	private KeyInput keyInput;
 	
 	public Game() {
-		new Window(WIDTH, HEIGHT, TITLE, this);
 		handler = new Handler();
+		keyInput = new KeyInput(handler);
+		this.addKeyListener(keyInput);
+		new Window(WIDTH, HEIGHT, TITLE, this);
 		
 		r = new Random();
-		
-		for(int i = 0; i < 50; i++) {
-			handler.addObjecy(new Player(0, 0, ID.Player));
-		}
+		handler.addObjecy(new Player(WIDTH/2-32, HEIGHT/2-32, ID.Player));
 	}
 	
 	public synchronized void start() {
@@ -78,6 +78,7 @@ public class Game extends Canvas implements Runnable{
 	
 	private void tick() {
 		handler.tick();
+		keyInput.tick();
 	}
 	
 	private void render() {
