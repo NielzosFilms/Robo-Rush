@@ -5,6 +5,8 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import game.entities.Player;
+
 public class KeyInput extends KeyAdapter {
 
 	private Handler handler;
@@ -34,6 +36,8 @@ public class KeyInput extends KeyAdapter {
 			}
 		}
 		
+		if(key == KeyEvent.VK_ESCAPE) System.exit(1);
+		
 	}
 	
 	public void keyReleased(KeyEvent e) {
@@ -55,13 +59,10 @@ public class KeyInput extends KeyAdapter {
 		for(int i = 0; i < handler.object.size(); i++) {
 			GameObject tempObject = handler.object.get(i);
 			if(tempObject.getId() == ID.Player) {
-				if(keysDown.get(KeyEvent.VK_W) == true) tempObject.setVelY(-5);
+				/*if(keysDown.get(KeyEvent.VK_W) == true) tempObject.setVelY(-5);
 				if(keysDown.get(KeyEvent.VK_S) == true) tempObject.setVelY(5);
-				if((keysDown.get(KeyEvent.VK_W) == true && keysDown.get(KeyEvent.VK_S) == true) || (keysDown.get(KeyEvent.VK_W) == false && keysDown.get(KeyEvent.VK_S) == false)) tempObject.setVelY(0);
+				if((keysDown.get(KeyEvent.VK_W) == true && keysDown.get(KeyEvent.VK_S) == true) || (keysDown.get(KeyEvent.VK_W) == false && keysDown.get(KeyEvent.VK_S) == false)) tempObject.setVelY(0);*/
 				
-				if(keysDown.get(KeyEvent.VK_A) == true) tempObject.setVelX(-5);
-				if(keysDown.get(KeyEvent.VK_D) == true) tempObject.setVelX(5);
-				if((keysDown.get(KeyEvent.VK_A) == true && keysDown.get(KeyEvent.VK_D) == true) || (keysDown.get(KeyEvent.VK_A) == false && keysDown.get(KeyEvent.VK_D) == false)) tempObject.setVelX(0);
 			}
 		}
 	}

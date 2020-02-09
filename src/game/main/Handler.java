@@ -21,7 +21,7 @@ public class Handler {
 		}
 	}
 	
-	public void addObjecy(GameObject object) {
+	public void addObject(GameObject object) {
 		this.object.add(object);
 	}
 	public void removeObject(GameObject object) {
