@@ -2,8 +2,11 @@ package game.main;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.util.Random;
 
@@ -14,10 +17,14 @@ public class Game extends Canvas implements Runnable{
 	
 	private static final long serialVersionUID = 852753996046178928L;
 	
-	public static final int WIDTH = 640, HEIGHT = WIDTH / 12 * 9;
+	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	
+	public static final int WIDTH = 360, HEIGHT = WIDTH / 16 * 9; //640
+	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
+	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 1.0";
+	public static final String VERSION = "ALPHA V 1.1";
 
 	private Thread thread;
 	private boolean running = true;
@@ -28,14 +35,15 @@ public class Game extends Canvas implements Runnable{
 	private KeyInput keyInput;
 	private HUD hud;
 	private Camera cam;
+	static Canvas canvas;
 	
 	public Game() {
 		handler = new Handler();
 		keyInput = new KeyInput(handler);
 		cam = new Camera(0, 0);
 		this.addKeyListener(keyInput);
-		new Window(WIDTH, HEIGHT, TITLE, this);
-		
+		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
+		System.out.println(this.getSize());
 		hud = new HUD();
 		
 		r = new Random();
@@ -108,13 +116,19 @@ public class Game extends Canvas implements Runnable{
 		Graphics g = bs.getDrawGraphics();
 		Graphics2D g2d = (Graphics2D) g;
 		
+		AffineTransform scalingTransform = AffineTransform.getScaleInstance(SCALE_WIDTH,SCALE_HEIGHT);
+		g2d.transform(scalingTransform);
+		
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		g2d.translate(cam.getX(), cam.getY()); //start of cam
+		
 		g.setColor(Color.PINK);
 		g.fillRect(50, 50, WIDTH-100, HEIGHT-100);
+		g.fillRect(10, HEIGHT-100, 1, 1);
 		handler.render(g);
+		
 		g2d.translate(-cam.getX(), -cam.getY()); //end of cam
 		hud.render(g, g2d);
 		
@@ -123,7 +137,7 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	public static void main(String args[]) {
-		new Game();
+		canvas = new Game();
 	}
 	
 	public static int clamp(int var, int min, int max) {

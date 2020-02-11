@@ -18,13 +18,13 @@ public class HUD {
 		g.setColor(Color.gray);
 		g.fillRect(15, 15, 200, 32);
 		
-		Font font = new Font("Serif", Font.PLAIN, 12);
+		Font font = new Font("Serif", Font.PLAIN, 2);
 		g2d.setFont(font);
 		FontMetrics fontMetrics = g2d.getFontMetrics(font);
 		String version = Game.VERSION;
 		String name = "NielzosFilms";
-		g2d.drawString(version, (Game.WIDTH-fontMetrics.stringWidth(version))-9, 0+fontMetrics.getAscent());
-		g2d.drawString(name, (Game.WIDTH-fontMetrics.stringWidth(name))-9, fontMetrics.getHeight()+fontMetrics.getAscent());
+		g2d.drawString(version, (Game.WIDTH-fontMetrics.stringWidth(version)), fontMetrics.getAscent());
+		g2d.drawString(name, (Game.WIDTH-fontMetrics.stringWidth(name)), fontMetrics.getHeight()+fontMetrics.getAscent());
 	}
 	
 }
