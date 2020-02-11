@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 
 import game.entities.Player;
@@ -39,10 +40,14 @@ public class Game extends Canvas implements Runnable{
 	static Canvas canvas;
 	public Textures textures;
 	
+	private LevelLoader ll;
+	private static ArrayList<Long> blocks;
+	
 	public Game() {
 		handler = new Handler();
 		textures = new Textures();
 		keyInput = new KeyInput(handler);
+		blocks = ll.getLevelData();
 		cam = new Camera(0, 0);
 		this.addKeyListener(keyInput);
 		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
@@ -131,6 +136,26 @@ public class Game extends Canvas implements Runnable{
 		/*for(int i = 0;i<Textures.tileSetBlocks.size();i++) {
 			g.drawImage(Textures.tileSetBlocks.get(i), i*16, 170, 16, 16, null);
 		}*/
+		int x = 0;
+		int y = 5;
+		for(int i = 0;i<blocks.size();i++) {
+			int temp = blocks.get(i).intValue()-1;
+			if(!(Textures.tileSetBlocks.size() > temp) || temp < 0) {
+				x++;
+				if(x >= 12) {
+					x = 0;
+					y++;
+				}
+				continue;
+			}
+			g.drawImage(Textures.tileSetBlocks.get(temp), x*16, y*16, 16, 16, null);
+			x++;
+			if(x >= 12) {
+				x = 0;
+				y++;
+			}
+		}
+		
 		handler.render(g);
 		
 		g2d.translate(-cam.getX(), -cam.getY()); //end of cam
