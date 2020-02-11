@@ -11,10 +11,10 @@ public class Camera {
 	
 	public void tick(GameObject Player) {
 		float xTarg = -Player.getX() + Game.WIDTH/2-16;
-		x += (xTarg - x) * (0.05f);
+		x += (xTarg - x) * (0.1f);
 		
 		float yTarg = -Player.getY() + Game.HEIGHT/2-16;
-		y += (yTarg - y) * (0.05f);
+		y += (yTarg - y) * (0.1f);
 		/*if(Game.survival){
 			x = Game.clamp(x, -496, 496);
 		}else if(!Game.survival) {

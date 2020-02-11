@@ -24,15 +24,23 @@ public class Player extends GameObject{
 
 	public void tick() {
 		if(onGround) {
-			if(keyInput.keysDown.get(KeyEvent.VK_A) == true) velX -= 0.5;
-			if(keyInput.keysDown.get(KeyEvent.VK_D) == true) velX += 0.5;
+			if(keyInput.keysDown.get(KeyEvent.VK_A) == true) velX = velX - 0.6;
+			if(keyInput.keysDown.get(KeyEvent.VK_D) == true) velX = velX + 0.6;
 			if(velX > 0)
-				if((keyInput.keysDown.get(KeyEvent.VK_A) == true && keyInput.keysDown.get(KeyEvent.VK_D) == true) || (keyInput.keysDown.get(KeyEvent.VK_A) == false && keyInput.keysDown.get(KeyEvent.VK_D) == false)) velX -= 0.3;
+				if((keyInput.keysDown.get(KeyEvent.VK_A) == true && keyInput.keysDown.get(KeyEvent.VK_D) == true) ||
+						(keyInput.keysDown.get(KeyEvent.VK_A) == false && keyInput.keysDown.get(KeyEvent.VK_D) == false)) velX = velX - 0.6;
 			if(velX < 0)
-				if((keyInput.keysDown.get(KeyEvent.VK_A) == true && keyInput.keysDown.get(KeyEvent.VK_D) == true) || (keyInput.keysDown.get(KeyEvent.VK_A) == false && keyInput.keysDown.get(KeyEvent.VK_D) == false)) velX += 0.3;
+				if((keyInput.keysDown.get(KeyEvent.VK_A) == true && keyInput.keysDown.get(KeyEvent.VK_D) == true) ||
+						(keyInput.keysDown.get(KeyEvent.VK_A) == false && keyInput.keysDown.get(KeyEvent.VK_D) == false)) velX = velX + 0.6;
 		}else {
-			if(keyInput.keysDown.get(KeyEvent.VK_A) == true) velX -=0.3;
-			if(keyInput.keysDown.get(KeyEvent.VK_D) == true) velX += 0.3;
+			if(keyInput.keysDown.get(KeyEvent.VK_A) == true) velX = velX - 0.3;
+			if(keyInput.keysDown.get(KeyEvent.VK_D) == true) velX = velX + 0.3;
+			if(velX > 0)
+				if((keyInput.keysDown.get(KeyEvent.VK_A) == true && keyInput.keysDown.get(KeyEvent.VK_D) == true) ||
+						(keyInput.keysDown.get(KeyEvent.VK_A) == false && keyInput.keysDown.get(KeyEvent.VK_D) == false)) velX = velX - 0.1;
+			if(velX < 0)
+				if((keyInput.keysDown.get(KeyEvent.VK_A) == true && keyInput.keysDown.get(KeyEvent.VK_D) == true) ||
+						(keyInput.keysDown.get(KeyEvent.VK_A) == false && keyInput.keysDown.get(KeyEvent.VK_D) == false)) velX = velX + 0.1;
 		}
 		if(keyInput.keysDown.get(KeyEvent.VK_W) == true && onGround) {
 			onGround = false;
@@ -46,11 +54,6 @@ public class Player extends GameObject{
 			velY = 0;
 		}else {
 			velY = velY + 0.2;
-			if(velX > 0) {
-				velX = velX - 0.05;
-			}else if(velX < 0) {
-				velX = velX + 0.05;
-			}
 			velX = Game.clampFloat(velX, -7, 7);
 			
 		}

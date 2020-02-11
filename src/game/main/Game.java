@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import game.entities.Player;
@@ -19,12 +20,12 @@ public class Game extends Canvas implements Runnable{
 	
 	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
-	public static final int WIDTH = 360, HEIGHT = WIDTH / 16 * 9; //640
+	public static final int WIDTH = 480, HEIGHT = WIDTH / 16 * 9; //640
 	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 1.1";
+	public static final String VERSION = "ALPHA V 1.2";
 
 	private Thread thread;
 	private boolean running = true;
@@ -36,16 +37,16 @@ public class Game extends Canvas implements Runnable{
 	private HUD hud;
 	private Camera cam;
 	static Canvas canvas;
+	public Textures textures;
 	
 	public Game() {
 		handler = new Handler();
+		textures = new Textures();
 		keyInput = new KeyInput(handler);
 		cam = new Camera(0, 0);
 		this.addKeyListener(keyInput);
 		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
-		System.out.println(this.getSize());
 		hud = new HUD();
-		
 		r = new Random();
 		handler.addObject(new Player(WIDTH/2-16, HEIGHT/2-16, ID.Player, keyInput));
 	}
@@ -99,11 +100,11 @@ public class Game extends Canvas implements Runnable{
 		for(int i = 0; i < handler.object.size(); i++) {
 			if(handler.object.get(i).getId() == ID.Player) {
 				cam.tick(handler.object.get(i));
+				hud.tick(handler.object.get(i));
 			}
 		}
 		
 		keyInput.tick();
-		hud.tick();
 	}
 	
 	private void render() {
@@ -126,7 +127,10 @@ public class Game extends Canvas implements Runnable{
 		
 		g.setColor(Color.PINK);
 		g.fillRect(50, 50, WIDTH-100, HEIGHT-100);
-		g.fillRect(10, HEIGHT-100, 1, 1);
+		//g.drawImage(Textures.tileSetBlocks.get(2), 50, 90, 16, 16, null);
+		/*for(int i = 0;i<Textures.tileSetBlocks.size();i++) {
+			g.drawImage(Textures.tileSetBlocks.get(i), i*16, 170, 16, 16, null);
+		}*/
 		handler.render(g);
 		
 		g2d.translate(-cam.getX(), -cam.getY()); //end of cam
