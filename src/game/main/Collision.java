@@ -27,16 +27,16 @@ public class Collision {
 					
 					if(player.getBoundsRect().intersects(map_bound)) {
 						if(player.getY()+player.getBoundsRect().height-4 < map_bound.y) {
-							player.setY(map_bound.y-player.getBoundsRect().height-3);
+							player.setY(map_bound.y-player.getBoundsRect().height-5);
 							onGround = true;
 						}else if(player.getY() > (map_bound.y +map_bound.height-10)) {
-							player.setY((map_bound.y + map_bound.height-4));
+							player.setY((map_bound.y + map_bound.height-6));
 							player.setVelY(1);
 						}else if(player.getX() > map_bound.x) {
-							player.setX(map_bound.x+map_bound.width-12);
+							player.setX(map_bound.x+map_bound.width-19);
 							player.setVelX(0);
 						}else if(player.getX() < map_bound.x) {
-							player.setX(map_bound.x-player.getBoundsRect().width-11);
+							player.setX(map_bound.x-player.getBoundsRect().width-18);
 							player.setVelX(0);
 						}
 					}

@@ -20,6 +20,10 @@ public class Camera {
 		}else if(!Game.survival) {
 			x = Game.clamp(x, -2480, 2480);
 		}*/
+		
+		//camera is inverted
+		x = Game.clampFloat(x, -300, 0);
+		y = Game.clampFloat(y, -300, 0);
 	}
 	
 	public void setX(float x) { 

@@ -7,6 +7,7 @@ import java.util.List;
 public class Textures {
 
 	static BufferedImage tileSet, playerSheet;
+	static BufferedImage sky, clouds;
 	
 	public static List<BufferedImage>tileSetBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage>playerImg = new ArrayList<BufferedImage>();
@@ -16,6 +17,9 @@ public class Textures {
 		
 		tileSet = loader.loadImage("assets/dirt-tiles-mirrord.png");
 		playerSheet = loader.loadImage("assets/entities/player/adventurer-Sheet.png");
+		
+		sky = loader.loadImage("assets/main/sky.png");
+		clouds = loader.loadImage("assets/main/clouds.png");
 		
 		SpriteSheet ss = new SpriteSheet(tileSet);
 		for(int i = 0;i<tileSet.getHeight();i+=16) {

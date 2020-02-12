@@ -26,7 +26,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 1.3";
+	public static final String VERSION = "ALPHA V 1.4.2";
 
 	private Thread thread;
 	private boolean running = true;
@@ -136,6 +136,10 @@ public class Game extends Canvas implements Runnable{
 		
 		g2d.translate(cam.getX(), cam.getY()); //start of cam
 		
+		for(int i = -5;i<5;i++) {
+			g.drawImage(Textures.sky, i*Textures.sky.getWidth(), 0, null);
+		}
+		
 		g.setColor(Color.PINK);
 		//g.fillRect(50, 50, WIDTH-100, HEIGHT-100);
 		//g.drawImage(Textures.tileSetBlocks.get(2), 50, 90, 16, 16, null);
@@ -149,7 +153,7 @@ public class Game extends Canvas implements Runnable{
 				int temp = ll.listdata.get(i).get(j).intValue()-1;
 				if(!(Textures.tileSetBlocks.size() > temp) || temp < 0) {
 					x++;
-					if(x >= 20) {
+					if(x >= 50) {
 						x = 0;
 						y++;
 					}
@@ -157,7 +161,7 @@ public class Game extends Canvas implements Runnable{
 				}
 				g.drawImage(Textures.tileSetBlocks.get(temp), x*16, y*16, 16, 16, null);
 				x++;
-				if(x >= 20) {
+				if(x >= 50) {
 					x = 0;
 					y++;
 				}
@@ -169,15 +173,16 @@ public class Game extends Canvas implements Runnable{
 		handler.render(g);
 		
 		g.setColor(Color.blue);
-		for(int i = 0;i<ll.rectangle_bounds.size();i++) {
+		/*for(int i = 0;i<ll.rectangle_bounds.size();i++) {
 			g.drawRect(ll.rectangle_bounds.get(i).x+(x*16), ll.rectangle_bounds.get(i).y+(y*16), ll.rectangle_bounds.get(i).width, ll.rectangle_bounds.get(i).height);
-		}
+		}*/
 		//g.drawRect(0, 192, 16*9, 16*4);
 		
 		g2d.translate(-cam.getX(), -cam.getY()); //end of cam
 		hud.render(g, g2d);
 		
 		g.dispose();
+		g2d.dispose();
 		bs.show();
 	}
 	
@@ -194,13 +199,21 @@ public class Game extends Canvas implements Runnable{
 		return var;
 	}
 	
-	public static double clampFloat(double velY, double d, double e) {
-		if(velY <= d) {
-			velY = d;
-		}else if (velY >= e) {
-			velY = e;
+	public static double clampDouble(double var, double min, double max) {
+		if(var <= min) {
+			var = min;
+		}else if (var >= max) {
+			var = max;
 		}
-		return velY;
+		return var;
+	}
+	public static float clampFloat(float var, float min, float max) {
+		if(var <= min) {
+			var = min;
+		}else if (var >= max) {
+			var = max;
+		}
+		return var;
 	}
 	
 }

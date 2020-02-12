@@ -152,8 +152,8 @@ public class Player extends GameObject{
 		}
 		
 		
-		velX = Game.clampFloat(velX, -2, 2);
-		velY = Game.clampFloat(velY, -9.8, 9.8);
+		velX = Game.clampDouble(velX, -2, 2);
+		velY = Game.clampDouble(velY, -9.8, 9.8);
 		x += velX;
 		y += velY;
 		
@@ -188,11 +188,12 @@ public class Player extends GameObject{
 			slide.drawAnimation(g, x, y);
 		}
 		g.setColor(Color.pink);
-		g.drawRect(x+12, y+4, 26, 33);
+		
+		//g.drawRect(x+19, y+6, 13, 30);
 	}
 	
 	public Rectangle getBoundsRect() {
-		return new Rectangle(x+12, y+4, 26, 33);
+		return new Rectangle(x+19, y+6, 13, 30);
 	}
 
 }
