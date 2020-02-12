@@ -39,21 +39,26 @@ public class Game extends Canvas implements Runnable{
 	private Camera cam;
 	static Canvas canvas;
 	public Textures textures;
+	private Collision collision;
 	
 	private LevelLoader ll;
-	private static ArrayList<Long> blocks;
+	//private static ArrayList<ArrayList<Long>> blocks;
 	
 	public Game() {
 		handler = new Handler();
 		textures = new Textures();
 		keyInput = new KeyInput(handler);
-		blocks = ll.getLevelData();
+		//blocks = ll.getLevelData();
+		ll.loadLevelData("assets/level 2.json");
+		collision = new Collision(handler, ll);
 		cam = new Camera(0, 0);
 		this.addKeyListener(keyInput);
 		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
 		hud = new HUD();
 		r = new Random();
-		handler.addObject(new Player(WIDTH/2-16, HEIGHT/2-16, ID.Player, keyInput));
+		
+		
+		handler.addObject(new Player(0, 0, ID.Player, keyInput));
 	}
 	
 	public synchronized void start() {
@@ -101,6 +106,7 @@ public class Game extends Canvas implements Runnable{
 	
 	private void tick() {
 		handler.tick();
+		collision.tick();
 		
 		for(int i = 0; i < handler.object.size(); i++) {
 			if(handler.object.get(i).getId() == ID.Player) {
@@ -131,32 +137,42 @@ public class Game extends Canvas implements Runnable{
 		g2d.translate(cam.getX(), cam.getY()); //start of cam
 		
 		g.setColor(Color.PINK);
-		g.fillRect(50, 50, WIDTH-100, HEIGHT-100);
+		//g.fillRect(50, 50, WIDTH-100, HEIGHT-100);
 		//g.drawImage(Textures.tileSetBlocks.get(2), 50, 90, 16, 16, null);
 		/*for(int i = 0;i<Textures.tileSetBlocks.size();i++) {
 			g.drawImage(Textures.tileSetBlocks.get(i), i*16, 170, 16, 16, null);
 		}*/
 		int x = 0;
-		int y = 5;
-		for(int i = 0;i<blocks.size();i++) {
-			int temp = blocks.get(i).intValue()-1;
-			if(!(Textures.tileSetBlocks.size() > temp) || temp < 0) {
+		int y = 0;
+		for(int i = 0;i<ll.listdata.size();i++) {
+			for(int j = 0;j<ll.listdata.get(i).size();j++) {
+				int temp = ll.listdata.get(i).get(j).intValue()-1;
+				if(!(Textures.tileSetBlocks.size() > temp) || temp < 0) {
+					x++;
+					if(x >= 20) {
+						x = 0;
+						y++;
+					}
+					continue;
+				}
+				g.drawImage(Textures.tileSetBlocks.get(temp), x*16, y*16, 16, 16, null);
 				x++;
-				if(x >= 12) {
+				if(x >= 20) {
 					x = 0;
 					y++;
 				}
-				continue;
 			}
-			g.drawImage(Textures.tileSetBlocks.get(temp), x*16, y*16, 16, 16, null);
-			x++;
-			if(x >= 12) {
-				x = 0;
-				y++;
-			}
+			x = 0;
+			y = 0;
 		}
 		
 		handler.render(g);
+		
+		g.setColor(Color.blue);
+		for(int i = 0;i<ll.rectangle_bounds.size();i++) {
+			g.drawRect(ll.rectangle_bounds.get(i).x+(x*16), ll.rectangle_bounds.get(i).y+(y*16), ll.rectangle_bounds.get(i).width, ll.rectangle_bounds.get(i).height);
+		}
+		//g.drawRect(0, 192, 16*9, 16*4);
 		
 		g2d.translate(-cam.getX(), -cam.getY()); //end of cam
 		hud.render(g, g2d);

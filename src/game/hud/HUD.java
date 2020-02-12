@@ -6,6 +6,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import game.entities.Player;
 import game.main.Game;
 import game.main.GameObject;
 
@@ -22,7 +23,7 @@ public class HUD {
 		g.setColor(Color.gray);
 		g.fillRect(1, 1, 100, 10);
 		
-		Font font = new Font("Serif", Font.PLAIN, 2);
+		Font font = new Font("Serif", Font.PLAIN, 3);
 		g2d.setFont(font);
 		FontMetrics fontMetrics = g2d.getFontMetrics(font);
 		

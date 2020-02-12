@@ -14,7 +14,7 @@ public class Textures {
 	public Textures() {
 		BufferedImageLoader loader = new BufferedImageLoader();
 		
-		tileSet = loader.loadImage("assets/dirt-tiles.png");
+		tileSet = loader.loadImage("assets/dirt-tiles-mirrord.png");
 		playerSheet = loader.loadImage("assets/entities/player/adventurer-Sheet.png");
 		
 		SpriteSheet ss = new SpriteSheet(tileSet);
