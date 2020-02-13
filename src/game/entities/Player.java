@@ -21,6 +21,7 @@ public class Player extends GameObject{
 	Random r = new Random();
 	private KeyInput keyInput;
 	public boolean onGround, direction, falling, crouch, moving, sliding, jumping;
+	private int sliding_timer, sliding_timer_wait = 0;
 	
 	private Animation idle, running, jumping_ani, crouch_ani, slide;
 
@@ -38,17 +39,6 @@ public class Player extends GameObject{
 	}
 
 	public void tick() {
-		if(velX < 0) {
-			direction = true;
-			moving = true;
-		}
-		else if(velX > 0) {
-			direction = false;
-			moving = true;
-		}else {
-			moving = false;
-		}
-		
 		if(velX == 0 && onGround && !crouch) {
 			idle.runAnimation();
 			
@@ -56,7 +46,7 @@ public class Player extends GameObject{
 			jumping_ani.resetAnimation();
 			crouch_ani.resetAnimation();
 			slide.resetAnimation();
-		}else if((velX > 0 || velX < 0) && onGround && !crouch) {
+		}else if((velX > 0 || velX < 0) && onGround && !crouch && !sliding) {
 			running.runAnimation();
 			
 			idle.resetAnimation();
@@ -70,14 +60,14 @@ public class Player extends GameObject{
 			running.resetAnimation();
 			crouch_ani.resetAnimation();
 			slide.resetAnimation();
-		}else if(onGround && crouch && velX == 0) {
+		}else if(onGround && crouch && !sliding) {
 			crouch_ani.runAnimation();
 			
 			idle.resetAnimation();
 			running.resetAnimation();
 			jumping_ani.resetAnimation();
 			slide.resetAnimation();
-		}else if(onGround && velX != 0 && crouch) {
+		}else if(sliding) {
 			slide.runAnimation();
 			
 			idle.resetAnimation();
@@ -105,36 +95,76 @@ public class Player extends GameObject{
 		}*/
 		
 		if(onGround) {
-			if(keyInput.keysDown.get(KeyEvent.VK_S) == true) crouch = true;
-			else crouch = false;
-			if(keyInput.keysDown.get(KeyEvent.VK_A) == true) velX = Math.floor((velX - 0.5f)*10)/10;
-			if(keyInput.keysDown.get(KeyEvent.VK_D) == true) velX = Math.floor((velX + 0.5f)*10)/10;
+			if(keyInput.keysDown[1] == true && !sliding && (velX > 2 || velX < -1)) {
+				if(!moving)
+					crouch = true;
+				else if(!crouch && sliding_timer_wait >= 10)
+					sliding = true;
+			}else crouch = false;
+			if(keyInput.keysDown[2] == true) velX = velX + (-2 - velX) * (0.07f);
+			if(keyInput.keysDown[3] == true) velX = velX + (3 - velX) * (0.07f);
 			if(velX > 0)
-				if((keyInput.keysDown.get(KeyEvent.VK_A) == true && keyInput.keysDown.get(KeyEvent.VK_D) == true) ||
-						(keyInput.keysDown.get(KeyEvent.VK_A) == false && keyInput.keysDown.get(KeyEvent.VK_D) == false)) velX = Math.floor((velX - 0.5f)*10)/10;
+				if((keyInput.keysDown[2] == true && keyInput.keysDown[3] == true) ||
+						(keyInput.keysDown[2] == false && keyInput.keysDown[3] == false)) {
+					velX = velX + (-2 - velX) * (0.07f);
+					if(velX > -0.2 && velX < 0.2)
+						velX = 0;
+				}
 			if(velX < 0)
-				if((keyInput.keysDown.get(KeyEvent.VK_A) == true && keyInput.keysDown.get(KeyEvent.VK_D) == true) ||
-						(keyInput.keysDown.get(KeyEvent.VK_A) == false && keyInput.keysDown.get(KeyEvent.VK_D) == false)) velX = Math.floor((velX + 0.5f)*10)/10;
-			if(keyInput.keysDown.get(KeyEvent.VK_W) == true && !jumping) {
+				if((keyInput.keysDown[2] == true && keyInput.keysDown[3] == true) ||
+						(keyInput.keysDown[2] == false && keyInput.keysDown[3] == false)) {
+					velX = velX + (2 - velX) * (0.07f);
+					if(velX > -0.2 && velX < 0.2)
+						velX = 0;
+				}
+			if(keyInput.keysDown[4] == true && !jumping) {
 				onGround = false;
 				jumping = true;
 				velY = -5;
 			}
+		}else if(!onGround && !sliding){
+			if(keyInput.keysDown[2] == true) velX = velX + (-2 - velX) * (0.05f);
+			if(keyInput.keysDown[3] == true) velX = velX + (2 - velX) * (0.05f);
+			if(keyInput.keysDown[1] == true) velY += (9.8 - velY) * (0.05f);
+		}
+		
+		/*if(crouch && velX != 0 && sliding_timer_wait >= 10) {
+			sliding = true;
+		}*/
+		
+		if(sliding) {
+			sliding_timer++;
+			if(!direction)velX = 3;
+			else velX = -3;
+			if(sliding_timer > 42) {
+				sliding = false;
+				if(keyInput.keysDown[1] && onGround)crouch = true;
+				sliding_timer = 0;
+				sliding_timer_wait = 0;
+			}
+			//velX = Game.clampDouble(velX, -3, 3);
+		}else if(!sliding && crouch){
+			//velX = Game.clampDouble(velX, -1, 1);
 		}else {
-			if(keyInput.keysDown.get(KeyEvent.VK_A) == true) velX = Math.floor((velX - 0.1f)*10)/10;
-			if(keyInput.keysDown.get(KeyEvent.VK_D) == true) velX = Math.floor((velX + 0.2f)*10)/10;
-			/*if(velX > 0)
-				if((keyInput.keysDown.get(KeyEvent.VK_A) == true && keyInput.keysDown.get(KeyEvent.VK_D) == true) ||
-						(keyInput.keysDown.get(KeyEvent.VK_A) == false && keyInput.keysDown.get(KeyEvent.VK_D) == false)) velX = Math.floor((velX - 0.01f)*10)/10;
-			if(velX < 0)
-				if((keyInput.keysDown.get(KeyEvent.VK_A) == true && keyInput.keysDown.get(KeyEvent.VK_D) == true) ||
-						(keyInput.keysDown.get(KeyEvent.VK_A) == false && keyInput.keysDown.get(KeyEvent.VK_D) == false)) velX = Math.floor((velX + 0.01f)*10)/10;*/
+			sliding_timer_wait++;
+			if(sliding_timer_wait > 10) sliding_timer_wait = 10;
+			//velX = Game.clampDouble(velX, -2, 2);
 		}
 		
 		
 		//misschien powerup voor reverse gravity
 		
 		
+		
+		if(velX < 0) {
+			direction = true;
+			moving = true;
+		}else if(velX > 0) {
+			direction = false;
+			moving = true;
+		}else {
+			moving = false;
+		}
 		
 		
 		if(onGround) {
@@ -151,24 +181,28 @@ public class Player extends GameObject{
 				falling = false;
 		}
 		
+		if(y > 320) {
+			x = 0;
+			y = 0;
+		}
 		
-		velX = Game.clampDouble(velX, -2, 2);
 		velY = Game.clampDouble(velY, -9.8, 9.8);
 		x += velX;
 		y += velY;
+		
+		x = Game.clamp(x, -13, 800-50);
 		
 		//y = Game.clamp(y, 0, Game.HEIGHT);
 		
 		
 	}
-
 	public void render(Graphics g) {
 		g.setColor(Color.red);
 		//g.fillRect(x, y, 32, 32);
 		
 		if(velX == 0 && onGround && !crouch) {
 			idle.drawAnimation(g, x, y, 50, 37);
-		}else if(onGround && !crouch){
+		}else if(onGround && !crouch && !sliding){
 			running.drawAnimation(g, x, y);
 		}else if(!onGround && !falling && jumping){
 			jumping_ani.drawAnimation(g, x, y);
@@ -182,14 +216,14 @@ public class Player extends GameObject{
 				
 			}else
 				g.drawImage(Textures.playerImg.get(23), x, y, null);
-		}else if(onGround && crouch && !moving) {
+		}else if(onGround && crouch && !sliding) {
 			crouch_ani.drawAnimation(g, x, y);
-		}else if(onGround && moving && crouch) {
+		}else if(sliding) {
 			slide.drawAnimation(g, x, y);
 		}
 		g.setColor(Color.pink);
 		
-		//g.drawRect(x+19, y+6, 13, 30);
+		if(Game.showHitboxes) g.drawRect(x+19, y+6, 13, 30);
 	}
 	
 	public Rectangle getBoundsRect() {

@@ -32,10 +32,10 @@ public class Collision {
 						}else if(player.getY() > (map_bound.y +map_bound.height-10)) {
 							player.setY((map_bound.y + map_bound.height-6));
 							player.setVelY(1);
-						}else if(player.getX() > map_bound.x) {
+						}else if(playerX > (map_bound.x +map_bound.width)/2) {
 							player.setX(map_bound.x+map_bound.width-19);
 							player.setVelX(0);
-						}else if(player.getX() < map_bound.x) {
+						}else if(playerX < (map_bound.x +map_bound.width)/2) {
 							player.setX(map_bound.x-player.getBoundsRect().width-18);
 							player.setVelX(0);
 						}

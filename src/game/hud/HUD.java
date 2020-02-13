@@ -9,14 +9,25 @@ import java.awt.Graphics2D;
 import game.entities.Player;
 import game.main.Game;
 import game.main.GameObject;
+import game.main.Handler;
+import game.main.ID;
 
 public class HUD {
 	
 	private double velX, velY;
+	private Handler handler;
+	//private Player player;
+	
+	public HUD(Handler handler) {
+		this.handler = handler;
+	}
 
-	public void tick(GameObject player) {
-		this.velX = player.getVelX();
-		this.velY = player.getVelY();
+	public void tick() {
+		/*for(int i = 0; i < handler.object.size(); i++) {
+			if(handler.object.get(i).getId() == ID.Player) {
+				this.player = (Player)handler.object.get(i);
+			}
+		}*/
 	}
 	
 	public void render(Graphics g, Graphics2D g2d) {
@@ -35,8 +46,13 @@ public class HUD {
 		
 		Font font2 = new Font("Serif", Font.PLAIN, 4);
 		g2d.setFont(font2);
-		g2d.drawString("velX: "+velX, 1, 15);
-		g2d.drawString("velY: "+velY, 1, 20);
+		/*g2d.drawString("velX: "+player.getVelX(), 1, 15);
+		g2d.drawString("velY: "+player.getVelY(), 1, 20);
+		g2d.drawString("X: "+player.getX(), 1, 25);
+		g2d.drawString("Y: "+player.getY(), 1, 30);*/
+		/*g2d.drawString("onGround: "+player.onGround, 1, 35);
+		g2d.drawString("direction: "+player.direction, 1, 40);*/
+		g2d.drawString("FPS: "+Game.current_fps, 1, 45);
 	}
 	
 }

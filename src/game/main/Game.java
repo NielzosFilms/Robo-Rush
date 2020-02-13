@@ -26,10 +26,13 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 1.4.2";
+	public static final String VERSION = "ALPHA V 1.4.5";
 
 	private Thread thread;
 	private boolean running = true;
+	public static int current_fps = 0;
+	
+	public static boolean showHitboxes = false;
 	
 	private Random r;
 	
@@ -54,11 +57,11 @@ public class Game extends Canvas implements Runnable{
 		cam = new Camera(0, 0);
 		this.addKeyListener(keyInput);
 		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
-		hud = new HUD();
 		r = new Random();
 		
 		
 		handler.addObject(new Player(0, 0, ID.Player, keyInput));
+		hud = new HUD(handler);
 	}
 	
 	public synchronized void start() {
@@ -97,7 +100,7 @@ public class Game extends Canvas implements Runnable{
 			
 			if(System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				System.out.println("FPS: " + frames);
+				current_fps = frames;
 				frames = 0;
 			}
 		}
@@ -111,9 +114,9 @@ public class Game extends Canvas implements Runnable{
 		for(int i = 0; i < handler.object.size(); i++) {
 			if(handler.object.get(i).getId() == ID.Player) {
 				cam.tick(handler.object.get(i));
-				hud.tick(handler.object.get(i));
 			}
 		}
+		hud.tick();
 		
 		keyInput.tick();
 	}
@@ -136,7 +139,7 @@ public class Game extends Canvas implements Runnable{
 		
 		g2d.translate(cam.getX(), cam.getY()); //start of cam
 		
-		for(int i = -5;i<5;i++) {
+		for(int i = 0;i<7;i++) {
 			g.drawImage(Textures.sky, i*Textures.sky.getWidth(), 0, null);
 		}
 		
@@ -172,10 +175,12 @@ public class Game extends Canvas implements Runnable{
 		
 		handler.render(g);
 		
-		g.setColor(Color.blue);
-		/*for(int i = 0;i<ll.rectangle_bounds.size();i++) {
-			g.drawRect(ll.rectangle_bounds.get(i).x+(x*16), ll.rectangle_bounds.get(i).y+(y*16), ll.rectangle_bounds.get(i).width, ll.rectangle_bounds.get(i).height);
-		}*/
+		if(showHitboxes) {
+			g.setColor(Color.blue);
+			for(int i = 0;i<ll.rectangle_bounds.size();i++) {
+				g.drawRect(ll.rectangle_bounds.get(i).x+(x*16), ll.rectangle_bounds.get(i).y+(y*16), ll.rectangle_bounds.get(i).width, ll.rectangle_bounds.get(i).height);
+			}
+		}
 		//g.drawRect(0, 192, 16*9, 16*4);
 		
 		g2d.translate(-cam.getX(), -cam.getY()); //end of cam

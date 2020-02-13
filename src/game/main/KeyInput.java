@@ -11,15 +11,21 @@ public class KeyInput extends KeyAdapter {
 
 	private Handler handler;
 	
-	public Map<Integer, Boolean> keysDown = new HashMap<Integer, Boolean>();
+	//public Map<Integer, Boolean> keysDown = new HashMap<Integer, Boolean>();
+	/*
+	 * 0 = W
+	 * 1 = S
+	 * 2 = A
+	 * 3 = D
+	 * 4 = Space
+	 * 5 = Shift
+	 * 6 = Ctrl
+	 * 7 = Tab
+	 */
+	public boolean[] keysDown = {false, false, false, false, false, false, false, false};
 	
 	public KeyInput(Handler handler) {
 		this.handler = handler;
-		
-		keysDown.put(KeyEvent.VK_W, false);
-		keysDown.put(KeyEvent.VK_S, false);
-		keysDown.put(KeyEvent.VK_A, false);
-		keysDown.put(KeyEvent.VK_D, false);
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -29,10 +35,16 @@ public class KeyInput extends KeyAdapter {
 			GameObject tempObject = handler.object.get(i);
 			
 			if(tempObject.getId() == ID.Player) {
-				if(key == KeyEvent.VK_W) keysDown.put(KeyEvent.VK_W, true);
-				if(key == KeyEvent.VK_S) keysDown.put(KeyEvent.VK_S, true);
-				if(key == KeyEvent.VK_A) keysDown.put(KeyEvent.VK_A, true);
-				if(key == KeyEvent.VK_D) keysDown.put(KeyEvent.VK_D, true);
+				if(key == KeyEvent.VK_W) keysDown[0] = true;
+				if(key == KeyEvent.VK_S) keysDown[1] = true;
+				if(key == KeyEvent.VK_A) keysDown[2] = true;
+				if(key == KeyEvent.VK_D) keysDown[3] = true;
+				if(key == KeyEvent.VK_SPACE) keysDown[4] = true;
+				if(key == KeyEvent.VK_CONTROL) {
+					keysDown[6] = true;
+					if(!Game.showHitboxes) Game.showHitboxes = true;
+					else if(Game.showHitboxes) Game.showHitboxes = false;
+				}
 			}
 		}
 		
@@ -47,10 +59,12 @@ public class KeyInput extends KeyAdapter {
 			GameObject tempObject = handler.object.get(i);
 			
 			if(tempObject.getId() == ID.Player) {
-				if(key == KeyEvent.VK_W) keysDown.put(KeyEvent.VK_W, false);
-				if(key == KeyEvent.VK_S) keysDown.put(KeyEvent.VK_S, false);
-				if(key == KeyEvent.VK_A) keysDown.put(KeyEvent.VK_A, false);
-				if(key == KeyEvent.VK_D) keysDown.put(KeyEvent.VK_D, false);
+				if(key == KeyEvent.VK_W) keysDown[0] = false;
+				if(key == KeyEvent.VK_S) keysDown[1] = false;
+				if(key == KeyEvent.VK_A) keysDown[2] = false;
+				if(key == KeyEvent.VK_D) keysDown[3] = false;
+				if(key == KeyEvent.VK_CONTROL) keysDown[6] = false;
+				if(key == KeyEvent.VK_SPACE) keysDown[4] = false;
 			}
 		}
 	}

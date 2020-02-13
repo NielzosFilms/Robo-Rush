@@ -23,7 +23,7 @@ public class Camera {
 		
 		//camera is inverted
 		x = Game.clampFloat(x, -300, 0);
-		y = Game.clampFloat(y, -300, 0);
+		y = Game.clampFloat(y, -44, 0);
 	}
 	
 	public void setX(float x) { 

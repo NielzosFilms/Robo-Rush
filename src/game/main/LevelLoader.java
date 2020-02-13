@@ -33,7 +33,6 @@ public class LevelLoader {
 	         
 	         for(Object layer : layers) {
 	        	 if(((JSONObject)layer).get("objects") != null) {
-	        		 System.out.println("test");
 	        		 JSONArray objects = (JSONArray) ((JSONObject)layer).get("objects");
 	        		 if(objects != null) {
 	        			 rectangle_bounds = new ArrayList<Rectangle>();
