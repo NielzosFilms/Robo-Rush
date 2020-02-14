@@ -20,6 +20,7 @@ public class Player extends GameObject{
 	
 	Random r = new Random();
 	private KeyInput keyInput;
+	private float accX, accY;
 	public boolean onGround, direction, falling, crouch, moving, sliding, jumping;
 	private int sliding_timer, sliding_timer_wait = 0;
 	
@@ -29,7 +30,13 @@ public class Player extends GameObject{
 		super(x, y, id);
 		this.onGround = false;
 		this.keyInput = keyInput;
+		this.accX = 0;
+		this.accY = 0;
 		
+		initAnimations();
+	}
+	
+	private void initAnimations() {
 		idle = new Animation(6, Textures.playerImg.get(0), Textures.playerImg.get(1), Textures.playerImg.get(2), Textures.playerImg.get(3));
 		running = new Animation(6, Textures.playerImg.get(8), Textures.playerImg.get(9), Textures.playerImg.get(10), Textures.playerImg.get(11), Textures.playerImg.get(12), Textures.playerImg.get(13));
 		jumping_ani = new Animation(5, Textures.playerImg.get(16), Textures.playerImg.get(17),
@@ -39,94 +46,13 @@ public class Player extends GameObject{
 	}
 
 	public void tick() {
-		if(velX == 0 && onGround && !crouch) {
-			idle.runAnimation();
-			
-			running.resetAnimation();
-			jumping_ani.resetAnimation();
-			crouch_ani.resetAnimation();
-			slide.resetAnimation();
-		}else if((velX > 0 || velX < 0) && onGround && !crouch && !sliding) {
-			running.runAnimation();
-			
-			idle.resetAnimation();
-			jumping_ani.resetAnimation();
-			crouch_ani.resetAnimation();
-			slide.resetAnimation();
-		}else if(!onGround && !falling) {
-			jumping_ani.runAnimation();
-			
-			idle.resetAnimation();
-			running.resetAnimation();
-			crouch_ani.resetAnimation();
-			slide.resetAnimation();
-		}else if(onGround && crouch && !sliding) {
-			crouch_ani.runAnimation();
-			
-			idle.resetAnimation();
-			running.resetAnimation();
-			jumping_ani.resetAnimation();
-			slide.resetAnimation();
-		}else if(sliding) {
-			slide.runAnimation();
-			
-			idle.resetAnimation();
-			running.resetAnimation();
-			jumping_ani.resetAnimation();
-			crouch_ani.resetAnimation();
-		}
-		
-		if(direction) {
-			idle.mirrorAnimationW(true);
-			running.mirrorAnimationW(true);
-			jumping_ani.mirrorAnimationW(true);
-			crouch_ani.mirrorAnimationW(true);
-			slide.mirrorAnimationW(true);
-		}else {
-			idle.mirrorAnimationW(false);
-			running.mirrorAnimationW(false);
-			jumping_ani.mirrorAnimationW(false);
-			crouch_ani.mirrorAnimationW(false);
-			slide.mirrorAnimationW(false);
-		}
+		updateAnimations();
 		
 		/*if(y == Game.HEIGHT) {
 			onGround = true;
 		}*/
 		
-		if(onGround) {
-			if(keyInput.keysDown[1] == true && !sliding && (velX > 2 || velX < -1)) {
-				if(!moving)
-					crouch = true;
-				else if(!crouch && sliding_timer_wait >= 10)
-					sliding = true;
-			}else crouch = false;
-			if(keyInput.keysDown[2] == true) velX = velX + (-2 - velX) * (0.07f);
-			if(keyInput.keysDown[3] == true) velX = velX + (3 - velX) * (0.07f);
-			if(velX > 0)
-				if((keyInput.keysDown[2] == true && keyInput.keysDown[3] == true) ||
-						(keyInput.keysDown[2] == false && keyInput.keysDown[3] == false)) {
-					velX = velX + (-2 - velX) * (0.07f);
-					if(velX > -0.2 && velX < 0.2)
-						velX = 0;
-				}
-			if(velX < 0)
-				if((keyInput.keysDown[2] == true && keyInput.keysDown[3] == true) ||
-						(keyInput.keysDown[2] == false && keyInput.keysDown[3] == false)) {
-					velX = velX + (2 - velX) * (0.07f);
-					if(velX > -0.2 && velX < 0.2)
-						velX = 0;
-				}
-			if(keyInput.keysDown[4] == true && !jumping) {
-				onGround = false;
-				jumping = true;
-				velY = -5;
-			}
-		}else if(!onGround && !sliding){
-			if(keyInput.keysDown[2] == true) velX = velX + (-2 - velX) * (0.05f);
-			if(keyInput.keysDown[3] == true) velX = velX + (2 - velX) * (0.05f);
-			if(keyInput.keysDown[1] == true) velY += (9.8 - velY) * (0.05f);
-		}
+		updateVelocity();
 		
 		/*if(crouch && velX != 0 && sliding_timer_wait >= 10) {
 			sliding = true;
@@ -196,6 +122,94 @@ public class Player extends GameObject{
 		
 		
 	}
+	
+	private void updateVelocity() {
+		if(onGround) {
+			if(keyInput.keysDown[1] == true && !sliding && (velX > 2 || velX < -1)) {
+				if(!moving)
+					crouch = true;
+				else if(!crouch && sliding_timer_wait >= 10)
+					sliding = true;
+			}else crouch = false;
+			if(keyInput.keysDown[2] == true) velX = velX + (-2 - velX) * (0.07f);
+			if(keyInput.keysDown[3] == true) velX = velX + (3 - velX) * (0.07f);
+			if(velX > 0)
+				if((keyInput.keysDown[2] == true && keyInput.keysDown[3] == true) || (keyInput.keysDown[2] == false && keyInput.keysDown[3] == false)) {
+					velX = velX + (-2 - velX) * (0.07f);
+					if(velX > -0.2 && velX < 0.2)
+						velX = 0;
+				}
+			if(velX < 0)
+				if((keyInput.keysDown[2] == true && keyInput.keysDown[3] == true) || (keyInput.keysDown[2] == false && keyInput.keysDown[3] == false)) {
+					velX = velX + (2 - velX) * (0.07f);
+					if(velX > -0.2 && velX < 0.2)
+						velX = 0;
+				}
+			if(keyInput.keysDown[4] == true && !jumping) {
+				onGround = false;
+				jumping = true;
+				velY = -5;
+			}
+		}else if(!onGround && !sliding){
+			if(keyInput.keysDown[2] == true) velX = velX + (-2 - velX) * (0.05f);
+			if(keyInput.keysDown[3] == true) velX = velX + (2 - velX) * (0.05f);
+			if(keyInput.keysDown[1] == true) velY += (9.8 - velY) * (0.05f);
+		}
+	}
+	
+	private void updateAnimations() {
+		if(velX == 0 && onGround && !crouch) {
+			idle.runAnimation();
+			
+			running.resetAnimation();
+			jumping_ani.resetAnimation();
+			crouch_ani.resetAnimation();
+			slide.resetAnimation();
+		}else if((velX > 0 || velX < 0) && onGround && !crouch && !sliding) {
+			running.runAnimation();
+			
+			idle.resetAnimation();
+			jumping_ani.resetAnimation();
+			crouch_ani.resetAnimation();
+			slide.resetAnimation();
+		}else if(!onGround && !falling) {
+			jumping_ani.runAnimation();
+			
+			idle.resetAnimation();
+			running.resetAnimation();
+			crouch_ani.resetAnimation();
+			slide.resetAnimation();
+		}else if(onGround && crouch && !sliding) {
+			crouch_ani.runAnimation();
+			
+			idle.resetAnimation();
+			running.resetAnimation();
+			jumping_ani.resetAnimation();
+			slide.resetAnimation();
+		}else if(sliding) {
+			slide.runAnimation();
+			
+			idle.resetAnimation();
+			running.resetAnimation();
+			jumping_ani.resetAnimation();
+			crouch_ani.resetAnimation();
+		}
+		
+		if(direction) {
+			idle.mirrorAnimationW(true);
+			running.mirrorAnimationW(true);
+			jumping_ani.mirrorAnimationW(true);
+			crouch_ani.mirrorAnimationW(true);
+			slide.mirrorAnimationW(true);
+		}else {
+			idle.mirrorAnimationW(false);
+			running.mirrorAnimationW(false);
+			jumping_ani.mirrorAnimationW(false);
+			crouch_ani.mirrorAnimationW(false);
+			slide.mirrorAnimationW(false);
+		}
+	}
+	
 	public void render(Graphics g) {
 		g.setColor(Color.red);
 		//g.fillRect(x, y, 32, 32);

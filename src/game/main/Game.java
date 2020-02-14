@@ -26,7 +26,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 1.4.5";
+	public static final String VERSION = "ALPHA V 1.4.6";
 
 	private Thread thread;
 	private boolean running = true;
@@ -59,9 +59,9 @@ public class Game extends Canvas implements Runnable{
 		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
 		r = new Random();
 		
-		
-		handler.addObject(new Player(0, 0, ID.Player, keyInput));
-		hud = new HUD(handler);
+		Player player = new Player(0, 0, ID.Player, keyInput);
+		hud = new HUD(handler, player);
+		handler.addObject(player);
 	}
 	
 	public synchronized void start() {
