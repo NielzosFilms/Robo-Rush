@@ -26,17 +26,17 @@ public class Collision {
 					//Rectangle map_bound = ll.rectangle_bounds.get(i);
 					
 					if(player.getBoundsRect().intersects(map_bound)) {
-						if(player.getY()+player.getBoundsRect().height-4 < map_bound.y) {
+						if(player.getBoundsRect().y+player.getBoundsRect().height-13 < map_bound.y && (player.getBoundsRect().x+player.getBoundsRect().width > map_bound.x+3 && player.getBoundsRect().x < map_bound.x+map_bound.width-3)) { //player on top of bounds
 							player.setY(map_bound.y-player.getBoundsRect().height-5);
 							onGround = true;
-						}else if(player.getY() > (map_bound.y +map_bound.height-10)) {
+						}else if(player.getBoundsRect().y > (map_bound.y +map_bound.height-10) && (player.getBoundsRect().x+player.getBoundsRect().width > map_bound.x+3 && player.getBoundsRect().x < map_bound.x+map_bound.width-3)) { //player belof bounds
 							player.setY((map_bound.y + map_bound.height-6));
-							player.setVelY(1);
-						}else if(playerX > (map_bound.x +map_bound.width)/2) {
-							player.setX(map_bound.x+map_bound.width-19);
+							player.setVelY(0);
+						}else if(playerX > (map_bound.x +map_bound.width)/2 && (player.getBoundsRect().y+player.getBoundsRect().height > map_bound.y+5)) { // player on right of bounds
+							player.setX(map_bound.x+map_bound.width-20);
 							player.setVelX(0);
-						}else if(playerX < (map_bound.x +map_bound.width)/2) {
-							player.setX(map_bound.x-player.getBoundsRect().width-18);
+						}else if(playerX < (map_bound.x +map_bound.width)/2 && (player.getBoundsRect().y+player.getBoundsRect().height > map_bound.y+5)) { //player on left of bounds
+							player.setX(map_bound.x-player.getBoundsRect().width-19);
 							player.setVelX(0);
 						}
 					}

@@ -47,13 +47,15 @@ public class HUD {
 		
 		Font font2 = new Font("Serif", Font.PLAIN, 4);
 		g2d.setFont(font2);
-		g2d.drawString("velX: "+player.getVelX(), 1, 15);
-		g2d.drawString("velY: "+player.getVelY(), 1, 20);
-		g2d.drawString("X: "+player.getX(), 1, 25);
-		g2d.drawString("Y: "+player.getY(), 1, 30);
-		g2d.drawString("onGround: "+player.onGround, 1, 35);
-		g2d.drawString("direction: "+player.direction, 1, 40);
-		g2d.drawString("FPS: "+Game.current_fps, 1, 45);
+		g2d.drawString("accX: "+player.accX, 1, 15);
+		g2d.drawString("accY: "+player.accY, 1, 20);
+		g2d.drawString("velX: "+player.getVelX(), 1, 25);
+		g2d.drawString("velY: "+player.getVelY(), 1, 30);
+		g2d.drawString("X: "+player.getX(), 1, 35);
+		g2d.drawString("Y: "+player.getY(), 1, 40);
+		g2d.drawString("onGround: "+player.onGround, 1, 45);
+		g2d.drawString("direction: "+player.direction, 1, 50);
+		g2d.drawString("FPS: "+Game.current_fps, 1, 55);
 	}
 	
 }

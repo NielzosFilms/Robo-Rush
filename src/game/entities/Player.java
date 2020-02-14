@@ -20,7 +20,8 @@ public class Player extends GameObject{
 	
 	Random r = new Random();
 	private KeyInput keyInput;
-	private float accX, accY;
+	public float accX, accY; //acceleration
+	private static final float WALK_F = 0.5f, BRAKE_F = 0.5f, AIR_F = 0.2f, AIR_RES_F = 0.02f; //force
 	public boolean onGround, direction, falling, crouch, moving, sliding, jumping;
 	private int sliding_timer, sliding_timer_wait = 0;
 	
@@ -58,6 +59,8 @@ public class Player extends GameObject{
 			sliding = true;
 		}*/
 		
+		
+		//sliding
 		if(sliding) {
 			sliding_timer++;
 			if(!direction)velX = 3;
@@ -76,6 +79,7 @@ public class Player extends GameObject{
 			if(sliding_timer_wait > 10) sliding_timer_wait = 10;
 			//velX = Game.clampDouble(velX, -2, 2);
 		}
+		//end_sliding
 		
 		
 		//misschien powerup voor reverse gravity
@@ -113,8 +117,12 @@ public class Player extends GameObject{
 		}
 		
 		velY = Game.clampDouble(velY, -9.8, 9.8);
-		x += velX;
-		y += velY;
+		
+		velX = velX + accX;
+		velY = velY + accY;
+		
+		x = (int) Math.round(x + velX);
+		y = (int) Math.round(y + velY);
 		
 		x = Game.clamp(x, -13, 800-50);
 		
@@ -155,6 +163,70 @@ public class Player extends GameObject{
 			if(keyInput.keysDown[3] == true) velX = velX + (2 - velX) * (0.05f);
 			if(keyInput.keysDown[1] == true) velY += (9.8 - velY) * (0.05f);
 		}*/
+		
+		
+		
+		if(onGround) {
+			if(keyInput.keysDown[2] && !keyInput.keysDown[3]) {
+				if(velX > -3) {
+					accX = WALK_F * -1;
+				}else {
+					accX = 0;
+				}
+			}else if(keyInput.keysDown[3] && !keyInput.keysDown[2]) {
+				if(velX < 3) {
+					accX = WALK_F * 1;
+				}else {
+					accX = 0;
+				}
+			}else {
+				if(velX < -0.1) {
+					accX = BRAKE_F * 1;
+				}else if(velX > 0.1) {
+					accX = BRAKE_F * -1;
+				}else {
+					accX = 0;
+					if(velX > -0.1f && velX < 0.1f) {
+						velX = 0;
+					}
+				}
+				
+			}
+			
+			if(keyInput.keysDown[4] == true && !jumping) {
+				keyInput.keysDown[4] = false;
+				onGround = false;
+				jumping = true;
+				velY = -5;
+			}
+		}else if(!onGround) {
+			if(keyInput.keysDown[2] && !keyInput.keysDown[3]) {
+				if(velX > -3) {
+					accX = AIR_F * -1;
+				}else {
+					accX = 0;
+				}
+			}else if(keyInput.keysDown[3] && !keyInput.keysDown[2]) {
+				if(velX < 3) {
+					accX = AIR_F * 1;
+				}else {
+					accX = 0;
+				}
+			}else {
+				if(velX < -0.1) {
+					accX = AIR_RES_F * 1;
+				}else if(velX > 0.1) {
+					accX = AIR_RES_F * -1;
+				}else {
+					accX = 0;
+					if(velX > -0.1f && velX < 0.1f) {
+						velX = 0;
+					}
+				}
+				
+			}
+		}
+		
 	}
 	
 	private void updateAnimations() {
