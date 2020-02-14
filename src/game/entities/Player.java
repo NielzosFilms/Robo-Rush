@@ -21,8 +21,9 @@ public class Player extends GameObject{
 	Random r = new Random();
 	private KeyInput keyInput;
 	public float accX, accY; //acceleration
-	private static final float WALK_F = 0.5f, BRAKE_F = 0.5f, AIR_F = 0.2f, AIR_RES_F = 0.02f; //force
-	public boolean onGround, direction, falling, crouch, moving, sliding, jumping;
+	private static final float WALK_F = 0.5f, BRAKE_F = 0.5f, AIR_F = 0.2f, AIR_RES_F = 0.02f; //force OLD_GRAVITY 0.16f
+	private static float GRAVITY = 0.17f; // 0.16f
+	public boolean onGround, direction, falling, crouch, moving, sliding, jumping, space;
 	private int sliding_timer, sliding_timer_wait = 0;
 	
 	private Animation idle, running, jumping_ani, crouch_ani, slide;
@@ -61,7 +62,7 @@ public class Player extends GameObject{
 		
 		
 		//sliding
-		if(sliding) {
+		/*if(sliding) {
 			sliding_timer++;
 			if(!direction)velX = 3;
 			else velX = -3;
@@ -78,7 +79,7 @@ public class Player extends GameObject{
 			sliding_timer_wait++;
 			if(sliding_timer_wait > 10) sliding_timer_wait = 10;
 			//velX = Game.clampDouble(velX, -2, 2);
-		}
+		}*/
 		//end_sliding
 		
 		
@@ -86,7 +87,7 @@ public class Player extends GameObject{
 		
 		
 		
-		if(velX < 0) {
+		if(velX < 0) { //sets direction, moving booleans
 			direction = true;
 			moving = true;
 		}else if(velX > 0) {
@@ -97,12 +98,11 @@ public class Player extends GameObject{
 		}
 		
 		
-		if(onGround) {
+		if(onGround) { //sets booleans
 			velY = 0;
 			jumping = false;
 			falling = false;
 		}else {
-			velY = velY + 0.2;
 			if(velY > 4 && jumping)
 				falling = true;
 			else if(velY > 0 && !jumping)
@@ -111,7 +111,7 @@ public class Player extends GameObject{
 				falling = false;
 		}
 		
-		if(y > 320) {
+		if(y > 320) { //respawns player if out of bounds
 			x = 0;
 			y = 0;
 		}
@@ -119,7 +119,8 @@ public class Player extends GameObject{
 		velY = Game.clampDouble(velY, -9.8, 9.8);
 		
 		velX = velX + accX;
-		velY = velY + accY;
+		if(!space && velY < 0)velY = velY + accY*3;
+		else velY = velY + accY;
 		
 		x = (int) Math.round(x + velX);
 		y = (int) Math.round(y + velY);
@@ -186,21 +187,37 @@ public class Player extends GameObject{
 					accX = BRAKE_F * -1;
 				}else {
 					accX = 0;
-					if(velX > -0.1f && velX < 0.1f) {
+					if(velX > -0.3f && velX < 0.3f) {//sill a bug here <<
 						velX = 0;
 					}
 				}
 				
 			}
 			
-			if(keyInput.keysDown[4] == true && !jumping) {
-				keyInput.keysDown[4] = false;
+			if(keyInput.keysDown[4] == true && !jumping && !space) {
+				//keyInput.keysDown[4] = false; //bug blijft nog steeds springen
+				space = true;
 				onGround = false;
 				jumping = true;
 				velY = -5;
 			}
 		}else if(!onGround) {
-			if(keyInput.keysDown[2] && !keyInput.keysDown[3]) {
+			
+			if(keyInput.keysDown[1]) {
+				if(velY < 12) {
+					accY = GRAVITY * 2;
+				}else {
+					accY = 0;
+				}
+			}else {
+				if(velY < 10) {
+					accY = GRAVITY * 1;
+				}else {
+					accY = 0;
+				}
+			}
+			
+			if(keyInput.keysDown[2] && !keyInput.keysDown[3]) { // Keys: A - D
 				if(velX > -3) {
 					accX = AIR_F * -1;
 				}else {
@@ -213,18 +230,18 @@ public class Player extends GameObject{
 					accX = 0;
 				}
 			}else {
-				if(velX < -0.1) {
+				if(velX < 0) {
 					accX = AIR_RES_F * 1;
-				}else if(velX > 0.1) {
+				}else if(velX > 0) {
 					accX = AIR_RES_F * -1;
-				}else {
-					accX = 0;
-					if(velX > -0.1f && velX < 0.1f) {
-						velX = 0;
-					}
 				}
-				
 			}
+			
+			
+		}
+		
+		if(keyInput.keysDown[4] == false) {
+			space = false;
 		}
 		
 	}
@@ -306,6 +323,16 @@ public class Player extends GameObject{
 			crouch_ani.drawAnimation(g, x, y);
 		}else if(sliding) {
 			slide.drawAnimation(g, x, y);
+		}else {
+			if(direction) {
+				AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+				tx.translate(-Textures.playerImg.get(23).getWidth(null), 0);
+				AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+				BufferedImage temp = op.filter(Textures.playerImg.get(23), null);
+				g.drawImage(temp, x, y, null);
+				
+			}else
+				g.drawImage(Textures.playerImg.get(23), x, y, null);
 		}
 		g.setColor(Color.pink);
 		
