@@ -124,7 +124,7 @@ public class Player extends GameObject{
 	}
 	
 	private void updateVelocity() {
-		if(onGround) {
+		/*if(onGround) {
 			if(keyInput.keysDown[1] == true && !sliding && (velX > 2 || velX < -1)) {
 				if(!moving)
 					crouch = true;
@@ -154,7 +154,7 @@ public class Player extends GameObject{
 			if(keyInput.keysDown[2] == true) velX = velX + (-2 - velX) * (0.05f);
 			if(keyInput.keysDown[3] == true) velX = velX + (2 - velX) * (0.05f);
 			if(keyInput.keysDown[1] == true) velY += (9.8 - velY) * (0.05f);
-		}
+		}*/
 	}
 	
 	private void updateAnimations() {
