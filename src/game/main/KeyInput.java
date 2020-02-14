@@ -40,6 +40,7 @@ public class KeyInput extends KeyAdapter {
 				if(key == KeyEvent.VK_A) keysDown[2] = true;
 				if(key == KeyEvent.VK_D) keysDown[3] = true;
 				if(key == KeyEvent.VK_SPACE) keysDown[4] = true;
+				if(key == KeyEvent.VK_SHIFT) keysDown[5] = true;
 				if(key == KeyEvent.VK_CONTROL) {
 					keysDown[6] = true;
 					if(!Game.showHitboxes) Game.showHitboxes = true;
@@ -63,6 +64,7 @@ public class KeyInput extends KeyAdapter {
 				if(key == KeyEvent.VK_S) keysDown[1] = false;
 				if(key == KeyEvent.VK_A) keysDown[2] = false;
 				if(key == KeyEvent.VK_D) keysDown[3] = false;
+				if(key == KeyEvent.VK_SHIFT) keysDown[5] = false;
 				if(key == KeyEvent.VK_CONTROL) keysDown[6] = false;
 				if(key == KeyEvent.VK_SPACE) keysDown[4] = false;
 			}

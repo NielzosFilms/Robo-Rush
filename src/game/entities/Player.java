@@ -25,6 +25,7 @@ public class Player extends GameObject{
 	private static float GRAVITY = 0.17f; // 0.16f
 	public boolean onGround, direction, falling, crouch, moving, sliding, jumping, space;
 	private int sliding_timer, sliding_timer_wait = 0;
+	private int stop_walking_timer = 0;
 	
 	private Animation idle, running, jumping_ani, crouch_ani, slide;
 
@@ -171,25 +172,27 @@ public class Player extends GameObject{
 			if(keyInput.keysDown[2] && !keyInput.keysDown[3]) {
 				if(velX > -3) {
 					accX = WALK_F * -1;
+				}else if(velX > -4 && velX < -3 && keyInput.keysDown[5]){
+					accX = WALK_F * -0.1f;
 				}else {
 					accX = 0;
 				}
 			}else if(keyInput.keysDown[3] && !keyInput.keysDown[2]) {
 				if(velX < 3) {
 					accX = WALK_F * 1;
+				}else if(velX < 4 && velX >= 3 && keyInput.keysDown[5]){
+					accX = WALK_F * 0.1f;
 				}else {
 					accX = 0;
 				}
 			}else {
-				if(velX < -0.1) {
+				if(velX < -0.5) {
 					accX = BRAKE_F * 1;
-				}else if(velX > 0.1) {
+				}else if(velX > 0.5) {
 					accX = BRAKE_F * -1;
 				}else {
 					accX = 0;
-					if(velX > -0.3f && velX < 0.3f) {//sill a bug here <<
-						velX = 0;
-					}
+					velX = 0;
 				}
 				
 			}
@@ -234,9 +237,11 @@ public class Player extends GameObject{
 					accX = AIR_RES_F * 1;
 				}else if(velX > 0) {
 					accX = AIR_RES_F * -1;
+				}else if(velX > -0.1f && velX < 0.1f) {
+					accX = 0;
+					velX = 0;
 				}
 			}
-			
 			
 		}
 		
