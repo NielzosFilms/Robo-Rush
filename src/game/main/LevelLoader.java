@@ -1,5 +1,6 @@
 package game.main;
 
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class LevelLoader {
 	
 	public static ArrayList<ArrayList<Long>> listdata;
 	public static ArrayList<Rectangle> rectangle_bounds;
+	public static ArrayList<Polygon> polygon_bounds;
 	
 	public LevelLoader() {
 		
@@ -36,19 +38,46 @@ public class LevelLoader {
 	        		 JSONArray objects = (JSONArray) ((JSONObject)layer).get("objects");
 	        		 if(objects != null) {
 	        			 rectangle_bounds = new ArrayList<Rectangle>();
+	        			 polygon_bounds = new ArrayList<Polygon>();
 	        			 for(int i = 0;i<objects.size();i++) {
 	        				 JSONObject collisionLayer = (JSONObject)objects.get(i);
+	        				 //if(collisionLayer.get(""))
+	        				 
 	    	        		 
-	    	        		 Long xL = (Long.parseLong(collisionLayer.get("x").toString()));
-	    	        		 int x = xL.intValue();
-	    	        		 Long yL = (Long.parseLong(collisionLayer.get("y").toString()));
-	    	        		 int y = yL.intValue();
-	    	        		 Long widthL = (Long.parseLong(collisionLayer.get("width").toString()));
-	    	        		 int width = widthL.intValue();
-	    	        		 Long heightL = (Long.parseLong(collisionLayer.get("height").toString()));
-	    	        		 int height = heightL.intValue();
-	    	        		 
-	    	        		 rectangle_bounds.add(new Rectangle(x, y, width, height));
+	        				 if(collisionLayer.get("polygon") == null) {
+		    	        		 Long xL = (Long.parseLong(collisionLayer.get("x").toString()));
+		    	        		 int x = xL.intValue();
+		    	        		 Long yL = (Long.parseLong(collisionLayer.get("y").toString()));
+		    	        		 int y = yL.intValue();
+		    	        		 Long widthL = (Long.parseLong(collisionLayer.get("width").toString()));
+		    	        		 int width = widthL.intValue();
+		    	        		 Long heightL = (Long.parseLong(collisionLayer.get("height").toString()));
+		    	        		 int height = heightL.intValue();
+		    	        		 
+		    	        		 rectangle_bounds.add(new Rectangle(x, y, width, height));
+	        				 }else {
+	        					 
+	        					 Long xL = (Long.parseLong(collisionLayer.get("x").toString()));
+		    	        		 int x = xL.intValue();
+		    	        		 Long yL = (Long.parseLong(collisionLayer.get("y").toString()));
+		    	        		 int y = yL.intValue();
+		    	        		 
+	        					 JSONArray polygon_points = (JSONArray)collisionLayer.get("polygon");
+	        					 System.out.println(polygon_points);
+	        					 Polygon poly = new Polygon();
+	        					 if(polygon_points != null) {
+	        						 for(int j = 0;j<polygon_points.size();j++) {
+	        							 JSONObject point = (JSONObject)polygon_points.get(j);
+	        							 Long tempXL = (Long.parseLong(point.get("x").toString()));
+	    		    	        		 int tempX = tempXL.intValue();
+	    		    	        		 Long tempYL = (Long.parseLong(point.get("y").toString()));
+	    		    	        		 int tempY = tempYL.intValue();
+	    		    	        		 
+	    		    	        		 poly.addPoint(x+tempX, y+tempY);
+	        						 }
+	        					 }
+	        					 polygon_bounds.add(poly);
+	        				 }
 	        			 }
 	        		 }
 	        		 

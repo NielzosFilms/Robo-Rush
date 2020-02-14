@@ -26,7 +26,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 1.4.9";
+	public static final String VERSION = "ALPHA V 1.5.1";
 
 	private Thread thread;
 	private boolean running = true;
@@ -179,6 +179,13 @@ public class Game extends Canvas implements Runnable{
 			g.setColor(Color.blue);
 			for(int i = 0;i<ll.rectangle_bounds.size();i++) {
 				g.drawRect(ll.rectangle_bounds.get(i).x+(x*16), ll.rectangle_bounds.get(i).y+(y*16), ll.rectangle_bounds.get(i).width, ll.rectangle_bounds.get(i).height);
+			}
+			
+			for(int i = 0;i<ll.polygon_bounds.size();i++) {
+				g.setColor(Color.green);
+				g.drawPolygon(ll.polygon_bounds.get(i));
+				g.setColor(Color.cyan);
+				g.drawRect(ll.polygon_bounds.get(i).getBounds().x, ll.polygon_bounds.get(i).getBounds().y, ll.polygon_bounds.get(i).getBounds().width, ll.polygon_bounds.get(i).getBounds().height);
 			}
 		}
 		//g.drawRect(0, 192, 16*9, 16*4);
