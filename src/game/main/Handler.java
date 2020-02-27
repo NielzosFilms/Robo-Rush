@@ -14,10 +14,12 @@ public class Handler {
 		}
 	}
 	
-	public void render(Graphics g) {
+	public void render(Graphics g, int camX, int camY, int width, int height) {
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
-			tempObject.render(g);
+			if(tempObject.getX() > camX && tempObject.getY() > camY && tempObject.getX() < camX+width && tempObject.getY() < camY+height) {
+				tempObject.render(g);
+			}
 		}
 	}
 	

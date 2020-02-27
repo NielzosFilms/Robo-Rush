@@ -15,11 +15,11 @@ public class Textures {
 	public Textures() {
 		BufferedImageLoader loader = new BufferedImageLoader();
 		
-		tileSet = loader.loadImage("assets/PathAndObjects.png");
+		tileSet = loader.loadImage("assets/main/tile_sheets/PathAndObjects.png");
 		playerSheet = loader.loadImage("assets/entities/player/human_base.png");
 		
-		ground = loader.loadImage("assets/top_down_map.png");
-		ground_fg = loader.loadImage("assets/top_down_map_fg.png");
+		ground = loader.loadImage("assets/levels/top_down_map.png");
+		ground_fg = loader.loadImage("assets/levels/top_down_map_fg.png");
 		
 		SpriteSheet ss = new SpriteSheet(tileSet);
 		for(int i = 0;i<tileSet.getHeight();i+=16) {

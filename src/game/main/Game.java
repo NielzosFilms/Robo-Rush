@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
@@ -26,7 +27,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 1.6.0";
+	public static final String VERSION = "ALPHA V 1.6.1";
 
 	private Thread thread;
 	private boolean running = true;
@@ -131,8 +132,9 @@ public class Game extends Canvas implements Runnable{
 		Graphics g = bs.getDrawGraphics();
 		Graphics2D g2d = (Graphics2D) g;
 		
-		AffineTransform scalingTransform = AffineTransform.getScaleInstance(SCALE_WIDTH,SCALE_HEIGHT);
-		g2d.transform(scalingTransform);
+		/*AffineTransform scalingTransform = AffineTransform.getScaleInstance(SCALE_WIDTH,SCALE_HEIGHT);
+		g2d.transform(scalingTransform);*/
+		g2d.scale(SCALE_WIDTH, SCALE_HEIGHT);
 		
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -151,7 +153,7 @@ public class Game extends Canvas implements Runnable{
 		}*/
 		
 		
-		/*int x = 0;
+		int x = 0;
 		int y = 0;
 		for(int i = 0;i<ll.listdata.size();i++) {
 			for(int j = 0;j<ll.listdata.get(i).size();j++) {
@@ -164,7 +166,9 @@ public class Game extends Canvas implements Runnable{
 					}
 					continue;
 				}
-				g.drawImage(Textures.tileSetBlocks.get(temp), x*16, y*16, 16, 16, null);
+				if((x*16)+16 > -cam.getX() && (y*16)+16 > -cam.getY() && (x*16)-16 < -cam.getX()+WIDTH && (y*16)-16 < -cam.getY()+HEIGHT) {
+					g.drawImage(Textures.tileSetBlocks.get(temp), x*16, y*16, 16, 16, null);
+				}
 				x++;
 				if(x >= 40) {
 					x = 0;
@@ -173,12 +177,12 @@ public class Game extends Canvas implements Runnable{
 			}
 			x = 0;
 			y = 0;
-		}*/
+		}
 		
-		g.drawImage(Textures.ground, 0, 0, null);
-		g.drawImage(Textures.ground_fg, 0, 0, null);
+		/*g.drawImage(Textures.ground, 0, 0, null);
+		g.drawImage(Textures.ground_fg, 0, 0, null);*/
 		
-		handler.render(g);
+		handler.render(g, (int)-cam.getX(), (int)-cam.getY(), WIDTH, HEIGHT);
 		
 		/*if(showHitboxes) {
 			g.setColor(Color.blue);

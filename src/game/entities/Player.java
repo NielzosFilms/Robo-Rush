@@ -50,6 +50,22 @@ public class Player extends GameObject{
 		updateAnimations();
 		
 		if(keyInput.keysDown[2] && !keyInput.keysDown[3]) {
+			velX = -0.2;
+		}else if(keyInput.keysDown[3] && !keyInput.keysDown[2]) {
+			velX = 0.2;
+		}else {
+			velX = 0;
+		}
+		
+		if(keyInput.keysDown[0] && !keyInput.keysDown[1]) {
+			velY = -0.2;
+		}else if(keyInput.keysDown[1] && !keyInput.keysDown[0]) {
+			velY = 0.2;
+		}else {
+			velY = 0;
+		}
+		
+		/*if(keyInput.keysDown[2] && !keyInput.keysDown[3]) {
 			if(velX > -2) {
 				accX = WALK_F * -1;
 			}else {
@@ -95,7 +111,7 @@ public class Player extends GameObject{
 				velY = 0;
 			}
 			
-		}
+		}*/
 		//misschien powerup voor reverse gravity
 		
 		//velY = Game.clampDouble(velY, -9.8, 9.8);
@@ -104,9 +120,17 @@ public class Player extends GameObject{
 		velY = velY + accY;
 		/*if(!space && velY < 0)velY = velY + accY*3;
 		else velY = velY + accY;*/
+		if(velX < 0 || velY < 0) {
+			x = (int) Math.floor(x + velX);
+			y = (int) Math.floor(y + velY);
+		}else if(velX > 0 || velY > 0) {
+			x = (int) Math.ceil(x + velX);
+			y = (int) Math.ceil(y + velY);
+		}else {
+			x = (int) Math.round(x + velX);
+			y = (int) Math.round(y + velY);
+		}
 		
-		x = (int) Math.round(x + velX);
-		y = (int) Math.round(y + velY);
 		
 		//x = Game.clamp(x, -13, 800-50);
 		
@@ -137,9 +161,9 @@ public class Player extends GameObject{
 	
 	public void render(Graphics g) {
 		g.setColor(Color.red);
-		g.fillRect(x, y, 16, 16);
+		//g.fillRect(x, y, 16, 16);
 		
-		if(velY < 0) {
+		/*if(velY < 0) {
 			walk_up.drawAnimation(g, x, y);
 		}else if(velY > 0) {
 			walk_down.drawAnimation(g, x, y);
@@ -149,7 +173,8 @@ public class Player extends GameObject{
 			walk_right.drawAnimation(g, x, y);
 		}else if(velX < 0) {
 			walk_left.drawAnimation(g, x, y);
-		}
+		}*/
+		g.drawImage(Textures.playerImg.get(0), x, y, null);
 		
 		g.setColor(Color.pink);
 		
