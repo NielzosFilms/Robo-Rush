@@ -179,7 +179,7 @@ public class LevelLoader {
 				int blue = (pixel) & 0xff;
 				if(red > 120) {
 					int rand = r.nextInt(20);
-					if(yy > 0 && xx > 0 && yy < map.getHeight() && xx < map.getWidth()) {
+					if(yy > 0 && xx > 0 && yy < map.getHeight()-1 && xx < map.getWidth()-1) {
 						int up = (map.getRGB(xx, yy-1) >> 16) & 0xff;
 						int down = (map.getRGB(xx, yy+1) >> 16) & 0xff;
 						int left = (map.getRGB(xx-1, yy) >> 16) & 0xff;
@@ -205,14 +205,18 @@ public class LevelLoader {
 							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(173)));
 						} else if(right <= 120){
 							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(168)));
-						} else if(up_right <= 120){
+						} else if(up_right <= 120 && down_left > 120){
 							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(264)));
-						} else if(up_left <= 120){
+						} else if(up_left <= 120 && down_right > 120){
 							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(269)));
-						} else if(down_right <= 120){
+						} else if(down_right <= 120 && up_left > 120){
 							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(144)));
-						} else if(down_left <= 120){
+						} else if(down_left <= 120 && up_right > 120){
 							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(149)));
+						} else if(up_right <= 120 && down_left <= 120){
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(242)));
+						} else if(up_left <= 120 && down_right <= 120){
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(241)));
 						} else {
 							switch(rand) {
 								case 1:
