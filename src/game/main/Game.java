@@ -26,7 +26,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 1.5.1";
+	public static final String VERSION = "ALPHA V 1.6.0";
 
 	private Thread thread;
 	private boolean running = true;
@@ -52,7 +52,7 @@ public class Game extends Canvas implements Runnable{
 		textures = new Textures();
 		keyInput = new KeyInput(handler);
 		//blocks = ll.getLevelData();
-		ll.loadLevelData("assets/level 2.json");
+		ll.loadLevelData("assets/top_down_map.json");
 		collision = new Collision(handler, ll);
 		cam = new Camera(0, 0);
 		this.addKeyListener(keyInput);
@@ -139,9 +139,9 @@ public class Game extends Canvas implements Runnable{
 		
 		g2d.translate(cam.getX(), cam.getY()); //start of cam
 		
-		for(int i = 0;i<7;i++) {
+		/*for(int i = 0;i<7;i++) {
 			g.drawImage(Textures.sky, i*Textures.sky.getWidth(), 0, null);
-		}
+		}*/
 		
 		g.setColor(Color.PINK);
 		//g.fillRect(50, 50, WIDTH-100, HEIGHT-100);
@@ -149,14 +149,16 @@ public class Game extends Canvas implements Runnable{
 		/*for(int i = 0;i<Textures.tileSetBlocks.size();i++) {
 			g.drawImage(Textures.tileSetBlocks.get(i), i*16, 170, 16, 16, null);
 		}*/
-		int x = 0;
+		
+		
+		/*int x = 0;
 		int y = 0;
 		for(int i = 0;i<ll.listdata.size();i++) {
 			for(int j = 0;j<ll.listdata.get(i).size();j++) {
 				int temp = ll.listdata.get(i).get(j).intValue()-1;
 				if(!(Textures.tileSetBlocks.size() > temp) || temp < 0) {
 					x++;
-					if(x >= 50) {
+					if(x >= 40) {
 						x = 0;
 						y++;
 					}
@@ -164,18 +166,21 @@ public class Game extends Canvas implements Runnable{
 				}
 				g.drawImage(Textures.tileSetBlocks.get(temp), x*16, y*16, 16, 16, null);
 				x++;
-				if(x >= 50) {
+				if(x >= 40) {
 					x = 0;
 					y++;
 				}
 			}
 			x = 0;
 			y = 0;
-		}
+		}*/
+		
+		g.drawImage(Textures.ground, 0, 0, null);
+		g.drawImage(Textures.ground_fg, 0, 0, null);
 		
 		handler.render(g);
 		
-		if(showHitboxes) {
+		/*if(showHitboxes) {
 			g.setColor(Color.blue);
 			for(int i = 0;i<ll.rectangle_bounds.size();i++) {
 				g.drawRect(ll.rectangle_bounds.get(i).x+(x*16), ll.rectangle_bounds.get(i).y+(y*16), ll.rectangle_bounds.get(i).width, ll.rectangle_bounds.get(i).height);
@@ -187,7 +192,7 @@ public class Game extends Canvas implements Runnable{
 				g.setColor(Color.cyan);
 				g.drawRect(ll.polygon_bounds.get(i).getBounds().x, ll.polygon_bounds.get(i).getBounds().y, ll.polygon_bounds.get(i).getBounds().width, ll.polygon_bounds.get(i).getBounds().height);
 			}
-		}
+		}*/
 		//g.drawRect(0, 192, 16*9, 16*4);
 		
 		g2d.translate(-cam.getX(), -cam.getY()); //end of cam

@@ -7,7 +7,7 @@ import java.util.List;
 public class Textures {
 
 	static BufferedImage tileSet, playerSheet;
-	static BufferedImage sky, clouds;
+	static BufferedImage ground, ground_fg;
 	
 	public static List<BufferedImage>tileSetBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage>playerImg = new ArrayList<BufferedImage>();
@@ -15,11 +15,11 @@ public class Textures {
 	public Textures() {
 		BufferedImageLoader loader = new BufferedImageLoader();
 		
-		tileSet = loader.loadImage("assets/dirt-tiles-mirrord.png");
-		playerSheet = loader.loadImage("assets/entities/player/adventurer-Sheet.png");
+		tileSet = loader.loadImage("assets/PathAndObjects.png");
+		playerSheet = loader.loadImage("assets/entities/player/human_base.png");
 		
-		sky = loader.loadImage("assets/main/sky.png");
-		clouds = loader.loadImage("assets/main/clouds.png");
+		ground = loader.loadImage("assets/top_down_map.png");
+		ground_fg = loader.loadImage("assets/top_down_map_fg.png");
 		
 		SpriteSheet ss = new SpriteSheet(tileSet);
 		for(int i = 0;i<tileSet.getHeight();i+=16) {
@@ -29,9 +29,9 @@ public class Textures {
 		}
 		
 		SpriteSheet ss2 = new SpriteSheet(playerSheet);
-		for(int i = 0;i<playerSheet.getHeight();i+=37) {
-			for(int j = 0;j<playerSheet.getWidth();j+=50) {
-				playerImg.add(ss2.grabImage(j, i, 50, 37));
+		for(int i = 0;i<playerSheet.getHeight();i+=18) {
+			for(int j = 0;j<playerSheet.getWidth();j+=16) {
+				playerImg.add(ss2.grabImage(j, i, 16, 18));
 			}
 		}
 		
