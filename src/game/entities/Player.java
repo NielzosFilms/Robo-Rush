@@ -50,17 +50,17 @@ public class Player extends GameObject{
 		updateAnimations();
 		
 		if(keyInput.keysDown[2] && !keyInput.keysDown[3]) {
-			velX = -0.2;
+			velX = -1;
 		}else if(keyInput.keysDown[3] && !keyInput.keysDown[2]) {
-			velX = 0.2;
+			velX = 1;
 		}else {
 			velX = 0;
 		}
 		
 		if(keyInput.keysDown[0] && !keyInput.keysDown[1]) {
-			velY = -0.2;
+			velY = -1;
 		}else if(keyInput.keysDown[1] && !keyInput.keysDown[0]) {
-			velY = 0.2;
+			velY = 1;
 		}else {
 			velY = 0;
 		}
@@ -120,14 +120,20 @@ public class Player extends GameObject{
 		velY = velY + accY;
 		/*if(!space && velY < 0)velY = velY + accY*3;
 		else velY = velY + accY;*/
-		if(velX < 0 || velY < 0) {
+		
+		if(velX < 0) {
 			x = (int) Math.floor(x + velX);
-			y = (int) Math.floor(y + velY);
-		}else if(velX > 0 || velY > 0) {
+		}else if(velX > 0) {
 			x = (int) Math.ceil(x + velX);
-			y = (int) Math.ceil(y + velY);
 		}else {
 			x = (int) Math.round(x + velX);
+		}
+		
+		if(velY < 0) {
+			y = (int) Math.floor(y + velY);
+		}else if(velY > 0) {
+			y = (int) Math.ceil(y + velY);
+		}else {
 			y = (int) Math.round(y + velY);
 		}
 		

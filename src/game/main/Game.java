@@ -27,7 +27,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 1.6.1";
+	public static final String VERSION = "ALPHA V 1.6.2";
 
 	private Thread thread;
 	private boolean running = true;
@@ -63,6 +63,8 @@ public class Game extends Canvas implements Runnable{
 		Player player = new Player(0, 0, ID.Player, keyInput);
 		hud = new HUD(handler, player);
 		handler.addObject(player);
+		
+		ll.LoadLevelHeightMap(handler);
 	}
 	
 	public synchronized void start() {
@@ -136,7 +138,7 @@ public class Game extends Canvas implements Runnable{
 		g2d.transform(scalingTransform);*/
 		g2d.scale(SCALE_WIDTH, SCALE_HEIGHT);
 		
-		g.setColor(Color.black);
+		g.setColor(Color.decode("#d1e3ff"));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		g2d.translate(cam.getX(), cam.getY()); //start of cam
@@ -152,8 +154,7 @@ public class Game extends Canvas implements Runnable{
 			g.drawImage(Textures.tileSetBlocks.get(i), i*16, 170, 16, 16, null);
 		}*/
 		
-		
-		int x = 0;
+		/*int x = 0;
 		int y = 0;
 		for(int i = 0;i<ll.listdata.size();i++) {
 			for(int j = 0;j<ll.listdata.get(i).size();j++) {
@@ -177,26 +178,26 @@ public class Game extends Canvas implements Runnable{
 			}
 			x = 0;
 			y = 0;
-		}
+		}*/
 		
 		/*g.drawImage(Textures.ground, 0, 0, null);
 		g.drawImage(Textures.ground_fg, 0, 0, null);*/
-		
+			
 		handler.render(g, (int)-cam.getX(), (int)-cam.getY(), WIDTH, HEIGHT);
 		
-		/*if(showHitboxes) {
-			g.setColor(Color.blue);
-			for(int i = 0;i<ll.rectangle_bounds.size();i++) {
-				g.drawRect(ll.rectangle_bounds.get(i).x+(x*16), ll.rectangle_bounds.get(i).y+(y*16), ll.rectangle_bounds.get(i).width, ll.rectangle_bounds.get(i).height);
-			}
-			
-			for(int i = 0;i<ll.polygon_bounds.size();i++) {
-				g.setColor(Color.green);
-				g.drawPolygon(ll.polygon_bounds.get(i));
-				g.setColor(Color.cyan);
-				g.drawRect(ll.polygon_bounds.get(i).getBounds().x, ll.polygon_bounds.get(i).getBounds().y, ll.polygon_bounds.get(i).getBounds().width, ll.polygon_bounds.get(i).getBounds().height);
-			}
+		//if(showHitboxes) {
+		/*g.setColor(Color.blue);
+		for(int i = 0;i<ll.rectangle_bounds.size();i++) {
+			g.drawRect(ll.rectangle_bounds.get(i).x+(x*16), ll.rectangle_bounds.get(i).y+(y*16), ll.rectangle_bounds.get(i).width, ll.rectangle_bounds.get(i).height);
+		}
+		
+		for(int i = 0;i<ll.polygon_bounds.size();i++) {
+			g.setColor(Color.green);
+			g.drawPolygon(ll.polygon_bounds.get(i));
+			g.setColor(Color.cyan);
+			g.drawRect(ll.polygon_bounds.get(i).getBounds().x, ll.polygon_bounds.get(i).getBounds().y, ll.polygon_bounds.get(i).getBounds().width, ll.polygon_bounds.get(i).getBounds().height);
 		}*/
+		//}
 		//g.drawRect(0, 192, 16*9, 16*4);
 		
 		g2d.translate(-cam.getX(), -cam.getY()); //end of cam

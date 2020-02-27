@@ -2,13 +2,17 @@ package game.main;
 
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import game.objects.Tile;
 
 //"assets/World_map.json"
 
@@ -17,6 +21,7 @@ public class LevelLoader {
 	static JSONParser parser = new JSONParser();
 	
 	private Game game;
+	private static Random r = new Random();
 	
 	public static ArrayList<ArrayList<Long>> listdata;
 	public static ArrayList<Rectangle> rectangle_bounds;
@@ -159,5 +164,49 @@ public class LevelLoader {
 	    	e.printStackTrace();
 	    	return null;
 	    }
+	}
+	
+	public static void LoadLevelHeightMap(Handler handler) {
+		BufferedImage map = Textures.height_map;
+		int w = map.getWidth();
+		int h = map.getHeight();
+
+		for(int yy = 0; yy < h; yy++) {
+			for(int xx = 0; xx < w; xx++) {
+				int pixel = map.getRGB(xx, yy);
+				int red = (pixel >> 16) & 0xff;
+				int green = (pixel >> 8) & 0xff;
+				int blue = (pixel) & 0xff;
+				if(red > 120) {
+					int rand = r.nextInt(20);
+					switch(rand) {
+						case 1:
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(6)));
+							break;
+						case 2:
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(30)));
+							break;
+						case 3:
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(54)));
+							break;
+						case 4:
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(78)));
+							break;
+						case 5:
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(102)));
+							break;
+						case 6:
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(126)));
+							break;
+						default:
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(150)));
+							break;
+					}
+					
+				}else {
+					handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(171)));
+				}
+			}
+		}
 	}
 }

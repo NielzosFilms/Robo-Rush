@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Textures {
-
+	
 	static BufferedImage tileSet, playerSheet;
 	static BufferedImage ground, ground_fg;
+	static BufferedImage height_map;
 	
 	public static List<BufferedImage>tileSetBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage>playerImg = new ArrayList<BufferedImage>();
@@ -20,6 +21,8 @@ public class Textures {
 		
 		ground = loader.loadImage("assets/levels/top_down_map.png");
 		ground_fg = loader.loadImage("assets/levels/top_down_map_fg.png");
+		
+		height_map = loader.loadImage("assets/main/height_map.png");
 		
 		SpriteSheet ss = new SpriteSheet(tileSet);
 		for(int i = 0;i<tileSet.getHeight();i+=16) {
