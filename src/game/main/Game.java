@@ -27,13 +27,15 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 1.6.2";
+	public static final String VERSION = "ALPHA V 1.6.3";
 
 	private Thread thread;
 	private boolean running = true;
 	public static int current_fps = 0;
 	
 	public static boolean showHitboxes = false;
+	public static GAMESTATES game_state = GAMESTATES.Menu;
+	public static boolean pauzed = false;
 	
 	private Random r;
 	
@@ -111,17 +113,21 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	private void tick() {
-		handler.tick();
-		collision.tick();
-		
-		for(int i = 0; i < handler.object.size(); i++) {
-			if(handler.object.get(i).getId() == ID.Player) {
-				cam.tick(handler.object.get(i));
+		if(game_state == GAMESTATES.Game && !pauzed) {
+			handler.tick();
+			collision.tick();
+			
+			for(int i = 0; i < handler.object.size(); i++) {
+				if(handler.object.get(i).getId() == ID.Player) {
+					cam.tick(handler.object.get(i));
+				}
 			}
+			hud.tick();
+			
+			keyInput.tick();
+		} else if(game_state == GAMESTATES.Game && pauzed) {
+			
 		}
-		hud.tick();
-		
-		keyInput.tick();
 	}
 	
 	private void render() {
@@ -141,67 +147,39 @@ public class Game extends Canvas implements Runnable{
 		g.setColor(Color.decode("#d1e3ff"));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		g2d.translate(cam.getX(), cam.getY()); //start of cam
+		if(game_state == GAMESTATES.Game) {
 		
-		/*for(int i = 0;i<7;i++) {
-			g.drawImage(Textures.sky, i*Textures.sky.getWidth(), 0, null);
-		}*/
-		
-		g.setColor(Color.PINK);
-		//g.fillRect(50, 50, WIDTH-100, HEIGHT-100);
-		//g.drawImage(Textures.tileSetBlocks.get(2), 50, 90, 16, 16, null);
-		/*for(int i = 0;i<Textures.tileSetBlocks.size();i++) {
-			g.drawImage(Textures.tileSetBlocks.get(i), i*16, 170, 16, 16, null);
-		}*/
-		
-		/*int x = 0;
-		int y = 0;
-		for(int i = 0;i<ll.listdata.size();i++) {
-			for(int j = 0;j<ll.listdata.get(i).size();j++) {
-				int temp = ll.listdata.get(i).get(j).intValue()-1;
-				if(!(Textures.tileSetBlocks.size() > temp) || temp < 0) {
-					x++;
-					if(x >= 40) {
-						x = 0;
-						y++;
-					}
-					continue;
-				}
-				if((x*16)+16 > -cam.getX() && (y*16)+16 > -cam.getY() && (x*16)-16 < -cam.getX()+WIDTH && (y*16)-16 < -cam.getY()+HEIGHT) {
-					g.drawImage(Textures.tileSetBlocks.get(temp), x*16, y*16, 16, 16, null);
-				}
-				x++;
-				if(x >= 40) {
-					x = 0;
-					y++;
-				}
-			}
-			x = 0;
-			y = 0;
-		}*/
-		
-		/*g.drawImage(Textures.ground, 0, 0, null);
-		g.drawImage(Textures.ground_fg, 0, 0, null);*/
+			g2d.translate(cam.getX(), cam.getY()); //start of cam
 			
-		handler.render(g, (int)-cam.getX(), (int)-cam.getY(), WIDTH, HEIGHT);
-		
-		//if(showHitboxes) {
-		/*g.setColor(Color.blue);
-		for(int i = 0;i<ll.rectangle_bounds.size();i++) {
-			g.drawRect(ll.rectangle_bounds.get(i).x+(x*16), ll.rectangle_bounds.get(i).y+(y*16), ll.rectangle_bounds.get(i).width, ll.rectangle_bounds.get(i).height);
+			/*for(int i = 0;i<7;i++) {
+				g.drawImage(Textures.sky, i*Textures.sky.getWidth(), 0, null);
+			}*/
+				
+			handler.render(g, (int)-cam.getX(), (int)-cam.getY(), WIDTH, HEIGHT);
+			
+			//if(showHitboxes) {
+			/*g.setColor(Color.blue);
+			for(int i = 0;i<ll.rectangle_bounds.size();i++) {
+				g.drawRect(ll.rectangle_bounds.get(i).x+(x*16), ll.rectangle_bounds.get(i).y+(y*16), ll.rectangle_bounds.get(i).width, ll.rectangle_bounds.get(i).height);
+			}
+			
+			for(int i = 0;i<ll.polygon_bounds.size();i++) {
+				g.setColor(Color.green);
+				g.drawPolygon(ll.polygon_bounds.get(i));
+				g.setColor(Color.cyan);
+				g.drawRect(ll.polygon_bounds.get(i).getBounds().x, ll.polygon_bounds.get(i).getBounds().y, ll.polygon_bounds.get(i).getBounds().width, ll.polygon_bounds.get(i).getBounds().height);
+			}*/
+			//}
+			//g.drawRect(0, 192, 16*9, 16*4);
+			
+			g2d.translate(-cam.getX(), -cam.getY()); //end of cam
+			hud.render(g, g2d);
 		}
 		
-		for(int i = 0;i<ll.polygon_bounds.size();i++) {
-			g.setColor(Color.green);
-			g.drawPolygon(ll.polygon_bounds.get(i));
-			g.setColor(Color.cyan);
-			g.drawRect(ll.polygon_bounds.get(i).getBounds().x, ll.polygon_bounds.get(i).getBounds().y, ll.polygon_bounds.get(i).getBounds().width, ll.polygon_bounds.get(i).getBounds().height);
-		}*/
-		//}
-		//g.drawRect(0, 192, 16*9, 16*4);
-		
-		g2d.translate(-cam.getX(), -cam.getY()); //end of cam
-		hud.render(g, g2d);
+		if(pauzed) {
+			g.setColor(new Color(0, 0, 0, 0.5f));
+			g.fillRect(0, 0, WIDTH, HEIGHT);
+		}
 		
 		g.dispose();
 		g2d.dispose();

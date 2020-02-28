@@ -178,7 +178,7 @@ public class LevelLoader {
 				int green = (pixel >> 8) & 0xff;
 				int blue = (pixel) & 0xff;
 				if(red > 120) {
-					int rand = r.nextInt(20);
+					int rand = r.nextInt(30);
 					if(yy > 0 && xx > 0 && yy < map.getHeight()-1 && xx < map.getWidth()-1) {
 						int up = (map.getRGB(xx, yy-1) >> 16) & 0xff;
 						int down = (map.getRGB(xx, yy+1) >> 16) & 0xff;
@@ -190,86 +190,116 @@ public class LevelLoader {
 						int down_right = (map.getRGB(xx+1, yy+1) >> 16) & 0xff;
 						int down_left = (map.getRGB(xx-1, yy+1) >> 16) & 0xff;
 						if(up <= 120 && left > 120 && right > 120) {
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(265)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(13)));
 						}else if(down <= 120 && left > 120 && right > 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(145)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(1)));
 						} else if(left <= 120 && up <=120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(169)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(3)));
 						} else if(left <= 120 && down <=120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(193)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(9)));
 						} else if(right <= 120 && up <=120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(170)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(4)));
 						} else if(right <= 120 && down <=120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(194)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(10)));
 						} else if(left <= 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(173)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(8)));
 						} else if(right <= 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(168)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(6)));
 						} else if(up_right <= 120 && down_left > 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(264)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(12)));
 						} else if(up_left <= 120 && down_right > 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(269)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(14)));
 						} else if(down_right <= 120 && up_left > 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(144)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(0)));
 						} else if(down_left <= 120 && up_right > 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(149)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(2)));
 						} else if(up_right <= 120 && down_left <= 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(242)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(22)));
 						} else if(up_left <= 120 && down_right <= 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(241)));
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(21)));
 						} else {
 							switch(rand) {
+								case 0:
+									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(19)));
+									break;
 								case 1:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(6)));
+									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(20)));
 									break;
 								case 2:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(30)));
+									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(24)));
 									break;
 								case 3:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(54)));
+									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(25)));
 									break;
 								case 4:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(78)));
+									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(26)));
 									break;
 								case 5:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(102)));
+									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(30)));
 									break;
 								case 6:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(126)));
+									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(31)));
+									break;
+								case 7:
+									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(32)));
 									break;
 								default:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(150)));
+									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(18)));
 									break;
 							}
 						}
 					} else {
 						switch(rand) {
+							case 0:
+								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(19)));
+								break;
 							case 1:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(6)));
+								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(20)));
 								break;
 							case 2:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(30)));
+								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(24)));
 								break;
 							case 3:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(54)));
+								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(25)));
 								break;
 							case 4:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(78)));
+								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(26)));
 								break;
 							case 5:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(102)));
+								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(30)));
 								break;
 							case 6:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(126)));
+								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(31)));
+								break;
+							case 7:
+								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(32)));
 								break;
 							default:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(150)));
+								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(18)));
 								break;
 						}
 					}
 					
 				}else{
-					handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(171)));
+					int rand2 = r.nextInt(30);
+					switch(rand2) {
+						case 0:
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(5)));
+							break;
+						case 1:
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(11)));
+							break;
+						case 2:
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(17)));
+							break;
+						case 3:
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(23)));
+							break;
+						default:
+							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(7)));
+							break;
+					}
+					
 				}
 			}
 		}
