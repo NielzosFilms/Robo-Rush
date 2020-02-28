@@ -25,7 +25,7 @@ public class LevelLoader {
 	
 	private Game game;
 	private static Random r = new Random();
-	private static OpenSimplexNoise noise = new OpenSimplexNoise();
+	private static OpenSimplexNoise noise;
 	
 	public static ArrayList<ArrayList<Long>> listdata;
 	public static ArrayList<Rectangle> rectangle_bounds;
@@ -171,7 +171,28 @@ public class LevelLoader {
 	}
 	
 	public static void LoadLevelHeightMap(Handler handler) {
-		BufferedImage map = Textures.height_map;
+		float[][] osn = generateOctavedSimplexNoise(50, 50, 3, 0.4f, 0.05f);
+		for(int y = 0;y<osn.length;y++) {
+			for(int x = 0;x<osn[y].length;x++) {
+				float val = osn[x][y];
+				if(val < -0.2) {
+					handler.addObjectNoTick(new Tile(x*16, y*16, ID.Tile, Textures.tileSetBlocks.get(27)));
+				}else if(val < 0 && val > -0.2){
+					handler.addObjectNoTick(new Tile(x*16, y*16, ID.Tile, Textures.tileSetBlocks.get(7)));
+				}else if(val > 0.5 && val < 0.9){
+					handler.addObjectNoTick(new Tile(x*16, y*16, ID.Tile, Textures.tileSetBlocks.get(33)));
+				}else if(val > 0.9) {
+					handler.addObjectNoTick(new Tile(x*16, y*16, ID.Tile, Textures.tileSetBlocks.get(34)));
+				} else {
+					handler.addObjectNoTick(new Tile(x*16, y*16, ID.Tile, Textures.tileSetBlocks.get(18)));
+				}
+				
+				
+				
+			}
+		}
+		
+		/*BufferedImage map = Textures.height_map;
 		int w = map.getWidth();
 		int h = map.getHeight();
 
@@ -306,11 +327,11 @@ public class LevelLoader {
 					
 				}
 			}
-		}
+		}*/
 	}
 	
 	public static BufferedImage getHeightMap(int width, int height) {
-		float[][] osn = generateOctavedSimplexNoise(width, height, 3, 0.4f, 0.05f);
+		/*float[][] osn = generateOctavedSimplexNoise(width, height, 3, 0.4f, 0.05f);
 		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		for(int y = 0;y<osn.length;y++) {
 			for(int x = 0;x<osn[y].length;x++) {
@@ -319,10 +340,10 @@ public class LevelLoader {
 				int p = (255<<24) | (v<<16) | (v<<8) | (v);
 				img.setRGB(x, y, p);
 			}
-		}
+		}*/
 		
 		
-		return img;
+		return null;
 	}
 	
 	public static float[][] generateOctavedSimplexNoise(int width, int height, int octaves, float roughness, float scale){
@@ -330,6 +351,9 @@ public class LevelLoader {
 	    float layerFrequency = scale;
 	    float layerWeight = 1;
 	    float weightSum = 0;
+	    Long seed = r.nextLong();
+	    System.out.println(seed);
+	    noise = new OpenSimplexNoise(seed);
 
 	    for (int octave = 0; octave < octaves; octave++) {
 	          //Calculate single layer/octave of simplex noise, then add it to total noise
