@@ -16,6 +16,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import game.objects.Tile;
+import game.objects.Tree;
 
 //"assets/World_map.json"
 
@@ -185,6 +186,10 @@ public class LevelLoader {
 					handler.addObjectNoTick(new Tile(x*16, y*16, ID.Tile, Textures.tileSetBlocks.get(34)));
 				} else {
 					handler.addObjectNoTick(new Tile(x*16, y*16, ID.Tile, Textures.tileSetBlocks.get(18)));
+					int rand = r.nextInt(2);
+					if(r.nextInt(50) == 0) {
+						handler.addObjectNoTick2(new Tree((x*16)-16, (y*16)-32, ID.Tree, Textures.tree));
+					}
 				}
 				
 				

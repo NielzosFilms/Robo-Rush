@@ -3,6 +3,7 @@ package game.main;
 public enum ID {
 
 	Player(),
-	Tile();
+	Tile(),
+	Tree();
 	
 }
