@@ -34,7 +34,7 @@ public class Game extends Canvas implements Runnable{
 	public static int current_fps = 0;
 	
 	public static boolean showHitboxes = false;
-	public static GAMESTATES game_state = GAMESTATES.Menu;
+	public static GAMESTATES game_state = GAMESTATES.Game;
 	public static boolean pauzed = false;
 	
 	private Random r;
@@ -174,6 +174,7 @@ public class Game extends Canvas implements Runnable{
 			
 			g2d.translate(-cam.getX(), -cam.getY()); //end of cam
 			hud.render(g, g2d);
+			g.drawImage(Textures.height_map, 0, 100, null);
 		}
 		
 		if(pauzed) {

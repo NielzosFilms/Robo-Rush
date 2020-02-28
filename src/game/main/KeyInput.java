@@ -49,15 +49,15 @@ public class KeyInput extends KeyAdapter {
 			}
 		}
 		
-		if(Game.game_state == GAMESTATES.Menu) {
+		/*if(Game.game_state == GAMESTATES.Menu) {
 			if(key == KeyEvent.VK_ESCAPE) System.exit(1);
 		}
 		if(key == KeyEvent.VK_ESCAPE && !Game.pauzed) {
 			Game.pauzed = true;
 		} else if(key == KeyEvent.VK_ESCAPE && Game.pauzed) {
 			Game.pauzed = false;
-		}
-		//if(key == KeyEvent.VK_ESCAPE) System.exit(1);
+		}*/
+		if(key == KeyEvent.VK_ESCAPE) System.exit(1);
 		
 	}
 	

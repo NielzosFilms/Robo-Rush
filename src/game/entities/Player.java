@@ -50,17 +50,17 @@ public class Player extends GameObject{
 		updateAnimations();
 		
 		if(keyInput.keysDown[2] && !keyInput.keysDown[3]) {
-			velX = -1;
+			velX = -3;
 		}else if(keyInput.keysDown[3] && !keyInput.keysDown[2]) {
-			velX = 1;
+			velX = 3;
 		}else {
 			velX = 0;
 		}
 		
 		if(keyInput.keysDown[0] && !keyInput.keysDown[1]) {
-			velY = -1;
+			velY = -3;
 		}else if(keyInput.keysDown[1] && !keyInput.keysDown[0]) {
-			velY = 1;
+			velY = 3;
 		}else {
 			velY = 0;
 		}

@@ -3,6 +3,9 @@ package game.main;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,6 +25,7 @@ public class LevelLoader {
 	
 	private Game game;
 	private static Random r = new Random();
+	private static OpenSimplexNoise noise = new OpenSimplexNoise();
 	
 	public static ArrayList<ArrayList<Long>> listdata;
 	public static ArrayList<Rectangle> rectangle_bounds;
@@ -303,5 +307,44 @@ public class LevelLoader {
 				}
 			}
 		}
+	}
+	
+	public static BufferedImage getHeightMap(int width, int height) {
+		float[][] osn = generateOctavedSimplexNoise(width, height, 3, 0.4f, 0.05f);
+		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		for(int y = 0;y<osn.length;y++) {
+			for(int x = 0;x<osn[y].length;x++) {
+				//System.out.println(Math.abs(osn[x][y]*255));
+				int v = (int)Math.abs(osn[x][y]*255);
+				int p = (255<<24) | (v<<16) | (v<<8) | (v);
+				img.setRGB(x, y, p);
+			}
+		}
+		
+		
+		return img;
+	}
+	
+	public static float[][] generateOctavedSimplexNoise(int width, int height, int octaves, float roughness, float scale){
+		float[][] totalNoise = new float[width][height];
+	    float layerFrequency = scale;
+	    float layerWeight = 1;
+	    float weightSum = 0;
+
+	    for (int octave = 0; octave < octaves; octave++) {
+	          //Calculate single layer/octave of simplex noise, then add it to total noise
+	       for(int x = 0; x < width; x++){
+	          for(int y = 0; y < height; y++){
+	             totalNoise[x][y] += (float) noise.eval(x * layerFrequency,y * layerFrequency) * layerWeight;
+	          }
+	       }
+	          
+	          //Increase variables with each incrementing octave
+	        layerFrequency *= 2;
+	        weightSum += layerWeight;
+	        layerWeight *= roughness;
+	           
+	    }
+	    return totalNoise;
 	}
 }
