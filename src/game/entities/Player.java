@@ -9,12 +9,12 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import game.main.Animation;
 import game.main.Game;
 import game.main.GameObject;
 import game.main.ID;
 import game.main.KeyInput;
-import game.main.Textures;
+import game.textures.Animation;
+import game.textures.Textures;
 
 public class Player extends GameObject{
 	

@@ -1,4 +1,4 @@
-package game.main;
+package game.world;
 
 /*
  * OpenSimplex Noise in Java.

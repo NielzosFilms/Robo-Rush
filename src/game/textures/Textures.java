@@ -1,4 +1,4 @@
-package game.main;
+package game.textures;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -8,7 +8,6 @@ public class Textures {
 	
 	static BufferedImage tileSet, playerSheet;
 	static BufferedImage ground, ground_fg, tree;
-	static BufferedImage height_map, height_map2;
 	
 	public static List<BufferedImage>tileSetBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage>playerImg = new ArrayList<BufferedImage>();
@@ -24,7 +23,6 @@ public class Textures {
 		tree = loader.loadImage("assets/main/nature/tree.png");
 		
 		//height_map = loader.loadImage("assets/main/height_map.png");
-		height_map = LevelLoader.getHeightMap(50, 50);
 		
 		SpriteSheet ss = new SpriteSheet(tileSet);
 		for(int i = 0;i<tileSet.getHeight();i+=16) {

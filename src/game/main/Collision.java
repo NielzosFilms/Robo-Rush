@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Area;
 
 import game.entities.Player;
+import game.world.LevelLoader;
 
 public class Collision {
 

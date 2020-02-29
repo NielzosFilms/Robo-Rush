@@ -1,4 +1,4 @@
-package game.main;
+package game.world;
 
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -15,8 +15,12 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import game.main.Game;
+import game.main.Handler;
+import game.main.ID;
 import game.objects.Tile;
 import game.objects.Tree;
+import game.textures.Textures;
 
 //"assets/World_map.json"
 
@@ -172,7 +176,7 @@ public class LevelLoader {
 	}
 	
 	public static void LoadLevelHeightMap(Handler handler) {
-		float[][] osn = generateOctavedSimplexNoise(50, 50, 3, 0.4f, 0.05f);
+		/*float[][] osn = generateOctavedSimplexNoise(0, 0, 100, 100, 3, 0.4f, 0.05f);
 		for(int y = 0;y<osn.length;y++) {
 			for(int x = 0;x<osn[y].length;x++) {
 				float val = osn[x][y];
@@ -186,184 +190,28 @@ public class LevelLoader {
 					handler.addObjectNoTick(new Tile(x*16, y*16, ID.Tile, Textures.tileSetBlocks.get(34)));
 				} else {
 					handler.addObjectNoTick(new Tile(x*16, y*16, ID.Tile, Textures.tileSetBlocks.get(18)));
-					int rand = r.nextInt(2);
-					if(r.nextInt(50) == 0) {
-						handler.addObjectNoTick2(new Tree((x*16)-16, (y*16)-32, ID.Tree, Textures.tree));
-					}
 				}
 				
-				
-				
-			}
-		}
-		
-		/*BufferedImage map = Textures.height_map;
-		int w = map.getWidth();
-		int h = map.getHeight();
-
-		for(int yy = 0; yy < h; yy++) {
-			for(int xx = 0; xx < w; xx++) {
-				int pixel = map.getRGB(xx, yy);
-				int red = (pixel >> 16) & 0xff;
-				int green = (pixel >> 8) & 0xff;
-				int blue = (pixel) & 0xff;
-				if(red > 120) {
-					int rand = r.nextInt(30);
-					if(yy > 0 && xx > 0 && yy < map.getHeight()-1 && xx < map.getWidth()-1) {
-						int up = (map.getRGB(xx, yy-1) >> 16) & 0xff;
-						int down = (map.getRGB(xx, yy+1) >> 16) & 0xff;
-						int left = (map.getRGB(xx-1, yy) >> 16) & 0xff;
-						int right = (map.getRGB(xx+1, yy) >> 16) & 0xff;
-						
-						int up_right = (map.getRGB(xx+1, yy-1) >> 16) & 0xff;
-						int up_left = (map.getRGB(xx-1, yy-1) >> 16) & 0xff;
-						int down_right = (map.getRGB(xx+1, yy+1) >> 16) & 0xff;
-						int down_left = (map.getRGB(xx-1, yy+1) >> 16) & 0xff;
-						if(up <= 120 && left > 120 && right > 120) {
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(13)));
-						}else if(down <= 120 && left > 120 && right > 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(1)));
-						} else if(left <= 120 && up <=120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(3)));
-						} else if(left <= 120 && down <=120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(9)));
-						} else if(right <= 120 && up <=120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(4)));
-						} else if(right <= 120 && down <=120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(10)));
-						} else if(left <= 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(8)));
-						} else if(right <= 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(6)));
-						} else if(up_right <= 120 && down_left > 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(12)));
-						} else if(up_left <= 120 && down_right > 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(14)));
-						} else if(down_right <= 120 && up_left > 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(0)));
-						} else if(down_left <= 120 && up_right > 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(2)));
-						} else if(up_right <= 120 && down_left <= 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(22)));
-						} else if(up_left <= 120 && down_right <= 120){
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(21)));
-						} else {
-							switch(rand) {
-								case 0:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(19)));
-									break;
-								case 1:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(20)));
-									break;
-								case 2:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(24)));
-									break;
-								case 3:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(25)));
-									break;
-								case 4:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(26)));
-									break;
-								case 5:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(30)));
-									break;
-								case 6:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(31)));
-									break;
-								case 7:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(32)));
-									break;
-								default:
-									handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(18)));
-									break;
-							}
-						}
-					} else {
-						switch(rand) {
-							case 0:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(19)));
-								break;
-							case 1:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(20)));
-								break;
-							case 2:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(24)));
-								break;
-							case 3:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(25)));
-								break;
-							case 4:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(26)));
-								break;
-							case 5:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(30)));
-								break;
-							case 6:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(31)));
-								break;
-							case 7:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(32)));
-								break;
-							default:
-								handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(18)));
-								break;
-						}
-					}
-					
-				}else{
-					int rand2 = r.nextInt(30);
-					switch(rand2) {
-						case 0:
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(5)));
-							break;
-						case 1:
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(11)));
-							break;
-						case 2:
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(17)));
-							break;
-						case 3:
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(23)));
-							break;
-						default:
-							handler.addObjectNoTick(new Tile(xx*16, yy*16, ID.Tile, Textures.tileSetBlocks.get(7)));
-							break;
-					}
-					
-				}
-			}
-		}*/
-	}
-	
-	public static BufferedImage getHeightMap(int width, int height) {
-		/*float[][] osn = generateOctavedSimplexNoise(width, height, 3, 0.4f, 0.05f);
-		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		for(int y = 0;y<osn.length;y++) {
-			for(int x = 0;x<osn[y].length;x++) {
-				//System.out.println(Math.abs(osn[x][y]*255));
-				int v = (int)Math.abs(osn[x][y]*255);
-				int p = (255<<24) | (v<<16) | (v<<8) | (v);
-				img.setRGB(x, y, p);
 			}
 		}*/
 		
 		
-		return null;
 	}
 	
-	public static float[][] generateOctavedSimplexNoise(int width, int height, int octaves, float roughness, float scale){
+	public static float[][] generateOctavedSimplexNoise(int xx, int yy, int width, int height, int octaves, float roughness, float scale, Long seed){
 		float[][] totalNoise = new float[width][height];
 	    float layerFrequency = scale;
 	    float layerWeight = 1;
 	    float weightSum = 0;
-	    Long seed = r.nextLong();
+	    //Long seed = r.nextLong();
+	    //Long seed = 3695317381661324390L;
 	    System.out.println(seed);
 	    noise = new OpenSimplexNoise(seed);
 
 	    for (int octave = 0; octave < octaves; octave++) {
 	          //Calculate single layer/octave of simplex noise, then add it to total noise
-	       for(int x = 0; x < width; x++){
-	          for(int y = 0; y < height; y++){
+	       for(int x = xx; x < width; x++){
+	          for(int y = yy; y < height; y++){
 	             totalNoise[x][y] += (float) noise.eval(x * layerFrequency,y * layerFrequency) * layerWeight;
 	          }
 	       }

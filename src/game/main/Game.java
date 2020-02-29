@@ -5,16 +5,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Random;
 
 import game.entities.Player;
 import game.hud.HUD;
+import game.textures.Textures;
+import game.world.LevelLoader;
+import game.world.World;
 
 public class Game extends Canvas implements Runnable{
 	
@@ -22,12 +21,12 @@ public class Game extends Canvas implements Runnable{
 	
 	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
-	public static final int WIDTH = 480, HEIGHT = WIDTH / 16 * 9; //640
+	public static final int WIDTH = 480, HEIGHT = WIDTH / 16 * 9; //640 480
 	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 1.7.0";
+	public static final String VERSION = "ALPHA V 1.7.1";
 
 	private Thread thread;
 	private boolean running = true;
@@ -42,12 +41,13 @@ public class Game extends Canvas implements Runnable{
 	private Handler handler;
 	private KeyInput keyInput;
 	private HUD hud;
-	private Camera cam;
+	public static Camera cam;
 	static Canvas canvas;
 	public Textures textures;
 	private Collision collision;
 	
 	private LevelLoader ll;
+	private World world;
 	//private static ArrayList<ArrayList<Long>> blocks;
 	
 	public Game() {
@@ -66,7 +66,9 @@ public class Game extends Canvas implements Runnable{
 		hud = new HUD(handler, player);
 		handler.addObject(player);
 		
-		ll.LoadLevelHeightMap(handler);
+		//Long seed = r.nextLong();
+		world = new World(0, 0, 3, 3, 3695317381661324390L);
+		//ll.LoadLevelHeightMap(handler);
 	}
 	
 	public synchronized void start() {
@@ -154,6 +156,9 @@ public class Game extends Canvas implements Runnable{
 			/*for(int i = 0;i<7;i++) {
 				g.drawImage(Textures.sky, i*Textures.sky.getWidth(), 0, null);
 			}*/
+			if(world.loaded) {
+				world.render(g);
+			}
 				
 			handler.render(g, (int)-cam.getX(), (int)-cam.getY(), WIDTH, HEIGHT);
 			
@@ -174,7 +179,6 @@ public class Game extends Canvas implements Runnable{
 			
 			g2d.translate(-cam.getX(), -cam.getY()); //end of cam
 			hud.render(g, g2d);
-			g.drawImage(Textures.height_map, 0, 100, null);
 		}
 		
 		if(pauzed) {
