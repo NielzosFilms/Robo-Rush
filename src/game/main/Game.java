@@ -21,12 +21,12 @@ public class Game extends Canvas implements Runnable{
 	
 	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
-	public static final int WIDTH = 480, HEIGHT = WIDTH / 16 * 9; //640 480
+	public static final int WIDTH = 480, HEIGHT = WIDTH / 16 * 9; //640 480 idk which is better
 	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 1.7.1";
+	public static final String VERSION = "ALPHA V 2.0.0 INFDEV";
 
 	private Thread thread;
 	private boolean running = true;
@@ -67,7 +67,8 @@ public class Game extends Canvas implements Runnable{
 		handler.addObject(player);
 		
 		//Long seed = r.nextLong();
-		world = new World(0, 0, 3, 3, 3695317381661324390L);
+		Long seed = 3695317381661324390L;
+		world = new World(0, 0, 3, 3, seed);
 		//ll.LoadLevelHeightMap(handler);
 	}
 	
@@ -118,6 +119,10 @@ public class Game extends Canvas implements Runnable{
 		if(game_state == GAMESTATES.Game && !pauzed) {
 			handler.tick();
 			collision.tick();
+			
+			if(world.loaded) {
+				world.tick();
+			}
 			
 			for(int i = 0; i < handler.object.size(); i++) {
 				if(handler.object.get(i).getId() == ID.Player) {
