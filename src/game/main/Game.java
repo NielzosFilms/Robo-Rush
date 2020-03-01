@@ -66,9 +66,10 @@ public class Game extends Canvas implements Runnable{
 		hud = new HUD(handler, player);
 		handler.addObject(player);
 		
-		//Long seed = r.nextLong();
-		Long seed = 3695317381661324390L;
-		world = new World(0, 0, 3, 3, seed);
+		Long temp_seed = -2162936016020339965L;//r.nextLong();
+		Long moist_seed = -6956972119187843971L;//r.nextLong();
+		Long height_seed = 3695317381661324390L;
+		world = new World(0, 0, 3, 3, height_seed, temp_seed, moist_seed);
 		//ll.LoadLevelHeightMap(handler);
 	}
 	

@@ -10,21 +10,27 @@ import game.main.Game;
 
 public class World {
 	
-	public Long seed;
+	public Long seed, temp_seed, moist_seed;
 	public HashMap<Point, Chunk> chunks = new HashMap<Point, Chunk>();
 	public int x, y, w, h;
 	public static boolean loaded = false;
 
-	public World(int x, int y, int w, int h, Long seed) {
+	public World(int x, int y, int w, int h, Long seed, Long temp_seed, Long moist_seed) {
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
 		this.seed = seed;
+		this.temp_seed = temp_seed;
+		this.moist_seed = moist_seed;
+		
+		System.out.println("Height seed: "+seed);
+		System.out.println("Temperature seed: "+temp_seed);
+		System.out.println("Moisture seed: "+moist_seed);
 		
 		for(int yy = -2;yy<2;yy++) {
 			for(int xx = -2;xx<2;xx++) {
-				chunks.put(new Point(xx*16, yy*16), new Chunk(xx*16, yy*16, seed));
+				chunks.put(new Point(xx*16, yy*16), new Chunk(xx*16, yy*16, seed, temp_seed, moist_seed));
 			}
 		}
 		
@@ -60,14 +66,14 @@ public class World {
 				if(chunks.containsKey(new Point(x, y))) {
 					chunks.get(new Point(x, y)).render(g);
 					if(!chunks.containsKey(new Point(x-16, y))) {
-						chunks.put(new Point(x-16, y), new Chunk(x-16, y, seed));
+						chunks.put(new Point(x-16, y), new Chunk(x-16, y, seed, temp_seed, moist_seed));
 					}else if(!chunks.containsKey(new Point(x+16, y))) {
-						chunks.put(new Point(x+16, y), new Chunk(x+16, y, seed));
+						chunks.put(new Point(x+16, y), new Chunk(x+16, y, seed, temp_seed, moist_seed));
 					}
 					if(!chunks.containsKey(new Point(x, y-16))) {
-						chunks.put(new Point(x, y-16), new Chunk(x, y-16, seed));
+						chunks.put(new Point(x, y-16), new Chunk(x, y-16, seed, temp_seed, moist_seed));
 					}else if(!chunks.containsKey(new Point(x, y+16))) {
-						chunks.put(new Point(x, y+16), new Chunk(x, y+16, seed));
+						chunks.put(new Point(x, y+16), new Chunk(x, y+16, seed, temp_seed, moist_seed));
 					}
 				}
 			}

@@ -49,18 +49,20 @@ public class Player extends GameObject{
 	public void tick() {
 		updateAnimations();
 		
+		int walk_speed = 3;
+		
 		if(keyInput.keysDown[2] && !keyInput.keysDown[3]) {
-			velX = -3;
+			velX = -walk_speed;
 		}else if(keyInput.keysDown[3] && !keyInput.keysDown[2]) {
-			velX = 3;
+			velX = walk_speed;
 		}else {
 			velX = 0;
 		}
 		
 		if(keyInput.keysDown[0] && !keyInput.keysDown[1]) {
-			velY = -3;
+			velY = -walk_speed;
 		}else if(keyInput.keysDown[1] && !keyInput.keysDown[0]) {
-			velY = 3;
+			velY = walk_speed;
 		}else {
 			velY = 0;
 		}
