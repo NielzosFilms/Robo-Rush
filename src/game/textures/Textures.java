@@ -7,7 +7,7 @@ import java.util.List;
 public class Textures {
 	
 	static BufferedImage tileSet, playerSheet;
-	static BufferedImage ground, ground_fg, tree;
+	static BufferedImage tree;
 	
 	public static List<BufferedImage>tileSetBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage>playerImg = new ArrayList<BufferedImage>();
@@ -18,9 +18,7 @@ public class Textures {
 		tileSet = loader.loadImage("assets/main/tile_sheets/grass_tiles.png");
 		playerSheet = loader.loadImage("assets/entities/player/human_base.png");
 		
-		ground = loader.loadImage("assets/levels/top_down_map.png");
-		ground_fg = loader.loadImage("assets/levels/top_down_map_fg.png");
-		tree = loader.loadImage("assets/main/nature/tree.png");
+		tree = loader.loadImage("assets/world/nature/tree.png");
 		
 		//height_map = loader.loadImage("assets/main/height_map.png");
 		

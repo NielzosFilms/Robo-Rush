@@ -26,7 +26,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.0.0 INFDEV";
+	public static final String VERSION = "ALPHA V 2.1.1 INFDEV";
 
 	private Thread thread;
 	private boolean running = true;
@@ -55,7 +55,7 @@ public class Game extends Canvas implements Runnable{
 		textures = new Textures();
 		keyInput = new KeyInput(handler);
 		//blocks = ll.getLevelData();
-		ll.loadLevelData("assets/top_down_map.json");
+		ll.loadLevelData("assets/world/structures/top_down_map.json");
 		collision = new Collision(handler, ll);
 		cam = new Camera(0, 0);
 		this.addKeyListener(keyInput);
