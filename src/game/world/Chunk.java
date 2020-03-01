@@ -3,17 +3,23 @@ package game.world;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;
+import java.util.Random;
 
+import game.entities.Enemy;
 import game.main.GameObject;
 import game.main.ID;
 import game.objects.Tile;
+import game.objects.Tree;
 import game.textures.Textures;
 
 public class Chunk {
 	
 	private static OpenSimplexNoise noise;
+	private static Random r = new Random();
 	
-	public LinkedList<GameObject> tiles = new LinkedList<GameObject>();
+	public LinkedList<GameObject> entities = new LinkedList<GameObject>();
+	
+	public LinkedList<LinkedList<GameObject>> tiles = new LinkedList<LinkedList<GameObject>>();
 	public static int tile_width = 16, tile_height = 16;
 	public int x, y;
 	private Long seed, temp_seed, moist_seed;
@@ -24,22 +30,34 @@ public class Chunk {
 		this.seed = seed;
 		this.temp_seed = temp_seed;
 		this.moist_seed = moist_seed;
+		//entities.add(new Enemy((x+8)*16, (y+8)*16, ID.Enemy));
 		//generate chunk tiles 16x16 then add to world
+		tiles.add(new LinkedList<GameObject>());
+		tiles.add(new LinkedList<GameObject>());
 		GenerateTiles();
-		
-		
 	}
 	
-	/*public void tick() {
-		
-	}*/
+	public void tick() {
+		for(GameObject entity : entities) {
+			entity.tick();
+		}
+	}
 	
 	public void render(Graphics g) {
-		for(GameObject tile : tiles) {
-			tile.render(g);
+		/*for(LinkedList<GameObject> tmp : tiles) {
+			for(GameObject tile : tmp) {
+				tile.render(g);
+			}
+		}*/
+		for(GameObject entity : entities) {
+			entity.render(g);
 		}
 		g.setColor(Color.pink);
 		g.drawRect(x*16, y*16, 16*16, 16*16);
+	}
+	
+	public void renderForeGround(Graphics g) {
+		
 	}
 	
 	private void GenerateTiles() {
@@ -53,18 +71,22 @@ public class Chunk {
 				float moist_val = moist_osn[xx][yy];
 				if((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { //forest
 					if(val < -0.2) {
-						tiles.add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(27)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(27)));
 					}else if(val < 0 && val > -0.2){
-						tiles.add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(7)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(7)));
 					}else if(val > 0.5 && val < 0.9){
-						tiles.add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(33)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(33)));
 					}else if(val > 0.9) {
-						tiles.add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(34)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(34)));
 					} else {
-						tiles.add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(18)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(18)));
+						int num = r.nextInt(25);
+						if(num == 0) {
+							tiles.get(1).add(new Tree(xx*16+x*16, yy*16+y*16, ID.Tree, "forest"));
+						}
 					}
 				}else if(temp_val < 0 && moist_val < 0) { //desert
-					tiles.add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(28)));
+					tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(28)));
 				}
 				
 			}

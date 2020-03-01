@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.util.Random;
 
+import game.entities.Enemy;
 import game.entities.Player;
 import game.hud.HUD;
 import game.textures.Textures;
@@ -26,7 +27,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.1.1 INFDEV";
+	public static final String VERSION = "ALPHA V 2.1.3 INFDEV";
 
 	private Thread thread;
 	private boolean running = true;
@@ -65,6 +66,7 @@ public class Game extends Canvas implements Runnable{
 		Player player = new Player(0, 0, ID.Player, keyInput);
 		hud = new HUD(handler, player);
 		handler.addObject(player);
+		handler.addObject(new Enemy(8*16, 8*16, ID.Enemy));
 		
 		Long temp_seed = -2162936016020339965L;//r.nextLong();
 		Long moist_seed = -6956972119187843971L;//r.nextLong();
@@ -117,16 +119,17 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	private void tick() {
-		if(game_state == GAMESTATES.Game && !pauzed) {
-			handler.tick();
+		if(game_state == GAMESTATES.Game && !pauzed && world.loaded) {
+			handler.tick(world);
 			collision.tick();
 			
-			if(world.loaded) {
-				world.tick();
-			}
+			world.tick();
 			
 			for(int i = 0; i < handler.object.size(); i++) {
 				if(handler.object.get(i).getId() == ID.Player) {
+					
+					world.getChunkWithCoords(handler.object.get(i).x, handler.object.get(i).y);
+					
 					cam.tick(handler.object.get(i));
 				}
 			}
@@ -155,16 +158,14 @@ public class Game extends Canvas implements Runnable{
 		g.setColor(Color.decode("#d1e3ff"));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		if(game_state == GAMESTATES.Game) {
+		if(game_state == GAMESTATES.Game && world.loaded) {
 		
 			g2d.translate(cam.getX(), cam.getY()); //start of cam
 			
 			/*for(int i = 0;i<7;i++) {
 				g.drawImage(Textures.sky, i*Textures.sky.getWidth(), 0, null);
 			}*/
-			if(world.loaded) {
-				world.render(g);
-			}
+			world.render(g);
 				
 			handler.render(g, (int)-cam.getX(), (int)-cam.getY(), WIDTH, HEIGHT);
 			

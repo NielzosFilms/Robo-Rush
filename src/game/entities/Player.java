@@ -15,6 +15,7 @@ import game.main.ID;
 import game.main.KeyInput;
 import game.textures.Animation;
 import game.textures.Textures;
+import game.world.World;
 
 public class Player extends GameObject{
 	
@@ -47,6 +48,7 @@ public class Player extends GameObject{
 	}
 
 	public void tick() {
+		
 		updateAnimations();
 		
 		int walk_speed = 3;

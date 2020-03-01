@@ -2,11 +2,12 @@ package game.world;
 
 import java.awt.Graphics;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
+import game.entities.Enemy;
 import game.main.Game;
+import game.main.GameObject;
+import game.main.ID;
 
 public class World {
 	
@@ -31,6 +32,7 @@ public class World {
 		for(int yy = -2;yy<2;yy++) {
 			for(int xx = -2;xx<2;xx++) {
 				chunks.put(new Point(xx*16, yy*16), new Chunk(xx*16, yy*16, seed, temp_seed, moist_seed));
+				//chunks.get(new Point(xx*16, yy*16)).entities.add(new Enemy((((xx)*16)+8)*16, (((yy)*16)+8)*16, ID.Enemy));
 			}
 		}
 		
@@ -38,33 +40,15 @@ public class World {
 	}
 	
 	public void tick() {
-		
-	}
-	
-	public void render(Graphics g) {
-		/*for(Chunk chunk : chunks) {
-			if(OnScreen(chunk.x*16, chunk.y*16, 16, 16)) {
-				chunk.render(g);
-			}
-		}*/
-		
 		int camX = (Math.round(-Game.cam.getX()/16));
 		int camY = (Math.round(-Game.cam.getY()/16));
 		int camW = (Math.round(Game.WIDTH/16));
 		int camH = (Math.round(Game.HEIGHT/16));
 		
-		/*for(int y = -32;y <= 32;y+=16) {
-			for(int x = -32;x <= 32;x+=16) {
-				if(chunks.containsKey(new Point(x, y))) {
-					chunks.get(new Point(x, y)).render(g);
-				}
-			}
-		}*/
-		
 		for(int y = camY-32;y < camY+camH+16;y++) {
 			for(int x = camX-32;x < camX+camW+16;x++) {
 				if(chunks.containsKey(new Point(x, y))) {
-					chunks.get(new Point(x, y)).render(g);
+					chunks.get(new Point(x, y)).tick();
 					if(!chunks.containsKey(new Point(x-16, y))) {
 						chunks.put(new Point(x-16, y), new Chunk(x-16, y, seed, temp_seed, moist_seed));
 					}else if(!chunks.containsKey(new Point(x+16, y))) {
@@ -78,6 +62,47 @@ public class World {
 				}
 			}
 		}
+	}
+	
+	public void render(Graphics g) {
+		
+		int camX = (Math.round(-Game.cam.getX()/16));
+		int camY = (Math.round(-Game.cam.getY()/16));
+		int camW = (Math.round(Game.WIDTH/16));
+		int camH = (Math.round(Game.HEIGHT/16));
+		
+		int z_indexes = 2;
+		for(int z = 0;z<z_indexes;z++) {
+			for(int y = camY-32;y < camY+camH+16;y++) {
+				for(int x = camX-32;x < camX+camW+16;x++) {
+					if(chunks.containsKey(new Point(x, y))) {
+						Chunk chunk = chunks.get(new Point(x, y));
+						for(GameObject tile : chunk.tiles.get(z)) {
+							tile.render(g);
+						}
+						if(z == z_indexes-1) chunk.render(g);
+					}
+				}
+			}
+		}
+		
+		/*for(Chunk chunk : chunks) {
+			if(OnScreen(chunk.x*16, chunk.y*16, 16, 16)) {
+				chunk.render(g);
+			}
+		}*/
+		
+		
+		
+		/*for(int y = -32;y <= 32;y+=16) {
+			for(int x = -32;x <= 32;x+=16) {
+				if(chunks.containsKey(new Point(x, y))) {
+					chunks.get(new Point(x, y)).render(g);
+				}
+			}
+		}*/
+		
+		
 		
 		/*chunks.get(0).get(0).render(g);
 		chunks.get(16).get(0).render(g);*/
@@ -91,6 +116,16 @@ public class World {
 		} else {
 			return false;
 		}
+	}
+	
+	public Point getChunkWithCoords(int x, int y) {
+		x = x/16;
+		y = y/16;
+		
+		x -= Math.floorMod(x, 16);
+		y -= Math.floorMod(y, 16);
+		
+		return new Point(x, y);
 	}
 	
 }

@@ -7,7 +7,7 @@ import java.util.List;
 public class Textures {
 	
 	static BufferedImage tileSet, playerSheet;
-	static BufferedImage tree;
+	public static BufferedImage tree;
 	
 	public static List<BufferedImage>tileSetBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage>playerImg = new ArrayList<BufferedImage>();
