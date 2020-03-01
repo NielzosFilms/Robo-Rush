@@ -15,7 +15,7 @@ public class Textures {
 	public Textures() {
 		BufferedImageLoader loader = new BufferedImageLoader();
 		
-		tileSet = loader.loadImage("assets/main/tile_sheets/grass_tiles.png");
+		tileSet = loader.loadImage("assets/main/tile_sheets/grass_tiles2.png");
 		playerSheet = loader.loadImage("assets/entities/player/human_base.png");
 		
 		tree = loader.loadImage("assets/world/nature/tree.png");

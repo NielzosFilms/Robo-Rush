@@ -71,22 +71,22 @@ public class Chunk {
 				float moist_val = moist_osn[xx][yy];
 				if((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { //forest
 					if(val < -0.2) {
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(27)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
 					}else if(val < 0 && val > -0.2){
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(7)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
 					}else if(val > 0.5 && val < 0.9){
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(33)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
 					}else if(val > 0.9) {
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(34)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
 					} else {
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(18)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(0)));
 						int num = r.nextInt(25);
 						if(num == 0) {
 							tiles.get(1).add(new Tree(xx*16+x*16, yy*16+y*16, ID.Tree, "forest"));
 						}
 					}
 				}else if(temp_val < 0 && moist_val < 0) { //desert
-					tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(28)));
+					tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
 				}
 				
 			}
