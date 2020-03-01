@@ -2,12 +2,14 @@ package game.world;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
-import game.entities.Enemy;
 import game.main.GameObject;
 import game.main.ID;
+import game.objects.Light;
 import game.objects.Tile;
 import game.objects.Tree;
 import game.textures.Textures;
@@ -19,7 +21,7 @@ public class Chunk {
 	
 	public LinkedList<GameObject> entities = new LinkedList<GameObject>();
 	
-	public LinkedList<LinkedList<GameObject>> tiles = new LinkedList<LinkedList<GameObject>>();
+	public static LinkedList<LinkedList<GameObject>> tiles = new LinkedList<LinkedList<GameObject>>();
 	public static int tile_width = 16, tile_height = 16;
 	public int x, y;
 	private Long seed, temp_seed, moist_seed;
@@ -37,9 +39,14 @@ public class Chunk {
 		GenerateTiles();
 	}
 	
-	public void tick() {
+	public void tick(World world) {
 		for(GameObject entity : entities) {
-			entity.tick();
+			if(entity.getId() == ID.Light) {
+				Light light = (Light) entity;
+				world.lights_on_screen.add(new Light(light.getX(), light.getY(), light.getId(), light.light_img));
+			}else {
+				entity.tick();
+			}
 		}
 	}
 	
@@ -71,26 +78,71 @@ public class Chunk {
 				float moist_val = moist_osn[xx][yy];
 				if((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { //forest
 					if(val < -0.2) {
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(27)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
 					}else if(val < 0 && val > -0.2){
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(7)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
 					}else if(val > 0.5 && val < 0.9){
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(33)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
 					}else if(val > 0.9) {
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(34)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
 					} else {
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(18)));
+						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(0)));
 						int num = r.nextInt(25);
 						if(num == 0) {
 							tiles.get(1).add(new Tree(xx*16+x*16, yy*16+y*16, ID.Tree, "forest"));
 						}
 					}
 				}else if(temp_val < 0 && moist_val < 0) { //desert
-					tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(28)));
+					tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
 				}
 				
 			}
 		}
+	}
+	
+	public static BufferedImage getTexture(int x, int y) {
+		boolean top = true, top_right = true, top_left = true, right = true, left = true, bottom = true, bottom_left = true, bottom_right = true;
+		for(int i = 0;i<tiles.get(0).size();i++) {
+			Tile tile = (Tile)tiles.get(0).get(i);
+			/*if(tile.getX() == x++ && tile.getY() == y && tile.type != "grass") {
+				right = false;
+			}
+			if(tile.getX() == x-- && tile.getY() == y&& tile.type != "grass") {
+				left = false;
+			}
+			if(tile.getX() == x && tile.getY() == y--&& tile.type != "grass") {
+				top = false;
+			}
+			if(tile.getX() == x && tile.getY() == y++&& tile.type != "grass") {
+				bottom = false;
+			}
+			if(tile.getX() == x-- && tile.getY() == y--&& tile.type != "grass") {
+				top_left = false;
+			}
+			if(tile.getX() == x++ && tile.getY() == y--&& tile.type != "grass") {
+				top_right = false;
+			}
+			if(tile.getX() == x-- && tile.getY() == y++&& tile.type != "grass") {
+				bottom_left = false;
+			}
+			if(tile.getX() == x++ && tile.getY() == y++&& tile.type != "grass") {
+				bottom_right = false;
+			}*/
+		}
+		
+		if(!top && !top_right && !top_left && !right && !left && !bottom_left && !bottom && !bottom_right) {
+			return Textures.tileSetBlocks.get(9);
+		}else if(!top && !right) {
+			return Textures.tileSetBlocks.get(6);
+		}else if(!right && !bottom) {
+			return Textures.tileSetBlocks.get(11);
+		}else if(!bottom && !left) {
+			return Textures.tileSetBlocks.get(10);
+		}
+		else if(!left && !top) {
+			return Textures.tileSetBlocks.get(5);
+		}
+		return null;
 	}
 	
 	public static float[][] generateOctavedSimplexNoise(int xx, int yy, int width, int height, int octaves, float roughness, float scale, Long seed){

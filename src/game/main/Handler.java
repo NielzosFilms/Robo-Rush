@@ -17,7 +17,7 @@ public class Handler {
 	public void tick(World world) {
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
-			if(tempObject.getId() == ID.Enemy) {
+			if(tempObject.getId() == ID.Enemy || tempObject.getId() == ID.Light) {
 				int x = tempObject.getX();
 				int y = tempObject.getY();
 				if(world.getChunkWithCoords(x, y) != null) { //adds enemy to a chunk to be unloaded

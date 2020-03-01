@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import game.entities.Enemy;
@@ -22,7 +23,7 @@ public class Game extends Canvas implements Runnable{
 	
 	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
-	public static final int WIDTH = 480, HEIGHT = WIDTH / 16 * 9; //640 480 idk which is better
+	public static final int WIDTH = 640, HEIGHT = WIDTH / 16 * 9; //640 480 idk which is better
 	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
@@ -156,6 +157,7 @@ public class Game extends Canvas implements Runnable{
 		g2d.scale(SCALE_WIDTH, SCALE_HEIGHT);
 		
 		g.setColor(Color.decode("#d1e3ff"));
+		//g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		if(game_state == GAMESTATES.Game && world.loaded) {
@@ -184,7 +186,12 @@ public class Game extends Canvas implements Runnable{
 			//}
 			//g.drawRect(0, 192, 16*9, 16*4);
 			
+			//g.drawImage(world.final_lights, (int)-cam.getX(), (int)-cam.getY(), null);
 			g2d.translate(-cam.getX(), -cam.getY()); //end of cam
+			/*g.setColor(new Color(0, 0, 0, 0.85f));
+			g.fillRect(0, 0, WIDTH, HEIGHT);*/
+			//g.drawImage(Textures.test_light, 0, 0, null);
+			
 			hud.render(g, g2d);
 		}
 		
@@ -192,6 +199,8 @@ public class Game extends Canvas implements Runnable{
 			g.setColor(new Color(0, 0, 0, 0.5f));
 			g.fillRect(0, 0, WIDTH, HEIGHT);
 		}
+		
+		//g.drawImage(Textures.default_light, 100, 0, null);
 		
 		g.dispose();
 		g2d.dispose();
