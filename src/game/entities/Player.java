@@ -28,7 +28,7 @@ public class Player extends GameObject{
 	private int sliding_timer, sliding_timer_wait = 0;
 	private int stop_walking_timer = 0;
 	
-	private Animation walk_up, walk_down, walk_left, walk_right;
+	private Animation idle;
 
 	public Player(int x, int y, ID id, KeyInput keyInput) {
 		super(x, y, id);
@@ -41,10 +41,7 @@ public class Player extends GameObject{
 	}
 	
 	private void initAnimations() {
-		walk_up = new Animation(5, Textures.playerImg.get(0), Textures.playerImg.get(1), Textures.playerImg.get(2), Textures.playerImg.get(1));
-		walk_down = new Animation(5, Textures.playerImg.get(18), Textures.playerImg.get(19), Textures.playerImg.get(20), Textures.playerImg.get(19));
-		walk_left = new Animation(5, Textures.playerImg.get(27), Textures.playerImg.get(28), Textures.playerImg.get(29), Textures.playerImg.get(28));
-		walk_right = new Animation(5, Textures.playerImg.get(9), Textures.playerImg.get(10), Textures.playerImg.get(11), Textures.playerImg.get(10));
+		idle = new Animation(8, Textures.playerImg.get(0), Textures.playerImg.get(1), Textures.playerImg.get(2), Textures.playerImg.get(3));
 	}
 
 	public void tick() {
@@ -156,16 +153,7 @@ public class Player extends GameObject{
 	}
 	
 	private void updateAnimations() {
-		if(velY < 0) {
-			walk_up.runAnimation();
-		}else if(velY > 0) {
-			walk_down.runAnimation();
-		}
-		if(velX > 0) {
-			walk_right.runAnimation();
-		}else if(velX < 0) {
-			walk_left.runAnimation();
-		}
+		idle.runAnimation();
 		
 	}
 	
@@ -184,7 +172,8 @@ public class Player extends GameObject{
 		}else if(velX < 0) {
 			walk_left.drawAnimation(g, x, y);
 		}*/
-		g.drawImage(Textures.playerImg.get(0), x, y, null);
+		//g.drawImage(Textures.playerImg.get(0), x, y, null);
+		idle.drawAnimation(g, x, y-16);
 		
 		g.setColor(Color.pink);
 		

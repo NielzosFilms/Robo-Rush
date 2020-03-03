@@ -16,7 +16,7 @@ public class Textures {
 		BufferedImageLoader loader = new BufferedImageLoader();
 		
 		tileSet = loader.loadImage("assets/main/tile_sheets/grass_tiles2.png");
-		playerSheet = loader.loadImage("assets/entities/player/human_base.png");
+		playerSheet = loader.loadImage("assets/entities/player/player_sheet.png");
 		
 		tree = loader.loadImage("assets/world/nature/tree.png");
 		
@@ -30,9 +30,9 @@ public class Textures {
 		}
 		
 		SpriteSheet ss2 = new SpriteSheet(playerSheet);
-		for(int i = 0;i<playerSheet.getHeight();i+=18) {
+		for(int i = 0;i<playerSheet.getHeight();i+=24) {
 			for(int j = 0;j<playerSheet.getWidth();j+=16) {
-				playerImg.add(ss2.grabImage(j, i, 16, 18));
+				playerImg.add(ss2.grabImage(j, i, 16, 24));
 			}
 		}
 		
