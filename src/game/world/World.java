@@ -3,11 +3,12 @@ package game.world;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-import game.entities.Enemy;
 import game.main.Game;
 import game.main.GameObject;
-import game.main.ID;
+import game.objects.Tile;
 
 public class World {
 	
@@ -77,9 +78,15 @@ public class World {
 				for(int x = camX-32;x < camX+camW+16;x++) {
 					if(chunks.containsKey(new Point(x, y))) {
 						Chunk chunk = chunks.get(new Point(x, y));
-						for(GameObject tile : chunk.tiles.get(z)) {
+						/*for(GameObject tile : chunk.tiles.get(z)) {
 							tile.render(g);
-						}
+						}*/
+						Iterator it = chunk.tiles.get(z).entrySet().iterator();
+					    while (it.hasNext()) {
+					        Map.Entry pair = (Map.Entry)it.next();
+					        GameObject tile = (GameObject)pair.getValue();
+					        tile.render(g);
+					    }
 						if(z == z_indexes-1) chunk.render(g);
 					}
 				}

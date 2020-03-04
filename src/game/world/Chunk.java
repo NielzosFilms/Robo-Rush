@@ -2,10 +2,11 @@ package game.world;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 
-import game.entities.Enemy;
 import game.main.GameObject;
 import game.main.ID;
 import game.objects.Tile;
@@ -19,7 +20,7 @@ public class Chunk {
 	
 	public LinkedList<GameObject> entities = new LinkedList<GameObject>();
 	
-	public LinkedList<LinkedList<GameObject>> tiles = new LinkedList<LinkedList<GameObject>>();
+	public LinkedList<HashMap<Point, GameObject>> tiles = new LinkedList<HashMap<Point, GameObject>>();
 	public static int tile_width = 16, tile_height = 16;
 	public int x, y;
 	private Long seed, temp_seed, moist_seed;
@@ -32,8 +33,8 @@ public class Chunk {
 		this.moist_seed = moist_seed;
 		//entities.add(new Enemy((x+8)*16, (y+8)*16, ID.Enemy));
 		//generate chunk tiles 16x16 then add to world
-		tiles.add(new LinkedList<GameObject>());
-		tiles.add(new LinkedList<GameObject>());
+		tiles.add(new HashMap<Point, GameObject>());
+		tiles.add(new HashMap<Point, GameObject>());
 		GenerateTiles();
 	}
 	
@@ -67,26 +68,30 @@ public class Chunk {
 		for(int yy = 0;yy<osn.length;yy++) {
 			for(int xx = 0;xx<osn[yy].length;xx++) {
 				float val = osn[xx][yy];
+				
 				float temp_val = temp_osn[xx][yy];
 				float moist_val = moist_osn[xx][yy];
 				if((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { //forest
+					Tile top = (Tile) tiles.get(0).get(new Point(xx*16+x, yy*16+y-1));
+					Tile bottom = (Tile) tiles.get(0).get(new Point(xx*16+x, yy*16+y+1));
+					Tile left = (Tile) tiles.get(0).get(new Point(xx*16-x, yy*16+y));
+					Tile right = (Tile) tiles.get(0).get(new Point(xx*16+x, yy*16+y));
 					if(val < -0.2) {
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
-					}else if(val < 0 && val > -0.2){
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
-					}else if(val > 0.5 && val < 0.9){
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
-					}else if(val > 0.9) {
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
+						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14), 14));
 					} else {
-						tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(0)));
-						int num = r.nextInt(25);
-						if(num == 0) {
-							tiles.get(1).add(new Tree(xx*16+x*16, yy*16+y*16, ID.Tree, "forest"));
+						if(top.tex_id != 0) {
+							
+						}else {
+							tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(0), 0));
+							int num = r.nextInt(25);
+							if(num == 0) {
+								tiles.get(1).put(new Point(xx*16+x, yy*16+y), new Tree(xx*16+x*16, yy*16+y*16, ID.Tree, "forest"));
+							}
 						}
+						
 					}
 				}else if(temp_val < 0 && moist_val < 0) { //desert
-					tiles.get(0).add(new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14)));
+					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, Textures.tileSetBlocks.get(14), 14));
 				}
 				
 			}

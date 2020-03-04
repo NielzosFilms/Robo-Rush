@@ -10,10 +10,12 @@ import game.main.ID;
 public class Tile extends GameObject{
 
 	private BufferedImage tex;
+	public int tex_id;
 	
-	public Tile(int x, int y, ID id, BufferedImage tex) {
+	public Tile(int x, int y, ID id, BufferedImage tex, int tex_id) {
 		super(x, y, id);
 		this.tex = tex;
+		this.tex_id = tex_id;
 	}
 	
 	public void tick() {
