@@ -31,7 +31,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.5.0 INFDEV";
+	public static final String VERSION = "ALPHA V 2.5.1 INFDEV";
 
 	private Thread thread;
 	private boolean running = true;
@@ -74,7 +74,7 @@ public class Game extends Canvas implements Runnable{
 		inventory = new Inventory(5, 4, textures);
 		hud = new HUD(handler, player, inventory);
 		handler.addObject(player.getZIndex(), player);
-		handler.addObject(1, new Enemy(8*16, 8*16, 2, ID.Enemy));
+		//handler.addObject(1, new Enemy(8*16, 8*16, 2, ID.Enemy));
 		
 		ps.addParticle(new Particle(0, 0, 3, ID.Particle, 0, -1, 60, ps));
 		//handler.addObject(3, new Particle(0, 0, 3, ID.Particle, 0, -1, 60, handler));

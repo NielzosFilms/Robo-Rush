@@ -184,7 +184,7 @@ public class Player extends GameObject{
 	}
 
 	public Rectangle getBounds() {
-		return new Rectangle(x, y+8, 16, 16);
+		return new Rectangle(x+2, y+12, 12, 12);
 	}
 
 }
