@@ -21,7 +21,7 @@ public class Handler {
 				int x = tempObject.getX();
 				int y = tempObject.getY();
 				if(world.getChunkPointWithCoords(x, y) != null) { //adds enemy to a chunk to be unloaded
-					world.chunks.get(world.getChunkPointWithCoords(x, y)).entities.add(tempObject);
+					world.chunks.get(world.getChunkPointWithCoords(x, y)).entities.get(0).add(tempObject);
 					object.remove(i);
 				}
 			}else {

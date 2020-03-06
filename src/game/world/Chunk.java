@@ -13,14 +13,13 @@ import game.main.GameObject;
 import game.main.ID;
 import game.objects.Tile;
 import game.objects.Tree;
-import game.textures.Textures;
 
 public class Chunk {
 	
 	private static OpenSimplexNoise noise;
 	private static Random r = new Random();
 	
-	public LinkedList<GameObject> entities = new LinkedList<GameObject>();
+	public LinkedList<LinkedList<GameObject>> entities = new LinkedList<LinkedList<GameObject>>();
 	
 	public LinkedList<HashMap<Point, GameObject>> tiles = new LinkedList<HashMap<Point, GameObject>>();
 	public static int tile_width = 16, tile_height = 16;
@@ -28,6 +27,7 @@ public class Chunk {
 	private static Long seed;
 	private static Long temp_seed;
 	private static Long moist_seed;
+	private World world;
 
 	public Chunk(int x, int y, Long seed, Long temp_seed, Long moist_seed, World world) {
 		this.x = x;
@@ -35,34 +35,63 @@ public class Chunk {
 		this.seed = seed;
 		this.temp_seed = temp_seed;
 		this.moist_seed = moist_seed;
+		this.world = world;
 		//entities.add(new Enemy((x+8)*16, (y+8)*16, ID.Enemy));
 		//generate chunk tiles 16x16 then add to world
 		tiles.add(new HashMap<Point, GameObject>());
 		tiles.add(new HashMap<Point, GameObject>());
+		entities.add(new LinkedList<GameObject>());
 		GenerateTiles(world);
 	}
 	
 	public void tick() {
-		for(GameObject entity : entities) {
-			entity.tick();
+		for(LinkedList<GameObject> list : entities) {
+			for(int i = 0;i<list.size();i++) {
+				GameObject entity = list.get(i);
+				if(entity.getX() > (this.x+16)*16) {
+					Chunk chunk = this.world.getChunkWithCoords(this.x+16, this.y);
+					chunk.entities.get(0).add(entity);
+					list.remove(i);
+				}else if(entity.getX() < (this.x)*16) {
+					Chunk chunk = this.world.getChunkWithCoords(this.x-16, this.y);
+					chunk.entities.get(0).add(entity);
+					list.remove(i);
+				}else if(entity.getY() > (this.y+16)*16) {
+					Chunk chunk = this.world.getChunkWithCoords(this.x, this.y+16);
+					chunk.entities.get(0).add(entity);
+					list.remove(i);
+				}else if(entity.getY() < (this.y-16)*16) {
+					Chunk chunk = this.world.getChunkWithCoords(this.x, this.y-16);
+					chunk.entities.get(0).add(entity);
+					list.remove(i);
+				}else {
+					entity.tick();
+				}
+			}
 		}
 	}
 	
-	public void render(Graphics g) {
-		/*for(LinkedList<GameObject> tmp : tiles) {
-			for(GameObject tile : tmp) {
-				tile.render(g);
-			}
-		}*/
-		for(GameObject entity : entities) {
-			entity.render(g);
+	public void renderTiles(Graphics g) {
+		for(HashMap<Point, GameObject> list : tiles) {
+			Iterator it = list.entrySet().iterator();
+		    while (it.hasNext()) {
+		        Map.Entry pair = (Map.Entry)it.next();
+		        GameObject tile = (GameObject)pair.getValue();
+		        tile.render(g);
+		    }
 		}
-		g.setColor(Color.pink);
+		
+		//chunk borders
+		g.setColor(Color.decode("#70deff"));
 		g.drawRect(x*16, y*16, 16*16, 16*16);
 	}
 	
-	public void renderForeGround(Graphics g) {
-		
+	public void renderEntities(Graphics g) {
+		for(LinkedList<GameObject> list : entities) {
+			for(GameObject entity : list) {
+				entity.render(g);
+			}
+		}
 	}
 	
 	private void GenerateTiles(World world) {
@@ -82,9 +111,9 @@ public class Chunk {
 						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, 14));
 					} else {
 						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, 0));
-						int num = r.nextInt(25);
+						int num = r.nextInt(50);
 						if(num == 0) {
-							//tiles.get(1).put(new Point(xx*16+x, yy*16+y), new Tree(xx*16+x*16, yy*16+y*16, ID.Tree, "forest"));
+							entities.get(0).add(new Tree(xx*16+x*16, yy*16+y*16, ID.Tree, "forest"));
 						}
 					}
 				}else if(temp_val < 0 && moist_val < 0) { //desert
