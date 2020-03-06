@@ -25,9 +25,11 @@ public class Chunk {
 	public LinkedList<HashMap<Point, GameObject>> tiles = new LinkedList<HashMap<Point, GameObject>>();
 	public static int tile_width = 16, tile_height = 16;
 	public int x, y;
-	private Long seed, temp_seed, moist_seed;
+	private static Long seed;
+	private static Long temp_seed;
+	private static Long moist_seed;
 
-	public Chunk(int x, int y, Long seed, Long temp_seed, Long moist_seed) {
+	public Chunk(int x, int y, Long seed, Long temp_seed, Long moist_seed, World world) {
 		this.x = x;
 		this.y = y;
 		this.seed = seed;
@@ -37,7 +39,7 @@ public class Chunk {
 		//generate chunk tiles 16x16 then add to world
 		tiles.add(new HashMap<Point, GameObject>());
 		tiles.add(new HashMap<Point, GameObject>());
-		GenerateTiles();
+		GenerateTiles(world);
 	}
 	
 	public void tick() {
@@ -63,7 +65,7 @@ public class Chunk {
 		
 	}
 	
-	private void GenerateTiles() {
+	private void GenerateTiles(World world) {
 		float[][] osn = generateOctavedSimplexNoise(x, y, tile_width, tile_height, 3, 0.4f, 0.05f, seed);
 		float[][] temp_osn = generateOctavedSimplexNoise(x, y, tile_width, tile_height, 3, 0.4f, 0.02f, temp_seed); //scale 0.01f ?
 		float[][] moist_osn = generateOctavedSimplexNoise(x, y, tile_width, tile_height, 3, 0.4f, 0.02f, moist_seed);
@@ -82,7 +84,7 @@ public class Chunk {
 						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, 0));
 						int num = r.nextInt(25);
 						if(num == 0) {
-							tiles.get(1).put(new Point(xx*16+x, yy*16+y), new Tree(xx*16+x*16, yy*16+y*16, ID.Tree, "forest"));
+							//tiles.get(1).put(new Point(xx*16+x, yy*16+y), new Tree(xx*16+x*16, yy*16+y*16, ID.Tree, "forest"));
 						}
 					}
 				}else if(temp_val < 0 && moist_val < 0) { //desert
@@ -94,15 +96,31 @@ public class Chunk {
 			}
 		}
 		
+		
+		
 		//change to advanced tiles
 		Iterator it = tiles.get(0).entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
 	        Tile tile = (Tile)pair.getValue();
 	        
-	        int tex_id = tile.getTextureId(this.tiles.get(0), (Point)pair.getKey(), tile.tex_id);
+	        int tex_id = tile.getTextureId(this.tiles.get(0), (Point)pair.getKey(), tile.tex_id, world, this);
 	        tile.setTexture(tex_id);
 	    }
+	}
+	
+	public void updateTilesAdvanced() {
+		
+	}
+	
+	public static float[] getHeightMapValuePoint(int x, int y) {
+		//x = x/16/16;
+		//y = y/16/16;
+		float[][] osn = generateOctavedSimplexNoise(x, y, 1, 1, 3, 0.4f, 0.05f, seed);
+		float[][] temp_osn = generateOctavedSimplexNoise(x, y, 1, 1, 3, 0.4f, 0.02f, temp_seed); //scale 0.01f ?
+		float[][] moist_osn = generateOctavedSimplexNoise(x, y, 1, 1, 3, 0.4f, 0.02f, moist_seed);
+		float[] arr = { osn[0][0], temp_osn[0][0], moist_osn[0][0] };
+		return arr;
 	}
 	
 	public static float[][] generateOctavedSimplexNoise(int xx, int yy, int width, int height, int octaves, float roughness, float scale, Long seed){

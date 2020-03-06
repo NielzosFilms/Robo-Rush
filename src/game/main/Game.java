@@ -128,7 +128,7 @@ public class Game extends Canvas implements Runnable{
 			for(int i = 0; i < handler.object.size(); i++) {
 				if(handler.object.get(i).getId() == ID.Player) {
 					
-					world.getChunkWithCoords(handler.object.get(i).x, handler.object.get(i).y);
+					world.getChunkPointWithCoords(handler.object.get(i).x, handler.object.get(i).y);
 					
 					cam.tick(handler.object.get(i));
 				}

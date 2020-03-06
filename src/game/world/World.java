@@ -32,7 +32,7 @@ public class World {
 		
 		for(int yy = -2;yy<2;yy++) {
 			for(int xx = -2;xx<2;xx++) {
-				chunks.put(new Point(xx*16, yy*16), new Chunk(xx*16, yy*16, seed, temp_seed, moist_seed));
+				chunks.put(new Point(xx*16, yy*16), new Chunk(xx*16, yy*16, seed, temp_seed, moist_seed, this));
 				//chunks.get(new Point(xx*16, yy*16)).entities.add(new Enemy((((xx)*16)+8)*16, (((yy)*16)+8)*16, ID.Enemy));
 			}
 		}
@@ -51,14 +51,14 @@ public class World {
 				if(chunks.containsKey(new Point(x, y))) {
 					chunks.get(new Point(x, y)).tick();
 					if(!chunks.containsKey(new Point(x-16, y))) {
-						chunks.put(new Point(x-16, y), new Chunk(x-16, y, seed, temp_seed, moist_seed));
+						chunks.put(new Point(x-16, y), new Chunk(x-16, y, seed, temp_seed, moist_seed, this));
 					}else if(!chunks.containsKey(new Point(x+16, y))) {
-						chunks.put(new Point(x+16, y), new Chunk(x+16, y, seed, temp_seed, moist_seed));
+						chunks.put(new Point(x+16, y), new Chunk(x+16, y, seed, temp_seed, moist_seed, this));
 					}
 					if(!chunks.containsKey(new Point(x, y-16))) {
-						chunks.put(new Point(x, y-16), new Chunk(x, y-16, seed, temp_seed, moist_seed));
+						chunks.put(new Point(x, y-16), new Chunk(x, y-16, seed, temp_seed, moist_seed, this));
 					}else if(!chunks.containsKey(new Point(x, y+16))) {
-						chunks.put(new Point(x, y+16), new Chunk(x, y+16, seed, temp_seed, moist_seed));
+						chunks.put(new Point(x, y+16), new Chunk(x, y+16, seed, temp_seed, moist_seed, this));
 					}
 				}
 			}
@@ -125,7 +125,12 @@ public class World {
 		}
 	}
 	
-	public Point getChunkWithCoords(int x, int y) {
+	public Chunk getChunkWithCoords(int x, int y) {
+		Point chunk_point = new Point(x, y);
+		return chunks.get(chunk_point);
+	}
+	
+	public Point getChunkPointWithCoords(int x, int y) {
 		x = x/16;
 		y = y/16;
 		
@@ -134,5 +139,7 @@ public class World {
 		
 		return new Point(x, y);
 	}
+	
+	
 	
 }
