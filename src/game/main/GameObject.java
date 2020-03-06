@@ -57,6 +57,7 @@ public abstract class GameObject {
 	public void setZIndex(int z_index) {
 		this.z_index = z_index;
 	}
+	public abstract Rectangle getBounds();
 	
 	
 }

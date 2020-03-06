@@ -6,8 +6,14 @@ import java.util.List;
 
 public class Textures {
 	
+	//tilesets / sheets
 	static BufferedImage tileSet, playerSheet;
-	public static BufferedImage tree;
+	
+	//nature
+	public BufferedImage tree, mushroom;
+	
+	//inventory
+	public BufferedImage wood, inventory_bg;
 	
 	public static List<BufferedImage>tileSetBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage>playerImg = new ArrayList<BufferedImage>();
@@ -19,6 +25,10 @@ public class Textures {
 		playerSheet = loader.loadImage("assets/entities/player/player_sheet.png");
 		
 		tree = loader.loadImage("assets/world/nature/tree.png");
+		mushroom = loader.loadImage("assets/world/nature/paddenstoel.png");
+		
+		wood = loader.loadImage("assets/items/wood.png");
+		inventory_bg = loader.loadImage("assets/main/hud/inventory_bg.png");
 		
 		//height_map = loader.loadImage("assets/main/height_map.png");
 		

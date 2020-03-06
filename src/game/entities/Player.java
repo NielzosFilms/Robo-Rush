@@ -29,19 +29,21 @@ public class Player extends GameObject{
 	private int stop_walking_timer = 0;
 	
 	private Animation idle;
+	private Textures textures;
 
-	public Player(int x, int y, int z_index, ID id, KeyInput keyInput) {
+	public Player(int x, int y, int z_index, ID id, KeyInput keyInput, Textures textures) {
 		super(x, y, z_index, id);
 		this.onGround = false;
 		this.keyInput = keyInput;
 		this.accX = 0;
 		this.accY = 0;
+		this.textures = textures;
 		
 		initAnimations();
 	}
 	
 	private void initAnimations() {
-		idle = new Animation(8, Textures.playerImg.get(0), Textures.playerImg.get(1), Textures.playerImg.get(2), Textures.playerImg.get(3));
+		idle = new Animation(8, textures.playerImg.get(0), textures.playerImg.get(1), textures.playerImg.get(2), textures.playerImg.get(3));
 	}
 
 	public void tick() {
@@ -173,15 +175,16 @@ public class Player extends GameObject{
 			walk_left.drawAnimation(g, x, y);
 		}*/
 		//g.drawImage(Textures.playerImg.get(0), x, y, null);
-		idle.drawAnimation(g, x, y-16);
+		idle.drawAnimation(g, x, y);
 		
 		g.setColor(Color.pink);
+		g.drawRect(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
 		
 		//if(Game.showHitboxes) g.drawRect(x+19, y+6, 13, 30);
 	}
-	
-	public Rectangle getBoundsRect() {
-		return new Rectangle(x+19, y+6, 13, 30);
+
+	public Rectangle getBounds() {
+		return new Rectangle(x, y+8, 16, 16);
 	}
 
 }

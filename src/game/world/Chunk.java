@@ -12,8 +12,10 @@ import java.util.Random;
 import game.entities.Player;
 import game.main.GameObject;
 import game.main.ID;
+import game.objects.Mushroom;
 import game.objects.Tile;
 import game.objects.Tree;
+import game.textures.Textures;
 
 public class Chunk {
 	
@@ -29,14 +31,16 @@ public class Chunk {
 	private static Long temp_seed;
 	private static Long moist_seed;
 	private World world;
+	private Textures textures;
 
-	public Chunk(int x, int y, Long seed, Long temp_seed, Long moist_seed, World world, Player player) {
+	public Chunk(int x, int y, Long seed, Long temp_seed, Long moist_seed, World world, Player player, Textures textures) {
 		this.x = x;
 		this.y = y;
 		this.seed = seed;
 		this.temp_seed = temp_seed;
 		this.moist_seed = moist_seed;
 		this.world = world;
+		this.textures = textures;
 		//entities.add(new Enemy((x+8)*16, (y+8)*16, ID.Enemy));
 		//generate chunk tiles 16x16 then add to world
 		tiles.add(new HashMap<Point, GameObject>());
@@ -110,18 +114,20 @@ public class Chunk {
 				float moist_val = moist_osn[xx][yy];
 				if((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { //forest
 					if(val < -0.2) {
-						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14));
+						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14, textures));
 					} else {
-						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 0));
+						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 0, textures));
 						int num = r.nextInt(50);
 						if(num == 0) {
-							entities.get(0).add(new Tree(xx*16+x*16, yy*16+y*16, 1, ID.Tree, "forest", player));
+							entities.get(0).add(new Tree(xx*16+x*16, yy*16+y*16, 1, ID.Tree, "forest", player, textures));
+						}else if(num == 1) {
+							entities.get(0).add(new Mushroom(xx*16+x*16, yy*16+y*16, 1, ID.Mushroom, textures));
 						}
 					}
 				}else if(temp_val < 0 && moist_val < 0) { //desert
-					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14));
+					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14, textures));
 				}else {
-					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14));
+					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14, textures));
 				}
 				
 			}

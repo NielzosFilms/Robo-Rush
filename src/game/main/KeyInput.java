@@ -48,6 +48,10 @@ public class KeyInput extends KeyAdapter {
 						if(!Game.showHitboxes) Game.showHitboxes = true;
 						else if(Game.showHitboxes) Game.showHitboxes = false;
 					}
+					if(key == KeyEvent.VK_I) {
+						if(!Game.inventory_open) Game.inventory_open = true;
+						else if(Game.inventory_open) Game.inventory_open = false;
+					}
 				}
 			}
 		}

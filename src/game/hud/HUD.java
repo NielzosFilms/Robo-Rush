@@ -7,20 +7,21 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import game.entities.Player;
+import game.inventory.Inventory;
 import game.main.Game;
-import game.main.GameObject;
 import game.main.Handler;
-import game.main.ID;
 
 public class HUD {
 	
 	private double velX, velY;
 	private Handler handler;
 	private Player player;
+	private Inventory inventory;
 	
-	public HUD(Handler handler, Player player) {
+	public HUD(Handler handler, Player player, Inventory inventory) {
 		this.handler = handler;
 		this.player = player;
+		this.inventory = inventory;
 	}
 
 	public void tick() {

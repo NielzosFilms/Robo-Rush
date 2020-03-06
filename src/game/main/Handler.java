@@ -3,6 +3,8 @@ package game.main;
 import java.awt.Graphics;
 import java.util.LinkedList;
 
+import game.entities.particles.Particle;
+import game.entities.particles.ParticleSystem;
 import game.world.Chunk;
 import game.world.World;
 
@@ -39,7 +41,7 @@ public class Handler {
 		}
 	}
 	
-	public void render(Graphics g, int camX, int camY, int width, int height, World world) {
+	public void render(Graphics g, int camX, int camY, int width, int height, World world, ParticleSystem ps) {
 		LinkedList<LinkedList<GameObject>> tmp_list = new LinkedList<LinkedList<GameObject>>();
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
 		
@@ -70,6 +72,12 @@ public class Handler {
 			}
 		}
 		
+		//particles
+		LinkedList<Particle> particles = ps.getParticles();
+		for(Particle particle : particles) {
+			tmp_list.get(particle.getZIndex()).add(particle);
+		}
+		
 		for(LinkedList<GameObject> list : tmp_list) {
 			for(GameObject obj : list) {
 				obj.render(g);
@@ -79,6 +87,8 @@ public class Handler {
 		for(Chunk chunk : chunks_on_screen) {
 			chunk.renderBorder(g);
 		}
+		
+		
 		
 		/*for(LinkedList<GameObject> list : object) {
 			for(int i = 0; i < list.size(); i++) {

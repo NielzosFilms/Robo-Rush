@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import game.entities.Player;
 import game.main.Game;
+import game.textures.Textures;
 
 public class World {
 	
@@ -15,8 +16,9 @@ public class World {
 	public int x, y, w, h;
 	public static boolean loaded = false;
 	private Player player;
+	private Textures textures;
 
-	public World(int x, int y, int w, int h, Long seed, Long temp_seed, Long moist_seed, Player player) {
+	public World(int x, int y, int w, int h, Long seed, Long temp_seed, Long moist_seed, Player player, Textures textures) {
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -25,6 +27,7 @@ public class World {
 		this.temp_seed = temp_seed;
 		this.moist_seed = moist_seed;
 		this.player = player;
+		this.textures = textures;
 		
 		System.out.println("Height seed: "+seed);
 		System.out.println("Temperature seed: "+temp_seed);
@@ -32,7 +35,7 @@ public class World {
 		
 		for(int yy = -2;yy<2;yy++) {
 			for(int xx = -2;xx<2;xx++) {
-				chunks.put(new Point(xx*16, yy*16), new Chunk(xx*16, yy*16, seed, temp_seed, moist_seed, this, player));
+				chunks.put(new Point(xx*16, yy*16), new Chunk(xx*16, yy*16, seed, temp_seed, moist_seed, this, player, textures));
 				//chunks.get(new Point(xx*16, yy*16)).entities.add(new Enemy((((xx)*16)+8)*16, (((yy)*16)+8)*16, ID.Enemy));
 			}
 		}
@@ -51,14 +54,14 @@ public class World {
 				if(chunks.containsKey(new Point(x, y))) {
 					chunks.get(new Point(x, y)).tick();
 					if(!chunks.containsKey(new Point(x-16, y))) {
-						chunks.put(new Point(x-16, y), new Chunk(x-16, y, seed, temp_seed, moist_seed, this, player));
+						chunks.put(new Point(x-16, y), new Chunk(x-16, y, seed, temp_seed, moist_seed, this, player, textures));
 					}else if(!chunks.containsKey(new Point(x+16, y))) {
-						chunks.put(new Point(x+16, y), new Chunk(x+16, y, seed, temp_seed, moist_seed, this, player));
+						chunks.put(new Point(x+16, y), new Chunk(x+16, y, seed, temp_seed, moist_seed, this, player, textures));
 					}
 					if(!chunks.containsKey(new Point(x, y-16))) {
-						chunks.put(new Point(x, y-16), new Chunk(x, y-16, seed, temp_seed, moist_seed, this, player));
+						chunks.put(new Point(x, y-16), new Chunk(x, y-16, seed, temp_seed, moist_seed, this, player, textures));
 					}else if(!chunks.containsKey(new Point(x, y+16))) {
-						chunks.put(new Point(x, y+16), new Chunk(x, y+16, seed, temp_seed, moist_seed, this, player));
+						chunks.put(new Point(x, y+16), new Chunk(x, y+16, seed, temp_seed, moist_seed, this, player, textures));
 					}
 				}
 			}

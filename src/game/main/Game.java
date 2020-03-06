@@ -12,7 +12,10 @@ import java.util.Random;
 
 import game.entities.Enemy;
 import game.entities.Player;
+import game.entities.particles.Particle;
+import game.entities.particles.ParticleSystem;
 import game.hud.HUD;
+import game.inventory.Inventory;
 import game.textures.Textures;
 import game.world.LevelLoader;
 import game.world.World;
@@ -28,7 +31,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.3.2 INFDEV";
+	public static final String VERSION = "ALPHA V 2.5.0 INFDEV";
 
 	private Thread thread;
 	private boolean running = true;
@@ -36,11 +39,12 @@ public class Game extends Canvas implements Runnable{
 	
 	public static boolean showHitboxes = false;
 	public static GAMESTATES game_state = GAMESTATES.Game;
-	public static boolean pauzed = false;
+	public static boolean pauzed = false, inventory_open = false;
 	
 	private Random r;
 	
 	private Handler handler;
+	private ParticleSystem ps;
 	private KeyInput keyInput;
 	private HUD hud;
 	public static Camera cam;
@@ -50,29 +54,38 @@ public class Game extends Canvas implements Runnable{
 	
 	private LevelLoader ll;
 	private World world;
+	private Inventory inventory;
 	//private static ArrayList<ArrayList<Long>> blocks;
 	
 	public Game() {
 		handler = new Handler();
+		ps = new ParticleSystem();
 		textures = new Textures();
 		keyInput = new KeyInput(handler);
 		//blocks = ll.getLevelData();
 		ll.loadLevelData("assets/world/structures/top_down_map.json");
-		collision = new Collision(handler, ll);
+		
 		cam = new Camera(0, 0);
 		this.addKeyListener(keyInput);
 		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
 		r = new Random();
 		
-		Player player = new Player(0, 0, 2, ID.Player, keyInput);
-		hud = new HUD(handler, player);
+		Player player = new Player(0, 0, 2, ID.Player, keyInput, textures);
+		inventory = new Inventory(5, 4, textures);
+		hud = new HUD(handler, player, inventory);
 		handler.addObject(player.getZIndex(), player);
 		handler.addObject(1, new Enemy(8*16, 8*16, 2, ID.Enemy));
+		
+		ps.addParticle(new Particle(0, 0, 3, ID.Particle, 0, -1, 60, ps));
+		//handler.addObject(3, new Particle(0, 0, 3, ID.Particle, 0, -1, 60, handler));
 		
 		Long temp_seed = -2162936016020339965L;//r.nextLong();
 		Long moist_seed = -6956972119187843971L;//r.nextLong();
 		Long height_seed = 3695317381661324390L;
-		world = new World(0, 0, 3, 3, height_seed, temp_seed, moist_seed, player);
+		world = new World(0, 0, 3, 3, height_seed, temp_seed, moist_seed, player, textures);
+		collision = new Collision(handler, world, player);
+		
+		
 		//ll.LoadLevelHeightMap(handler);
 	}
 	
@@ -122,9 +135,9 @@ public class Game extends Canvas implements Runnable{
 	private void tick() {
 		if(game_state == GAMESTATES.Game && !pauzed && world.loaded) {
 			handler.tick(world);
-			collision.tick();
-			
+			ps.tick();
 			world.tick();
+			collision.tick();
 			
 			for(LinkedList<GameObject> list : handler.object) {
 				for(int i = 0; i < list.size(); i++) {
@@ -170,7 +183,7 @@ public class Game extends Canvas implements Runnable{
 			}*/
 			//world.render(g);
 				
-			handler.render(g, (int)-cam.getX(), (int)-cam.getY(), WIDTH, HEIGHT, world);
+			handler.render(g, (int)-cam.getX(), (int)-cam.getY(), WIDTH, HEIGHT, world, ps);
 			
 			//if(showHitboxes) {
 			/*g.setColor(Color.blue);
@@ -189,6 +202,9 @@ public class Game extends Canvas implements Runnable{
 			
 			g2d.translate(-cam.getX(), -cam.getY()); //end of cam
 			hud.render(g, g2d);
+			if(inventory_open) {
+				inventory.render(g, g2d);
+			}
 		}
 		
 		if(pauzed) {

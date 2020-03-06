@@ -4,8 +4,10 @@ public enum ID {
 
 	Player(),
 	Enemy(),
+	Particle(),
 	
 	Tile(),
-	Tree();
+	Tree(),
+	Mushroom();
 	
 }
