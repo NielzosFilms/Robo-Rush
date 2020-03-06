@@ -27,7 +27,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.2.0 INFDEV";
+	public static final String VERSION = "ALPHA V 2.2.1 INFDEV";
 
 	private Thread thread;
 	private boolean running = true;
