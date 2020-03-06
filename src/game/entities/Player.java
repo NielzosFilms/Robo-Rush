@@ -30,8 +30,8 @@ public class Player extends GameObject{
 	
 	private Animation idle;
 
-	public Player(int x, int y, ID id, KeyInput keyInput) {
-		super(x, y, id);
+	public Player(int x, int y, int z_index, ID id, KeyInput keyInput) {
+		super(x, y, z_index, id);
 		this.onGround = false;
 		this.keyInput = keyInput;
 		this.accX = 0;

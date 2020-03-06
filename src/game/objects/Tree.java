@@ -13,8 +13,8 @@ public class Tree extends GameObject{
 	private BufferedImage tex;
 	private String biome;
 
-	public Tree(int x, int y, ID id, String biome) {
-		super(x, y, id);
+	public Tree(int x, int y, int z_index, ID id, String biome) {
+		super(x, y, z_index, id);
 		this.biome = biome;
 		
 		switch(biome) {

@@ -8,8 +8,8 @@ import game.main.ID;
 
 public class Enemy extends GameObject{
 
-	public Enemy(int x, int y, ID id) {
-		super(x, y, id);
+	public Enemy(int x, int y, int z_index, ID id) {
+		super(x, y, z_index, id);
 	}
 
 	public void tick() {

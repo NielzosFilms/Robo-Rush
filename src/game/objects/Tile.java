@@ -17,8 +17,8 @@ public class Tile extends GameObject{
 	private BufferedImage tex;
 	public int tex_id;
 	
-	public Tile(int x, int y, ID id, int tex_id) {
-		super(x, y, id);
+	public Tile(int x, int y, int z_index, ID id, int tex_id) {
+		super(x, y, z_index, id);
 		this.tex = tex;
 		this.tex_id = tex_id;
 		this.tex = Textures.tileSetBlocks.get(this.tex_id);

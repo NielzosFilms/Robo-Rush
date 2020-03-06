@@ -108,18 +108,18 @@ public class Chunk {
 				float moist_val = moist_osn[xx][yy];
 				if((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { //forest
 					if(val < -0.2) {
-						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, 14));
+						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14));
 					} else {
-						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, 0));
+						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 0));
 						int num = r.nextInt(50);
 						if(num == 0) {
-							entities.get(0).add(new Tree(xx*16+x*16, yy*16+y*16, ID.Tree, "forest"));
+							entities.get(0).add(new Tree(xx*16+x*16, yy*16+y*16, 1, ID.Tree, "forest"));
 						}
 					}
 				}else if(temp_val < 0 && moist_val < 0) { //desert
-					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, 14));
+					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14));
 				}else {
-					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, ID.Tile, 14));
+					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14));
 				}
 				
 			}
@@ -176,6 +176,27 @@ public class Chunk {
 	           
 	    }
 	    return totalNoise;
+	}
+	
+	public LinkedList<GameObject> getTilesEntities() {
+		LinkedList<GameObject> tmp_tiles = new LinkedList<GameObject>();
+		
+		for(HashMap<Point, GameObject> list : tiles) {
+			Iterator it = list.entrySet().iterator();
+		    while (it.hasNext()) {
+		        Map.Entry pair = (Map.Entry)it.next();
+		        GameObject tile = (GameObject)pair.getValue();
+		        tmp_tiles.add(tile);
+		    }
+		}
+		
+		for(LinkedList<GameObject> list : entities) {
+			for(GameObject obj : list) {
+				tmp_tiles.add(obj);
+			}
+		}
+		
+		return tmp_tiles;
 	}
 	
 }

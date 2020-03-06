@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 
 import game.main.Game;
@@ -63,6 +64,26 @@ public class World {
 				}
 			}
 		}
+	}
+	
+	public LinkedList<Chunk> getChunksOnScreen(){
+		LinkedList<Chunk> tmp_chunks = new LinkedList<Chunk>();
+		
+		int camX = (Math.round(-Game.cam.getX()/16));
+		int camY = (Math.round(-Game.cam.getY()/16));
+		int camW = (Math.round(Game.WIDTH/16));
+		int camH = (Math.round(Game.HEIGHT/16));
+		
+		for(int y = camY-32;y < camY+camH+16;y++) {
+			for(int x = camX-32;x < camX+camW+16;x++) {
+				if(chunks.containsKey(new Point(x, y))) {
+					Chunk chunk = chunks.get(new Point(x, y));
+					tmp_chunks.add(chunk);
+				}
+			}
+		}
+		
+		return tmp_chunks;
 	}
 	
 	public void render(Graphics g) {

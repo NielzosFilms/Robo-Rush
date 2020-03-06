@@ -7,13 +7,15 @@ public abstract class GameObject {
 
 	protected int x, y;
 	protected ID id;
+	protected int z_index;
 	protected double velX;
 	protected double velY;
 	
-	public GameObject(int x, int y, ID id) {
+	public GameObject(int x, int y, int z_index, ID id) {
 		this.x = x;
 		this.y = y;
 		this.id = id;
+		this.z_index = z_index;
 	}
 	
 	public abstract void tick();
@@ -48,6 +50,12 @@ public abstract class GameObject {
 	}
 	public double getVelY() {
 		return velY;
+	}
+	public int getZIndex() {
+		return z_index;
+	}
+	public void setZIndex(int z_index) {
+		this.z_index = z_index;
 	}
 	
 	
