@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
 
+import game.entities.Player;
 import game.main.GameObject;
 import game.main.ID;
 import game.objects.Tile;
@@ -29,7 +30,7 @@ public class Chunk {
 	private static Long moist_seed;
 	private World world;
 
-	public Chunk(int x, int y, Long seed, Long temp_seed, Long moist_seed, World world) {
+	public Chunk(int x, int y, Long seed, Long temp_seed, Long moist_seed, World world, Player player) {
 		this.x = x;
 		this.y = y;
 		this.seed = seed;
@@ -41,7 +42,7 @@ public class Chunk {
 		tiles.add(new HashMap<Point, GameObject>());
 		tiles.add(new HashMap<Point, GameObject>());
 		entities.add(new LinkedList<GameObject>());
-		GenerateTiles(world);
+		GenerateTiles(world, player);
 	}
 	
 	public void tick() {
@@ -71,6 +72,11 @@ public class Chunk {
 		}
 	}
 	
+	public void renderBorder(Graphics g) {
+		g.setColor(Color.decode("#70deff"));
+		g.drawRect(x*16, y*16, 16*16, 16*16);
+	}
+	
 	public void renderTiles(Graphics g) {
 		for(HashMap<Point, GameObject> list : tiles) {
 			Iterator it = list.entrySet().iterator();
@@ -80,10 +86,6 @@ public class Chunk {
 		        tile.render(g);
 		    }
 		}
-		
-		//chunk borders
-		g.setColor(Color.decode("#70deff"));
-		g.drawRect(x*16, y*16, 16*16, 16*16);
 	}
 	
 	public void renderEntities(Graphics g) {
@@ -94,7 +96,7 @@ public class Chunk {
 		}
 	}
 	
-	private void GenerateTiles(World world) {
+	private void GenerateTiles(World world, Player player) {
 		float[][] osn = generateOctavedSimplexNoise(x, y, tile_width, tile_height, 3, 0.4f, 0.05f, seed);
 		float[][] temp_osn = generateOctavedSimplexNoise(x, y, tile_width, tile_height, 3, 0.4f, 0.02f, temp_seed); //scale 0.01f ?
 		float[][] moist_osn = generateOctavedSimplexNoise(x, y, tile_width, tile_height, 3, 0.4f, 0.02f, moist_seed);
@@ -113,7 +115,7 @@ public class Chunk {
 						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 0));
 						int num = r.nextInt(50);
 						if(num == 0) {
-							entities.get(0).add(new Tree(xx*16+x*16, yy*16+y*16, 1, ID.Tree, "forest"));
+							entities.get(0).add(new Tree(xx*16+x*16, yy*16+y*16, 1, ID.Tree, "forest", player));
 						}
 					}
 				}else if(temp_val < 0 && moist_val < 0) { //desert

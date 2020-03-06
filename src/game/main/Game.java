@@ -28,7 +28,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.3.1 INFDEV";
+	public static final String VERSION = "ALPHA V 2.3.2 INFDEV";
 
 	private Thread thread;
 	private boolean running = true;
@@ -64,15 +64,15 @@ public class Game extends Canvas implements Runnable{
 		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
 		r = new Random();
 		
-		Player player = new Player(0, 0, 1, ID.Player, keyInput);
+		Player player = new Player(0, 0, 2, ID.Player, keyInput);
 		hud = new HUD(handler, player);
 		handler.addObject(player.getZIndex(), player);
-		handler.addObject(1, new Enemy(8*16, 8*16, 1, ID.Enemy));
+		handler.addObject(1, new Enemy(8*16, 8*16, 2, ID.Enemy));
 		
 		Long temp_seed = -2162936016020339965L;//r.nextLong();
 		Long moist_seed = -6956972119187843971L;//r.nextLong();
 		Long height_seed = 3695317381661324390L;
-		world = new World(0, 0, 3, 3, height_seed, temp_seed, moist_seed);
+		world = new World(0, 0, 3, 3, height_seed, temp_seed, moist_seed, player);
 		//ll.LoadLevelHeightMap(handler);
 	}
 	

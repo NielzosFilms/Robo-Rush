@@ -16,7 +16,7 @@ public class Handler {
 	public LinkedList<LinkedList<GameObject>> chunks = new LinkedList<LinkedList<GameObject>>(); // add everything to their corresponding chunks and loop throught the chunks
 	
 	public Handler() {
-		for(int i = 0;i<3;i++) {
+		for(int i = 0;i<4;i++) {
 			this.object.add(new LinkedList<GameObject>());
 		}
 	}
@@ -76,6 +76,10 @@ public class Handler {
 			}
 		}
 		
+		for(Chunk chunk : chunks_on_screen) {
+			chunk.renderBorder(g);
+		}
+		
 		/*for(LinkedList<GameObject> list : object) {
 			for(int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
@@ -95,7 +99,7 @@ public class Handler {
 	}
 	
 	public void addObject(int z_index, GameObject object) {
-		while(z_index >= this.object.size()) {//add new layers if it doesnt exist
+		while(z_index > this.object.size()) {//add new layers if it doesnt exist
 			this.object.add(new LinkedList<GameObject>());
 		}
 		this.object.get(z_index).add(object);
