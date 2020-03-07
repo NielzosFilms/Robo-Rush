@@ -31,7 +31,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.5.1 INFDEV";
+	public static final String VERSION = "ALPHA V 2.6.0 INFDEV";
 
 	private Thread thread;
 	private boolean running = true;
@@ -46,6 +46,7 @@ public class Game extends Canvas implements Runnable{
 	private Handler handler;
 	private ParticleSystem ps;
 	private KeyInput keyInput;
+	private MouseInput mouseInput;
 	private HUD hud;
 	public static Camera cam;
 	static Canvas canvas;
@@ -62,16 +63,21 @@ public class Game extends Canvas implements Runnable{
 		ps = new ParticleSystem();
 		textures = new Textures();
 		keyInput = new KeyInput(handler);
+		mouseInput = new MouseInput();
 		//blocks = ll.getLevelData();
 		ll.loadLevelData("assets/world/structures/top_down_map.json");
 		
 		cam = new Camera(0, 0);
 		this.addKeyListener(keyInput);
+		this.addMouseListener(mouseInput);
+		this.addMouseMotionListener(mouseInput);
+		this.addMouseWheelListener(mouseInput);
 		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
 		r = new Random();
 		
 		Player player = new Player(0, 0, 2, ID.Player, keyInput, textures);
-		inventory = new Inventory(5, 4, textures);
+		inventory = new Inventory(5, 4, textures, mouseInput);
+		mouseInput.setInventory(inventory);
 		hud = new HUD(handler, player, inventory);
 		handler.addObject(player.getZIndex(), player);
 		//handler.addObject(1, new Enemy(8*16, 8*16, 2, ID.Enemy));
