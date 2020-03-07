@@ -5,11 +5,16 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.LinkedList;
 
 import game.entities.Player;
 import game.inventory.Inventory;
+import game.main.Camera;
 import game.main.Game;
+import game.main.GameObject;
 import game.main.Handler;
+import game.main.MouseInput;
+import game.world.World;
 
 public class HUD {
 	
@@ -17,19 +22,31 @@ public class HUD {
 	private Handler handler;
 	private Player player;
 	private Inventory inventory;
+	private MouseInput mouseInput;
+	private World world;
+	private Camera cam;
 	
 	public HUD(Handler handler, Player player, Inventory inventory) {
 		this.handler = handler;
 		this.player = player;
 		this.inventory = inventory;
 	}
+	
+	public void setCam(Camera cam) {
+		this.cam = cam;
+	}
+	
+	public void setMouseInput(MouseInput mouseInput) {
+		this.mouseInput = mouseInput;
+	}
+	
+	public void setWorld(World world) {
+		this.world = world;
+	}
 
 	public void tick() {
-		/*for(int i = 0; i < handler.object.size(); i++) {
-			if(handler.object.get(i).getId() == ID.Player) {
-				this.player = (Player)handler.object.get(i);
-			}
-		}*/
+		//get object when hovered over
+		
 	}
 	
 	public void render(Graphics g, Graphics2D g2d) {
@@ -60,6 +77,26 @@ public class HUD {
 		g2d.drawString("jumping: "+player.jumping, 1, 55);
 		g2d.drawString("falling: "+player.falling, 1, 60);
 		g2d.drawString("FPS: "+Game.current_fps, 1, 65);
+		
+		LinkedList<GameObject> objs = handler.getSelectableObjects(world);
+		for(GameObject obj : objs) {
+			if(obj.getSelectBounds() != null) {
+				if(mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y, obj.getSelectBounds().width, obj.getSelectBounds().height)) {
+					g.setColor(new Color(255, 255, 255, 127));
+					g.drawRect(getWorldCoordX(obj.getSelectBounds().x), getWorldCoordY(obj.getSelectBounds().y), 
+							obj.getSelectBounds().width, obj.getSelectBounds().height);
+				}	
+			}
+		}
+		
+		inventory.render(g);
+	}
+	
+	private int getWorldCoordX(int screen_x) {
+		return (int) (screen_x - -cam.getX());
+	}
+	private int getWorldCoordY(int screen_y) {
+		return (int) (screen_y - -cam.getY());
 	}
 	
 }

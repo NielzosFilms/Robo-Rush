@@ -49,11 +49,15 @@ public class Tree extends GameObject{
 	public void render(Graphics g) {
 		g.drawImage(tex, x-16, y-32, null);
 		g.setColor(Color.green);
-		g.drawRect(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
+		//g.drawRect(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
 	}
 
 	public Rectangle getBounds() {
 		return new Rectangle(x, y+3, 16, 16-6);
+	}
+	
+	public Rectangle getSelectBounds() {
+		return new Rectangle(x, y, 16, 16);
 	}
 
 }

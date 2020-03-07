@@ -219,4 +219,8 @@ public class Tile extends GameObject{
 		return null;
 	}
 	
+	public Rectangle getSelectBounds() {
+		return null;
+	}
+	
 }

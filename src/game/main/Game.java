@@ -68,6 +68,7 @@ public class Game extends Canvas implements Runnable{
 		ll.loadLevelData("assets/world/structures/top_down_map.json");
 		
 		cam = new Camera(0, 0);
+		mouseInput.setCam(cam);
 		this.addKeyListener(keyInput);
 		this.addMouseListener(mouseInput);
 		this.addMouseMotionListener(mouseInput);
@@ -78,7 +79,10 @@ public class Game extends Canvas implements Runnable{
 		Player player = new Player(0, 0, 2, ID.Player, keyInput, textures);
 		inventory = new Inventory(5, 4, textures, mouseInput);
 		mouseInput.setInventory(inventory);
+		keyInput.setInventory(inventory);
 		hud = new HUD(handler, player, inventory);
+		hud.setMouseInput(mouseInput);
+		hud.setCam(cam);
 		handler.addObject(player.getZIndex(), player);
 		//handler.addObject(1, new Enemy(8*16, 8*16, 2, ID.Enemy));
 		
@@ -89,6 +93,7 @@ public class Game extends Canvas implements Runnable{
 		Long moist_seed = -6956972119187843971L;//r.nextLong();
 		Long height_seed = 3695317381661324390L;
 		world = new World(0, 0, 3, 3, height_seed, temp_seed, moist_seed, player, textures);
+		hud.setWorld(world);
 		collision = new Collision(handler, world, player);
 		
 		
@@ -208,9 +213,6 @@ public class Game extends Canvas implements Runnable{
 			
 			g2d.translate(-cam.getX(), -cam.getY()); //end of cam
 			hud.render(g, g2d);
-			if(inventory_open) {
-				inventory.render(g, g2d);
-			}
 		}
 		
 		if(pauzed) {

@@ -47,5 +47,9 @@ public class Particle extends GameObject{
 	public Rectangle getBounds() {
 		return null;
 	}
+	
+	public Rectangle getSelectBounds() {
+		return null;
+	}
 
 }

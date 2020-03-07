@@ -30,5 +30,9 @@ public class Mushroom extends GameObject{
 	public Rectangle getBounds() {
 		return null;
 	}
+	
+	public Rectangle getSelectBounds() {
+		return new Rectangle(x+4, y, 12, 16);
+	}
 
 }

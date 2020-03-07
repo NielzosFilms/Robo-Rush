@@ -67,54 +67,6 @@ public class Player extends GameObject{
 		}else {
 			velY = 0;
 		}
-		
-		/*if(keyInput.keysDown[2] && !keyInput.keysDown[3]) {
-			if(velX > -2) {
-				accX = WALK_F * -1;
-			}else {
-				accX = 0;
-			}
-		}else if(keyInput.keysDown[3] && !keyInput.keysDown[2]) {
-			if(velX < 2) {
-				accX = WALK_F * 1;
-			}else {
-				accX = 0;
-			}
-		}else {
-			if(velX < -0.5) {
-				accX = BRAKE_F * 1;
-			}else if(velX > 0.5) {
-				accX = BRAKE_F * -1;
-			}else {
-				accX = 0;
-				velX = 0;
-			}
-			
-		}
-		
-		if(keyInput.keysDown[0] && !keyInput.keysDown[1]) {
-			if(velY > -2) {
-				accY = WALK_F * -1;
-			}else {
-				accY = 0;
-			}
-		}else if(keyInput.keysDown[1] && !keyInput.keysDown[0]) {
-			if(velY < 2) {
-				accY = WALK_F * 1;
-			}else {
-				accY = 0;
-			}
-		}else {
-			if(velY < -0.5) {
-				accY = BRAKE_F * 1;
-			}else if(velY > 0.5) {
-				accY = BRAKE_F * -1;
-			}else {
-				accY = 0;
-				velY = 0;
-			}
-			
-		}*/
 		//misschien powerup voor reverse gravity
 		
 		//velY = Game.clampDouble(velY, -9.8, 9.8);
@@ -160,31 +112,20 @@ public class Player extends GameObject{
 	}
 	
 	public void render(Graphics g) {
-		g.setColor(Color.red);
-		//g.fillRect(x, y, 16, 16);
-		
-		/*if(velY < 0) {
-			walk_up.drawAnimation(g, x, y);
-		}else if(velY > 0) {
-			walk_down.drawAnimation(g, x, y);
-		}
-		
-		if(velX > 0) {
-			walk_right.drawAnimation(g, x, y);
-		}else if(velX < 0) {
-			walk_left.drawAnimation(g, x, y);
-		}*/
-		//g.drawImage(Textures.playerImg.get(0), x, y, null);
 		idle.drawAnimation(g, x, y);
 		
-		g.setColor(Color.pink);
-		g.drawRect(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
+		//g.setColor(Color.pink);
+		//g.drawRect(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
 		
 		//if(Game.showHitboxes) g.drawRect(x+19, y+6, 13, 30);
 	}
 
 	public Rectangle getBounds() {
 		return new Rectangle(x+2, y+12, 12, 12);
+	}
+	
+	public Rectangle getSelectBounds() {
+		return new Rectangle(x, y, 16, 16);
 	}
 
 }

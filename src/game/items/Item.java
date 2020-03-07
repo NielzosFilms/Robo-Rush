@@ -27,7 +27,7 @@ public class Item {
 		}*/
 	}
 	
-	public void render(Graphics g, Graphics2D g2d, int x, int y) {
+	public void render(Graphics g, int x, int y) {
 		Font font = new Font("Serif", Font.PLAIN, 3);
 		g.setColor(Color.white);
 		g.drawImage(this.tex, x, y, null);

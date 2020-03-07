@@ -7,10 +7,12 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import game.entities.Player;
+import game.inventory.Inventory;
 
 public class KeyInput extends KeyAdapter {
 
 	private Handler handler;
+	private Inventory inventory;
 	
 	//public Map<Integer, Boolean> keysDown = new HashMap<Integer, Boolean>();
 	/*
@@ -27,6 +29,10 @@ public class KeyInput extends KeyAdapter {
 	
 	public KeyInput(Handler handler) {
 		this.handler = handler;
+	}
+	
+	public void setInventory(Inventory inventory) {
+		this.inventory = inventory;
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -48,12 +54,24 @@ public class KeyInput extends KeyAdapter {
 						if(!Game.showHitboxes) Game.showHitboxes = true;
 						else if(Game.showHitboxes) Game.showHitboxes = false;
 					}
-					if(key == KeyEvent.VK_I) {
-						if(!Game.inventory_open) Game.inventory_open = true;
-						else if(Game.inventory_open) Game.inventory_open = false;
-					}
 				}
 			}
+		}
+		
+		if(key == KeyEvent.VK_I) {
+			inventory.switchInventoryState();
+		}
+		
+		if(!inventory.getInventoryOpen()) {
+			if(key == KeyEvent.VK_1) inventory.setHotbarSelected(0);
+			if(key == KeyEvent.VK_2) inventory.setHotbarSelected(1);
+			if(key == KeyEvent.VK_3) inventory.setHotbarSelected(2);
+			if(key == KeyEvent.VK_4) inventory.setHotbarSelected(3);
+			if(key == KeyEvent.VK_5) inventory.setHotbarSelected(4);
+			if(key == KeyEvent.VK_6) inventory.setHotbarSelected(5);
+			if(key == KeyEvent.VK_7) inventory.setHotbarSelected(6);
+			if(key == KeyEvent.VK_8) inventory.setHotbarSelected(7);
+			if(key == KeyEvent.VK_9) inventory.setHotbarSelected(8);
 		}
 		
 		/*if(Game.game_state == GAMESTATES.Menu) {

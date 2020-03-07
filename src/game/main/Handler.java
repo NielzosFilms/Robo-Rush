@@ -118,4 +118,48 @@ public class Handler {
 		this.object.get(z_index).remove(object);
 	}
 	
+	public LinkedList<GameObject> getSelectableObjects(World world) {
+		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
+		LinkedList<GameObject> objs = new LinkedList<GameObject>();
+		ID[] ids = {ID.Tree, ID.Mushroom};
+		
+		for(LinkedList<GameObject> list : object) {
+			for(int i = 0; i < list.size(); i++) {
+				GameObject tempObject = list.get(i);
+				if(isInArray(ids, tempObject.getId())) {
+					objs.add(tempObject);
+				}
+			}
+		}
+		
+		for(LinkedList<GameObject> chunk : chunks) {
+			for(GameObject object : chunk) {
+				if(isInArray(ids, object.getId())) {
+					objs.add(object);
+				}
+			}
+		}
+		
+		//chunks
+		for(Chunk chunk : chunks_on_screen) {
+			LinkedList<GameObject> chunk_content = chunk.getTilesEntities();
+			for(GameObject obj : chunk_content) {
+				if(isInArray(ids, obj.getId())) {
+					objs.add(obj);
+				}
+			}
+		}
+		
+		return objs;
+	}
+	
+	private Boolean isInArray(ID[] arr, ID val) {
+		for(ID tmp : arr) {
+			if(tmp == val) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

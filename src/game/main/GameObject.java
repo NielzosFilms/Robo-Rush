@@ -58,6 +58,6 @@ public abstract class GameObject {
 		this.z_index = z_index;
 	}
 	public abstract Rectangle getBounds();
-	
+	public abstract Rectangle getSelectBounds();
 	
 }

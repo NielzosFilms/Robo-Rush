@@ -25,5 +25,9 @@ public class Enemy extends GameObject{
 	public Rectangle getBounds() {
 		return new Rectangle(x, y, 16, 16);
 	}
+	
+	public Rectangle getSelectBounds() {
+		return new Rectangle(x, y, 16, 16);
+	}
 
 }
