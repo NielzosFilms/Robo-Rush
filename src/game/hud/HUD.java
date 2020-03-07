@@ -72,16 +72,13 @@ public class HUD {
 		g2d.drawString("velY: "+player.getVelY(), 1, 30);
 		g2d.drawString("X: "+player.getX(), 1, 35);
 		g2d.drawString("Y: "+player.getY(), 1, 40);
-		g2d.drawString("onGround: "+player.onGround, 1, 45);
-		g2d.drawString("direction: "+player.direction, 1, 50);
-		g2d.drawString("jumping: "+player.jumping, 1, 55);
-		g2d.drawString("falling: "+player.falling, 1, 60);
 		g2d.drawString("FPS: "+Game.current_fps, 1, 65);
 		
 		LinkedList<GameObject> objs = handler.getSelectableObjects(world);
 		for(GameObject obj : objs) {
 			if(obj.getSelectBounds() != null) {
-				if(mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y, obj.getSelectBounds().width, obj.getSelectBounds().height)) {
+				if(mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y, 
+						obj.getSelectBounds().width, obj.getSelectBounds().height)) {
 					g.setColor(new Color(255, 255, 255, 127));
 					g.drawRect(getWorldCoordX(obj.getSelectBounds().x), getWorldCoordY(obj.getSelectBounds().y), 
 							obj.getSelectBounds().width, obj.getSelectBounds().height);

@@ -12,8 +12,8 @@ public class Item {
 	public String type;
 	private BufferedImage tex;
 	
-	public Item(String type, BufferedImage tex) {
-		this.amount = 0;
+	public Item(String type, BufferedImage tex, int amount) {
+		this.amount = amount;
 		this.type = type;
 		this.tex = tex;
 		

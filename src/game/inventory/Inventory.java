@@ -40,7 +40,7 @@ public class Inventory {
 		
 		for(int y = 0;y<2;y++) {
 			for(int x = 0;x<size_x;x++) {
-				items.put(new Point(x, y), new Item("wood", textures.wood));
+				items.put(new Point(x, y), new Item("wood", textures.wood, 1));
 			}
 		}
 	}

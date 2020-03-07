@@ -24,46 +24,59 @@ public class Player extends GameObject{
 	public float accX, accY; //acceleration
 	private static final float WALK_F = 0.5f, BRAKE_F = 0.5f, AIR_F = 0.2f, AIR_RES_F = 0.02f; //force OLD_GRAVITY 0.16f
 	private static float GRAVITY = 0.17f; // 0.16f
-	public boolean onGround, direction, falling, crouch, moving, sliding, jumping, space;
 	private int sliding_timer, sliding_timer_wait = 0;
 	private int stop_walking_timer = 0;
+	private String direction;
 	
-	private Animation idle;
+	private Animation idle_down, idle_up, idle_left, idle_right;
+	private Animation walk_down, walk_up, walk_left, walk_right;
 	private Textures textures;
 
 	public Player(int x, int y, int z_index, ID id, KeyInput keyInput, Textures textures) {
 		super(x, y, z_index, id);
-		this.onGround = false;
 		this.keyInput = keyInput;
 		this.accX = 0;
 		this.accY = 0;
 		this.textures = textures;
+		this.direction = "down";
 		
 		initAnimations();
 	}
 	
 	private void initAnimations() {
-		idle = new Animation(8, textures.playerImg.get(0), textures.playerImg.get(1), textures.playerImg.get(2), textures.playerImg.get(3));
+		idle_down = new Animation(8, textures.playerImg.get(0), textures.playerImg.get(1), textures.playerImg.get(2), textures.playerImg.get(3));
+		idle_up = new Animation(8, textures.playerImg.get(36), textures.playerImg.get(37), textures.playerImg.get(38), textures.playerImg.get(39));
+		idle_left = new Animation(8, textures.playerImg.get(24), textures.playerImg.get(25), textures.playerImg.get(26), textures.playerImg.get(27));
+		idle_right = new Animation(8, textures.playerImg.get(12), textures.playerImg.get(13), textures.playerImg.get(14), textures.playerImg.get(15));
+		
+		walk_down = new Animation(5, textures.playerImg.get(6), textures.playerImg.get(7), textures.playerImg.get(8), textures.playerImg.get(9), textures.playerImg.get(10), textures.playerImg.get(11));
+		walk_up = new Animation(5, textures.playerImg.get(42), textures.playerImg.get(43), textures.playerImg.get(44), textures.playerImg.get(45), textures.playerImg.get(46), textures.playerImg.get(47));
+		walk_left = new Animation(5, textures.playerImg.get(30), textures.playerImg.get(31), textures.playerImg.get(32), textures.playerImg.get(33), textures.playerImg.get(34), textures.playerImg.get(35));
+		walk_right = new Animation(5, textures.playerImg.get(18), textures.playerImg.get(19), textures.playerImg.get(20), textures.playerImg.get(21), textures.playerImg.get(22), textures.playerImg.get(23));
 	}
 
 	public void tick() {
 		
 		updateAnimations();
 		
-		int walk_speed = 3;
+		int walk_speed = 2;
 		
 		if(keyInput.keysDown[2] && !keyInput.keysDown[3]) {
 			velX = -walk_speed;
+			direction = "left";
 		}else if(keyInput.keysDown[3] && !keyInput.keysDown[2]) {
 			velX = walk_speed;
+			direction = "right";
 		}else {
 			velX = 0;
 		}
 		
 		if(keyInput.keysDown[0] && !keyInput.keysDown[1]) {
 			velY = -walk_speed;
+			direction = "up";
 		}else if(keyInput.keysDown[1] && !keyInput.keysDown[0]) {
 			velY = walk_speed;
+			direction = "down";
 		}else {
 			velY = 0;
 		}
@@ -107,12 +120,64 @@ public class Player extends GameObject{
 	}
 	
 	private void updateAnimations() {
-		idle.runAnimation();
+		if(direction == "down") {
+			if(velY == 0) {
+				idle_down.runAnimation();
+			}else {
+				walk_down.runAnimation();
+			}
+		}else if(direction == "up") {
+			if(velY == 0) {
+				idle_up.runAnimation();
+			}else {
+				walk_up.runAnimation();
+			}
+		}else if(direction == "left") {
+			if(velX == 0) {
+				idle_left.runAnimation();
+			}else {
+				walk_left.runAnimation();
+			}
+		}else if(direction == "right") {
+			if(velX == 0) {
+				idle_right.runAnimation();
+			}else {
+				walk_right.runAnimation();
+			}
+		}else {
+			idle_down.runAnimation();
+		}
 		
 	}
 	
 	public void render(Graphics g) {
-		idle.drawAnimation(g, x, y);
+		if(direction == "down") {
+			if(velY == 0) {
+				idle_down.drawAnimation(g, x, y);
+			}else {
+				walk_down.drawAnimation(g, x, y);
+			}
+		}else if(direction == "up") {
+			if(velY == 0) {
+				idle_up.drawAnimation(g, x, y);
+			}else {
+				walk_up.drawAnimation(g, x, y);
+			}
+		}else if(direction == "left") {
+			if(velX == 0) {
+				idle_left.drawAnimation(g, x, y);
+			}else {
+				walk_left.drawAnimation(g, x, y);
+			}
+		}else if(direction == "right") {
+			if(velX == 0) {
+				idle_right.drawAnimation(g, x, y);
+			}else {
+				walk_right.drawAnimation(g, x, y);
+			}
+		}else {
+			idle_down.drawAnimation(g, x, y);
+		}
 		
 		//g.setColor(Color.pink);
 		//g.drawRect(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
