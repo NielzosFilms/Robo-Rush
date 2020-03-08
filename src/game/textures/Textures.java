@@ -1,8 +1,15 @@
 package game.textures;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Textures {
 	
@@ -14,6 +21,8 @@ public class Textures {
 	
 	//inventory
 	public BufferedImage wood, inventory_bg;
+	
+	public Font font;
 	
 	public static List<BufferedImage>tileSetBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage>playerImg = new ArrayList<BufferedImage>();

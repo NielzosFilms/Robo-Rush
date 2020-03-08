@@ -9,8 +9,11 @@ import java.util.LinkedList;
 
 import game.items.Item;
 import game.main.Game;
+import game.main.GameObject;
+import game.main.Handler;
 import game.main.MouseInput;
 import game.textures.Textures;
+import game.world.World;
 
 public class Inventory {
 	
@@ -38,11 +41,11 @@ public class Inventory {
 		this.items = new HashMap<Point, Item>();
 		this.hotbar = new HashMap<Integer, Item>();
 		
-		for(int y = 0;y<2;y++) {
+		/*for(int y = 0;y<2;y++) {
 			for(int x = 0;x<size_x;x++) {
-				items.put(new Point(x, y), new Item("wood", textures.wood, 1));
+				items.put(new Point(x, y), new Item("wood", 1, textures));
 			}
-		}
+		}*/
 	}
 	
 	public void tick() {
@@ -158,6 +161,64 @@ public class Inventory {
 		}
 	}
 	
+	public void pickupItem(Handler handler, World world) {
+		LinkedList<GameObject> objs = handler.getSelectableObjects(world);
+		for(GameObject obj : objs) {
+			if(obj.getSelectBounds() != null) {
+				if(mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y, 
+						obj.getSelectBounds().width, obj.getSelectBounds().height)) {
+					if(checkInventoryItem(obj.getId().toString())) {
+						for(int y = 0;y<size_y;y++) {
+							for(int x = 0;x<size_x;x++) {
+								if(items.containsKey(new Point(x, y))) {
+									if(items.get(new Point(x, y)).type == obj.getId().toString()) {
+										items.get(new Point(x, y)).amount = items.get(new Point(x, y)).amount+1;
+										handler.findAndRemoveObject(obj, world);
+										return;
+									}
+								}
+							}
+						}
+					}else if(checkInventoryFreeSlots()) {
+						for(int y = 0;y<size_y;y++) {
+							for(int x = 0;x<size_x;x++) {
+								if(!items.containsKey(new Point(x, y))) {
+									Item item = new Item(obj, obj.getId().toString(), 1, textures);
+									items.put(new Point(x, y), item);
+									handler.findAndRemoveObject(obj, world);
+									return;
+								}
+							}
+						}
+					}
+				}	
+			}
+		}
+	}
+	
+	private boolean checkInventoryItem(String type) {
+		if(items.size() == 0) {
+			return false;
+		}
+		for(int y = 0;y<size_y;y++) {
+			for(int x = 0;x<size_x;x++) {
+				if(items.containsKey(new Point(x, y))) {
+					if(items.get(new Point(x, y)).type == type) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	private boolean checkInventoryFreeSlots() {
+		if(items.size() == size_x*size_y) {
+			return false;
+		}
+		return true;
+	}
+	
 	public void setInventoryOpen(boolean var) {
 		this.inventory_open = var;
 	}
@@ -191,6 +252,14 @@ public class Inventory {
 	
 	public int getSizeY() {
 		return this.size_y;
+	}
+	
+	public int getHotbarX() {
+		return (Game.WIDTH/2)-(size_x*20)/2;
+	}
+	
+	public int getHotbarY() {
+		return Game.HEIGHT - 23;
 	}
 	
 	/*public void addItem(Point point, Item item) {

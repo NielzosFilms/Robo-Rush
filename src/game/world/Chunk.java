@@ -207,4 +207,13 @@ public class Chunk {
 		return tmp_tiles;
 	}
 	
+	public void removeFromTilesEntities(GameObject object) {
+		for(LinkedList<GameObject> list : entities) {
+			if(list.contains(object)) {
+				list.remove(object);
+				return;
+			}
+		}
+		//this.entities.remove(object);
+	}
 }

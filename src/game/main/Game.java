@@ -31,7 +31,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.7.0 INFDEV";
+	public static final String VERSION = "ALPHA V 2.8.0 INFDEV";
 
 	private Thread thread;
 	private boolean running = true;
@@ -95,6 +95,7 @@ public class Game extends Canvas implements Runnable{
 		world = new World(0, 0, 3, 3, height_seed, temp_seed, moist_seed, player, textures);
 		hud.setWorld(world);
 		collision = new Collision(handler, world, player);
+		keyInput.setWorld(world);
 		
 		
 		//ll.LoadLevelHeightMap(handler);
@@ -210,7 +211,7 @@ public class Game extends Canvas implements Runnable{
 			}*/
 			//}
 			//g.drawRect(0, 192, 16*9, 16*4);
-			
+			hud.renderCam(g, g2d);
 			g2d.translate(-cam.getX(), -cam.getY()); //end of cam
 			hud.render(g, g2d);
 		}

@@ -2,17 +2,16 @@ package game.main;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
-import game.entities.Player;
 import game.inventory.Inventory;
+import game.world.World;
 
 public class KeyInput extends KeyAdapter {
 
 	private Handler handler;
 	private Inventory inventory;
+	private World world;
 	
 	//public Map<Integer, Boolean> keysDown = new HashMap<Integer, Boolean>();
 	/*
@@ -35,6 +34,10 @@ public class KeyInput extends KeyAdapter {
 		this.inventory = inventory;
 	}
 	
+	public void setWorld(World world) {
+		this.world = world;
+	}
+	
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		
@@ -54,6 +57,8 @@ public class KeyInput extends KeyAdapter {
 						if(!Game.showHitboxes) Game.showHitboxes = true;
 						else if(Game.showHitboxes) Game.showHitboxes = false;
 					}
+					if(key == KeyEvent.VK_E) inventory.pickupItem(handler, world);
+					
 				}
 			}
 		}

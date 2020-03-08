@@ -21,12 +21,9 @@ public class Player extends GameObject{
 	
 	Random r = new Random();
 	private KeyInput keyInput;
-	public float accX, accY; //acceleration
-	private static final float WALK_F = 0.5f, BRAKE_F = 0.5f, AIR_F = 0.2f, AIR_RES_F = 0.02f; //force OLD_GRAVITY 0.16f
-	private static float GRAVITY = 0.17f; // 0.16f
-	private int sliding_timer, sliding_timer_wait = 0;
-	private int stop_walking_timer = 0;
+	
 	private String direction;
+	private int health, food, water;
 	
 	private Animation idle_down, idle_up, idle_left, idle_right;
 	private Animation walk_down, walk_up, walk_left, walk_right;
@@ -35,10 +32,13 @@ public class Player extends GameObject{
 	public Player(int x, int y, int z_index, ID id, KeyInput keyInput, Textures textures) {
 		super(x, y, z_index, id);
 		this.keyInput = keyInput;
-		this.accX = 0;
-		this.accY = 0;
 		this.textures = textures;
 		this.direction = "down";
+		
+		//default = 100
+		this.health = 75;
+		this.food = 75;
+		this.water = 25;
 		
 		initAnimations();
 	}
@@ -84,8 +84,8 @@ public class Player extends GameObject{
 		
 		//velY = Game.clampDouble(velY, -9.8, 9.8);
 		
-		velX = velX + accX;
-		velY = velY + accY;
+		velX = velX;
+		velY = velY;
 		/*if(!space && velY < 0)velY = velY + accY*3;
 		else velY = velY + accY;*/
 		
@@ -109,8 +109,6 @@ public class Player extends GameObject{
 		//x = Game.clamp(x, -13, 800-50);
 		
 		//y = Game.clamp(y, 0, Game.HEIGHT);
-		
-		
 	}
 	
 	private void updateVelocity() {
@@ -191,6 +189,18 @@ public class Player extends GameObject{
 	
 	public Rectangle getSelectBounds() {
 		return new Rectangle(x, y, 16, 16);
+	}
+
+	public int getHealth() {
+		return this.health;
+	}
+
+	public int getFood() {
+		return this.food;
+	}
+
+	public int getWater() {
+		return this.water;
 	}
 
 }

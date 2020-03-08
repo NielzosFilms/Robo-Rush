@@ -1,10 +1,12 @@
 package game.main;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.util.LinkedList;
 
 import game.entities.particles.Particle;
 import game.entities.particles.ParticleSystem;
+import game.items.Item;
 import game.world.Chunk;
 import game.world.World;
 
@@ -160,6 +162,24 @@ public class Handler {
 			}
 		}
 		return false;
+	}
+
+	public void findAndRemoveObject(GameObject item, World world) {
+		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
+		
+		for(LinkedList<GameObject> list : object) {
+			list.remove(item);
+		}
+		
+		for(LinkedList<GameObject> chunk : chunks) {
+			chunk.remove(item);
+		}
+		
+		//chunks
+		for(Chunk chunk : chunks_on_screen) {
+			//chunk.removeFromTilesEntities(item);
+			world.chunks.get(new Point(chunk.x, chunk.y)).removeFromTilesEntities(item);
+		}
 	}
 	
 }
