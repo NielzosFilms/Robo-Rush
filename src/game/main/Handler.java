@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 import game.entities.particles.Particle;
 import game.entities.particles.ParticleSystem;
-import game.items.Item;
+import game.lighting.Light;
 import game.world.Chunk;
 import game.world.World;
 
@@ -14,6 +14,7 @@ public class Handler {
 
 	public LinkedList<LinkedList<GameObject>> object = new LinkedList<LinkedList<GameObject>>();
 	
+	public LinkedList<Light> lights = new LinkedList<Light>();
 	//chunk needs to have an x and y asswell
 	// maybe make a chunk class?
 	// all of this is to optimize te game runtime
@@ -39,6 +40,15 @@ public class Handler {
 				}else {
 					tempObject.tick();
 				}
+			}
+		}
+		
+		for(Light light : lights) {
+			int x = light.getX();
+			int y = light.getY();
+			if(world.getChunkPointWithCoords(x, y) != null) { //adds enemy to a chunk to be unloaded
+				world.chunks.get(world.getChunkPointWithCoords(x, y)).lights.add(light);
+				lights.remove(light);
 			}
 		}
 	}
@@ -110,6 +120,10 @@ public class Handler {
 		
 	}
 	
+	public void addLight(Light light) {
+		this.lights.add(light);
+	}
+	
 	public void addObject(int z_index, GameObject object) {
 		while(z_index > this.object.size()) {//add new layers if it doesnt exist
 			this.object.add(new LinkedList<GameObject>());
@@ -153,6 +167,55 @@ public class Handler {
 		}
 		
 		return objs;
+	}
+	
+	public LinkedList<GameObject> getShadowObjects(World world) {
+		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
+		LinkedList<GameObject> objs = new LinkedList<GameObject>();
+		ID[] ids = {ID.Tree, ID.Player};
+		
+		for(LinkedList<GameObject> list : object) {
+			for(int i = 0; i < list.size(); i++) {
+				GameObject tempObject = list.get(i);
+				if(isInArray(ids, tempObject.getId())) {
+					objs.add(tempObject);
+				}
+			}
+		}
+		
+		for(LinkedList<GameObject> chunk : chunks) {
+			for(GameObject object : chunk) {
+				if(isInArray(ids, object.getId())) {
+					objs.add(object);
+				}
+			}
+		}
+		
+		//chunks
+		for(Chunk chunk : chunks_on_screen) {
+			LinkedList<GameObject> chunk_content = chunk.getTilesEntities();
+			for(GameObject obj : chunk_content) {
+				if(isInArray(ids, obj.getId())) {
+					objs.add(obj);
+				}
+			}
+		}
+		
+		return objs;
+	}
+	
+	public LinkedList<Light> getLights(World world){
+		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
+		LinkedList<Light> lights = new LinkedList<Light>();
+		
+		for(Chunk chunk : chunks_on_screen) {
+			LinkedList<Light> chunk_content = chunk.lights;
+			for(Light obj : chunk_content) {
+				lights.add(obj);
+			}
+		}
+		
+		return lights;
 	}
 	
 	private Boolean isInArray(ID[] arr, ID val) {

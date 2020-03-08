@@ -22,6 +22,9 @@ public class Textures {
 	//inventory
 	public BufferedImage wood, inventory_bg;
 	
+	//lights
+	public BufferedImage light;
+	
 	public Font font;
 	
 	public static List<BufferedImage>tileSetBlocks = new ArrayList<BufferedImage>();
@@ -38,6 +41,8 @@ public class Textures {
 		
 		wood = loader.loadImage("assets/items/wood.png");
 		inventory_bg = loader.loadImage("assets/main/hud/inventory_bg.png");
+		
+		light = loader.loadImage("assets/main/lights/light.png");
 		
 		//height_map = loader.loadImage("assets/main/height_map.png");
 		

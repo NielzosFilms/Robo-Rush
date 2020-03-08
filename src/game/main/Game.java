@@ -5,17 +5,20 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.util.LinkedList;
 import java.util.Random;
 
-import game.entities.Enemy;
 import game.entities.Player;
 import game.entities.particles.Particle;
 import game.entities.particles.ParticleSystem;
 import game.hud.HUD;
 import game.inventory.Inventory;
+import game.lighting.Light;
+import game.lighting.LightingSystem;
+import game.objects.Tree;
 import game.textures.Textures;
 import game.world.LevelLoader;
 import game.world.World;
@@ -31,7 +34,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.8.0 INFDEV";
+	public static final String VERSION = "ALPHA V 2.9.1 INFDEV";
 
 	private Thread thread;
 	private boolean running = true;
@@ -56,6 +59,7 @@ public class Game extends Canvas implements Runnable{
 	private LevelLoader ll;
 	private World world;
 	private Inventory inventory;
+	private LightingSystem lightingSystem;
 	//private static ArrayList<ArrayList<Long>> blocks;
 	
 	public Game() {
@@ -96,6 +100,13 @@ public class Game extends Canvas implements Runnable{
 		hud.setWorld(world);
 		collision = new Collision(handler, world, player);
 		keyInput.setWorld(world);
+		
+		lightingSystem = new LightingSystem();
+		lightingSystem.setHandler(handler);
+		lightingSystem.setWorld(world);
+		
+		handler.addLight(new Light(new Point(3, 300), textures.light));
+		handler.addObject(1, new Tree(0, 250, 1, ID.Tree, "forest", player, textures));
 		
 		
 		//ll.LoadLevelHeightMap(handler);
@@ -211,6 +222,8 @@ public class Game extends Canvas implements Runnable{
 			}*/
 			//}
 			//g.drawRect(0, 192, 16*9, 16*4);
+			lightingSystem.render(g);
+			
 			hud.renderCam(g, g2d);
 			g2d.translate(-cam.getX(), -cam.getY()); //end of cam
 			hud.render(g, g2d);

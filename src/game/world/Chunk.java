@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Random;
 
 import game.entities.Player;
+import game.lighting.Light;
 import game.main.GameObject;
 import game.main.ID;
 import game.objects.Mushroom;
@@ -23,7 +24,7 @@ public class Chunk {
 	private static Random r = new Random();
 	
 	public LinkedList<LinkedList<GameObject>> entities = new LinkedList<LinkedList<GameObject>>();
-	
+	public LinkedList<Light> lights = new LinkedList<Light>();
 	public LinkedList<HashMap<Point, GameObject>> tiles = new LinkedList<HashMap<Point, GameObject>>();
 	public static int tile_width = 16, tile_height = 16;
 	public int x, y;
