@@ -105,7 +105,7 @@ public class Game extends Canvas implements Runnable{
 		lightingSystem.setHandler(handler);
 		lightingSystem.setWorld(world);
 		
-		handler.addLight(new Light(new Point(3, 300), textures.light));
+		handler.addLight(new Light(new Point(0, 300), textures.light));
 		handler.addObject(1, new Tree(0, 250, 1, ID.Tree, "forest", player, textures));
 		
 		

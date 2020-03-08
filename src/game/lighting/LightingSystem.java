@@ -38,10 +38,10 @@ public class LightingSystem {
 			
 			LinkedList<Point> points_found = new LinkedList<Point>();
 			Polygon poly = new Polygon();
-			poly.addPoint(light_x-80, light_y-80);
+			//poly.addPoint(light_x-80, light_y-80);
 			for(int x = -80;x<80;x++) {
-				g.setColor(new Color(0, 0, 255, 50));
-				g.drawLine(light_x, light_y, light_x+x, light_y-80);
+				/*g.setColor(new Color(0, 0, 255, 50));
+				g.drawLine(light_x, light_y, light_x+x, light_y-80);*/
 				Point point = new Point(light_x+x, light_y-80);
 				for(GameObject obj : objects) {
 					int cenX = obj.getBounds().x+(obj.getBounds().width/2);
@@ -59,20 +59,164 @@ public class LightingSystem {
 					int bottom_left_x = obj.getBounds().x;
 					int bottom_left_y = obj.getBounds().y+obj.getBounds().height;
 					
-					
-					
 					Point2D point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y-80), 
 							new Line2D.Float(bottom_left_x, bottom_left_y, bottom_right_x, bottom_right_y));
+					
+					if(point2d == null) {
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y-80), 
+								new Line2D.Float(top_left_x, top_left_y, bottom_left_x, bottom_left_y));
+					}
+					if(point2d == null) {
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y-80), 
+								new Line2D.Float(top_right_x, top_right_y, bottom_right_x, bottom_right_y));
+					}
+					if(point2d == null) {
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y-80), 
+								new Line2D.Float(top_left_x, top_left_y, top_right_x, top_right_y));
+					}
 					
 					if(point2d != null) {
 						if(point2d.getY() > point.y) point = new Point((int)point2d.getX(), (int)point2d.getY());
 					}
+					
 				}
-				poly.addPoint(point.x, point.y);
+				if(x != 0)poly.addPoint(point.x, point.y);
+				
 			}
-			poly.addPoint(light_x+80, light_y-80);
-			poly.addPoint(light_x+80, light_y+80);
-			poly.addPoint(light_x-80, light_y+80);
+			
+			for(int y = -80;y<80;y++) {
+				/*g.setColor(new Color(0, 0, 255, 50));
+				g.drawLine(light_x, light_y, light_x+80, light_y+y);*/
+				Point point = new Point(light_x+80, light_y+y);
+				for(GameObject obj : objects) {
+					int cenX = obj.getBounds().x+(obj.getBounds().width/2);
+					int cenY = obj.getBounds().y+(obj.getBounds().height/2);
+					
+					int top_left_x = obj.getBounds().x;
+					int top_left_y = obj.getBounds().y;
+					
+					int top_right_x = obj.getBounds().x+obj.getBounds().width;
+					int top_right_y = obj.getBounds().y;
+					
+					int bottom_right_x = obj.getBounds().x+obj.getBounds().width;
+					int bottom_right_y = obj.getBounds().y+obj.getBounds().height;
+					
+					int bottom_left_x = obj.getBounds().x;
+					int bottom_left_y = obj.getBounds().y+obj.getBounds().height;
+					
+					Point2D point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+80, light_y+y), 
+							new Line2D.Float(top_left_x, top_left_y, bottom_left_x, bottom_left_y));
+					
+					if(point2d == null) {
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+80, light_y+y), 
+								new Line2D.Float(bottom_left_x, bottom_left_y, bottom_right_x, bottom_right_y));
+					}
+					if(point2d == null) {
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+80, light_y+y), 
+								new Line2D.Float(top_left_x, top_left_y, top_right_x, top_right_y));
+					}
+					if(point2d == null) {
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+80, light_y+y), 
+								new Line2D.Float(top_right_x, top_right_y, bottom_right_x, bottom_right_y));
+					}
+					
+					if(point2d != null) {
+						if(point2d.getX() < point.x) point = new Point((int)point2d.getX(), (int)point2d.getY());
+					}
+				}
+				/*if(y != 0)*/poly.addPoint(point.x, point.y);
+			}
+			
+			for(int x = 80;x>-80;x--) {
+				/*g.setColor(new Color(0, 0, 255, 50));
+				g.drawLine(light_x, light_y, light_x+x, light_y+80);*/
+				Point point = new Point(light_x+x, light_y+80);
+				for(GameObject obj : objects) {
+					int cenX = obj.getBounds().x+(obj.getBounds().width/2);
+					int cenY = obj.getBounds().y+(obj.getBounds().height/2);
+					
+					int top_left_x = obj.getBounds().x;
+					int top_left_y = obj.getBounds().y;
+					
+					int top_right_x = obj.getBounds().x+obj.getBounds().width;
+					int top_right_y = obj.getBounds().y;
+					
+					int bottom_right_x = obj.getBounds().x+obj.getBounds().width;
+					int bottom_right_y = obj.getBounds().y+obj.getBounds().height;
+					
+					int bottom_left_x = obj.getBounds().x;
+					int bottom_left_y = obj.getBounds().y+obj.getBounds().height;
+					
+					Point2D point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y+80), 
+							new Line2D.Float(top_left_x, top_left_y, top_right_x, top_right_y));
+					
+					if(point2d == null) {
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y+80), 
+								new Line2D.Float(top_right_x, top_right_y, bottom_right_x, bottom_right_y));
+					}
+					if(point2d == null) {
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y+80), 
+								new Line2D.Float(top_left_x, top_left_y, bottom_left_x, bottom_left_y));
+					}
+					if(point2d == null) {
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y+80), 
+								new Line2D.Float(bottom_left_x, bottom_left_y, bottom_right_x, bottom_right_y));
+					}
+					
+					if(point2d != null) {
+						if(point2d.getY() < point.y) point = new Point((int)point2d.getX(), (int)point2d.getY());
+					}
+				}
+				if(x != 0)poly.addPoint(point.x, point.y);
+			}
+			
+			for(int y = 80;y>-80;y--) {
+				/*g.setColor(new Color(0, 0, 255, 50));
+				g.drawLine(light_x, light_y, light_x-80, light_y+y);*/
+				Point point = new Point(light_x-80, light_y+y);
+				for(GameObject obj : objects) {
+					int cenX = obj.getBounds().x+(obj.getBounds().width/2);
+					int cenY = obj.getBounds().y+(obj.getBounds().height/2);
+					
+					int top_left_x = obj.getBounds().x;
+					int top_left_y = obj.getBounds().y;
+					
+					int top_right_x = obj.getBounds().x+obj.getBounds().width;
+					int top_right_y = obj.getBounds().y;
+					
+					int bottom_right_x = obj.getBounds().x+obj.getBounds().width;
+					int bottom_right_y = obj.getBounds().y+obj.getBounds().height;
+					
+					int bottom_left_x = obj.getBounds().x;
+					int bottom_left_y = obj.getBounds().y+obj.getBounds().height;
+					
+					Point2D point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x-80, light_y+y), 
+							new Line2D.Float(top_right_x, top_right_y, bottom_right_x, bottom_right_y));
+					
+					if(point2d == null) {
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x-80, light_y+y), 
+								new Line2D.Float(bottom_left_x, bottom_left_y, bottom_right_x, bottom_right_y));
+						
+					}
+					if(point2d == null) {
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x-80, light_y+y), 
+								new Line2D.Float(top_left_x, top_left_y, top_right_x, top_right_y));
+					}
+					if(point2d == null) {
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x-80, light_y+y), 
+								new Line2D.Float(top_left_x, top_left_y, bottom_left_x, bottom_left_y));
+						
+					}
+					
+					if(point2d != null) {
+						if(point2d.getX() > point.x) point = new Point((int)point2d.getX(), (int)point2d.getY());
+					}
+				}
+				/*if(y != 0)*/poly.addPoint(point.x, point.y);
+			}
+			//poly.addPoint(light_x+80, light_y-80);
+			//poly.addPoint(light_x+80, light_y+80);
+			//poly.addPoint(light_x-80, light_y+80);
 			
 			g.setColor(Color.blue);
 			
