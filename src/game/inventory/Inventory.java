@@ -185,6 +185,7 @@ public class Inventory {
 								if(!items.containsKey(new Point(x, y))) {
 									Item item = new Item(obj, obj.getId().toString(), 1, textures);
 									items.put(new Point(x, y), item);
+									System.out.println(obj.getY() + ", "+obj.getY());
 									handler.findAndRemoveObject(obj, world);
 									return;
 								}

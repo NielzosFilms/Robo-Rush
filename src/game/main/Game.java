@@ -34,7 +34,7 @@ public class Game extends Canvas implements Runnable{
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.9.2 INFDEV";
+	public static final String VERSION = "ALPHA V 2.9.3 INFDEV";
 
 	private Thread thread;
 	private boolean running = true;
@@ -107,6 +107,7 @@ public class Game extends Canvas implements Runnable{
 		
 		handler.addLight(new Light(new Point(0, 300), textures.light));
 		handler.addObject(1, new Tree(0, 250, 1, ID.Tree, "forest", player, textures));
+		handler.addObject(1, new Tree(35, 320, 1, ID.Tree, "forest", player, textures));
 		
 		
 		//ll.LoadLevelHeightMap(handler);

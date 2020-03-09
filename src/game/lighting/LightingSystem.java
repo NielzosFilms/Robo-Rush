@@ -44,6 +44,9 @@ public class LightingSystem {
 				g.drawLine(light_x, light_y, light_x+x, light_y-80);*/
 				Point point = new Point(light_x+x, light_y-80);
 				for(GameObject obj : objects) {
+					if(obj.getBounds().inside(light_x, light_y)) {
+						return;
+					}
 					int cenX = obj.getBounds().x+(obj.getBounds().width/2);
 					int cenY = obj.getBounds().y+(obj.getBounds().height/2);
 					
@@ -81,6 +84,8 @@ public class LightingSystem {
 					
 				}
 				/*if(x != 0)*/poly.addPoint(point.x, point.y);
+				g.setColor(new Color(0, 0, 255, 50));
+				g.drawLine(light_x, light_y, point.x, point.y);
 				
 			}
 			
@@ -89,6 +94,9 @@ public class LightingSystem {
 				g.drawLine(light_x, light_y, light_x+80, light_y+y);*/
 				Point point = new Point(light_x+80, light_y+y);
 				for(GameObject obj : objects) {
+					if(obj.getBounds().inside(light_x, light_y)) {
+						return;
+					}
 					int cenX = obj.getBounds().x+(obj.getBounds().width/2);
 					int cenY = obj.getBounds().y+(obj.getBounds().height/2);
 					
@@ -125,6 +133,8 @@ public class LightingSystem {
 					}
 				}
 				/*if(y != 0)*/poly.addPoint(point.x, point.y);
+				g.setColor(new Color(0, 0, 255, 50));
+				g.drawLine(light_x, light_y, point.x, point.y);
 			}
 			
 			for(int x = 80;x>-80;x--) {
@@ -132,6 +142,9 @@ public class LightingSystem {
 				g.drawLine(light_x, light_y, light_x+x, light_y+80);*/
 				Point point = new Point(light_x+x, light_y+80);
 				for(GameObject obj : objects) {
+					if(obj.getBounds().inside(light_x, light_y)) {
+						return;
+					}
 					int cenX = obj.getBounds().x+(obj.getBounds().width/2);
 					int cenY = obj.getBounds().y+(obj.getBounds().height/2);
 					
@@ -168,6 +181,8 @@ public class LightingSystem {
 					}
 				}
 				/*if(x != 0)*/poly.addPoint(point.x, point.y);
+				g.setColor(new Color(0, 0, 255, 50));
+				g.drawLine(light_x, light_y, point.x, point.y);
 			}
 			
 			for(int y = 80;y>-80;y--) {
@@ -175,6 +190,9 @@ public class LightingSystem {
 				g.drawLine(light_x, light_y, light_x-80, light_y+y);*/
 				Point point = new Point(light_x-80, light_y+y);
 				for(GameObject obj : objects) {
+					if(obj.getBounds().inside(light_x, light_y)) {
+						return;
+					}
 					int cenX = obj.getBounds().x+(obj.getBounds().width/2);
 					int cenY = obj.getBounds().y+(obj.getBounds().height/2);
 					
@@ -213,6 +231,8 @@ public class LightingSystem {
 					}
 				}
 				/*if(y != 0)*/poly.addPoint(point.x, point.y);
+				g.setColor(new Color(0, 0, 255, 50));
+				g.drawLine(light_x, light_y, point.x, point.y);
 			}
 			//poly.addPoint(light_x+80, light_y-80);
 			//poly.addPoint(light_x+80, light_y+80);
