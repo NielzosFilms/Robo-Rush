@@ -80,7 +80,7 @@ public class LightingSystem {
 					}
 					
 				}
-				if(x != 0)poly.addPoint(point.x, point.y);
+				/*if(x != 0)*/poly.addPoint(point.x, point.y);
 				
 			}
 			
@@ -167,7 +167,7 @@ public class LightingSystem {
 						if(point2d.getY() < point.y) point = new Point((int)point2d.getX(), (int)point2d.getY());
 					}
 				}
-				if(x != 0)poly.addPoint(point.x, point.y);
+				/*if(x != 0)*/poly.addPoint(point.x, point.y);
 			}
 			
 			for(int y = 80;y>-80;y--) {
@@ -224,9 +224,9 @@ public class LightingSystem {
 		}
 	}
 	
-	public static Point2D getLineIntersection(Line2D ray, Line2D segment) {
+	public static Point2D getLineIntersection(Line2D.Float ray, Line2D.Float segment) {
 	    if(ray.intersectsLine(segment)){
-	        double rx1 = ray.getX1(),
+	        /*double rx1 = ray.getX1(),
 	                ry1 = ray.getY1(),
 	                rx2 = ray.getX2(),
 	                ry2 = ray.getY2(),
@@ -244,12 +244,31 @@ public class LightingSystem {
 	        t2 = (rdx * (sy1 - ry1) + rdy * (rx1 - sx1)) / (sdx * rdy - sdy * rdx);
 	        t1 = (sx1 + sdx * t2 - rx1) / rdx;
 
-	        if(t1 > 0/* && 1 > t2 && t2 > 0*/){
+	        if(t1 > 0*//* && 1 > t2 && t2 > 0*//*){
 	            ix = rx1 + rdx * t1;
 	            iy = ry1 + rdy * t1;
 	            return new Point2D.Float((int) ix, (int) iy);
 	        }else
-	            return null;
+	            return null;*/
+	    	
+	    	final double x1,y1, x2,y2, x3,y3, x4,y4;
+	        x1 = ray.x1; y1 = ray.y1; x2 = ray.x2; y2 = ray.y2;
+	        x3 = segment.x1; y3 = segment.y1; x4 = segment.x2; y4 = segment.y2;
+	        final double x = (
+	                (x2 - x1)*(x3*y4 - x4*y3) - (x4 - x3)*(x1*y2 - x2*y1)
+	                ) /
+	                (
+	                (x1 - x2)*(y3 - y4) - (y1 - y2)*(x3 - x4)
+	                );
+	        final double y = (
+	                (y3 - y4)*(x1*y2 - x2*y1) - (y1 - y2)*(x3*y4 - x4*y3)
+	                ) /
+	                (
+	                (x1 - x2)*(y3 - y4) - (y1 - y2)*(x3 - x4)
+	                );
+
+	        return new Point2D.Double(x, y);
+	    	
 	    }else
 	        return null;
 	}
