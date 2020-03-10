@@ -14,10 +14,11 @@ import java.util.List;
 public class Textures {
 	
 	//tilesets / sheets
-	static BufferedImage tileSet, playerSheet;
+	static BufferedImage tileSet, playerSheet, mushroom;
 	
 	//nature
-	public BufferedImage tree, mushroom;
+	public BufferedImage tree;
+	public static List<BufferedImage>mushrooms  = new ArrayList<BufferedImage>();
 	
 	//inventory
 	public BufferedImage wood, inventory_bg;
@@ -42,7 +43,7 @@ public class Textures {
 		wood = loader.loadImage("assets/items/wood.png");
 		inventory_bg = loader.loadImage("assets/main/hud/inventory_bg.png");
 		
-		light = loader.loadImage("assets/main/lights/light.png");
+		light = loader.loadImage("assets/main/lights/light_orange.png");
 		
 		//height_map = loader.loadImage("assets/main/height_map.png");
 		
@@ -57,6 +58,13 @@ public class Textures {
 		for(int i = 0;i<playerSheet.getHeight();i+=24) {
 			for(int j = 0;j<playerSheet.getWidth();j+=16) {
 				playerImg.add(ss2.grabImage(j, i, 16, 24));
+			}
+		}
+		
+		SpriteSheet ss3 = new SpriteSheet(mushroom);
+		for(int i = 0;i<mushroom.getHeight();i+=16) {
+			for(int j = 0;j<mushroom.getWidth();j+=16) {
+				mushrooms.add(ss3.grabImage(j, i, 16, 16));
 			}
 		}
 		

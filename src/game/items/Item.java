@@ -23,7 +23,7 @@ public class Item {
 		
 		switch(this.type) {
 			case "Mushroom":
-				this.tex = textures.mushroom;
+				this.tex = textures.mushrooms.get(2);
 				break;
 			default:
 				this.tex = textures.wood;

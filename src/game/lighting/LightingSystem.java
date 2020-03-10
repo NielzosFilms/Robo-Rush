@@ -6,8 +6,13 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.util.LinkedList;
 
+import game.main.Camera;
+import game.main.Game;
 import game.main.GameObject;
 import game.main.Handler;
 import game.world.World;
@@ -16,9 +21,14 @@ public class LightingSystem {
 
 	private Handler handler;
 	private World world;
+	private Camera cam;
 	
 	public LightingSystem() {
 		
+	}
+	
+	public void setCam(Camera cam) {
+		this.cam = cam;
 	}
 	
 	public void tick() {
@@ -33,16 +43,18 @@ public class LightingSystem {
 			int lightMap_y = light.getY()-80;
 			int light_x = light.getX();
 			int light_y = light.getY();
-			LightingMap lightMap = new LightingMap(lightMap_x, lightMap_y);
-			lightMap.addPointToMap(0, 0);
+			
+			int light_width = light.tex.getWidth()/2;
+			/*LightingMap lightMap = new LightingMap(lightMap_x, lightMap_y);
+			lightMap.addPointToMap(0, 0);*/
 			
 			LinkedList<Point> points_found = new LinkedList<Point>();
 			Polygon poly = new Polygon();
 			//poly.addPoint(light_x-80, light_y-80);
-			for(int x = -80;x<80;x++) {
+			for(int x = -light_width;x<light_width;x++) {
 				/*g.setColor(new Color(0, 0, 255, 50));
-				g.drawLine(light_x, light_y, light_x+x, light_y-80);*/
-				Point point = new Point(light_x+x, light_y-80);
+				g.drawLine(light_x, light_y, light_x+x, light_y-light_width);*/
+				Point point = new Point(light_x+x, light_y-light_width);
 				for(GameObject obj : objects) {
 					if(obj.getBounds().inside(light_x, light_y)) {
 						return;
@@ -62,19 +74,19 @@ public class LightingSystem {
 					int bottom_left_x = obj.getBounds().x;
 					int bottom_left_y = obj.getBounds().y+obj.getBounds().height;
 					
-					Point2D point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y-80), 
+					Point2D point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y-light_width), 
 							new Line2D.Float(bottom_left_x, bottom_left_y, bottom_right_x, bottom_right_y));
 					
 					if(point2d == null) {
-						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y-80), 
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y-light_width), 
 								new Line2D.Float(top_left_x, top_left_y, bottom_left_x, bottom_left_y));
 					}
 					if(point2d == null) {
-						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y-80), 
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y-light_width), 
 								new Line2D.Float(top_right_x, top_right_y, bottom_right_x, bottom_right_y));
 					}
 					if(point2d == null) {
-						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y-80), 
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y-light_width), 
 								new Line2D.Float(top_left_x, top_left_y, top_right_x, top_right_y));
 					}
 					
@@ -84,15 +96,13 @@ public class LightingSystem {
 					
 				}
 				/*if(x != 0)*/poly.addPoint(point.x, point.y);
-				g.setColor(new Color(0, 0, 255, 50));
-				g.drawLine(light_x, light_y, point.x, point.y);
+				/*g.setColor(new Color(0, 0, 255, 50));
+				g.drawLine(light_x, light_y, point.x, point.y);*/
 				
 			}
 			
-			for(int y = -80;y<80;y++) {
-				/*g.setColor(new Color(0, 0, 255, 50));
-				g.drawLine(light_x, light_y, light_x+80, light_y+y);*/
-				Point point = new Point(light_x+80, light_y+y);
+			for(int y = -light_width;y<light_width;y++) {
+				Point point = new Point(light_x+light_width, light_y+y);
 				for(GameObject obj : objects) {
 					if(obj.getBounds().inside(light_x, light_y)) {
 						return;
@@ -112,19 +122,19 @@ public class LightingSystem {
 					int bottom_left_x = obj.getBounds().x;
 					int bottom_left_y = obj.getBounds().y+obj.getBounds().height;
 					
-					Point2D point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+80, light_y+y), 
+					Point2D point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+light_width, light_y+y), 
 							new Line2D.Float(top_left_x, top_left_y, bottom_left_x, bottom_left_y));
 					
 					if(point2d == null) {
-						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+80, light_y+y), 
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+light_width, light_y+y), 
 								new Line2D.Float(bottom_left_x, bottom_left_y, bottom_right_x, bottom_right_y));
 					}
 					if(point2d == null) {
-						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+80, light_y+y), 
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+light_width, light_y+y), 
 								new Line2D.Float(top_left_x, top_left_y, top_right_x, top_right_y));
 					}
 					if(point2d == null) {
-						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+80, light_y+y), 
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+light_width, light_y+y), 
 								new Line2D.Float(top_right_x, top_right_y, bottom_right_x, bottom_right_y));
 					}
 					
@@ -132,15 +142,13 @@ public class LightingSystem {
 						if(point2d.getX() < point.x) point = new Point((int)point2d.getX(), (int)point2d.getY());
 					}
 				}
-				/*if(y != 0)*/poly.addPoint(point.x, point.y);
-				g.setColor(new Color(0, 0, 255, 50));
-				g.drawLine(light_x, light_y, point.x, point.y);
+				poly.addPoint(point.x, point.y);
+				/*g.setColor(new Color(0, 0, 255, 50));
+				g.drawLine(light_x, light_y, point.x, point.y);*/
 			}
 			
-			for(int x = 80;x>-80;x--) {
-				/*g.setColor(new Color(0, 0, 255, 50));
-				g.drawLine(light_x, light_y, light_x+x, light_y+80);*/
-				Point point = new Point(light_x+x, light_y+80);
+			for(int x = light_width;x>-light_width;x--) {
+				Point point = new Point(light_x+x, light_y+light_width);
 				for(GameObject obj : objects) {
 					if(obj.getBounds().inside(light_x, light_y)) {
 						return;
@@ -160,19 +168,19 @@ public class LightingSystem {
 					int bottom_left_x = obj.getBounds().x;
 					int bottom_left_y = obj.getBounds().y+obj.getBounds().height;
 					
-					Point2D point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y+80), 
+					Point2D point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y+light_width), 
 							new Line2D.Float(top_left_x, top_left_y, top_right_x, top_right_y));
 					
 					if(point2d == null) {
-						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y+80), 
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y+light_width), 
 								new Line2D.Float(top_right_x, top_right_y, bottom_right_x, bottom_right_y));
 					}
 					if(point2d == null) {
-						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y+80), 
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y+light_width), 
 								new Line2D.Float(top_left_x, top_left_y, bottom_left_x, bottom_left_y));
 					}
 					if(point2d == null) {
-						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y+80), 
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x+x, light_y+light_width), 
 								new Line2D.Float(bottom_left_x, bottom_left_y, bottom_right_x, bottom_right_y));
 					}
 					
@@ -180,15 +188,13 @@ public class LightingSystem {
 						if(point2d.getY() < point.y) point = new Point((int)point2d.getX(), (int)point2d.getY());
 					}
 				}
-				/*if(x != 0)*/poly.addPoint(point.x, point.y);
-				g.setColor(new Color(0, 0, 255, 50));
-				g.drawLine(light_x, light_y, point.x, point.y);
+				poly.addPoint(point.x, point.y);
+				/*g.setColor(new Color(0, 0, 255, 50));
+				g.drawLine(light_x, light_y, point.x, point.y);*/
 			}
 			
-			for(int y = 80;y>-80;y--) {
-				/*g.setColor(new Color(0, 0, 255, 50));
-				g.drawLine(light_x, light_y, light_x-80, light_y+y);*/
-				Point point = new Point(light_x-80, light_y+y);
+			for(int y = light_width;y>-light_width;y--) {
+				Point point = new Point(light_x-light_width, light_y+y);
 				for(GameObject obj : objects) {
 					if(obj.getBounds().inside(light_x, light_y)) {
 						return;
@@ -208,20 +214,20 @@ public class LightingSystem {
 					int bottom_left_x = obj.getBounds().x;
 					int bottom_left_y = obj.getBounds().y+obj.getBounds().height;
 					
-					Point2D point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x-80, light_y+y), 
+					Point2D point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x-light_width, light_y+y), 
 							new Line2D.Float(top_right_x, top_right_y, bottom_right_x, bottom_right_y));
 					
 					if(point2d == null) {
-						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x-80, light_y+y), 
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x-light_width, light_y+y), 
 								new Line2D.Float(bottom_left_x, bottom_left_y, bottom_right_x, bottom_right_y));
 						
 					}
 					if(point2d == null) {
-						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x-80, light_y+y), 
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x-light_width, light_y+y), 
 								new Line2D.Float(top_left_x, top_left_y, top_right_x, top_right_y));
 					}
 					if(point2d == null) {
-						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x-80, light_y+y), 
+						point2d = getLineIntersection(new Line2D.Float(light_x, light_y, light_x-light_width, light_y+y), 
 								new Line2D.Float(top_left_x, top_left_y, bottom_left_x, bottom_left_y));
 						
 					}
@@ -230,47 +236,88 @@ public class LightingSystem {
 						if(point2d.getX() > point.x) point = new Point((int)point2d.getX(), (int)point2d.getY());
 					}
 				}
-				/*if(y != 0)*/poly.addPoint(point.x, point.y);
-				g.setColor(new Color(0, 0, 255, 50));
-				g.drawLine(light_x, light_y, point.x, point.y);
+				poly.addPoint(point.x, point.y);
+				/*g.setColor(new Color(0, 0, 255, 50));
+				g.drawLine(light_x, light_y, point.x, point.y);*/
 			}
-			//poly.addPoint(light_x+80, light_y-80);
-			//poly.addPoint(light_x+80, light_y+80);
-			//poly.addPoint(light_x-80, light_y+80);
 			
 			g.setColor(Color.blue);
 			
-			g.drawPolygon(poly);
+			BufferedImage img = getBufferedImageMap(light.tex, poly, new Point(light_x-light_width, light_y-light_width));
+			
+			g.drawImage(img, light_x-light_width, light_y-light_width, null);
+			
+			//g.drawPolygon(poly);
 		}
+	}
+	
+	private BufferedImage getBufferedImageMap(BufferedImage img, Polygon poly, Point origin) {
+		
+		BufferedImage start = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		//fill screen with black
+		
+		BufferedImage img2 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		
+		for (int y = 0; y < img2.getHeight(); y++) {
+		    for (int x = 0; x < img2.getWidth(); x++) {
+		    	int clr;
+		    	/*if(x > origin.x && x < origin.x + 160 && y > origin.y && y < origin.y+160) {
+		    		int xx = (int) (x - origin.x);
+		    		int yy = (int) (y - origin.y);
+		    		System.out.println(xx + " "+yy);
+		    		clr = img.getRGB(xx, yy);
+		    	}else {
+		    		int r = 0;
+			    	int g = 0;
+			    	int b = 0;
+			    	int a3 = 255;
+			    	clr = (a3 << 24) | (r << 16) | (g << 8) | b;
+		    	}*/
+		    	clr = img.getRGB(x, y);
+		    	
+		        int  red   = (clr & 0x00ff0000) >> 16;
+		        int  green = (clr & 0x0000ff00) >> 8;
+		        int  blue  =  clr & 0x000000ff;
+		        
+		        int a = ((byte)(225) << 24) | 0x00000000;
+		        int a2 = ((byte)(225) << 24) | 0x00ffffff;
+		        
+		        int new_color = clr & a;
+		        int new_color2 = clr & a2;
+		        if(!poly.contains(new Point((int)(x+origin.x), (int)(y+origin.y)))) {
+		        	img2.setRGB(x, y, new_color);
+		        }else {
+		        	img2.setRGB(x, y, new_color2);
+		        }
+		        //start.setRGB(x, y, new_color2);
+		    }
+		}
+		
+		img2 = blurImage(img2);
+		
+		return img2;
+	}
+	
+	private BufferedImage blurImage(BufferedImage img) {
+		int radius = 4;
+	    int size = radius * 2 + 1;
+	    float weight = 1.0f / (size * size);
+	    float[] data = new float[size * size];
+
+	    for (int i = 0; i < data.length; i++) {
+	        data[i] = weight;
+	    }
+
+	    Kernel kernel = new Kernel(size, size, data);
+	    ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+	    //tbi is BufferedImage
+	    BufferedImage i = op.filter(img, null);
+		
+		return i;
 	}
 	
 	public static Point2D getLineIntersection(Line2D.Float ray, Line2D.Float segment) {
 	    if(ray.intersectsLine(segment)){
-	        /*double rx1 = ray.getX1(),
-	                ry1 = ray.getY1(),
-	                rx2 = ray.getX2(),
-	                ry2 = ray.getY2(),
-	                sx1 = segment.getX1(),
-	                sy1 = segment.getY1(),
-	                sx2 = segment.getX2(),
-	                sy2 = segment.getY2(),
-	                rdx = rx2 - rx1,
-	                rdy = ry2 - ry1,
-	                sdx = sx2 - sx1,
-	                sdy = sy2 - sy1,
-	                t1, t2,
-	                ix, iy;
-
-	        t2 = (rdx * (sy1 - ry1) + rdy * (rx1 - sx1)) / (sdx * rdy - sdy * rdx);
-	        t1 = (sx1 + sdx * t2 - rx1) / rdx;
-
-	        if(t1 > 0*//* && 1 > t2 && t2 > 0*//*){
-	            ix = rx1 + rdx * t1;
-	            iy = ry1 + rdy * t1;
-	            return new Point2D.Float((int) ix, (int) iy);
-	        }else
-	            return null;*/
-	    	
 	    	final double x1,y1, x2,y2, x3,y3, x4,y4;
 	        x1 = ray.x1; y1 = ray.y1; x2 = ray.x2; y2 = ray.y2;
 	        x3 = segment.x1; y3 = segment.y1; x4 = segment.x2; y4 = segment.y2;
