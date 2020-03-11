@@ -245,7 +245,7 @@ public class LightingSystem {
 			
 			BufferedImage img = getBufferedImageMap(light.tex, poly, new Point(light_x-light_width, light_y-light_width));
 			
-			g.drawImage(img, light_x-light_width, light_y-light_width, null);
+			g.drawImage(img, (int)-cam.getX(), (int)-cam.getY(), null);
 			
 			//g.drawPolygon(poly);
 		}
@@ -256,46 +256,82 @@ public class LightingSystem {
 		BufferedImage start = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		//fill screen with black
 		
-		BufferedImage img2 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		
-		for (int y = 0; y < img2.getHeight(); y++) {
-		    for (int x = 0; x < img2.getWidth(); x++) {
-		    	int clr;
-		    	/*if(x > origin.x && x < origin.x + 160 && y > origin.y && y < origin.y+160) {
-		    		int xx = (int) (x - origin.x);
-		    		int yy = (int) (y - origin.y);
-		    		System.out.println(xx + " "+yy);
-		    		clr = img.getRGB(xx, yy);
-		    	}else {
-		    		int r = 0;
-			    	int g = 0;
-			    	int b = 0;
-			    	int a3 = 255;
-			    	clr = (a3 << 24) | (r << 16) | (g << 8) | b;
-		    	}*/
-		    	clr = img.getRGB(x, y);
+		for (int y = 0; y < start.getHeight(); y++) {
+		    for (int x = 0; x < start.getWidth(); x++) {
+		    	int light_color = 0;
 		    	
-		        int  red   = (clr & 0x00ff0000) >> 16;
-		        int  green = (clr & 0x0000ff00) >> 8;
-		        int  blue  =  clr & 0x000000ff;
+		    	int light_screen_x =  origin.x - (int)-cam.getX();
+		    	int light_screen_y = origin.y - (int)-cam.getY();
+	    		if(x-light_screen_x >= 0 && x-light_screen_x < img.getWidth() && y-light_screen_y >= 0 && y-light_screen_y < img.getHeight()) {
+	    			light_color = img.getRGB(x-light_screen_x, y-light_screen_y); //min iets om vanaf 0 te beginnen
+	    			//System.out.println(y-light_screen_y);
+	    		}
+		    	
+		    	int clr = (225 << 24) | (0 << 16) | (0 << 8) | 0;
 		        
 		        int a = ((byte)(225) << 24) | 0x00000000;
 		        int a2 = ((byte)(225) << 24) | 0x00ffffff;
 		        
 		        int new_color = clr & a;
 		        int new_color2 = clr & a2;
-		        if(!poly.contains(new Point((int)(x+origin.x), (int)(y+origin.y)))) {
-		        	img2.setRGB(x, y, new_color);
+		        if(x-light_screen_x >= 0 && x-light_screen_x < img.getWidth() && y-light_screen_y >= 0 && y-light_screen_y < img.getHeight()) {
+		        	int color = light_color & a2;
+		        	if(!poly.contains(new Point((int)(x-light_screen_x+origin.x), (int)(y-light_screen_y+origin.y)))) {
+		        		start.setRGB(x, y, new_color2);
+		        	}else {
+		        		start.setRGB(x, y, color);
+		        	}
 		        }else {
-		        	img2.setRGB(x, y, new_color2);
+		        	start.setRGB(x, y, new_color2);
 		        }
 		        //start.setRGB(x, y, new_color2);
 		    }
 		}
 		
-		img2 = blurImage(img2);
+		start = blurImage(start);
 		
-		return img2;
+		return start;
+		
+//		BufferedImage img2 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+//		
+//		for (int y = 0; y < img2.getHeight(); y++) {
+//		    for (int x = 0; x < img2.getWidth(); x++) {
+//		    	int clr;
+//		    	/*if(x > origin.x && x < origin.x + 160 && y > origin.y && y < origin.y+160) {
+//		    		int xx = (int) (x - origin.x);
+//		    		int yy = (int) (y - origin.y);
+//		    		System.out.println(xx + " "+yy);
+//		    		clr = img.getRGB(xx, yy);
+//		    	}else {
+//		    		int r = 0;
+//			    	int g = 0;
+//			    	int b = 0;
+//			    	int a3 = 255;
+//			    	clr = (a3 << 24) | (r << 16) | (g << 8) | b;
+//		    	}*/
+//		    	clr = img.getRGB(x, y);
+//		    	
+//		        int  red   = (clr & 0x00ff0000) >> 16;
+//		        int  green = (clr & 0x0000ff00) >> 8;
+//		        int  blue  =  clr & 0x000000ff;
+//		        
+//		        int a = ((byte)(225) << 24) | 0x00000000;
+//		        int a2 = ((byte)(225) << 24) | 0x00ffffff;
+//		        
+//		        int new_color = clr & a;
+//		        int new_color2 = clr & a2;
+//		        if(!poly.contains(new Point((int)(x+origin.x), (int)(y+origin.y)))) {
+//		        	img2.setRGB(x, y, new_color);
+//		        }else {
+//		        	img2.setRGB(x, y, new_color2);
+//		        }
+//		        //start.setRGB(x, y, new_color2);
+//		    }
+//		}
+//		
+//		img2 = blurImage(img2);
+//		
+//		return img2;
 	}
 	
 	private BufferedImage blurImage(BufferedImage img) {
