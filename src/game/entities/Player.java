@@ -60,6 +60,9 @@ public class Player extends GameObject{
 		updateAnimations();
 		
 		int walk_speed = 2;
+		if(keyInput.keysDown[5]) {
+			walk_speed = 10;
+		}
 		
 		if(keyInput.keysDown[2] && !keyInput.keysDown[3]) {
 			velX = -walk_speed;

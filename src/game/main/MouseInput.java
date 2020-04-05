@@ -92,19 +92,13 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	public boolean mouseOverWorldVar(int x, int y, int width, int height) {
 		int mx = (int) (mouse_x + -cam.getX());
 		int my = (int) (mouse_y + -cam.getY());
-		if(mx > x && mx < x + width) {
-			if(my > y && my < y + height) {
-				return true;
-			}else return false;
-		}else return false;
+		return (mx > x && mx < x + width) &&
+				(my > y && my < y + height);
 	}
 	
 	public boolean mouseOver(int mx, int my, int x, int y, int width, int height) {
-		if(mx > x && mx < x + width) {
-			if(my > y && my < y + height) {
-				return true;
-			}else return false;
-		}else return false;
+		return (mx > x && mx < x + width) &&
+				(my > y && my < y + height);
 	}
 	
 	public void setInventory(Inventory inventory) {

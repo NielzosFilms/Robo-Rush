@@ -7,10 +7,13 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import game.entities.particles.Particle;
+import game.entities.particles.ParticleSystem;
 import game.items.Item;
 import game.main.Game;
 import game.main.GameObject;
 import game.main.Handler;
+import game.main.ID;
 import game.main.MouseInput;
 import game.textures.Textures;
 import game.world.World;
@@ -25,9 +28,10 @@ public class Inventory {
 	private MouseInput mouseInput;
 	private Item mouse_holding;
 	private Boolean inventory_open;
+	private ParticleSystem particleSystem;
 	private int hotbar_selected_item;
 	
-	public Inventory(int size_x, int size_y, Textures textures, MouseInput mouseInput) {
+	public Inventory(int size_x, int size_y, Textures textures, MouseInput mouseInput, ParticleSystem particleSystem) {
 		this.size_x = size_x;
 		this.size_y = size_y;
 		this.x = Game.WIDTH/5;
@@ -37,6 +41,7 @@ public class Inventory {
 		this.mouse_holding = null;
 		this.inventory_open = false;
 		this.hotbar_selected_item = 0;
+		this.particleSystem = particleSystem;
 		
 		this.items = new HashMap<Point, Item>();
 		this.hotbar = new HashMap<Integer, Item>();
@@ -214,10 +219,7 @@ public class Inventory {
 	}
 	
 	private boolean checkInventoryFreeSlots() {
-		if(items.size() == size_x*size_y) {
-			return false;
-		}
-		return true;
+		return !(items.size() == size_x*size_y);
 	}
 	
 	public void setInventoryOpen(boolean var) {

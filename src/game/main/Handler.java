@@ -15,9 +15,6 @@ public class Handler {
 	public LinkedList<LinkedList<GameObject>> object = new LinkedList<LinkedList<GameObject>>();
 	
 	public LinkedList<Light> lights = new LinkedList<Light>();
-	//chunk needs to have an x and y asswell
-	// maybe make a chunk class?
-	// all of this is to optimize te game runtime
 	public LinkedList<LinkedList<GameObject>> chunks = new LinkedList<LinkedList<GameObject>>(); // add everything to their corresponding chunks and loop throught the chunks
 	
 	public Handler() {
@@ -99,24 +96,6 @@ public class Handler {
 		for(Chunk chunk : chunks_on_screen) {
 			chunk.renderBorder(g);
 		}
-		
-		
-		
-		/*for(LinkedList<GameObject> list : object) {
-			for(int i = 0; i < list.size(); i++) {
-				GameObject tempObject = list.get(i);
-				if(tempObject.getX()+16 > camX && tempObject.getY()+16 > camY && tempObject.getX()-16 < camX+width && tempObject.getY()-16 < camY+height) {
-					tempObject.render(g);
-				}
-			}
-		}*/
-		
-		//chunk looping
-		/*for(LinkedList<GameObject> chunk : chunks) {
-			for(GameObject object : chunk) {
-				object.render(g);
-			}
-		}*/
 		
 	}
 	

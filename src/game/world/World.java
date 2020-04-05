@@ -84,7 +84,6 @@ public class World {
 				}
 			}
 		}
-		
 		return tmp_chunks;
 	}
 	
@@ -138,11 +137,8 @@ public class World {
 	//functions to get specific tiles/tiletypes
 	
 	private boolean OnScreen(int x, int y, int w, int h) {
-		if((x+(16*16) > -Game.cam.getX() && x < -Game.cam.getX()+Game.WIDTH) && (y+(16*16) > -Game.cam.getY() && y < -Game.cam.getY()+Game.HEIGHT)) {
-			return true;
-		} else {
-			return false;
-		}
+		return (x+(16*16) > -Game.cam.getX() && x < -Game.cam.getX()+Game.WIDTH) && 
+				(y+(16*16) > -Game.cam.getY() && y < -Game.cam.getY()+Game.HEIGHT);
 	}
 	
 	public Chunk getChunkWithCoords(int x, int y) {

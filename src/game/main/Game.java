@@ -23,7 +23,7 @@ import game.textures.Textures;
 import game.world.LevelLoader;
 import game.world.World;
 
-public class Game extends Canvas implements Runnable{
+public class Game extends Canvas implements Runnable {
 	
 	private static final long serialVersionUID = 852753996046178928L;
 	
@@ -36,7 +36,7 @@ public class Game extends Canvas implements Runnable{
 	public static final int FPS = 60;
 	public static final String VERSION = "ALPHA V 2.9.3 INFDEV";
 
-	private Thread thread;
+	private Thread thread;//, image_proccessing_thread;
 	private boolean running = true;
 	public static int current_fps = 0;
 	
@@ -81,7 +81,7 @@ public class Game extends Canvas implements Runnable{
 		r = new Random();
 		
 		Player player = new Player(0, 0, 2, ID.Player, keyInput, textures);
-		inventory = new Inventory(5, 4, textures, mouseInput);
+		inventory = new Inventory(5, 4, textures, mouseInput, ps);
 		mouseInput.setInventory(inventory);
 		keyInput.setInventory(inventory);
 		hud = new HUD(handler, player, inventory);
@@ -117,6 +117,9 @@ public class Game extends Canvas implements Runnable{
 	public synchronized void start() {
 		thread = new Thread(this);
 		thread.start();
+		
+		//image_proccessing_thread = new Thread(this);
+		
 	}
 	
 	public synchronized void stop() {
@@ -224,7 +227,11 @@ public class Game extends Canvas implements Runnable{
 			}*/
 			//}
 			//g.drawRect(0, 192, 16*9, 16*4);
+			Long start = System.currentTimeMillis();
 			lightingSystem.render(g);
+			Long finish = System.currentTimeMillis();
+			System.out.println("Light System Render Time: " + ( finish - start ) );
+			//ongeveer 30-35 ms
 			
 			hud.renderCam(g, g2d);
 			g2d.translate(-cam.getX(), -cam.getY()); //end of cam
@@ -242,6 +249,8 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	public static void main(String args[]) {
+		//System.setProperty("sun.java2d.opengl", "true");
+		
 		canvas = new Game();
 	}
 	
