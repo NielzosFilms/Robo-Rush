@@ -18,13 +18,20 @@ public class Tile extends GameObject{
 	private BufferedImage tex;
 	public int tex_id;
 	private Textures textures;
+	private String biome;
 	
-	public Tile(int x, int y, int z_index, ID id, int tex_id, Textures textures) {
+	public Tile(int x, int y, int z_index, ID id, int tex_id, Textures textures, String biome) {
 		super(x, y, z_index, id);
 		this.tex = tex;
 		this.tex_id = tex_id;
 		this.textures = textures;
-		this.tex = textures.tileSetBlocks.get(this.tex_id);
+		this.biome = biome;
+		
+		if(biome == "forest"){
+			this.tex = textures.tileSetBlocks.get(this.tex_id);
+		} else if(biome == "desert") {
+			this.tex = textures.tileSetDesertBlocks.get(this.tex_id);
+		}
 	}
 	
 	public void tick() {
@@ -212,7 +219,12 @@ public class Tile extends GameObject{
 	
 	public void setTexture(int tex_id) {
 		this.tex_id = tex_id;
-		this.tex = textures.tileSetBlocks.get(tex_id);
+		
+		if(biome == "forest") {
+			this.tex = textures.tileSetBlocks.get(tex_id);
+		} else if(biome == "desert") {
+			this.tex = textures.tileSetDesertBlocks.get(tex_id);
+		}
 	}
 
 	public Rectangle getBounds() {

@@ -14,7 +14,7 @@ import java.util.List;
 public class Textures {
 	
 	//tilesets / sheets
-	static BufferedImage tileSet, playerSheet, mushroom;
+	static BufferedImage tileSet, playerSheet, mushroom, tileSetDesert;
 	
 	//nature
 	public BufferedImage tree;
@@ -29,12 +29,14 @@ public class Textures {
 	public Font font;
 	
 	public static List<BufferedImage>tileSetBlocks = new ArrayList<BufferedImage>();
+	public static List<BufferedImage>tileSetDesertBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage>playerImg = new ArrayList<BufferedImage>();
 	
 	public Textures() {
 		BufferedImageLoader loader = new BufferedImageLoader();
 		
 		tileSet = loader.loadImage("assets/main/tile_sheets/grass_tiles2.png");
+		tileSetDesert = loader.loadImage("assets/main/tile_sheets/desert_tile.png");
 		playerSheet = loader.loadImage("assets/entities/player/player_sheet.png");
 		
 		tree = loader.loadImage("assets/world/nature/tree.png");
@@ -54,6 +56,7 @@ public class Textures {
 			}
 		}
 		
+		
 		SpriteSheet ss2 = new SpriteSheet(playerSheet);
 		for(int i = 0;i<playerSheet.getHeight();i+=24) {
 			for(int j = 0;j<playerSheet.getWidth();j+=16) {
@@ -68,6 +71,12 @@ public class Textures {
 			}
 		}
 		
+		SpriteSheet ss4 = new SpriteSheet(tileSetDesert);
+		for(int i = 0;i<tileSetDesert.getHeight();i+=16) {
+			for(int j = 0;j<tileSetDesert.getWidth();j+=16) {
+				tileSetDesertBlocks.add(ss4.grabImage(j, i, 16, 16));
+			}
+		}
 		//block = ss.grabImage(0, 0, 16, 16);
 	}
 	

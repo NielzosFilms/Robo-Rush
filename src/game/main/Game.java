@@ -36,7 +36,8 @@ public class Game extends Canvas implements Runnable {
 	public static final int FPS = 60;
 	public static final String VERSION = "ALPHA V 2.9.3 INFDEV";
 
-	private Thread thread;//, image_proccessing_thread;
+	private Thread thread;
+	private static ImageRendering imageRenderer;
 	private boolean running = true;
 	public static int current_fps = 0;
 	
@@ -117,9 +118,6 @@ public class Game extends Canvas implements Runnable {
 	public synchronized void start() {
 		thread = new Thread(this);
 		thread.start();
-		
-		//image_proccessing_thread = new Thread(this);
-		
 	}
 	
 	public synchronized void stop() {
@@ -199,7 +197,8 @@ public class Game extends Canvas implements Runnable {
 		g2d.transform(scalingTransform);*/
 		g2d.scale(SCALE_WIDTH, SCALE_HEIGHT);
 		
-		g.setColor(Color.decode("#d1e3ff"));
+		//g.setColor(Color.decode("#d1e3ff"));
+		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		if(game_state == GAMESTATES.Game && world.loaded) {
@@ -252,6 +251,8 @@ public class Game extends Canvas implements Runnable {
 		//System.setProperty("sun.java2d.opengl", "true");
 		
 		canvas = new Game();
+		imageRenderer = new ImageRendering();
+		
 	}
 	
 	public static int clamp(int var, int min, int max) {

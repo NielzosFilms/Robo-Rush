@@ -115,9 +115,9 @@ public class Chunk {
 				float moist_val = moist_osn[xx][yy];
 				if((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { //forest
 					if(val < -0.2) {
-						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14, textures));
+						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14, textures, "forest"));
 					} else {
-						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 0, textures));
+						tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 0, textures, "forest"));
 						int num = r.nextInt(100);
 						if(num == 0) {
 							entities.get(0).add(new Tree(xx*16+x*16, yy*16+y*16, 1, ID.Tree, "forest", player, textures));
@@ -126,9 +126,9 @@ public class Chunk {
 						}
 					}
 				}else if(temp_val < 0 && moist_val < 0) { //desert
-					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14, textures));
+					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 0, textures, "desert"));
 				}else {
-					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14, textures));
+					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14, textures, "forest"));
 				}
 				
 			}

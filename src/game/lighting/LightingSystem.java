@@ -38,8 +38,8 @@ public class LightingSystem {
 	
 	public void render(Graphics g) {
 		
-		BufferedImage overlay = getBufferedImageMap(null, null, null);
-		g.drawImage(overlay, 0, 0, null);
+		//BufferedImage overlay = getBufferedImageMap(null, null, null);
+		//g.drawImage(overlay, 0, 0, null);
 		
 		LinkedList<Light> lights = handler.getLights(world);
 		LinkedList<GameObject> objects = handler.getShadowObjects(world);
