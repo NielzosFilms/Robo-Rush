@@ -1,13 +1,29 @@
 package game.main;
 
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferStrategy;
+
+import game.lighting.LightingSystem;
+
 public class ImageRendering implements Runnable{
 	
 	private Thread thread;
 	private boolean running = true;
 	public static int current_fps = 0;
 	
-	public ImageRendering() {
-		
+	private LightingSystem lightingSystem;
+	private Canvas canvas;
+	private Game game;
+	
+	public ImageRendering(Canvas canvas, Game game) {
+		this.canvas = canvas;
+		this.game = game;
+	}
+	
+	public void setLightingSystem(LightingSystem lightingSystem) {
+		this.lightingSystem = lightingSystem;
 	}
 	
 	public synchronized void start() {
@@ -55,11 +71,27 @@ public class ImageRendering implements Runnable{
 	}
 	
 	public void tick() {
-		System.out.println("ImageRendering Test");
+		
 	}
 	
 	public void render() {
+		BufferStrategy bs = game.getBufferStrategy();
+		if(bs == null) {
+			game.createBufferStrategy(3);
+			return;
+		}
 		
+		Graphics g = bs.getDrawGraphics();
+		Graphics2D g2d = (Graphics2D) g;
+		
+		Long start = System.currentTimeMillis();
+		lightingSystem.render(g);
+		Long finish = System.currentTimeMillis();
+		System.out.println("Light System Render Time: " + ( finish - start ) );
+		
+		g.dispose();
+		g2d.dispose();
+		bs.show();
 	}
 
 }

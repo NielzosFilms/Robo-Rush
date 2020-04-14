@@ -15,6 +15,7 @@ public class Textures {
 	
 	//tilesets / sheets
 	static BufferedImage tileSet, playerSheet, mushroom, tileSetDesert;
+	public BufferedImage entity_shadow;
 	
 	//nature
 	public BufferedImage tree;
@@ -38,6 +39,7 @@ public class Textures {
 		tileSet = loader.loadImage("assets/main/tile_sheets/grass_tiles2.png");
 		tileSetDesert = loader.loadImage("assets/main/tile_sheets/desert_tile.png");
 		playerSheet = loader.loadImage("assets/entities/player/player_sheet.png");
+		entity_shadow = loader.loadImage("assets/entities/shadow.png");
 		
 		tree = loader.loadImage("assets/world/nature/tree.png");
 		mushroom = loader.loadImage("assets/world/nature/paddenstoel.png");

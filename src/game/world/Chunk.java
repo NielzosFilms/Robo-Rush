@@ -125,7 +125,7 @@ public class Chunk {
 							entities.get(0).add(new Mushroom(xx*16+x*16, yy*16+y*16, 1, ID.Mushroom, textures));
 						}
 					}
-				}else if(temp_val < 0 && moist_val < 0) { //desert
+				}else if(temp_val < -0.3 && moist_val < -0.3) { //desert
 					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 0, textures, "desert"));
 				}else {
 					tiles.get(0).put(new Point(xx*16+x, yy*16+y), new Tile(xx*16+x*16, yy*16+y*16, 0, ID.Tile, 14, textures, "forest"));

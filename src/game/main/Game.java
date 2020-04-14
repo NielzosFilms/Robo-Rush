@@ -11,6 +11,7 @@ import java.awt.image.BufferStrategy;
 import java.util.LinkedList;
 import java.util.Random;
 
+import game.entities.ItemGround;
 import game.entities.Player;
 import game.entities.particles.Particle;
 import game.entities.particles.ParticleSystem;
@@ -37,7 +38,7 @@ public class Game extends Canvas implements Runnable {
 	public static final String VERSION = "ALPHA V 2.9.3 INFDEV";
 
 	private Thread thread;
-	private static ImageRendering imageRenderer;
+	private ImageRendering imageRenderer;
 	private boolean running = true;
 	public static int current_fps = 0;
 	
@@ -82,7 +83,7 @@ public class Game extends Canvas implements Runnable {
 		r = new Random();
 		
 		Player player = new Player(0, 0, 2, ID.Player, keyInput, textures);
-		inventory = new Inventory(5, 4, textures, mouseInput, ps);
+		inventory = new Inventory(5, 4, textures, mouseInput, ps, handler, cam);
 		mouseInput.setInventory(inventory);
 		keyInput.setInventory(inventory);
 		hud = new HUD(handler, player, inventory);
@@ -111,6 +112,10 @@ public class Game extends Canvas implements Runnable {
 		handler.addObject(1, new Tree(0, 250, 1, ID.Tree, "forest", player, textures));
 		handler.addObject(1, new Tree(35, 320, 1, ID.Tree, "forest", player, textures));
 		
+		
+		/*imageRenderer = new ImageRendering(canvas, this);
+		imageRenderer.start();
+		imageRenderer.setLightingSystem(lightingSystem);*/
 		
 		//ll.LoadLevelHeightMap(handler);
 	}
@@ -226,10 +231,7 @@ public class Game extends Canvas implements Runnable {
 			}*/
 			//}
 			//g.drawRect(0, 192, 16*9, 16*4);
-			Long start = System.currentTimeMillis();
-			lightingSystem.render(g);
-			Long finish = System.currentTimeMillis();
-			System.out.println("Light System Render Time: " + ( finish - start ) );
+			
 			//ongeveer 30-35 ms
 			
 			hud.renderCam(g, g2d);
@@ -251,7 +253,7 @@ public class Game extends Canvas implements Runnable {
 		//System.setProperty("sun.java2d.opengl", "true");
 		
 		canvas = new Game();
-		imageRenderer = new ImageRendering();
+		
 		
 	}
 	

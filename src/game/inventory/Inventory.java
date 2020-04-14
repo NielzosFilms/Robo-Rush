@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.io.Console;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import game.entities.ItemGround;
 import game.entities.particles.Particle;
 import game.entities.particles.ParticleSystem;
 import game.items.Item;
+import game.main.Camera;
 import game.main.Game;
 import game.main.GameObject;
 import game.main.Handler;
@@ -29,9 +32,11 @@ public class Inventory {
 	private Item mouse_holding;
 	private Boolean inventory_open;
 	private ParticleSystem particleSystem;
+	private Handler handler;
+	private Camera cam;
 	private int hotbar_selected_item;
 	
-	public Inventory(int size_x, int size_y, Textures textures, MouseInput mouseInput, ParticleSystem particleSystem) {
+	public Inventory(int size_x, int size_y, Textures textures, MouseInput mouseInput, ParticleSystem particleSystem, Handler handler, Camera cam) {
 		this.size_x = size_x;
 		this.size_y = size_y;
 		this.x = Game.WIDTH/5;
@@ -42,6 +47,8 @@ public class Inventory {
 		this.inventory_open = false;
 		this.hotbar_selected_item = 0;
 		this.particleSystem = particleSystem;
+		this.cam = cam;
+		this.handler = handler;
 		
 		this.items = new HashMap<Point, Item>();
 		this.hotbar = new HashMap<Integer, Item>();
@@ -108,6 +115,7 @@ public class Inventory {
 	public void mouseClicked(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1) {
 			if(inventory_open) {
+				boolean in_inventory = false;
 				for(int y = 0;y<size_y;y++) {
 					for(int x = 0;x<size_x;x++) {
 						if(mouse_holding == null) {
@@ -117,6 +125,7 @@ public class Inventory {
 								int item_w = 20;
 								int item_h = 20;
 								if(mouseInput.mouseOverLocalVar(item_x, item_y, item_w, item_h)) {
+									in_inventory = true;
 									Item item = items.get(new Point(x, y));
 									mouse_holding = item;
 									items.remove(new Point(x, y), item);
@@ -128,6 +137,7 @@ public class Inventory {
 							int item_w = 20;
 							int item_h = 20;
 							if(mouseInput.mouseOverLocalVar(item_x, item_y, item_w, item_h)) {
+								in_inventory = true;
 								if(!items.containsKey(new Point(x, y))) {
 									items.put(new Point(x, y), mouse_holding);
 									mouse_holding = null;
@@ -135,6 +145,10 @@ public class Inventory {
 							}
 						}
 					}
+				}
+				if(!in_inventory && mouse_holding != null) {
+					handler.addObject(4, new ItemGround(mouseInput.getMouseWorldCoords().x-8, mouseInput.getMouseWorldCoords().y-8, 4, ID.Item, mouse_holding, textures));
+					mouse_holding = null;
 				}
 			}
 			
@@ -188,11 +202,19 @@ public class Inventory {
 						for(int y = 0;y<size_y;y++) {
 							for(int x = 0;x<size_x;x++) {
 								if(!items.containsKey(new Point(x, y))) {
-									Item item = new Item(obj, obj.getId().toString(), 1, textures);
-									items.put(new Point(x, y), item);
-									System.out.println(obj.getY() + ", "+obj.getY());
-									handler.findAndRemoveObject(obj, world);
-									return;
+									if(obj.getId() == ID.Item) {
+										ItemGround item_ground = (ItemGround) obj;
+										items.put(new Point(x, y), item_ground.getItem());
+										System.out.println(obj.getY() + ", "+obj.getY());
+										handler.findAndRemoveObject(obj, world);
+										return;
+									}else {
+										Item item = new Item(obj, obj.getId().toString(), 1, textures);
+										items.put(new Point(x, y), item);
+										System.out.println(obj.getY() + ", "+obj.getY());
+										handler.findAndRemoveObject(obj, world);
+										return;
+									}
 								}
 							}
 						}

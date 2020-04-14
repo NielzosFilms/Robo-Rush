@@ -1,5 +1,6 @@
 package game.main;
 
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -94,6 +95,10 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		int my = (int) (mouse_y + -cam.getY());
 		return (mx > x && mx < x + width) &&
 				(my > y && my < y + height);
+	}
+	
+	public Point getMouseWorldCoords() {
+		return new Point((int) (mouse_x + -cam.getX()), (int) (mouse_y + -cam.getY()));
 	}
 	
 	public boolean mouseOver(int mx, int my, int x, int y, int width, int height) {

@@ -104,7 +104,7 @@ public class Handler {
 	}
 	
 	public void addObject(int z_index, GameObject object) {
-		while(z_index > this.object.size()) {//add new layers if it doesnt exist
+		while(z_index >= this.object.size()) {//add new layers if it doesnt exist
 			this.object.add(new LinkedList<GameObject>());
 		}
 		this.object.get(z_index).add(object);
@@ -116,7 +116,7 @@ public class Handler {
 	public LinkedList<GameObject> getSelectableObjects(World world) {
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
 		LinkedList<GameObject> objs = new LinkedList<GameObject>();
-		ID[] ids = {ID.Tree, ID.Mushroom};
+		ID[] ids = {ID.Tree, ID.Mushroom, ID.Item};
 		
 		for(LinkedList<GameObject> list : object) {
 			for(int i = 0; i < list.size(); i++) {
