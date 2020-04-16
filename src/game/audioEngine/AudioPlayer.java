@@ -22,6 +22,8 @@ public class AudioPlayer {
 					clip.setMicrosecondPosition((long)(start_ms*1000));
 					clip.start();
 					
+					clip.getMicrosecondLength();
+					
 					if(loop) {
 						clip.loop(Clip.LOOP_CONTINUOUSLY);
 					}
@@ -64,6 +66,15 @@ public class AudioPlayer {
 		setVol(vol, clip);
 		clip.setMicrosecondPosition(clipTimePosition);
 		clip.start();
+	}
+	
+	public static boolean audioEnded(AudioClip sfx) {
+		Clip clip = sfx.getClip();
+		if(clip != null) {
+			long clipTimePosition = clip.getMicrosecondPosition();
+			return clipTimePosition >= clip.getMicrosecondLength();
+		}
+		return false;
 	}
 	
 }

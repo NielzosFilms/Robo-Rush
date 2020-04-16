@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import game.audioEngine.AudioClip;
+import game.audioEngine.AudioFiles;
 import game.audioEngine.AudioPlayer;
 import game.entities.ItemGround;
 import game.entities.Player;
@@ -64,7 +65,7 @@ public class Game extends Canvas implements Runnable {
 	private World world;
 	private Inventory inventory;
 	private LightingSystem lightingSystem;
-	public static AudioClip clip;
+	public static AudioFiles audioFiles;
 	//private static ArrayList<ArrayList<Long>> blocks;
 	
 	public Game() {
@@ -74,7 +75,7 @@ public class Game extends Canvas implements Runnable {
 		keyInput = new KeyInput(handler);
 		mouseInput = new MouseInput();
 		
-		clip = new AudioClip("assets/audio/world/Futureopolis.wav");
+		audioFiles = new AudioFiles();
 		
 		//blocks = ll.getLevelData();
 		ll.loadLevelData("assets/world/structures/top_down_map.json");
@@ -118,7 +119,7 @@ public class Game extends Canvas implements Runnable {
 		handler.addObject(1, new Tree(0, 250, 1, ID.Tree, "forest", player, textures));
 		handler.addObject(1, new Tree(35, 320, 1, ID.Tree, "forest", player, textures));
 		
-		AudioPlayer.playSound(clip, 0.1, true, 0);
+		AudioPlayer.playSound(audioFiles.futureopolis, 0.1, true, 0);
 		
 		/*imageRenderer = new ImageRendering(canvas, this);
 		imageRenderer.start();
@@ -191,6 +192,13 @@ public class Game extends Canvas implements Runnable {
 			hud.tick();
 			
 			keyInput.tick();
+			
+			
+			/*if(AudioPlayer.audioEnded(audioFiles.futureopolis)) {
+				AudioPlayer.stopSound(audioFiles.futureopolis);
+			}*/
+			
+			
 		} else if(game_state == GAMESTATES.Game && pauzed) {
 			
 		}
