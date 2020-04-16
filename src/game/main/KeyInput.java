@@ -4,6 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
+import game.audioEngine.AudioPlayer;
 import game.inventory.Inventory;
 import game.world.World;
 
@@ -50,8 +51,12 @@ public class KeyInput extends KeyAdapter {
 					if(key == KeyEvent.VK_S) keysDown[1] = true;
 					if(key == KeyEvent.VK_A) keysDown[2] = true;
 					if(key == KeyEvent.VK_D) keysDown[3] = true;
-					if(key == KeyEvent.VK_SPACE) keysDown[4] = true;
-					if(key == KeyEvent.VK_SHIFT) keysDown[5] = true;
+					if(key == KeyEvent.VK_SPACE) {
+						keysDown[4] = true;
+					}
+					if(key == KeyEvent.VK_SHIFT) {
+						keysDown[5] = true;
+					}
 					if(key == KeyEvent.VK_CONTROL) {
 						keysDown[6] = true;
 						if(!Game.showHitboxes) Game.showHitboxes = true;

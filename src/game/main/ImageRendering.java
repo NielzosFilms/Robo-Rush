@@ -17,6 +17,8 @@ public class ImageRendering implements Runnable{
 	private Canvas canvas;
 	private Game game;
 	
+	//syncronized with game ???
+	
 	public ImageRendering(Canvas canvas, Game game) {
 		this.canvas = canvas;
 		this.game = game;

@@ -11,6 +11,8 @@ import java.awt.image.BufferStrategy;
 import java.util.LinkedList;
 import java.util.Random;
 
+import game.audioEngine.AudioClip;
+import game.audioEngine.AudioPlayer;
 import game.entities.ItemGround;
 import game.entities.Player;
 import game.entities.particles.Particle;
@@ -62,6 +64,7 @@ public class Game extends Canvas implements Runnable {
 	private World world;
 	private Inventory inventory;
 	private LightingSystem lightingSystem;
+	public static AudioClip clip;
 	//private static ArrayList<ArrayList<Long>> blocks;
 	
 	public Game() {
@@ -70,6 +73,9 @@ public class Game extends Canvas implements Runnable {
 		textures = new Textures();
 		keyInput = new KeyInput(handler);
 		mouseInput = new MouseInput();
+		
+		clip = new AudioClip("assets/audio/Panda Eyes - Can't Move (feat. Mindy).wav");
+		
 		//blocks = ll.getLevelData();
 		ll.loadLevelData("assets/world/structures/top_down_map.json");
 		
@@ -112,6 +118,7 @@ public class Game extends Canvas implements Runnable {
 		handler.addObject(1, new Tree(0, 250, 1, ID.Tree, "forest", player, textures));
 		handler.addObject(1, new Tree(35, 320, 1, ID.Tree, "forest", player, textures));
 		
+		AudioPlayer.playSound(clip, 0.1, false, 0);
 		
 		/*imageRenderer = new ImageRendering(canvas, this);
 		imageRenderer.start();
@@ -165,6 +172,7 @@ public class Game extends Canvas implements Runnable {
 	
 	private void tick() {
 		if(game_state == GAMESTATES.Game && !pauzed && world.loaded) {
+			
 			handler.tick(world);
 			ps.tick();
 			world.tick();
