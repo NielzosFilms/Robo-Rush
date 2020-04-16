@@ -8,7 +8,7 @@ import javax.sound.sampled.FloatControl;
 public class AudioPlayer {
 
 	//vol = 0 > 1
-	public static synchronized void playSound(AudioClip sfx, double vol, boolean loop, int start_sec) {
+	public static synchronized void playSound(AudioClip sfx, double vol, boolean loop, int start_ms) {
 		Thread thread = new Thread() {
 			public void run() {
 				try {
@@ -19,7 +19,7 @@ public class AudioPlayer {
 					clip.open(stream);
 					setVol(vol, clip);
 					sfx.setClip(clip, vol);
-					clip.setMicrosecondPosition((long)(start_sec*1000000));
+					clip.setMicrosecondPosition((long)(start_ms*1000));
 					clip.start();
 					
 					if(loop) {

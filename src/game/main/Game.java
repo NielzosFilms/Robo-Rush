@@ -74,7 +74,7 @@ public class Game extends Canvas implements Runnable {
 		keyInput = new KeyInput(handler);
 		mouseInput = new MouseInput();
 		
-		clip = new AudioClip("assets/audio/Panda Eyes - Can't Move (feat. Mindy).wav");
+		clip = new AudioClip("assets/audio/world/Futureopolis.wav");
 		
 		//blocks = ll.getLevelData();
 		ll.loadLevelData("assets/world/structures/top_down_map.json");
@@ -118,7 +118,7 @@ public class Game extends Canvas implements Runnable {
 		handler.addObject(1, new Tree(0, 250, 1, ID.Tree, "forest", player, textures));
 		handler.addObject(1, new Tree(35, 320, 1, ID.Tree, "forest", player, textures));
 		
-		AudioPlayer.playSound(clip, 0.1, false, 0);
+		AudioPlayer.playSound(clip, 0.1, true, 0);
 		
 		/*imageRenderer = new ImageRendering(canvas, this);
 		imageRenderer.start();
