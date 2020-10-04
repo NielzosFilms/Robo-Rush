@@ -33,7 +33,7 @@ public class Game extends Canvas implements Runnable {
 	
 	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
-	public static final int WIDTH = 480, HEIGHT = WIDTH / 16 * 9; //640 480 idk which is better
+	public static final int WIDTH = 2000, HEIGHT = WIDTH / 16 * 9; //640 480 idk which is better
 	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "2D Platformer";
@@ -249,6 +249,11 @@ public class Game extends Canvas implements Runnable {
 			//g.drawRect(0, 192, 16*9, 16*4);
 			
 			//ongeveer 30-35 ms
+			Long start = System.currentTimeMillis();
+			//lightingSystem.render(g);
+			Long finish = System.currentTimeMillis();
+			System.out.println("Light System Render Time: " + ( finish - start ) );
+			
 			
 			hud.renderCam(g, g2d);
 			g2d.translate(-cam.getX(), -cam.getY()); //end of cam
