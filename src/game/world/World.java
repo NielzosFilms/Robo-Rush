@@ -48,6 +48,8 @@ public class World {
 		int camY = (Math.round(-Game.cam.getY()/16));
 		int camW = (Math.round(Game.WIDTH/16));
 		int camH = (Math.round(Game.HEIGHT/16));
+
+		textures.water.runAnimation();
 		
 		for(int y = camY-32;y < camY+camH+16;y++) {
 			for(int x = camX-32;x < camX+camW+16;x++) {

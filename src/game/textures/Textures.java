@@ -11,9 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Textures {
+	public static Animation water;
 
 	// tilesets / sheets
-	static BufferedImage tileSet, playerSheet, mushroom, tileSetDesert, tileSetWater;
+	static BufferedImage tileSetForest, playerSheet, mushroom, tileSetDesert, tileSetWater;
 	public BufferedImage entity_shadow;
 
 	// nature
@@ -28,7 +29,7 @@ public class Textures {
 
 	public Font font;
 
-	public static List<BufferedImage> tileSetBlocks = new ArrayList<BufferedImage>();
+	public static List<BufferedImage> tileSetForestBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> tileSetDesertBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> tileSetWaterBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> playerImg = new ArrayList<BufferedImage>();
@@ -36,7 +37,7 @@ public class Textures {
 	public Textures() {
 		BufferedImageLoader loader = new BufferedImageLoader();
 
-		tileSet = loader.loadImage("assets/main/tile_sheets/grass_tiles.png");
+		tileSetForest = loader.loadImage("assets/main/tile_sheets/grass_tiles.png");
 		tileSetDesert = loader.loadImage("assets/main/tile_sheets/desert_tile.png");
 		tileSetWater = loader.loadImage("assets/main/tile_sheets/water_tiles.png");
 
@@ -53,10 +54,10 @@ public class Textures {
 
 		// height_map = loader.loadImage("assets/main/height_map.png");
 
-		SpriteSheet ss = new SpriteSheet(tileSet);
-		for (int i = 0; i < tileSet.getHeight(); i += 16) {
-			for (int j = 0; j < tileSet.getWidth(); j += 16) {
-				tileSetBlocks.add(ss.grabImage(j, i, 16, 16));
+		SpriteSheet ss = new SpriteSheet(tileSetForest);
+		for (int i = 0; i < tileSetForest.getHeight(); i += 16) {
+			for (int j = 0; j < tileSetForest.getWidth(); j += 16) {
+				tileSetForestBlocks.add(ss.grabImage(j, i, 16, 16));
 			}
 		}
 
@@ -87,17 +88,17 @@ public class Textures {
 				tileSetWaterBlocks.add(ss5.grabImage(j, i, 16, 16));
 			}
 		}
-		// block = ss.grabImage(0, 0, 16, 16);
+		water = new Animation(25, tileSetWaterBlocks.get(0), tileSetWaterBlocks.get(1));
 	}
 
 	// static getter from image list
 
 	public BufferedImage getBlock(int index) {
-		return tileSetBlocks.get(index);
+		return tileSetForestBlocks.get(index);
 	}
 
 	public static List<BufferedImage> getList() {
-		return tileSetBlocks;
+		return tileSetForestBlocks;
 	}
 
 }

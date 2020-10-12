@@ -33,8 +33,9 @@ public class Game extends Canvas implements Runnable {
 
 	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-	public static final int WIDTH = 640, HEIGHT = WIDTH / 4 * 3; // 640 480 idk which is better
 	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
+	public static final float RATIO = (float)NEW_WIDTH/NEW_HEIGHT;
+	public static final int WIDTH = 640, HEIGHT = (int)Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
 	public static final int FPS = 60;
@@ -86,6 +87,9 @@ public class Game extends Canvas implements Runnable {
 		this.addMouseListener(mouseInput);
 		this.addMouseMotionListener(mouseInput);
 		this.addMouseWheelListener(mouseInput);
+		System.out.println(RATIO);
+		System.out.println(WIDTH + ", " + HEIGHT);
+		System.out.println(NEW_WIDTH + ", " + NEW_HEIGHT);
 		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
 		r = new Random();
 
