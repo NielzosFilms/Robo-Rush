@@ -1,4 +1,4 @@
-# 2D-Platformer-Game
+# Top Down Java Game
 
 This is a game i'm making in my spare time.<br>
 Its made purely with Java.
