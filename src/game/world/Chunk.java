@@ -123,29 +123,17 @@ public class Chunk {
 				int resized_y = yy * 16;
 				int world_y = resized_y + y * 16;
 
-				if ((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { // forest
-					if (val < 0) {
-						tiles.get(0).put(new Point(resized_x + x, resized_y + y),
-								new Tile(world_x, world_y, 0, ID.Tile, 0, textures, "beach"));
-					} else {
-						tiles.get(0).put(new Point(resized_x + x, resized_y + y),
-								new Tile(world_x, world_y, 0, ID.Tile, 18, textures, "forest"));// 0 == finding
-																								// texture???
-						int num = r.nextInt(100);
-						if (num == 0) {
-							entities.get(0).add(new Tree(world_x, world_y, 1, ID.Tree, "forest", player, textures));
-						} else if (num == 1) {
-							entities.get(0).add(new Mushroom(world_x, world_y, 1, ID.Mushroom, textures));
-						}
+				tiles.get(0).put(new Point(resized_x + x, resized_y + y),
+								new Tile(world_x, world_y, 0, ID.Tile, textures, getBiome(val, temp_val, moist_val)));
+				
+				if(getBiome(val, temp_val, moist_val) == "forest") {
+					int num = r.nextInt(100);
+					if (num == 0) {
+						entities.get(0).add(new Tree(world_x, world_y, 1, ID.Tree, "forest", player, textures));
+					} else if (num == 1) {
+						entities.get(0).add(new Mushroom(world_x, world_y, 1, ID.Mushroom, textures));
 					}
-				} else if (temp_val < -0.3 && moist_val < -0.3) { // desert
-					tiles.get(0).put(new Point(resized_x + x, resized_y + y),
-							new Tile(world_x, world_y, 0, ID.Tile, 0, textures, "desert"));
-				} else {
-					tiles.get(0).put(new Point(resized_x + x, resized_y + y),
-							new Tile(world_x, world_y, 0, ID.Tile, 0, textures, "ocean"));
 				}
-
 			}
 		}
 
@@ -157,6 +145,23 @@ public class Chunk {
 
 			int tex_id = tile.getTextureId(this.tiles.get(0), (Point) pair.getKey(), tile.tex_id, world, this);
 			tile.setTexture(tex_id);
+		}
+	}
+
+	public static String getBiome(float val, float temp_val, float moist_val) {
+		//biome generation needs refinement
+		if ((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { // forest
+			if (val < -0.3) {
+				return "beach";
+			} else {
+				return "forest";
+			}
+		} else if (temp_val < 0 && moist_val < 0) { // desert
+			return "desert";
+		} else if (temp_val > 0 && moist_val < 0) { // dirt
+			return "dirt";
+		} else {
+			return "ocean";
 		}
 	}
 

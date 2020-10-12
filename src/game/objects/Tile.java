@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.Random;
 
 import game.main.GameObject;
 import game.main.ID;
@@ -15,31 +16,38 @@ import game.world.Chunk;
 import game.world.World;
 
 public class Tile extends GameObject {
+	private Random r = new Random();
 
 	private BufferedImage tex;
 	public int tex_id;
 	private Textures textures;
 	private String biome;
+	private Animation water; 
 
 	private int text_id_bg;
 	private String biome_bg;
 	private BufferedImage tex_bg;
-	private Animation water;
 
-	public Tile(int x, int y, int z_index, ID id, int tex_id, Textures textures, String biome) {
+	public Tile(int x, int y, int z_index, ID id, Textures textures, String biome) {
 		super(x, y, z_index, id);
 		this.tex = tex;
-		this.tex_id = tex_id;
 		this.textures = textures;
 		this.biome = biome;
 
+		water = new Animation(60, textures.tileSetWaterBlocks.get(0), textures.tileSetWaterBlocks.get(1));
+
 		if (biome == "forest") {
+			this.tex_id = 18;
 			this.tex = textures.tileSetBlocks.get(this.tex_id);
 		} else if (biome == "desert" || biome == "beach") {
+			this.tex_id = 0;
 			this.tex = textures.tileSetDesertBlocks.get(this.tex_id);
-		} else if (biome == "ocean") {
+		} else if (biome == "dirt") {
+			this.tex_id = 28;
+			this.tex = textures.tileSetBlocks.get(this.tex_id);
+		}else if (biome == "ocean") {
+			this.tex_id = 0;
 			// this.tex = textures.tileSetWaterBlocks.get(this.tex_id);
-			water = new Animation(60, textures.tileSetWaterBlocks.get(0), textures.tileSetWaterBlocks.get(1));
 		}
 	}
 
@@ -52,8 +60,14 @@ public class Tile extends GameObject {
 			water.runAnimation();
 			water.drawAnimation(g, x, y);
 		} else {
-			if (tex_bg != null)
-				g.drawImage(tex_bg, x, y, null);
+			if (tex_bg != null) {
+				if(biome_bg == "ocean") {
+					water.runAnimation();
+					water.drawAnimation(g, x, y);
+				} else {
+					g.drawImage(tex_bg, x, y, null);
+				}
+			}
 			g.drawImage(tex, x, y, null);
 		}
 	}
@@ -216,6 +230,17 @@ public class Tile extends GameObject {
 				} else if (!left) {
 					return 8;
 				}
+
+				int num = r.nextInt(25);
+				if(num == 0) {
+					int[] ids = new int[]{20, 26, 30, 31, 32};
+					int i = r.nextInt(ids.length);
+					return ids[i];
+				} else if(num >= 1 && num <= 4) {
+					int[] ids = new int[]{19, 24, 25};
+					int i = r.nextInt(ids.length);
+					return ids[i];
+				}
 			} else if (biome == "desert") {
 				return 0;
 			}
@@ -223,43 +248,12 @@ public class Tile extends GameObject {
 		return tex_id;
 	}
 
-	public int getTextureIdFromHeightMap(float[] point) {
+	public static String getBiomeFromHeightMap(float[] point) {
 		float osn = point[0];
 		float temp_osn = point[1];
 		float moist_osn = point[2];
 
-		if (biome == "forest") {
-			if ((temp_osn > -0.5 && temp_osn < 0.5) && (moist_osn > 0.5)) {
-				if (osn < -0.2) {
-					return 7;
-				} else {
-					return 0;
-				}
-
-			}
-			return 7;
-		} else if (biome == "desert") {
-			return 0;
-		}
-		return 0;
-	}
-
-	public String getBiomeFromHeightMap(float[] point) {
-		float osn = point[0];
-		float temp_osn = point[1];
-		float moist_osn = point[2];
-
-		if ((temp_osn > -0.5 && temp_osn < 0.5) && (moist_osn > 0.5)) { // forest
-			if (osn < 0) {
-				return "beach";
-			} else {
-				return "forest";
-			}
-		} else if (temp_osn < -0.3 && moist_osn < -0.3) { // desert
-			return "desert";
-		} else {
-			return "ocean";
-		}
+		return Chunk.getBiome(osn, temp_osn, moist_osn);
 	}
 
 	private Boolean isInArray(int[] arr, int val) {
@@ -274,21 +268,21 @@ public class Tile extends GameObject {
 	public void setTexture(int tex_id) {
 		this.tex_id = tex_id;
 
-		if (biome == "forest") {
+		if (biome == "forest" || biome == "dirt") {
 			this.tex = textures.tileSetBlocks.get(tex_id);
-		} else if (biome == "desert") {
+		} else if (biome == "desert" || biome == "beach") {
 			this.tex = textures.tileSetDesertBlocks.get(tex_id);
 		}
 
 		// background texture
 		if (biome_bg == "ocean") {
 			this.tex_bg = textures.tileSetWaterBlocks.get(0); // water
-		} else if (biome_bg == "desert") {
+		} else if (biome_bg == "desert" || biome_bg == "beach") {
 			this.tex_bg = textures.tileSetDesertBlocks.get(0); // sand
-		} else if (biome_bg == "beach") {
-			this.tex_bg = textures.tileSetDesertBlocks.get(0); // sand
+		} else if(biome_bg == "dirt") {
+			this.tex_bg = textures.tileSetBlocks.get(28); // dirt
 		} else {
-			this.tex_bg = textures.tileSetWaterBlocks.get(0); // water
+			this.tex_bg = null;
 		}
 	}
 

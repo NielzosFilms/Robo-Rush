@@ -147,7 +147,7 @@ public class Inventory {
 					}
 				}
 				if(!in_inventory && mouse_holding != null) {
-					handler.addObject(4, new ItemGround(mouseInput.getMouseWorldCoords().x-8, mouseInput.getMouseWorldCoords().y-8, 4, ID.Item, mouse_holding, textures));
+					handler.addObject(4, new ItemGround(mouseInput.getMouseWorldCoords().x-8, mouseInput.getMouseWorldCoords().y-8, 1, ID.Item, mouse_holding, textures));
 					mouse_holding = null;
 				}
 			}
@@ -177,7 +177,7 @@ public class Inventory {
 					}
 				}
 			}
-		}
+		} 
 	}
 	
 	public void pickupItem(Handler handler, World world) {

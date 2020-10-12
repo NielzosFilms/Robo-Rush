@@ -33,12 +33,12 @@ public class Game extends Canvas implements Runnable {
 
 	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-	public static final int WIDTH = 640, HEIGHT = WIDTH / 16 * 9; // 640 480 idk which is better
+	public static final int WIDTH = 640, HEIGHT = WIDTH / 4 * 3; // 640 480 idk which is better
 	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
-	public static final String TITLE = "2D Platformer";
+	public static final String TITLE = "Top Down Java Game";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.9.3 INFDEV";
+	public static final String VERSION = "ALPHA V 2.10.0 INFDEV";
 
 	private Thread thread;
 	private ImageRendering imageRenderer;
@@ -115,9 +115,9 @@ public class Game extends Canvas implements Runnable {
 		lightingSystem.setWorld(world);
 		lightingSystem.setCam(cam);
 
-		handler.addLight(new Light(new Point(0, 300), textures.light));
+		/*handler.addLight(new Light(new Point(0, 300), textures.light));
 		handler.addObject(1, new Tree(0, 250, 1, ID.Tree, "forest", player, textures));
-		handler.addObject(1, new Tree(35, 320, 1, ID.Tree, "forest", player, textures));
+		handler.addObject(1, new Tree(35, 320, 1, ID.Tree, "forest", player, textures));*/
 
 		// AudioPlayer.playSound(audioFiles.futureopolis, 0.1, true, 0);
 
