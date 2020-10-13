@@ -87,13 +87,10 @@ public class Game extends Canvas implements Runnable {
 		this.addMouseListener(mouseInput);
 		this.addMouseMotionListener(mouseInput);
 		this.addMouseWheelListener(mouseInput);
-		System.out.println(RATIO);
-		System.out.println(WIDTH + ", " + HEIGHT);
-		System.out.println(NEW_WIDTH + ", " + NEW_HEIGHT);
 		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
 		r = new Random();
 
-		Player player = new Player(0, 0, 2, ID.Player, keyInput, textures);
+		Player player = new Player(r.nextInt(512) - 256, r.nextInt(512) - 256, 2, ID.Player, keyInput, textures);
 		inventory = new Inventory(5, 4, textures, mouseInput, ps, handler, cam);
 		mouseInput.setInventory(inventory);
 		keyInput.setInventory(inventory);
@@ -106,10 +103,8 @@ public class Game extends Canvas implements Runnable {
 		ps.addParticle(new Particle(0, 0, 3, ID.Particle, 0, -1, 60, ps));
 		// handler.addObject(3, new Particle(0, 0, 3, ID.Particle, 0, -1, 60, handler));
 
-		Long temp_seed = -2162936016020339965L;// r.nextLong();
-		Long moist_seed = -6956972119187843971L;// r.nextLong();
-		Long height_seed = 3695317381661324390L;
-		world = new World(0, 0, 3, 3, height_seed, temp_seed, moist_seed, player, textures);
+		Long seed = 9034865798355343302L; // r.nextLong();
+		world = new World(seed, player, textures);
 		hud.setWorld(world);
 		collision = new Collision(handler, world, player);
 		keyInput.setWorld(world);

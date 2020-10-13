@@ -4,43 +4,37 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Random;
 
 import game.entities.Player;
 import game.main.Game;
 import game.textures.Textures;
 
 public class World {
-	
+
 	public static Long seed, temp_seed, moist_seed;
 	public HashMap<Point, Chunk> chunks = new HashMap<Point, Chunk>();
-	public int x, y, w, h;
 	public static boolean loaded = false;
 	private Player player;
 	private Textures textures;
+	private Random r;
 
 	private static OpenSimplexNoise noise;
 
-	public World(int x, int y, int w, int h, Long seed, Long temp_seed, Long moist_seed, Player player, Textures textures) {
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
+	public World(Long seed, Player player, Textures textures) {
+		
+		this.r = new Random(seed);
 		this.seed = seed;
-		this.temp_seed = temp_seed;
-		this.moist_seed = moist_seed;
+		this.temp_seed = r.nextLong();
+		this.moist_seed = r.nextLong();
 		this.player = player;
 		this.textures = textures;
 		
-		System.out.println("Height seed: "+seed);
-		System.out.println("Temperature seed: "+temp_seed);
-		System.out.println("Moisture seed: "+moist_seed);
-		
-		for(int yy = -2;yy<2;yy++) {
-			for(int xx = -2;xx<2;xx++) {
-				chunks.put(new Point(xx*16, yy*16), new Chunk(xx*16, yy*16, seed, temp_seed, moist_seed, this, player, textures));
-				//chunks.get(new Point(xx*16, yy*16)).entities.add(new Enemy((((xx)*16)+8)*16, (((yy)*16)+8)*16, ID.Enemy));
-			}
-		}
+		System.out.println("seed: "+this.seed);
+		System.out.println("Temperature seed: "+this.temp_seed);
+		System.out.println("Moisture seed: "+this.moist_seed);
+
+		chunks.put(new Point(0, 0), new Chunk(0, 0, seed, temp_seed, moist_seed, this, player, textures));
 		
 		loaded = true;
 	}

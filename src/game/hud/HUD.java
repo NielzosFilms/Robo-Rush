@@ -82,6 +82,7 @@ public class HUD {
 		g2d.drawString("Y: "+player.getY(), 1, 40);
 		g2d.drawString("BIOME: "+player.getCurrentBiome(), 1, 45);
 		g2d.drawString("FPS: "+Game.current_fps, 1, 65);
+		g2d.drawString("SEED: "+World.seed, 1, 70);
 		
 		
 		/*g.setColor(new Color(0, 0, 0, 100));
