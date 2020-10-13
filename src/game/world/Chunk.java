@@ -20,7 +20,6 @@ import game.textures.Textures;
 
 public class Chunk {
 
-	private static OpenSimplexNoise noise;
 	private static Random r = new Random();
 
 	public LinkedList<LinkedList<GameObject>> entities = new LinkedList<LinkedList<GameObject>>();
@@ -103,11 +102,9 @@ public class Chunk {
 	}
 
 	private void GenerateTiles(World world, Player player) {
-		float[][] osn = generateOctavedSimplexNoise(x, y, tile_width, tile_height, 3, 0.4f, 0.05f, seed);
-		float[][] temp_osn = generateOctavedSimplexNoise(x, y, tile_width, tile_height, 3, 0.4f, 0.02f, temp_seed); // scale
-																													// 0.01f
-																													// ?
-		float[][] moist_osn = generateOctavedSimplexNoise(x, y, tile_width, tile_height, 3, 0.4f, 0.02f, moist_seed);
+		float[][] osn = world.getOsn(x, y, tile_width, tile_height);
+		float[][] temp_osn = world.getTemperatureOsn(x, y, tile_width, tile_height);
+		float[][] moist_osn = world.getMoistureOsn(x, y, tile_width, tile_height);
 
 		// create simple tiles
 		for (int yy = 0; yy < osn.length; yy++) {
@@ -124,9 +121,9 @@ public class Chunk {
 				int world_y = resized_y + y * 16;
 
 				tiles.get(0).put(new Point(resized_x + x, resized_y + y),
-								new Tile(world_x, world_y, 0, ID.Tile, textures, getBiome(val, temp_val, moist_val)));
+								new Tile(world_x, world_y, 0, ID.Tile, textures, World.getBiome(val, temp_val, moist_val)));
 				
-				if(getBiome(val, temp_val, moist_val) == "forest") {
+				if(World.getBiome(val, temp_val, moist_val) == "forest") {
 					int num = r.nextInt(100);
 					if (num == 0) {
 						entities.get(0).add(new Tree(world_x, world_y, 1, ID.Tree, "forest", player, textures));
@@ -137,7 +134,7 @@ public class Chunk {
 			}
 		}
 
-		// change to advanced tiles
+		// change texture of tile
 		Iterator it = tiles.get(0).entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
@@ -146,65 +143,6 @@ public class Chunk {
 			int tex_id = tile.getTextureId(this.tiles.get(0), (Point) pair.getKey(), tile.tex_id, world, this);
 			tile.setTexture(tex_id);
 		}
-	}
-
-	public static String getBiome(float val, float temp_val, float moist_val) {
-		//biome generation needs refinement
-		if ((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { // forest
-			if (val < -0.3) {
-				return "beach";
-			} else {
-				return "forest";
-			}
-		} else if (temp_val < 0 && moist_val < 0) { // desert
-			return "desert";
-		} else if (temp_val > 0 && moist_val < 0) { // dirt
-			return "dirt";
-		} else {
-			return "ocean";
-		}
-	}
-
-	public void updateTilesAdvanced() {
-
-	}
-
-	public static float[] getHeightMapValuePoint(int x, int y) {
-		// x = x/16/16;
-		// y = y/16/16;
-		float[][] osn = generateOctavedSimplexNoise(x, y, 1, 1, 3, 0.4f, 0.05f, seed);
-		float[][] temp_osn = generateOctavedSimplexNoise(x, y, 1, 1, 3, 0.4f, 0.02f, temp_seed); // scale 0.01f ?
-		float[][] moist_osn = generateOctavedSimplexNoise(x, y, 1, 1, 3, 0.4f, 0.02f, moist_seed);
-		float[] arr = { osn[0][0], temp_osn[0][0], moist_osn[0][0] };
-		return arr;
-	}
-
-	public static float[][] generateOctavedSimplexNoise(int xx, int yy, int width, int height, int octaves,
-			float roughness, float scale, Long seed) {
-		float[][] totalNoise = new float[width][height];
-		float layerFrequency = scale;
-		float layerWeight = 1;
-		float weightSum = 0;
-		// Long seed = r.nextLong();
-		// Long seed = 3695317381661324390L;
-		noise = new OpenSimplexNoise(seed);
-
-		for (int octave = 0; octave < octaves; octave++) {
-			// Calculate single layer/octave of simplex noise, then add it to total noise
-			for (int x = 0; x < width; x++) {
-				for (int y = 0; y < height; y++) {
-					totalNoise[x][y] += (float) noise.eval((x + xx) * layerFrequency, (y + yy) * layerFrequency)
-							* layerWeight;
-				}
-			}
-
-			// Increase variables with each incrementing octave
-			layerFrequency *= 2;
-			weightSum += layerWeight;
-			layerWeight *= roughness;
-
-		}
-		return totalNoise;
 	}
 
 	public LinkedList<GameObject> getTilesEntities() {

@@ -11,12 +11,14 @@ import game.textures.Textures;
 
 public class World {
 	
-	public Long seed, temp_seed, moist_seed;
+	public static Long seed, temp_seed, moist_seed;
 	public HashMap<Point, Chunk> chunks = new HashMap<Point, Chunk>();
 	public int x, y, w, h;
 	public static boolean loaded = false;
 	private Player player;
 	private Textures textures;
+
+	private static OpenSimplexNoise noise;
 
 	public World(int x, int y, int w, int h, Long seed, Long temp_seed, Long moist_seed, Player player, Textures textures) {
 		this.x = x;
@@ -157,7 +159,81 @@ public class World {
 		
 		return new Point(x, y);
 	}
+
+	public static String getBiome(float val, float temp_val, float moist_val) {
+		//biome generation needs refinement
+		if ((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { // forest
+			if (val < -0.3) {
+				return "beach";
+			} else {
+				return "forest";
+			}
+		} else if (temp_val < 0 && moist_val < 0) { // desert
+			return "desert";
+		} else if (temp_val > 0 && moist_val < 0) { // dirt
+			return "dirt";
+		}
+		return "ocean";
+	}
+
+	public static String getBiomeWithCoords(int x, int y) {
+		x /= 16;
+		y /= 16;
+		float[] arr = getHeightMapValuePoint(x, y);
+		return getBiome(arr[0], arr[1], arr[2]);
+	}
 	
-	
+	public static float[] getHeightMapValuePoint(int x, int y) {
+		// x = x/16/16;
+		// y = y/16/16;
+		float[][] osn = generateOctavedSimplexNoise(x, y, 1, 1, 3, 0.4f, 0.05f, seed);
+		float[][] temp_osn = generateOctavedSimplexNoise(x, y, 1, 1, 3, 0.4f, 0.02f, temp_seed); // scale 0.01f ?
+		float[][] moist_osn = generateOctavedSimplexNoise(x, y, 1, 1, 3, 0.4f, 0.02f, moist_seed);
+		float[] arr = { osn[0][0], temp_osn[0][0], moist_osn[0][0] };
+		return arr;
+	}
+
+	public static float[][] generateOctavedSimplexNoise(int xx, int yy, int width, int height, int octaves,
+			float roughness, float scale, Long seed) {
+		float[][] totalNoise = new float[width][height];
+		float layerFrequency = scale;
+		float layerWeight = 1;
+		float weightSum = 0;
+		// Long seed = r.nextLong();
+		// Long seed = 3695317381661324390L;
+		noise = new OpenSimplexNoise(seed);
+
+		for (int octave = 0; octave < octaves; octave++) {
+			// Calculate single layer/octave of simplex noise, then add it to total noise
+			for (int x = 0; x < width; x++) {
+				for (int y = 0; y < height; y++) {
+					totalNoise[x][y] += (float) noise.eval((x + xx) * layerFrequency, (y + yy) * layerFrequency)
+							* layerWeight;
+				}
+			}
+
+			// Increase variables with each incrementing octave
+			layerFrequency *= 2;
+			weightSum += layerWeight;
+			layerWeight *= roughness;
+
+		}
+		return totalNoise;
+	}
+
+	public static float[][] getOsn(int x, int y, int w, int h) {
+		float[][] osn = generateOctavedSimplexNoise(x, y, w, h, 3, 0.4f, 0.05f, seed);
+		return osn;
+	}
+
+	public static float[][] getTemperatureOsn(int x, int y, int w, int h) {
+		float[][] temp_osn = generateOctavedSimplexNoise(x, y, 16, 16, 3, 0.4f, 0.02f, temp_seed);
+		return temp_osn;
+	}
+
+	public static float[][] getMoistureOsn(int x, int y, int w, int h) {
+		float[][] moist_osn = generateOctavedSimplexNoise(x, y, 16, 16, 3, 0.4f, 0.02f, moist_seed);
+		return moist_osn;
+	}
 	
 }

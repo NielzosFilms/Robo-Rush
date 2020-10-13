@@ -77,119 +77,15 @@ public class Tile extends GameObject {
 		int x = currentPoint.x;
 		int y = currentPoint.y;
 
-		if (chunk_tiles.containsKey(new Point(x, y - 16))) {
-			Tile top_tile = (Tile) chunk_tiles.get(new Point(x, y - 16));
-			if (this.biome != top_tile.biome) {
-				this.biome_bg = top_tile.biome;
-				top = false;
-			}
-		} else {
-			float[] arr = Chunk.getHeightMapValuePoint(this_chunk.x + ((x - this_chunk.x) / 16),
-					this_chunk.y + ((y - this_chunk.y) / 16) - 1);
-			if (this.biome != getBiomeFromHeightMap(arr)) {
-				this.biome_bg = getBiomeFromHeightMap(arr);
-				top = false;
-			}
-		}
-		if (chunk_tiles.containsKey(new Point(x + 16, y))) {
-			Tile right_tile = (Tile) chunk_tiles.get(new Point(x + 16, y));
-			if (this.biome != right_tile.biome) {
-				this.biome_bg = right_tile.biome;
-				right = false;
-			}
-		} else {
-			float[] arr = Chunk.getHeightMapValuePoint(this_chunk.x + ((x - this_chunk.x) / 16) + 1,
-					this_chunk.y + ((y - this_chunk.y) / 16));
-			if (this.biome != getBiomeFromHeightMap(arr)) {
-				this.biome_bg = getBiomeFromHeightMap(arr);
-				right = false;
-			}
-		}
-		if (chunk_tiles.containsKey(new Point(x, y + 16))) {
-			Tile bottom_tile = (Tile) chunk_tiles.get(new Point(x, y + 16));
-			if (this.biome != bottom_tile.biome) {
-				bottom = false;
-				this.biome_bg = bottom_tile.biome;
-			}
-		} else {
-			float[] arr = Chunk.getHeightMapValuePoint(this_chunk.x + ((x - this_chunk.x) / 16),
-					this_chunk.y + ((y - this_chunk.y) / 16) + 1);
-			if (this.biome != getBiomeFromHeightMap(arr)) {
-				bottom = false;
-				this.biome_bg = getBiomeFromHeightMap(arr);
-			}
-		}
-		if (chunk_tiles.containsKey(new Point(x - 16, y))) {
-			Tile left_tile = (Tile) chunk_tiles.get(new Point(x - 16, y));
-			if (this.biome != left_tile.biome) {
-				left = false;
-				this.biome_bg = left_tile.biome;
-			}
-		} else {
-			float[] arr = Chunk.getHeightMapValuePoint(this_chunk.x + ((x - this_chunk.x) / 16) - 1,
-					this_chunk.y + ((y - this_chunk.y) / 16));
-			if (this.biome != getBiomeFromHeightMap(arr)) {
-				left = false;
-				this.biome_bg = getBiomeFromHeightMap(arr);
-			}
-		}
+		top = checkSameNeighbourBiome(chunk_tiles, this_chunk, x, y, 0, -1);
+		right = checkSameNeighbourBiome(chunk_tiles, this_chunk, x, y, 1, 0);
+		bottom = checkSameNeighbourBiome(chunk_tiles, this_chunk, x, y, 0, 1);
+		left = checkSameNeighbourBiome(chunk_tiles, this_chunk, x, y, -1, 0);
 
-		if (chunk_tiles.containsKey(new Point(x - 16, y - 16))) {
-			Tile top_left_tile = (Tile) chunk_tiles.get(new Point(x - 16, y - 16));
-			if (this.biome != top_left_tile.biome) {
-				top_left = false;
-				this.biome_bg = top_left_tile.biome;
-			}
-		} else {
-			float[] arr = Chunk.getHeightMapValuePoint(this_chunk.x + ((x - this_chunk.x) / 16) - 1,
-					this_chunk.y + ((y - this_chunk.y) / 16) - 1);
-			if (this.biome != getBiomeFromHeightMap(arr)) {
-				top_left = false;
-				this.biome_bg = getBiomeFromHeightMap(arr);
-			}
-		}
-		if (chunk_tiles.containsKey(new Point(x + 16, y - 16))) {
-			Tile top_right_tile = (Tile) chunk_tiles.get(new Point(x + 16, y - 16));
-			if (this.biome != top_right_tile.biome) {
-				top_right = false;
-				this.biome_bg = top_right_tile.biome;
-			}
-		} else {
-			float[] arr = Chunk.getHeightMapValuePoint(this_chunk.x + ((x - this_chunk.x) / 16) + 1,
-					this_chunk.y + ((y - this_chunk.y) / 16) - 1);
-			if (this.biome != getBiomeFromHeightMap(arr)) {
-				top_right = false;
-				this.biome_bg = getBiomeFromHeightMap(arr);
-			}
-		}
-		if (chunk_tiles.containsKey(new Point(x - 16, y + 16))) {
-			Tile bottom_left_tile = (Tile) chunk_tiles.get(new Point(x - 16, y + 16));
-			if (this.biome != bottom_left_tile.biome) {
-				bottom_left = false;
-				this.biome_bg = bottom_left_tile.biome;
-			}
-		} else {
-			float[] arr = Chunk.getHeightMapValuePoint(this_chunk.x + ((x - this_chunk.x) / 16) - 1,
-					this_chunk.y + ((y - this_chunk.y) / 16) + 1);
-			if (this.biome != getBiomeFromHeightMap(arr)) {
-				bottom_left = false;
-				this.biome_bg = getBiomeFromHeightMap(arr);
-			}
-		}
-		if (chunk_tiles.containsKey(new Point(x + 16, y + 16))) {
-			Tile bottom_right_tile = (Tile) chunk_tiles.get(new Point(x + 16, y + 16));
-			if (this.biome != bottom_right_tile.biome) {
-				bottom_right = false;
-				this.biome_bg = bottom_right_tile.biome;
-			}
-		} else {
-			float[] arr = Chunk.getHeightMapValuePoint(this_chunk.x + ((x - this_chunk.x) / 16) + 1,
-					this_chunk.y + ((y - this_chunk.y) / 16) + 1);
-			if (this.biome != getBiomeFromHeightMap(arr)) {
-				bottom_right = false;
-				this.biome_bg = getBiomeFromHeightMap(arr);
-			}
-		}
+		top_left = checkSameNeighbourBiome(chunk_tiles, this_chunk, x, y, -1, -1);
+		top_right = checkSameNeighbourBiome(chunk_tiles, this_chunk, x, y, 1, -1);
+		bottom_left = checkSameNeighbourBiome(chunk_tiles, this_chunk, x, y, -1, 1);
+		bottom_right = checkSameNeighbourBiome(chunk_tiles, this_chunk, x, y, 1, 1);
 
 		if (tex_id == 18) {
 			if (biome == "forest") {
@@ -229,6 +125,7 @@ public class Tile extends GameObject {
 					return 8;
 				}
 
+				//random grass tiles
 				int num = r.nextInt(25);
 				if(num == 0) {
 					int[] ids = new int[]{20, 26, 30, 31, 32};
@@ -246,21 +143,32 @@ public class Tile extends GameObject {
 		return tex_id;
 	}
 
+	private Boolean checkSameNeighbourBiome(HashMap<Point, GameObject> chunk_tiles, Chunk this_chunk, int x, int y, int offset_x, int offset_y) {
+		int offset_x_16 = offset_x * 16;
+		int offset_y_16 = offset_y * 16;
+		if (chunk_tiles.containsKey(new Point(x + offset_x_16, y + offset_y_16))) {
+			Tile temp_tile = (Tile) chunk_tiles.get(new Point(x + offset_x_16, y + offset_y_16));
+			if (this.biome != temp_tile.biome) {
+				this.biome_bg = temp_tile.biome;
+				return false;
+			}
+		} else {
+			float[] arr = World.getHeightMapValuePoint(this_chunk.x + ((x - this_chunk.x) / 16) + offset_x,
+					this_chunk.y + ((y - this_chunk.y) / 16) + offset_y);
+			if (this.biome != getBiomeFromHeightMap(arr)) {
+				this.biome_bg = getBiomeFromHeightMap(arr);
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public static String getBiomeFromHeightMap(float[] point) {
 		float osn = point[0];
 		float temp_osn = point[1];
 		float moist_osn = point[2];
 
-		return Chunk.getBiome(osn, temp_osn, moist_osn);
-	}
-
-	private Boolean isInArray(int[] arr, int val) {
-		for (int tmp : arr) {
-			if (tmp == val) {
-				return true;
-			}
-		}
-		return false;
+		return World.getBiome(osn, temp_osn, moist_osn);
 	}
 
 	public void setTexture(int tex_id) {
@@ -285,6 +193,9 @@ public class Tile extends GameObject {
 	}
 
 	public Rectangle getBounds() {
+		/*if(this.biome == "ocean") {
+			return new Rectangle(this.x+4, this.y+4, 8, 8);
+		}*/
 		return null;
 	}
 

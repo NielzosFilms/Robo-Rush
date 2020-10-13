@@ -80,6 +80,7 @@ public class HUD {
 		g2d.setFont(font2);
 		g2d.drawString("X: "+player.getX(), 1, 35);
 		g2d.drawString("Y: "+player.getY(), 1, 40);
+		g2d.drawString("BIOME: "+player.getCurrentBiome(), 1, 45);
 		g2d.drawString("FPS: "+Game.current_fps, 1, 65);
 		
 		

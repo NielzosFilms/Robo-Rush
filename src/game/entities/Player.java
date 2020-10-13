@@ -112,6 +112,9 @@ public class Player extends GameObject{
 		//x = Game.clamp(x, -13, 800-50);
 		
 		//y = Game.clamp(y, 0, Game.HEIGHT);
+		this.health = r.nextInt(100)+1;
+		this.food = r.nextInt(100)+1;
+		this.water = r.nextInt(100)+1;
 	}
 	
 	private void updateVelocity() {
@@ -204,6 +207,10 @@ public class Player extends GameObject{
 
 	public int getWater() {
 		return this.water;
+	}
+
+	public String getCurrentBiome() {
+		return World.getBiomeWithCoords(x, y);
 	}
 
 }
