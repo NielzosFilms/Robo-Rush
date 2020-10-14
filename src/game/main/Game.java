@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -26,6 +28,7 @@ import game.objects.Tree;
 import game.textures.Textures;
 import game.world.LevelLoader;
 import game.world.World;
+import game.menu.Text;
 
 public class Game extends Canvas implements Runnable {
 
@@ -34,8 +37,8 @@ public class Game extends Canvas implements Runnable {
 	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
-	public static final float RATIO = (float)NEW_WIDTH/NEW_HEIGHT;
-	public static final int WIDTH = 640, HEIGHT = (int)Math.round(WIDTH / RATIO); // 640 480 idk which is better
+	public static final float RATIO = (float) NEW_WIDTH / NEW_HEIGHT;
+	public static final int WIDTH = 640, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
 	public static final int FPS = 60;
@@ -47,7 +50,7 @@ public class Game extends Canvas implements Runnable {
 	public static int current_fps = 0;
 
 	public static boolean showHitboxes = false;
-	public static GAMESTATES game_state = GAMESTATES.Game;
+	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean pauzed = false, inventory_open = false;
 
 	private Random r;
@@ -114,9 +117,12 @@ public class Game extends Canvas implements Runnable {
 		lightingSystem.setWorld(world);
 		lightingSystem.setCam(cam);
 
-		/*handler.addLight(new Light(new Point(0, 300), textures.light));
-		handler.addObject(1, new Tree(0, 250, 1, ID.Tree, "forest", player, textures));
-		handler.addObject(1, new Tree(35, 320, 1, ID.Tree, "forest", player, textures));*/
+		/*
+		 * handler.addLight(new Light(new Point(0, 300), textures.light));
+		 * handler.addObject(1, new Tree(0, 250, 1, ID.Tree, "forest", player,
+		 * textures)); handler.addObject(1, new Tree(35, 320, 1, ID.Tree, "forest",
+		 * player, textures));
+		 */
 
 		// AudioPlayer.playSound(audioFiles.futureopolis, 0.1, true, 0);
 
@@ -223,6 +229,14 @@ public class Game extends Canvas implements Runnable {
 		g.setColor(Color.decode("#d1e3ff"));
 		// g.setColor(Color.);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
+
+		if (game_state == GAMESTATES.Menu) {
+			g.setColor(Color.decode("#363636"));
+			g.fillRect(0, 0, WIDTH, HEIGHT);
+
+			g.setColor(Color.WHITE);
+			new Text("TEST string", WIDTH / 2, HEIGHT / 2, 20, mouseInput).render(g, g2d);
+		}
 
 		if (game_state == GAMESTATES.Game && world.loaded) {
 
