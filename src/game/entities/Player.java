@@ -24,6 +24,7 @@ public class Player extends GameObject{
 	
 	private String direction;
 	private int health, food, water;
+	private static int needs_timer = 0;
 	
 	private Animation idle_down, idle_up, idle_left, idle_right;
 	private Animation walk_down, walk_up, walk_left, walk_right;
@@ -112,9 +113,13 @@ public class Player extends GameObject{
 		//x = Game.clamp(x, -13, 800-50);
 		
 		//y = Game.clamp(y, 0, Game.HEIGHT);
-		this.health = r.nextInt(100)+1;
-		this.food = r.nextInt(100)+1;
-		this.water = r.nextInt(100)+1;
+		needs_timer++;
+		if(needs_timer >= 60) {
+			needs_timer = 0;
+			this.health = r.nextInt(100)+1;
+			this.food = r.nextInt(100)+1;
+			this.water = r.nextInt(100)+1;
+		}
 	}
 	
 	private void updateVelocity() {

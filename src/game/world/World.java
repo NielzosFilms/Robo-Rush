@@ -45,7 +45,7 @@ public class World {
 		int camW = (Math.round(Game.WIDTH/16));
 		int camH = (Math.round(Game.HEIGHT/16));
 
-		textures.water.runAnimation();
+		runWaterAnimations();
 		
 		for(int y = camY-32;y < camY+camH+16;y++) {
 			for(int x = camX-32;x < camX+camW+16;x++) {
@@ -64,6 +64,23 @@ public class World {
 				}
 			}
 		}
+	}
+
+	private void runWaterAnimations() {
+		textures.water.runAnimation();
+
+		textures.water_r_br.runAnimation();
+		textures.water_r_b_r.runAnimation();
+		textures.water_r_b.runAnimation();
+		textures.water_r_bl.runAnimation();
+		textures.water_r_b_l.runAnimation();
+		textures.water_r_l.runAnimation();
+		textures.water_r_tl.runAnimation();
+		textures.water_r_t_l.runAnimation();
+		textures.water_r_t.runAnimation();
+		textures.water_r_tr.runAnimation();
+		textures.water_r_t_r.runAnimation();
+		textures.water_r_r.runAnimation();
 	}
 	
 	public LinkedList<Chunk> getChunksOnScreen(){

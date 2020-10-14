@@ -12,6 +12,8 @@ import java.util.List;
 
 public class Textures {
 	public static Animation water;
+	public static Animation water_d_br, water_d_b_r, water_d_b, water_d_bl, water_d_b_l, water_d_l, water_d_tl, water_d_t_l, water_d_t, water_d_tr, water_d_t_r, water_d_r;
+	public static Animation water_r_br, water_r_b_r, water_r_b, water_r_bl, water_r_b_l, water_r_l, water_r_tl, water_r_t_l, water_r_t, water_r_tr, water_r_t_r, water_r_r;
 
 	// tilesets / sheets
 	static BufferedImage tileSetForest, playerSheet, mushroom, tileSetDesert, tileSetWater;
@@ -37,7 +39,7 @@ public class Textures {
 	public Textures() {
 		BufferedImageLoader loader = new BufferedImageLoader();
 
-		tileSetForest = loader.loadImage("assets/main/tile_sheets/grass_tiles.png");
+		tileSetForest = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/1.png");
 		tileSetDesert = loader.loadImage("assets/main/tile_sheets/desert_tile.png");
 		tileSetWater = loader.loadImage("assets/main/tile_sheets/water_tiles.png");
 
@@ -55,11 +57,12 @@ public class Textures {
 		// height_map = loader.loadImage("assets/main/height_map.png");
 
 		SpriteSheet ss = new SpriteSheet(tileSetForest);
-		for (int i = 0; i < tileSetForest.getHeight(); i += 16) {
-			for (int j = 0; j < tileSetForest.getWidth(); j += 16) {
-				tileSetForestBlocks.add(ss.grabImage(j, i, 16, 16));
+		for (int i = 0; i < tileSetForest.getHeight(); i += 32) {
+			for (int j = 0; j < tileSetForest.getWidth(); j += 32) {
+				tileSetForestBlocks.add(ss.grabImage(j, i, 32, 32));
 			}
 		}
+		initWaterAnimations();
 
 		SpriteSheet ss2 = new SpriteSheet(playerSheet);
 		for (int i = 0; i < playerSheet.getHeight(); i += 24) {
@@ -82,14 +85,32 @@ public class Textures {
 			}
 		}
 
-		SpriteSheet ss5 = new SpriteSheet(tileSetWater);
+		/*SpriteSheet ss5 = new SpriteSheet(tileSetWater);
 		for (int i = 0; i < tileSetWater.getHeight(); i += 16) {
 			for (int j = 0; j < tileSetWater.getWidth(); j += 16) {
 				tileSetWaterBlocks.add(ss5.grabImage(j, i, 16, 16));
 			}
-		}
-		water = new Animation(25, tileSetWaterBlocks.get(0), tileSetWaterBlocks.get(1));
+		}*/
+		//water = new Animation(25, tileSetWaterBlocks.get(0), tileSetWaterBlocks.get(1));
 	}
+
+	private void initWaterAnimations() {
+		int speed = 25;
+		water = new Animation(speed, tileSetForestBlocks.get(71), tileSetForestBlocks.get(61), tileSetForestBlocks.get(66), tileSetForestBlocks.get(61));
+
+		water_r_br = new Animation(speed, tileSetForestBlocks.get(55), tileSetForestBlocks.get(45), tileSetForestBlocks.get(50), tileSetForestBlocks.get(45));
+		water_r_b_r = new Animation(speed, tileSetForestBlocks.get(58), tileSetForestBlocks.get(48), tileSetForestBlocks.get(53), tileSetForestBlocks.get(48));
+		water_r_b = new Animation(speed, tileSetForestBlocks.get(56), tileSetForestBlocks.get(46), tileSetForestBlocks.get(51), tileSetForestBlocks.get(46));
+		water_r_bl = new Animation(speed, tileSetForestBlocks.get(57), tileSetForestBlocks.get(47), tileSetForestBlocks.get(52), tileSetForestBlocks.get(47));
+		water_r_b_l = new Animation(speed, tileSetForestBlocks.get(59), tileSetForestBlocks.get(49), tileSetForestBlocks.get(54), tileSetForestBlocks.get(49));
+		water_r_l = new Animation(speed, tileSetForestBlocks.get(72), tileSetForestBlocks.get(62), tileSetForestBlocks.get(67), tileSetForestBlocks.get(62));
+		water_r_tl = new Animation(speed, tileSetForestBlocks.get(87), tileSetForestBlocks.get(77), tileSetForestBlocks.get(82), tileSetForestBlocks.get(77));
+		water_r_t_l = new Animation(speed, tileSetForestBlocks.get(74), tileSetForestBlocks.get(64), tileSetForestBlocks.get(69), tileSetForestBlocks.get(64));
+		water_r_t = new Animation(speed, tileSetForestBlocks.get(86), tileSetForestBlocks.get(76), tileSetForestBlocks.get(81), tileSetForestBlocks.get(76));
+		water_r_tr = new Animation(speed, tileSetForestBlocks.get(85), tileSetForestBlocks.get(75), tileSetForestBlocks.get(80), tileSetForestBlocks.get(75));
+		water_r_t_r = new Animation(speed, tileSetForestBlocks.get(73), tileSetForestBlocks.get(63), tileSetForestBlocks.get(68), tileSetForestBlocks.get(63));
+		water_r_r = new Animation(speed, tileSetForestBlocks.get(70), tileSetForestBlocks.get(60), tileSetForestBlocks.get(65), tileSetForestBlocks.get(60));
+	} 
 
 	// static getter from image list
 
