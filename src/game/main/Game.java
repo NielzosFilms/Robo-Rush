@@ -74,26 +74,35 @@ public class Game extends Canvas implements Runnable {
 
 	public Game() {
 		handler = new Handler();
-		ps = new ParticleSystem();
-		textures = new Textures();
 		keyInput = new KeyInput(handler);
 		mouseInput = new MouseInput();
+		r = new Random();
+		textures = new Textures();
 
 		audioFiles = new AudioFiles();
+
+		this.addKeyListener(keyInput);
+		this.addMouseListener(mouseInput);
+		this.addMouseMotionListener(mouseInput);
+		this.addMouseWheelListener(mouseInput);
+		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
+
+		if (game_state == GAMESTATES.Game) {
+			loadGameRequirements();
+		}
+
+	}
+
+	public void loadGameRequirements() {
+		ps = new ParticleSystem();
 
 		// blocks = ll.getLevelData();
 		ll.loadLevelData("assets/world/structures/top_down_map.json");
 
 		cam = new Camera(0, 0);
 		mouseInput.setCam(cam);
-		this.addKeyListener(keyInput);
-		this.addMouseListener(mouseInput);
-		this.addMouseMotionListener(mouseInput);
-		this.addMouseWheelListener(mouseInput);
-		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
-		r = new Random();
 
-		Player player = new Player(r.nextInt(512) - 256, r.nextInt(512) - 256, 2, ID.Player, keyInput, textures);
+		Player player = new Player(1000, -1400, 2, ID.Player, keyInput, textures);
 		inventory = new Inventory(5, 4, textures, mouseInput, ps, handler, cam);
 		mouseInput.setInventory(inventory);
 		keyInput.setInventory(inventory);
@@ -107,7 +116,8 @@ public class Game extends Canvas implements Runnable {
 		// handler.addObject(3, new Particle(0, 0, 3, ID.Particle, 0, -1, 60, handler));
 
 		Long seed = 9034865798355343302L; // r.nextLong();
-		world = new World(seed, player, textures);
+		world = new World(player, textures);
+		world.generate(seed);
 		hud.setWorld(world);
 		collision = new Collision(handler, world, player);
 		keyInput.setWorld(world);
