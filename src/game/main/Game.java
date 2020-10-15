@@ -50,7 +50,7 @@ public class Game extends Canvas implements Runnable {
 	public static int current_fps = 0;
 
 	public static boolean showHitboxes = false;
-	public static GAMESTATES game_state = GAMESTATES.Menu;
+	public static GAMESTATES game_state = GAMESTATES.Game;
 	public static boolean pauzed = false, inventory_open = false;
 
 	private Random r;
@@ -66,7 +66,7 @@ public class Game extends Canvas implements Runnable {
 	private Collision collision;
 
 	private LevelLoader ll;
-	private World world;
+	public static World world;
 	private Inventory inventory;
 	private LightingSystem lightingSystem;
 	public static AudioFiles audioFiles;

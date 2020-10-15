@@ -2,8 +2,13 @@ package game.world;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Random;
 
 import game.entities.Player;
@@ -245,6 +250,20 @@ public class World {
 	public static float[][] getMoistureOsn(int x, int y, int w, int h) {
 		float[][] moist_osn = generateOctavedSimplexNoise(x, y, 16, 16, 3, 0.4f, 0.02f, moist_seed);
 		return moist_osn;
+	}
+
+	public void saveChunks(String fileName) throws FileNotFoundException{
+
+		// Gson library to save to json, makes it readable
+
+		PrintWriter pw = new PrintWriter(new FileOutputStream(fileName));
+		Iterator it = chunks.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry)it.next();
+			pw.println(pair.getKey()+";" +pair.getValue());
+			it.remove(); // avoids a ConcurrentModificationException
+		}
+		pw.close();
 	}
 	
 }

@@ -2,6 +2,7 @@ package game.main;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 
 import game.audioEngine.AudioPlayer;
@@ -92,7 +93,17 @@ public class KeyInput extends KeyAdapter {
 		} else if(key == KeyEvent.VK_ESCAPE && Game.pauzed) {
 			Game.pauzed = false;
 		}*/
-		if(key == KeyEvent.VK_ESCAPE) System.exit(1);
+		if(key == KeyEvent.VK_ESCAPE) {
+			// saving
+			// try {
+			// 	// saving a world
+			// 	//Game.world.saveChunks("saves/test_save.txt");
+			// } catch (FileNotFoundException e1) {
+			// 	// TODO Auto-generated catch block
+			// 	e1.printStackTrace();
+			// }
+			System.exit(1);
+		}
 		
 	}
 	
