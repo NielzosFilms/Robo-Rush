@@ -14,7 +14,8 @@ import game.lighting.Light;
 import game.main.GameObject;
 import game.main.ID;
 import game.objects.Mushroom;
-import game.objects.Tile;
+import game.tiles.Tile;
+import game.tiles.TileWater;
 import game.objects.Tree;
 import game.textures.Textures;
 
@@ -24,7 +25,7 @@ public class Chunk {
 
 	public LinkedList<LinkedList<GameObject>> entities = new LinkedList<LinkedList<GameObject>>();
 	public LinkedList<Light> lights = new LinkedList<Light>();
-	public LinkedList<HashMap<Point, GameObject>> tiles = new LinkedList<HashMap<Point, GameObject>>();
+	public LinkedList<HashMap<Point, Tile>> tiles = new LinkedList<HashMap<Point, Tile>>();
 	public static int tile_width = 16, tile_height = 16;
 	public int x, y;
 	private static Long seed;
@@ -44,13 +45,14 @@ public class Chunk {
 		this.textures = textures;
 		// entities.add(new Enemy((x+8)*16, (y+8)*16, ID.Enemy));
 		// generate chunk tiles 16x16 then add to world
-		tiles.add(new HashMap<Point, GameObject>());
-		tiles.add(new HashMap<Point, GameObject>());
+		tiles.add(new HashMap<Point, Tile>());
+		tiles.add(new HashMap<Point, Tile>());
 		entities.add(new LinkedList<GameObject>());
 		GenerateTiles(world, player);
 	}
 
 	public void tick() {
+		// move entity from chunk to chunk
 		for (LinkedList<GameObject> list : entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject entity = list.get(i);
@@ -83,11 +85,11 @@ public class Chunk {
 	}
 
 	public void renderTiles(Graphics g) {
-		for (HashMap<Point, GameObject> list : tiles) {
+		for (HashMap<Point, Tile> list : tiles) {
 			Iterator it = list.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry pair = (Map.Entry) it.next();
-				GameObject tile = (GameObject) pair.getValue();
+				Tile tile = (Tile) pair.getValue();
 				tile.render(g);
 			}
 		}
@@ -121,9 +123,9 @@ public class Chunk {
 				int world_y = resized_y + y * 16;
 
 				tiles.get(0).put(new Point(resized_x + x, resized_y + y),
-								new Tile(world_x, world_y, 0, ID.Tile, textures, World.getBiome(val, temp_val, moist_val)));
-				
-				if(World.getBiome(val, temp_val, moist_val) == "forest") {
+						new TileWater(world_x, world_y, 0, BIOME.Ocean, 0));
+
+				if (World.getBiome(val, temp_val, moist_val) == BIOME.Forest) {
 					int num = r.nextInt(100);
 					if (num == 0) {
 						entities.get(0).add(new Tree(world_x, world_y, 1, ID.Tree, "forest", player, textures));
@@ -174,5 +176,9 @@ public class Chunk {
 			}
 		}
 		// this.entities.remove(object);
+	}
+
+	public void addTile(Tile tile) {
+
 	}
 }

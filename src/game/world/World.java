@@ -161,23 +161,23 @@ public class World {
 		return new Point(x, y);
 	}
 
-	public static String getBiome(float val, float temp_val, float moist_val) {
+	public static BIOME getBiome(float val, float temp_val, float moist_val) {
 		// biome generation needs refinement
 		if ((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { // forest
 			if (val < -0.3) {
-				return "beach";
+				return BIOME.Beach;
 			} else {
-				return "forest";
+				return BIOME.Forest;
 			}
 		} else if (temp_val < 0 && moist_val < 0) { // desert
-			return "desert";
+			return BIOME.Desert;
 		} else if (temp_val > 0 && moist_val < 0) { // dirt
-			return "dirt";
+			return BIOME.Dirt;
 		}
-		return "ocean";
+		return BIOME.Ocean;
 	}
 
-	public static String getBiomeWithCoords(int x, int y) {
+	public static BIOME getBiomeWithCoords(int x, int y) {
 		x /= 16;
 		y /= 16;
 		float[] arr = getHeightMapValuePoint(x, y);

@@ -3,6 +3,7 @@ package game.main;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
+import java.security.KeyException;
 import java.util.LinkedList;
 
 import game.audioEngine.AudioPlayer;
@@ -138,6 +139,10 @@ public class KeyInput extends KeyAdapter {
 						keysDown[4] = false;
 				}
 			}
+		}
+
+		if (key == KeyEvent.VK_F4) {
+			Game.DEDUG_MODE = !Game.DEDUG_MODE;
 		}
 	}
 

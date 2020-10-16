@@ -48,6 +48,7 @@ public class Game extends Canvas implements Runnable {
 	private ImageRendering imageRenderer;
 	private boolean running = true;
 	public static int current_fps = 0;
+	public static boolean DEDUG_MODE = true;
 
 	public static boolean showHitboxes = false;
 	public static GAMESTATES game_state = GAMESTATES.Game;
