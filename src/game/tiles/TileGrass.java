@@ -41,14 +41,19 @@ public class TileGrass extends Tile {
                 1, 1);
 
         this.tex_id = getTexId();
-        setTextureWithId();
-
         // add water as bg
+        /**
+         * 
+         * TEMPORARY
+         * 
+         */
         if (this.tex_id != 16) {
+            this.tex_id = 16;
             TileWater water = new TileWater(x, y, chunk_x, chunk_y, 2, biome, chunk, tex_id);
             water.setWaterType(top, right, bottom, left, top_left, top_right, bottom_left, bottom_right);
             chunk.addTile(water);
         }
+        setTextureWithId();
     }
 
     public int getTexId() {
