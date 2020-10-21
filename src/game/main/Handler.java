@@ -13,7 +13,9 @@ import game.world.World;
 
 public class Handler {
 
-	public LinkedList<LinkedList<GameObject>> object = new LinkedList<LinkedList<GameObject>>();
+	public LinkedList<LinkedList<GameObject>> object_entities = new LinkedList<LinkedList<GameObject>>();
+	// public LinkedList<LinkedList<Tile>> object_tiles = new
+	// LinkedList<LinkedList<Tile>>();
 
 	public LinkedList<Light> lights = new LinkedList<Light>();
 	public LinkedList<LinkedList<GameObject>> chunks = new LinkedList<LinkedList<GameObject>>(); // add everything to
@@ -25,12 +27,12 @@ public class Handler {
 
 	public Handler() {
 		for (int i = 0; i < 4; i++) {
-			this.object.add(new LinkedList<GameObject>());
+			this.object_entities.add(new LinkedList<GameObject>());
 		}
 	}
 
 	public void tick(World world) {
-		for (LinkedList<GameObject> list : object) {
+		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
 				if (tempObject.getId() != ID.Player) {
@@ -57,46 +59,66 @@ public class Handler {
 	}
 
 	public void render(Graphics g, int camX, int camY, int width, int height, World world, ParticleSystem ps) {
-		LinkedList<LinkedList<GameObject>> tmp_list = new LinkedList<LinkedList<GameObject>>();
+		LinkedList<LinkedList<GameObject>> entities = new LinkedList<LinkedList<GameObject>>();
+		LinkedList<LinkedList<Tile>> tiles = new LinkedList<LinkedList<Tile>>();
+
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
 
-		for (int i = 0; i < object.size(); i++) {
-			tmp_list.add(new LinkedList<GameObject>());
+		for (int i = 0; i < object_entities.size(); i++) {
+			entities.add(new LinkedList<GameObject>());
 		}
 
-		for (LinkedList<GameObject> list : object) {
+		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
 				if (tempObject.getX() + 16 > camX && tempObject.getY() + 16 > camY
 						&& tempObject.getX() - 16 < camX + width && tempObject.getY() - 16 < camY + height) {
-					tmp_list.get(tempObject.getZIndex()).add(tempObject);
+					entities.get(tempObject.getZIndex()).add(tempObject);
 				}
 			}
 		}
 
 		for (LinkedList<GameObject> chunk : chunks) {
 			for (GameObject object : chunk) {
-				tmp_list.get(object.getZIndex()).add(object);
+				entities.get(object.getZIndex()).add(object);
 			}
 		}
 
 		// chunks
 		for (Chunk chunk : chunks_on_screen) {
-			LinkedList<GameObject> chunk_content = chunk.getTilesEntities();
-			for (GameObject obj : chunk_content) {
-				tmp_list.get(obj.getZIndex()).add(obj);
+			for (Tile tmp_tile : chunk.getTiles()) {
+				int zIndex = tmp_tile.getZIndex();
+				if (zIndex < tiles.size()) {
+					tiles.get(zIndex).add(tmp_tile);
+				} else {
+					for (int i = 0; i <= zIndex; i++) {
+						tiles.add(new LinkedList<Tile>());
+					}
+					tiles.get(zIndex).add(tmp_tile);
+				}
 			}
+
+			for (GameObject obj : chunk.getEntities()) {
+				entities.get(obj.getZIndex()).add(obj);
+			}
+
 		}
 
 		// particles
 		LinkedList<Particle> particles = ps.getParticles();
 		for (Particle particle : particles) {
-			tmp_list.get(particle.getZIndex()).add(particle);
+			entities.get(particle.getZIndex()).add(particle);
 		}
 
-		for (LinkedList<GameObject> list : tmp_list) {
+		// RENDER
+		for (LinkedList<Tile> list : tiles) {
+			for (Tile tile : list) {
+				tile.render(g);
+			}
+		}
+		for (LinkedList<GameObject> list : entities) {
 			for (GameObject obj : list) {
-				obj.render(g);
+				obj.render(g); // klopt niet meer
 			}
 		}
 
@@ -113,14 +135,14 @@ public class Handler {
 	}
 
 	public void addObject(int z_index, GameObject object) {
-		while (z_index >= this.object.size()) {// add new layers if it doesnt exist
-			this.object.add(new LinkedList<GameObject>());
+		while (z_index >= this.object_entities.size()) {// add new layers if it doesnt exist
+			this.object_entities.add(new LinkedList<GameObject>());
 		}
-		this.object.get(z_index).add(object);
+		this.object_entities.get(z_index).add(object);
 	}
 
 	public void removeObject(int z_index, GameObject object) {
-		this.object.get(z_index).remove(object);
+		this.object_entities.get(z_index).remove(object);
 	}
 
 	public void addTile(int z_index, Tile tile) {
@@ -136,7 +158,7 @@ public class Handler {
 		LinkedList<GameObject> objs = new LinkedList<GameObject>();
 		ID[] ids = { ID.Tree, ID.Mushroom, ID.Item };
 
-		for (LinkedList<GameObject> list : object) {
+		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
 				if (isInArray(ids, tempObject.getId())) {
@@ -155,8 +177,7 @@ public class Handler {
 
 		// chunks
 		for (Chunk chunk : chunks_on_screen) {
-			LinkedList<GameObject> chunk_content = chunk.getTilesEntities();
-			for (GameObject obj : chunk_content) {
+			for (GameObject obj : chunk.getEntities()) {
 				if (isInArray(ids, obj.getId())) {
 					objs.add(obj);
 				}
@@ -171,7 +192,7 @@ public class Handler {
 		LinkedList<GameObject> objs = new LinkedList<GameObject>();
 		ID[] ids = { ID.Tree, ID.Player };
 
-		for (LinkedList<GameObject> list : object) {
+		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
 				if (isInArray(ids, tempObject.getId())) {
@@ -190,8 +211,7 @@ public class Handler {
 
 		// chunks
 		for (Chunk chunk : chunks_on_screen) {
-			LinkedList<GameObject> chunk_content = chunk.getTilesEntities();
-			for (GameObject obj : chunk_content) {
+			for (GameObject obj : chunk.getEntities()) {
 				if (isInArray(ids, obj.getId())) {
 					objs.add(obj);
 				}
@@ -227,7 +247,7 @@ public class Handler {
 	public void findAndRemoveObject(GameObject item, World world) {
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
 
-		for (LinkedList<GameObject> list : object) {
+		for (LinkedList<GameObject> list : object_entities) {
 			list.remove(item);
 		}
 

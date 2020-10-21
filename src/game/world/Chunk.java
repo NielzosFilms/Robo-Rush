@@ -15,6 +15,7 @@ import game.main.GameObject;
 import game.main.ID;
 import game.objects.Mushroom;
 import game.tiles.Tile;
+import game.tiles.TileGrass;
 import game.tiles.TileWater;
 import game.objects.Tree;
 import game.textures.Textures;
@@ -122,52 +123,64 @@ public class Chunk {
 				int resized_y = yy * 16;
 				int world_y = resized_y + y * 16;
 
-				tiles.get(0).put(new Point(resized_x + x, resized_y + y),
-						new TileWater(world_x, world_y, 0, BIOME.Ocean, 0));
-
 				if (World.getBiome(val, temp_val, moist_val) == BIOME.Forest) {
+					tiles.get(1).put(new Point(resized_x + x, resized_y + y),
+							new TileGrass(world_x, world_y, resized_x + x, resized_y + y, 1, BIOME.Forest, this, 0));
 					int num = r.nextInt(100);
 					if (num == 0) {
 						entities.get(0).add(new Tree(world_x, world_y, 1, ID.Tree, "forest", player, textures));
 					} else if (num == 1) {
 						entities.get(0).add(new Mushroom(world_x, world_y, 1, ID.Mushroom, textures));
 					}
+				} else {
+					tiles.get(1).put(new Point(resized_x + x, resized_y + y),
+							new TileWater(world_x, world_y, resized_x + x, resized_y + y, 1, BIOME.Ocean, this, 0));
 				}
 			}
 		}
 
 		// change texture of tile
-		Iterator it = tiles.get(0).entrySet().iterator();
+		Iterator it = tiles.get(1).entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
 			Tile tile = (Tile) pair.getValue();
 
-			int tex_id = tile.getTextureId(this.tiles.get(0), (Point) pair.getKey(), tile.tex_id, world, this);
-			tile.setTexture(tex_id);
+			tile.findAndSetEdgeTexture();
+			/*
+			 * int tex_id = tile.getTextureId(this.tiles.get(0), (Point) pair.getKey(),
+			 * tile.tex_id, world, this); tile.setTexture(tex_id);
+			 */
 		}
 	}
 
-	public LinkedList<GameObject> getTilesEntities() {
-		LinkedList<GameObject> tmp_tiles = new LinkedList<GameObject>();
+	public LinkedList<GameObject> getEntities() {
+		LinkedList<GameObject> tmp = new LinkedList<GameObject>();
+		for (LinkedList<GameObject> list : entities) {
+			for (GameObject obj : list) {
+				tmp.add(obj);
+			}
+		}
+		return tmp;
+	}
 
-		for (HashMap<Point, GameObject> list : tiles) {
+	public LinkedList<Tile> getTiles() {
+		LinkedList<Tile> tmp = new LinkedList<Tile>();
+		for (HashMap<Point, Tile> list : tiles) {
 			Iterator it = list.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry pair = (Map.Entry) it.next();
-				GameObject tile = (GameObject) pair.getValue();
-				tmp_tiles.add(tile);
+				Tile tile = (Tile) pair.getValue();
+				tmp.add(tile);
 			}
 		}
-
-		for (LinkedList<GameObject> list : entities) {
-			for (GameObject obj : list) {
-				tmp_tiles.add(obj);
-			}
-		}
-
-		return tmp_tiles;
+		return tmp;
 	}
 
+	public HashMap<Point, Tile> getTileMap() {
+		return tiles.get(1);
+	}
+
+	// OLD?
 	public void removeFromTilesEntities(GameObject object) {
 		for (LinkedList<GameObject> list : entities) {
 			if (list.contains(object)) {
@@ -179,6 +192,14 @@ public class Chunk {
 	}
 
 	public void addTile(Tile tile) {
-
+		int zIndex = tile.getZIndex();
+		if (zIndex < tiles.size()) {
+			tiles.get(zIndex).put(new Point(tile.getChunkX(), tile.getChunkY()), tile);
+		} else {
+			for (int i = 0; i <= zIndex; i++) {
+				tiles.add(new HashMap<Point, Tile>());
+			}
+			tiles.get(zIndex).put(new Point(tile.getChunkX(), tile.getChunkY()), tile);
+		}
 	}
 }

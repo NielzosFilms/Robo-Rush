@@ -37,7 +37,7 @@ public class KeyInput extends KeyAdapter {
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 
-		for (LinkedList<GameObject> list : handler.object) {
+		for (LinkedList<GameObject> list : handler.object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
 
@@ -118,7 +118,7 @@ public class KeyInput extends KeyAdapter {
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 
-		for (LinkedList<GameObject> list : handler.object) {
+		for (LinkedList<GameObject> list : handler.object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
 
@@ -147,7 +147,7 @@ public class KeyInput extends KeyAdapter {
 	}
 
 	public void tick() {
-		for (LinkedList<GameObject> list : handler.object) {
+		for (LinkedList<GameObject> list : handler.object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
 				if (tempObject.getId() == ID.Player) {

@@ -196,7 +196,7 @@ public class Game extends Canvas implements Runnable {
 			world.tick();
 			collision.tick();
 
-			for (LinkedList<GameObject> list : handler.object) {
+			for (LinkedList<GameObject> list : handler.object_entities) {
 				for (int i = 0; i < list.size(); i++) {
 					if (list.get(i).getId() == ID.Player) {
 
