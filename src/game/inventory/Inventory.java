@@ -116,8 +116,37 @@ public class Inventory {
 
 	public void mouseClicked(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
+
+			if (mouse_holding != null) {
+				int hotbar_x = (Game.WIDTH / 2) - (size_x * 20) / 2;
+				int hotbar_y = Game.HEIGHT - 23;
+				for (int i = 0; i < size_x; i++) {
+					int item_x = hotbar_x + i * 20;
+					if (mouseInput.mouseOverLocalVar(item_x, hotbar_y, 20, 20)) {
+						if (hotbarItems.get(i) == null) {
+							hotbarItems.put(i, mouse_holding);
+							mouse_holding = null;
+							return;
+						}
+					}
+				}
+			} else {
+				int hotbar_x = (Game.WIDTH / 2) - (size_x * 20) / 2;
+				int hotbar_y = Game.HEIGHT - 23;
+				for (int i = 0; i < size_x; i++) {
+					int item_x = hotbar_x + i * 20;
+					if (mouseInput.mouseOverLocalVar(item_x, hotbar_y, 20, 20)) {
+						if (hotbarItems.get(i) != null) {
+							mouse_holding = hotbarItems.get(i);
+							hotbarItems.remove(i, hotbarItems.get(i));
+							return;
+						}
+					}
+				}
+			}
+
+			boolean in_inventory = false;
 			if (inventory_open) {
-				boolean in_inventory = false;
 				for (int y = 0; y < size_y; y++) {
 					for (int x = 0; x < size_x; x++) {
 						if (mouse_holding == null) {
@@ -131,6 +160,7 @@ public class Inventory {
 									Item item = inventoryItems.get(new Point(x, y));
 									mouse_holding = item;
 									inventoryItems.remove(new Point(x, y), item);
+									return;
 								}
 							}
 						} else {
@@ -143,42 +173,18 @@ public class Inventory {
 								if (!inventoryItems.containsKey(new Point(x, y))) {
 									inventoryItems.put(new Point(x, y), mouse_holding);
 									mouse_holding = null;
+									return;
 								}
 							}
 						}
 					}
 				}
-				if (!in_inventory && mouse_holding != null) {
-					handler.addObject(4, new ItemGround(mouseInput.getMouseWorldCoords().x - 8,
-							mouseInput.getMouseWorldCoords().y - 8, 1, ID.Item, mouse_holding));
-					mouse_holding = null;
-				}
 			}
-
-			if (mouse_holding != null) {
-				int hotbar_x = (Game.WIDTH / 2) - (size_x * 20) / 2;
-				int hotbar_y = Game.HEIGHT - 23;
-				for (int i = 0; i < size_x; i++) {
-					int item_x = hotbar_x + i * 20;
-					if (mouseInput.mouseOverLocalVar(item_x, hotbar_y, 20, 20)) {
-						if (hotbarItems.get(i) == null) {
-							hotbarItems.put(i, mouse_holding);
-							mouse_holding = null;
-						}
-					}
-				}
-			} else {
-				int hotbar_x = (Game.WIDTH / 2) - (size_x * 20) / 2;
-				int hotbar_y = Game.HEIGHT - 23;
-				for (int i = 0; i < size_x; i++) {
-					int item_x = hotbar_x + i * 20;
-					if (mouseInput.mouseOverLocalVar(item_x, hotbar_y, 20, 20)) {
-						if (hotbarItems.get(i) != null) {
-							mouse_holding = hotbarItems.get(i);
-							hotbarItems.remove(i, hotbarItems.get(i));
-						}
-					}
-				}
+			if (!in_inventory && mouse_holding != null) {
+				handler.addObject(4, new ItemGround(mouseInput.getMouseWorldCoords().x - 8,
+						mouseInput.getMouseWorldCoords().y - 8, 1, ID.Item, mouse_holding));
+				mouse_holding = null;
+				return;
 			}
 		}
 	}
