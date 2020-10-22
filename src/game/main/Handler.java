@@ -156,7 +156,7 @@ public class Handler {
 	public LinkedList<GameObject> getSelectableObjects(World world) {
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
 		LinkedList<GameObject> objs = new LinkedList<GameObject>();
-		ID[] ids = { ID.Tree, ID.Mushroom, ID.Item };
+		ID[] ids = { ID.Tree, ID.Mushroom, ID.Item, ID.Pebble };
 
 		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {

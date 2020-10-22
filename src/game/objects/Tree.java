@@ -11,26 +11,25 @@ import game.entities.Player;
 import game.main.GameObject;
 import game.main.ID;
 import game.textures.Textures;
+import game.world.BIOME;
 
 public class Tree extends GameObject {
 
 	private ArrayList<ArrayList<BufferedImage>> tex_rows;
 
-	private String biome;
+	private BIOME biome;
 	private Player player;
-	private Textures textures;
 
 	private Random r = new Random();
 
-	public Tree(int x, int y, int z_index, ID id, String biome, Player player, Textures textures) {
+	public Tree(int x, int y, int z_index, ID id, BIOME biome, Player player) {
 		super(x, y, z_index, id);
 		this.biome = biome;
 		this.player = player;
-		this.textures = textures;
 
 		tex_rows = new ArrayList<ArrayList<BufferedImage>>();
 		int tree_type = r.nextInt(5);
-		if (biome == "forest") {
+		if (biome == BIOME.Forest) {
 			switch (tree_type) {
 				case 0:
 					addTexRow(new int[] { 0, 1 });
@@ -101,7 +100,7 @@ public class Tree extends GameObject {
 	public void addTexRow(int[] tex_ids) {
 		ArrayList<BufferedImage> row = new ArrayList<BufferedImage>();
 		for (int id : tex_ids) {
-			row.add(textures.tileSetNatureBlocks.get(id));
+			row.add(Textures.tileSetNatureBlocks.get(id));
 		}
 		this.tex_rows.add(row);
 	}

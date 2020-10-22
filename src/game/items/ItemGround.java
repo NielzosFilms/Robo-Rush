@@ -1,4 +1,4 @@
-package game.entities;
+package game.items;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -9,33 +9,31 @@ import game.main.GameObject;
 import game.main.ID;
 import game.textures.Textures;
 
-public class ItemGround extends GameObject{
+public class ItemGround extends GameObject {
 
-	private Textures textures;
-	private Item inventory_item;
-	
+	private Item inventoryItem;
+
 	private int x_diff, y_diff, timer;
 	private boolean direction = false;
-	
-	public ItemGround(int x, int y, int z_index, ID id, Item inventory_item, Textures textures) {
+
+	public ItemGround(int x, int y, int z_index, ID id, Item inventoryItem) {
 		super(x, y, z_index, id);
-		this.inventory_item = inventory_item;
-		this.textures = textures;
+		this.inventoryItem = inventoryItem;
 	}
-	
+
 	public void tick() {
 		timer++;
-		
-		if(timer >= 10) {
+
+		if (timer >= 10) {
 			timer = 0;
-			if(direction) {
+			if (direction) {
 				y_diff++;
-				if(y_diff >= 0) {
+				if (y_diff >= 0) {
 					direction = !direction;
 				}
-			}else {
+			} else {
 				y_diff--;
-				if(y_diff <= -5) {
+				if (y_diff <= -5) {
 					direction = !direction;
 				}
 			}
@@ -43,8 +41,8 @@ public class ItemGround extends GameObject{
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(textures.entity_shadow, x, y+5, null);
-		g.drawImage(inventory_item.getTex(), x+x_diff, y+y_diff, null);
+		g.drawImage(Textures.entity_shadow, x, y + 5, null);
+		g.drawImage(inventoryItem.getTexture(), x + x_diff, y + y_diff, 16, 16, null);
 	}
 
 	public Rectangle getBounds() {
@@ -54,9 +52,9 @@ public class ItemGround extends GameObject{
 	public Rectangle getSelectBounds() {
 		return new Rectangle(x, y, 16, 16);
 	}
-	
-	public Item getItem() {
-		return this.inventory_item;
+
+	public Item getInventoryItem() {
+		return this.inventoryItem;
 	}
 
 }

@@ -19,13 +19,15 @@ public class Textures {
 
 	// tilesets / sheets
 	static BufferedImage tileSetForest, playerSheet, mushroom, tileSetDesert, tileSetWater, tileSetNatureObjects;
-	public BufferedImage entity_shadow;
+	public static BufferedImage entity_shadow;
 
 	// nature
 	public static List<BufferedImage> mushrooms = new ArrayList<BufferedImage>();
 
 	// inventory
-	public BufferedImage wood, inventory_bg;
+	public static BufferedImage wood;
+	public static BufferedImage inventory_bg;
+	public static BufferedImage placeholder;
 
 	// lights
 	public BufferedImage light;
@@ -50,6 +52,7 @@ public class Textures {
 		entity_shadow = loader.loadImage("assets/entities/shadow.png");
 
 		mushroom = loader.loadImage("assets/world/nature/paddenstoel.png");
+		placeholder = loader.loadImage("assets/main/placeholder.png");
 
 		wood = loader.loadImage("assets/items/wood.png");
 		inventory_bg = loader.loadImage("assets/main/hud/inventory_bg.png");

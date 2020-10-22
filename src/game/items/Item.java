@@ -1,54 +1,64 @@
 package game.items;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 
-import game.main.GameObject;
-import game.textures.Textures;
+import game.main.ID;
 
-public class Item {
-	
-	public int amount;
-	public String type;
-	private BufferedImage tex;
-	private Textures textures;
-	private GameObject object;
-	
-	public Item(GameObject object, String type, int amount, Textures textures) {
-		this.amount = amount;
-		this.type = type;
-		this.object = object;
-		
-		switch(this.type) {
-			case "Mushroom":
-				this.tex = textures.mushrooms.get(2);
-				break;
-			default:
-				this.tex = textures.wood;
-				break;
-		}
-	}
-	
-	public void render(Graphics g, int x, int y) {
-		Font font = new Font("SansSerif", Font.PLAIN, 3);
-		g.setColor(Color.white);
-		g.drawImage(this.tex, x, y, null);
-		g.setFont(font);
-		g.drawString(""+this.amount, x+13, y+13);
-	}
-	
-	public void increaseAmount(int val) {
-		this.amount = this.amount + val;
-	}
-	
-	public BufferedImage getTex() {
-		return this.tex;
-	}
-	
-	public GameObject getObject() {
-		return this.object;
-	}
-	
+public abstract class Item {
+    protected int amount;
+    protected ID itemType;
+    protected BufferedImage tex;
+    protected ItemGround itemGround;
+
+    public Item(int amount, ID itemType, BufferedImage tex) {
+        this.amount = amount;
+        this.itemType = itemType;
+        this.tex = tex;
+        this.itemGround = null;
+    }
+
+    public void render(Graphics g, int x, int y) {
+        Font font = new Font("SansSerif", Font.PLAIN, 3);
+        g.setFont(font);
+        g.setColor(Color.WHITE);
+        g.drawImage(this.tex, x, y, 16, 16, null);
+        g.drawString("" + this.amount, x, y + 16);
+    }
+
+    public int getAmount() {
+        return this.amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public ID getItemType() {
+        return this.itemType;
+    }
+
+    public void setItemType(ID itemType) {
+        this.itemType = itemType;
+    }
+
+    public BufferedImage getTexture() {
+        return this.tex;
+    }
+
+    public void setTexture(BufferedImage tex) {
+        this.tex = tex;
+    }
+
+    public ItemGround getItemGround() {
+        return this.itemGround;
+    }
+
+    public void setItemGround(ItemGround itemGround) {
+        this.itemGround = itemGround;
+    }
+
 }

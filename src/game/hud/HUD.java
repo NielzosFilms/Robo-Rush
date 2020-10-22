@@ -56,6 +56,7 @@ public class HUD {
 			if (obj.getSelectBounds() != null) {
 				if (mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
 						obj.getSelectBounds().width, obj.getSelectBounds().height)) {
+					// TODO nicer selectboxes
 					g.setColor(new Color(255, 255, 255, 127));
 					g.drawRect(obj.getSelectBounds().x, obj.getSelectBounds().y, obj.getSelectBounds().width,
 							obj.getSelectBounds().height);

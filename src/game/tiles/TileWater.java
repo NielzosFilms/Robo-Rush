@@ -64,27 +64,6 @@ public class TileWater extends Tile {
     }
 
     public void findAndSetEdgeTexture() {
-        // top = TileHelperFunctions.checkSameNeighbourBiome(biome, chunk.getTileMap(),
-        // chunk, chunk_x, chunk_y, 0, -1);
-        // right = TileHelperFunctions.checkSameNeighbourBiome(biome,
-        // chunk.getTileMap(), chunk, chunk_x, chunk_y, 1, 0);
-        // bottom = TileHelperFunctions.checkSameNeighbourBiome(biome,
-        // chunk.getTileMap(), chunk, chunk_x, chunk_y, 0, 1);
-        // left = TileHelperFunctions.checkSameNeighbourBiome(biome, chunk.getTileMap(),
-        // chunk, chunk_x, chunk_y, -1, 0);
-
-        // top_left = TileHelperFunctions.checkSameNeighbourBiome(biome,
-        // chunk.getTileMap(), chunk, chunk_x, chunk_y, -1,
-        // -1);
-        // top_right = TileHelperFunctions.checkSameNeighbourBiome(biome,
-        // chunk.getTileMap(), chunk, chunk_x, chunk_y, 1,
-        // -1);
-        // bottom_left = TileHelperFunctions.checkSameNeighbourBiome(biome,
-        // chunk.getTileMap(), chunk, chunk_x, chunk_y,
-        // -1, 1);
-        // bottom_right = TileHelperFunctions.checkSameNeighbourBiome(biome,
-        // chunk.getTileMap(), chunk, chunk_x, chunk_y,
-        // 1, 1);
     }
 
     public void setTextureWithId() {

@@ -16,7 +16,7 @@ import java.util.Random;
 import game.audioEngine.AudioClip;
 import game.audioEngine.AudioFiles;
 import game.audioEngine.AudioPlayer;
-import game.entities.ItemGround;
+import game.items.ItemGround;
 import game.entities.Player;
 import game.entities.particles.Particle;
 import game.entities.particles.ParticleSystem;
@@ -38,7 +38,7 @@ public class Game extends Canvas implements Runnable {
 
 	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
 	public static final float RATIO = (float) NEW_WIDTH / NEW_HEIGHT;
-	public static final int WIDTH = 640, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
+	public static final int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
 	public static final int FPS = 60;
@@ -104,7 +104,7 @@ public class Game extends Canvas implements Runnable {
 		mouseInput.setCam(cam);
 
 		Player player = new Player(1000, -1400, 2, ID.Player, keyInput, textures);
-		inventory = new Inventory(5, 4, textures, mouseInput, ps, handler, cam);
+		inventory = new Inventory(5, 4, mouseInput, ps, handler, cam);
 		mouseInput.setInventory(inventory);
 		keyInput.setInventory(inventory);
 		hud = new HUD(handler, player, inventory);
@@ -200,7 +200,7 @@ public class Game extends Canvas implements Runnable {
 				for (int i = 0; i < list.size(); i++) {
 					if (list.get(i).getId() == ID.Player) {
 
-						world.getChunkPointWithCoords(list.get(i).x, list.get(i).y);
+						// world.getChunkPointWithCoords(list.get(i).x, list.get(i).y);
 
 						cam.tick(list.get(i));
 					}

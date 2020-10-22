@@ -14,6 +14,7 @@ import game.lighting.Light;
 import game.main.GameObject;
 import game.main.ID;
 import game.objects.Mushroom;
+import game.objects.Pebble;
 import game.tiles.Tile;
 import game.tiles.TileGrass;
 import game.tiles.TileWater;
@@ -128,9 +129,9 @@ public class Chunk {
 							new TileGrass(world_x, world_y, resized_x + x, resized_y + y, 1, BIOME.Forest, this, 0));
 					int num = r.nextInt(100);
 					if (num == 0) {
-						entities.get(0).add(new Tree(world_x, world_y, 1, ID.Tree, "forest", player, textures));
+						entities.get(0).add(new Tree(world_x, world_y, 1, ID.Tree, BIOME.Forest, player));
 					} else if (num == 1) {
-						entities.get(0).add(new Mushroom(world_x, world_y, 1, ID.Mushroom, textures));
+						entities.get(0).add(new Pebble(world_x, world_y, 1, ID.Pebble));
 					}
 				} else {
 					tiles.get(1).put(new Point(resized_x + x, resized_y + y),

@@ -2,9 +2,11 @@ package game.main;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 public abstract class GameObject {
 
+	protected BufferedImage tex;
 	protected int x, y;
 	protected ID id;
 	protected int z_index;
@@ -68,6 +70,14 @@ public abstract class GameObject {
 
 	public void setZIndex(int z_index) {
 		this.z_index = z_index;
+	}
+
+	public BufferedImage getTexture() {
+		return this.tex;
+	}
+
+	public void setTexture(BufferedImage tex) {
+		this.tex = tex;
 	}
 
 	public abstract Rectangle getBounds();
