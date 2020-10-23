@@ -12,8 +12,4 @@ public class ItemNull extends Item {
         this.itemGround = new ItemGround(0, 0, 1, ID.Null, this);
     }
 
-    public void render(Graphics g, int x, int y) {
-        g.drawImage(tex, x, y, 16, 16, null);
-    }
-
 }

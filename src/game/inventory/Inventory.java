@@ -25,6 +25,8 @@ import game.world.World;
 
 public class Inventory {
 
+	public static final int MAX_STACK_SIZE = 99;
+
 	public HashMap<Point, Item> inventoryItems;
 	public HashMap<Integer, Item> hotbarItems;
 	private int size_x, size_y;
@@ -55,6 +57,8 @@ public class Inventory {
 
 		this.inventoryItems = new HashMap<Point, Item>();
 		this.hotbarItems = new HashMap<Integer, Item>();
+
+		inventoryItems.put(new Point(0, 0), new ItemRock(98, ID.Pebble, Textures.tileSetNatureBlocks.get(49)));
 
 		/*
 		 * for(int y = 0;y<2;y++) { for(int x = 0;x<size_x;x++) { items.put(new Point(x,
@@ -186,43 +190,56 @@ public class Inventory {
 				mouse_holding = null;
 				return;
 			}
-		}
-	}
-
-	public void pickupItem(Handler handler, World world) {
-		LinkedList<GameObject> objs = handler.getSelectableObjects(world);
-		for (GameObject obj : objs) {
-			if (obj.getSelectBounds() != null) {
-				if (mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
-						obj.getSelectBounds().width, obj.getSelectBounds().height)) {
-					if (checkInventoryItem(obj.getId())) {
-						for (int y = 0; y < size_y; y++) {
-							for (int x = 0; x < size_x; x++) {
-								if (inventoryItems.containsKey(new Point(x, y))) {
-									if (inventoryItems.get(new Point(x, y)).getItemType() == obj.getId()) {
-										inventoryItems.get(new Point(x, y))
-												.setAmount(inventoryItems.get(new Point(x, y)).getAmount() + 1);
-										handler.findAndRemoveObject(obj, world);
+		} else if (e.getButton() == MouseEvent.BUTTON3) {
+			boolean in_inventory = false;
+			if (inventory_open) {
+				for (int y = 0; y < size_y; y++) {
+					for (int x = 0; x < size_x; x++) {
+						if (mouse_holding == null) {
+							if (inventoryItems.containsKey(new Point(x, y))) {
+								int item_x = this.x + (x * 20);
+								int item_y = this.y + (y * 20);
+								int item_w = 20;
+								int item_h = 20;
+								if (mouseInput.mouseOverLocalVar(item_x, item_y, item_w, item_h)) {
+									in_inventory = true;
+									Item itemInventory = inventoryItems.get(new Point(x, y));
+									try {
+										Item newHolding = (Item) itemInventory.clone();
+										newHolding.setAmount(Math.round(itemInventory.getAmount() / 2));
+										itemInventory.setAmount(itemInventory.getAmount() - newHolding.getAmount());
+										if (newHolding.getAmount() <= 0 || itemInventory.getAmount() <= 0) {
+											return;
+										}
+										mouse_holding = newHolding;
+										inventoryItems.put(new Point(x, y), itemInventory);
 										return;
+									} catch (CloneNotSupportedException e1) {
+										e1.printStackTrace();
 									}
 								}
 							}
-						}
-					} else if (checkInventoryFreeSlots()) {
-						for (int y = 0; y < size_y; y++) {
-							for (int x = 0; x < size_x; x++) {
+						} else {
+							int item_x = this.x + (x * 20);
+							int item_y = this.y + (y * 20);
+							int item_w = 20;
+							int item_h = 20;
+							if (mouseInput.mouseOverLocalVar(item_x, item_y, item_w, item_h)) {
+								in_inventory = true;
 								if (!inventoryItems.containsKey(new Point(x, y))) {
-									if (obj.getId() == ID.Item) {
-										ItemGround item_ground = (ItemGround) obj;
-										inventoryItems.put(new Point(x, y), item_ground.getInventoryItem());
-										handler.findAndRemoveObject(obj, world);
+									Item itemHolding = mouse_holding;
+									try {
+										Item inventoryItem = (Item) itemHolding.clone();
+										itemHolding.setAmount(itemHolding.getAmount() - 1);
+										inventoryItem.setAmount(1);
+										if (itemHolding.getAmount() <= 0) {
+											mouse_holding = null;
+										}
+										inventoryItems.put(new Point(x, y), inventoryItem);
 										return;
-									} else {
-										Item item = createNewItem(obj.getId());
-										inventoryItems.put(new Point(x, y), item);
-
-										handler.findAndRemoveObject(obj, world);
-										return;
+									} catch (CloneNotSupportedException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
 									}
 								}
 							}
@@ -233,11 +250,104 @@ public class Inventory {
 		}
 	}
 
-	private Item createNewItem(ID itemType) {
+	public void pickupItem(Handler handler, World world) {
+		LinkedList<GameObject> objs = handler.getSelectableObjects(world);
+		for (GameObject obj : objs) {
+			if (obj.getSelectBounds() != null) {
+				if (mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
+						obj.getSelectBounds().width, obj.getSelectBounds().height)) {
+					ID itemType = obj.getId();
+					int add_amount = 1;
+					if (itemType == ID.Item) {
+						ItemGround itemGround = (ItemGround) obj;
+						itemType = itemGround.getInventoryItem().getItemType();
+						add_amount = itemGround.getInventoryItem().getAmount();
+					}
+					if (checkInventoryItem(itemType)) {
+						for (int y = 0; y < size_y; y++) {
+							for (int x = 0; x < size_x; x++) {
+								if (inventoryItems.containsKey(new Point(x, y))) {
+									Item item = inventoryItems.get(new Point(x, y));
+									if (item.getItemType() == itemType) {
+										int item_amount = item.getAmount();
+										int sum_amount = item_amount + add_amount;
+										// needs work
+										if (item_amount < MAX_STACK_SIZE && sum_amount <= MAX_STACK_SIZE) {
+											item.setAmount(sum_amount);
+											handler.findAndRemoveObject(obj, world);
+											return;
+										} else {
+											if (checkItemExistsBelowStackSize(item.getItemType(), add_amount)) {
+												continue;
+											} else {
+												addItemToInventory(handler, world, obj);
+												return;
+											}
+										}
+									}
+								}
+							}
+						}
+					} else {
+						addItemToInventory(handler, world, obj);
+					}
+				}
+			}
+		}
+	}
+
+	private void addItemToInventory(Handler handler, World world, GameObject obj) {
+		if (checkInventoryFreeSlots()) {
+			for (int y = 0; y < size_y; y++) {
+				for (int x = 0; x < size_x; x++) {
+					if (!inventoryItems.containsKey(new Point(x, y))) {
+						if (obj.getId() == ID.Item) {
+							ItemGround item_ground = (ItemGround) obj;
+							inventoryItems.put(new Point(x, y), item_ground.getInventoryItem());
+							handler.findAndRemoveObject(obj, world);
+							return;
+						} else {
+							Item item = createNewItem(obj);
+							inventoryItems.put(new Point(x, y), item);
+
+							handler.findAndRemoveObject(obj, world);
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private Item createNewItem(GameObject obj) {
+		ID itemType = obj.getId();
+		int add_amount = 1;
+		if (itemType == ID.Item) {
+			ItemGround itemGround = (ItemGround) obj;
+			itemType = itemGround.getInventoryItem().getItemType();
+			add_amount = itemGround.getInventoryItem().getAmount();
+		}
 		if (itemType == ID.Pebble) {
-			return new ItemRock(1, itemType, Textures.tileSetNatureBlocks.get(49));
+			return new ItemRock(add_amount, itemType, Textures.tileSetNatureBlocks.get(49));
 		}
 		return new ItemNull(0, ID.Null, Textures.placeholder);
+	}
+
+	private boolean checkItemExistsBelowStackSize(ID itemType, int add_amount) {
+		boolean ret = false;
+		for (int y = 0; y < size_y; y++) {
+			for (int x = 0; x < size_x; x++) {
+				if (inventoryItems.containsKey(new Point(x, y))) {
+					Item item = inventoryItems.get(new Point(x, y));
+					if (item.getItemType() == itemType) {
+						if (item.getAmount() < MAX_STACK_SIZE && item.getAmount() + add_amount <= MAX_STACK_SIZE) {
+							ret = true;
+						}
+					}
+				}
+			}
+		}
+		return ret;
 	}
 
 	private boolean checkInventoryItem(ID itemType) {

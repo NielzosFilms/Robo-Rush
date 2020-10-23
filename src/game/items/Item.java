@@ -8,7 +8,7 @@ import java.awt.Font;
 
 import game.main.ID;
 
-public abstract class Item {
+public abstract class Item implements Cloneable {
     protected int amount;
     protected ID itemType;
     protected BufferedImage tex;
@@ -27,6 +27,12 @@ public abstract class Item {
         g.setColor(Color.WHITE);
         g.drawImage(this.tex, x, y, 16, 16, null);
         g.drawString("" + this.amount, x, y + 16);
+
+        g.drawString(this.itemType.toString(), x, y + 2);
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     public int getAmount() {
