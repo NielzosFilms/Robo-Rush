@@ -131,6 +131,29 @@ public class Inventory {
 							hotbarItems.put(i, mouse_holding);
 							mouse_holding = null;
 							return;
+						} else {
+							Item itemInventory = hotbarItems.get(i);
+							Item holding = mouse_holding;
+							if (itemInventory.getItemType() == mouse_holding.getItemType()) {
+								// int stackDiff = MAX_STACK_SIZE - itemInventory.getAmount();
+								itemInventory.setAmount(itemInventory.getAmount() + holding.getAmount());
+								holding.setAmount(0);
+								if (itemInventory.getAmount() > MAX_STACK_SIZE) {
+									int diff = itemInventory.getAmount() - MAX_STACK_SIZE;
+									itemInventory.setAmount(MAX_STACK_SIZE);
+									holding.setAmount(diff);
+								}
+								hotbarItems.put(i, itemInventory);
+								if (holding.getAmount() <= 0) {
+									mouse_holding = null;
+								} else {
+									mouse_holding = holding;
+								}
+							} else {
+								mouse_holding = hotbarItems.get(i);
+								hotbarItems.put(i, holding);
+								return;
+							}
 						}
 					}
 				}
@@ -141,8 +164,9 @@ public class Inventory {
 					int item_x = hotbar_x + i * 20;
 					if (mouseInput.mouseOverLocalVar(item_x, hotbar_y, 20, 20)) {
 						if (hotbarItems.get(i) != null) {
-							mouse_holding = hotbarItems.get(i);
-							hotbarItems.remove(i, hotbarItems.get(i));
+							Item item = hotbarItems.get(i);
+							mouse_holding = item;
+							hotbarItems.remove(i);
 							return;
 						}
 					}
@@ -214,6 +238,63 @@ public class Inventory {
 				return;
 			}
 		} else if (e.getButton() == MouseEvent.BUTTON3) {
+			if (mouse_holding != null) {
+				int hotbar_x = (Game.WIDTH / 2) - (size_x * 20) / 2;
+				int hotbar_y = Game.HEIGHT - 23;
+				for (int i = 0; i < size_x; i++) {
+					int item_x = hotbar_x + i * 20;
+					if (mouseInput.mouseOverLocalVar(item_x, hotbar_y, 20, 20)) {
+						if (!hotbarItems.containsKey(i)) {
+							Item itemHolding = mouse_holding;
+							try {
+								Item inventoryItem = (Item) itemHolding.clone();
+								itemHolding.setAmount(itemHolding.getAmount() - 1);
+								inventoryItem.setAmount(1);
+								if (itemHolding.getAmount() <= 0) {
+									mouse_holding = null;
+								}
+								hotbarItems.put(i, inventoryItem);
+								return;
+							} catch (CloneNotSupportedException e1) {
+								e1.printStackTrace();
+							}
+						} else {
+							Item itemInventory = hotbarItems.get(i);
+							if (itemInventory.getAmount() + 1 <= MAX_STACK_SIZE) {
+								mouse_holding.setAmount(mouse_holding.getAmount() - 1);
+								itemInventory.setAmount(itemInventory.getAmount() + 1);
+								if (mouse_holding.getAmount() <= 0) {
+									mouse_holding = null;
+								}
+								return;
+							}
+						}
+					}
+				}
+			} else {
+				int hotbar_x = (Game.WIDTH / 2) - (size_x * 20) / 2;
+				int hotbar_y = Game.HEIGHT - 23;
+				for (int i = 0; i < size_x; i++) {
+					int item_x = hotbar_x + i * 20;
+					if (mouseInput.mouseOverLocalVar(item_x, hotbar_y, 20, 20)) {
+						Item itemInventory = hotbarItems.get(i);
+						try {
+							Item newHolding = (Item) itemInventory.clone();
+							newHolding.setAmount(Math.round(itemInventory.getAmount() / 2));
+							itemInventory.setAmount(itemInventory.getAmount() - newHolding.getAmount());
+							if (newHolding.getAmount() <= 0 || itemInventory.getAmount() <= 0) {
+								return;
+							}
+							mouse_holding = newHolding;
+							hotbarItems.put(i, itemInventory);
+							return;
+						} catch (CloneNotSupportedException e1) {
+							e1.printStackTrace();
+						}
+					}
+				}
+			}
+
 			boolean in_inventory = false;
 			if (inventory_open) {
 				for (int y = 0; y < size_y; y++) {
