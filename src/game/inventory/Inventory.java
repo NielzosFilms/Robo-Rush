@@ -58,7 +58,7 @@ public class Inventory {
 		this.inventoryItems = new HashMap<Point, Item>();
 		this.hotbarItems = new HashMap<Integer, Item>();
 
-		inventoryItems.put(new Point(0, 0), new ItemRock(98, ID.Pebble, Textures.tileSetNatureBlocks.get(49)));
+		inventoryItems.put(new Point(2, 0), new ItemRock(98, ID.Pebble, Textures.tileSetNatureBlocks.get(49)));
 
 		/*
 		 * for(int y = 0;y<2;y++) { for(int x = 0;x<size_x;x++) { items.put(new Point(x,
@@ -177,6 +177,11 @@ public class Inventory {
 								if (!inventoryItems.containsKey(new Point(x, y))) {
 									inventoryItems.put(new Point(x, y), mouse_holding);
 									mouse_holding = null;
+									return;
+								} else {
+									Item holding = mouse_holding;
+									mouse_holding = inventoryItems.get(new Point(x, y));
+									inventoryItems.put(new Point(x, y), holding);
 									return;
 								}
 							}
