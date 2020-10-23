@@ -179,10 +179,28 @@ public class Inventory {
 									mouse_holding = null;
 									return;
 								} else {
+									Item itemInventory = inventoryItems.get(new Point(x, y));
 									Item holding = mouse_holding;
-									mouse_holding = inventoryItems.get(new Point(x, y));
-									inventoryItems.put(new Point(x, y), holding);
-									return;
+									if (itemInventory.getItemType() == mouse_holding.getItemType()) {
+										// int stackDiff = MAX_STACK_SIZE - itemInventory.getAmount();
+										itemInventory.setAmount(itemInventory.getAmount() + holding.getAmount());
+										holding.setAmount(0);
+										if (itemInventory.getAmount() > MAX_STACK_SIZE) {
+											int diff = itemInventory.getAmount() - MAX_STACK_SIZE;
+											itemInventory.setAmount(MAX_STACK_SIZE);
+											holding.setAmount(diff);
+										}
+										inventoryItems.put(new Point(x, y), itemInventory);
+										if (holding.getAmount() <= 0) {
+											mouse_holding = null;
+										} else {
+											mouse_holding = holding;
+										}
+									} else {
+										mouse_holding = inventoryItems.get(new Point(x, y));
+										inventoryItems.put(new Point(x, y), holding);
+										return;
+									}
 								}
 							}
 						}
@@ -245,6 +263,16 @@ public class Inventory {
 									} catch (CloneNotSupportedException e1) {
 										// TODO Auto-generated catch block
 										e1.printStackTrace();
+									}
+								} else {
+									Item itemInventory = inventoryItems.get(new Point(x, y));
+									if (itemInventory.getAmount() + 1 <= MAX_STACK_SIZE) {
+										mouse_holding.setAmount(mouse_holding.getAmount() - 1);
+										itemInventory.setAmount(itemInventory.getAmount() + 1);
+										if (mouse_holding.getAmount() <= 0) {
+											mouse_holding = null;
+										}
+										return;
 									}
 								}
 							}
