@@ -11,8 +11,10 @@ import java.util.LinkedList;
 import game.items.ItemGround;
 import game.items.ItemNull;
 import game.items.ItemRock;
+import game.items.ItemWood;
 import game.entities.particles.Particle;
 import game.entities.particles.ParticleSystem;
+import game.items.ITEM_ID;
 import game.items.Item;
 import game.main.Camera;
 import game.main.Game;
@@ -58,7 +60,7 @@ public class Inventory {
 		this.inventoryItems = new HashMap<Point, Item>();
 		this.hotbarItems = new HashMap<Integer, Item>();
 
-		inventoryItems.put(new Point(2, 0), new ItemRock(98, ID.Pebble, Textures.tileSetNatureBlocks.get(49)));
+		inventoryItems.put(new Point(2, 0), new ItemRock(98, ITEM_ID.Rock, Textures.tileSetNatureBlocks.get(49)));
 
 		/*
 		 * for(int y = 0;y<2;y++) { for(int x = 0;x<size_x;x++) { items.put(new Point(x,
@@ -370,12 +372,17 @@ public class Inventory {
 			if (obj.getSelectBounds() != null) {
 				if (mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
 						obj.getSelectBounds().width, obj.getSelectBounds().height)) {
-					ID itemType = obj.getId();
+					ITEM_ID itemType = ITEM_ID.NULL;
 					int add_amount = 1;
-					if (itemType == ID.Item) {
+					if (obj.getId() == ID.Item) {
 						ItemGround itemGround = (ItemGround) obj;
 						itemType = itemGround.getInventoryItem().getItemType();
 						add_amount = itemGround.getInventoryItem().getAmount();
+					} else {
+						if (obj.getItem() == null)
+							return;
+						itemType = obj.getItem().getItemType();
+						add_amount = obj.getItem().getAmount();
 					}
 					if (checkInventoryItem(itemType)) {
 						for (int y = 0; y < size_y; y++) {
@@ -422,6 +429,8 @@ public class Inventory {
 							return;
 						} else {
 							Item item = createNewItem(obj);
+							if (item == null)
+								return;
 							inventoryItems.put(new Point(x, y), item);
 
 							handler.findAndRemoveObject(obj, world);
@@ -434,20 +443,15 @@ public class Inventory {
 	}
 
 	private Item createNewItem(GameObject obj) {
-		ID itemType = obj.getId();
-		int add_amount = 1;
-		if (itemType == ID.Item) {
+		ID id = obj.getId();
+		if (id == ID.Item) {
 			ItemGround itemGround = (ItemGround) obj;
-			itemType = itemGround.getInventoryItem().getItemType();
-			add_amount = itemGround.getInventoryItem().getAmount();
+			return itemGround.getInventoryItem();
 		}
-		if (itemType == ID.Pebble) {
-			return new ItemRock(add_amount, itemType, Textures.tileSetNatureBlocks.get(49));
-		}
-		return new ItemNull(0, ID.Null, Textures.placeholder);
+		return obj.getItem();
 	}
 
-	private boolean checkItemExistsBelowStackSize(ID itemType, int add_amount) {
+	private boolean checkItemExistsBelowStackSize(ITEM_ID itemType, int add_amount) {
 		boolean ret = false;
 		for (int y = 0; y < size_y; y++) {
 			for (int x = 0; x < size_x; x++) {
@@ -464,7 +468,7 @@ public class Inventory {
 		return ret;
 	}
 
-	private boolean checkInventoryItem(ID itemType) {
+	private boolean checkInventoryItem(ITEM_ID itemType) {
 		if (inventoryItems.size() == 0) {
 			return false;
 		}

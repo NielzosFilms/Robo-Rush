@@ -5,6 +5,9 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import game.items.ITEM_ID;
+import game.items.Item;
+import game.items.ItemRock;
 import game.main.GameObject;
 import game.main.ID;
 import game.textures.Textures;
@@ -39,6 +42,10 @@ public class Pebble extends GameObject {
 
     public Rectangle getSelectBounds() {
         return new Rectangle(x, y, 16, 16);
+    }
+
+    public Item getItem() {
+        return new ItemRock(1, ITEM_ID.Rock, Textures.tileSetNatureBlocks.get(49));
     }
 
 }

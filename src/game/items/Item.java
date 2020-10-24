@@ -10,11 +10,11 @@ import game.main.ID;
 
 public abstract class Item implements Cloneable {
     protected int amount;
-    protected ID itemType;
+    protected ITEM_ID itemType;
     protected BufferedImage tex;
     protected ItemGround itemGround;
 
-    public Item(int amount, ID itemType, BufferedImage tex) {
+    public Item(int amount, ITEM_ID itemType, BufferedImage tex) {
         this.amount = amount;
         this.itemType = itemType;
         this.tex = tex;
@@ -43,11 +43,11 @@ public abstract class Item implements Cloneable {
         this.amount = amount;
     }
 
-    public ID getItemType() {
+    public ITEM_ID getItemType() {
         return this.itemType;
     }
 
-    public void setItemType(ID itemType) {
+    public void setItemType(ITEM_ID itemType) {
         this.itemType = itemType;
     }
 

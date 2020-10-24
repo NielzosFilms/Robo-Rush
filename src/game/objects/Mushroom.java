@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import game.items.Item;
 import game.main.GameObject;
 import game.main.ID;
 import game.textures.Textures;
@@ -49,6 +50,10 @@ public class Mushroom extends GameObject {
 
 	public Rectangle getSelectBounds() {
 		return new Rectangle(x + 4, y, 12, 16);
+	}
+
+	public Item getItem() {
+		return null;
 	}
 
 }

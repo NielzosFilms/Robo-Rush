@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import game.items.Item;
+
 public abstract class GameObject {
 
 	protected BufferedImage tex;
@@ -83,5 +85,7 @@ public abstract class GameObject {
 	public abstract Rectangle getBounds();
 
 	public abstract Rectangle getSelectBounds();
+
+	public abstract Item getItem();
 
 }

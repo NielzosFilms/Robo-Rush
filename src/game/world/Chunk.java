@@ -130,6 +130,10 @@ public class Chunk {
 					int num = r.nextInt(100);
 					if (num == 0) {
 						entities.get(0).add(new Tree(world_x, world_y, 1, ID.Tree, BIOME.Forest, player));
+						int stick = r.nextInt(5);
+						if (stick == 0) {
+							// entities.get(0).add(new ) ADD STICK
+						}
 					} else if (num == 1) {
 						entities.get(0).add(new Pebble(world_x, world_y, 1, ID.Pebble));
 					}

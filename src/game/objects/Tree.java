@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import game.entities.Player;
+import game.items.Item;
+import game.items.ItemWood;
 import game.main.GameObject;
 import game.main.ID;
 import game.textures.Textures;
@@ -34,21 +36,6 @@ public class Tree extends GameObject {
 				case 0:
 					addTexRow(new int[] { 0, 1 });
 					addTexRow(new int[] { 15, 16 });
-					break;
-				case 1:
-					addTexRow(new int[] { 5 });
-					addTexRow(new int[] { 5 + 15 });
-					break;
-				case 2:
-					addTexRow(new int[] { 6, 7 });
-					addTexRow(new int[] { 6 + 15, 7 + 15 });
-					break;
-				case 3:
-					addTexRow(new int[] { 2 + 15 });
-					break;
-				case 4:
-					addTexRow(new int[] { 30, 31 });
-					addTexRow(new int[] { 30 + 15, 31 + 15 });
 					break;
 				default:
 					addTexRow(new int[] { 0, 1 });
@@ -103,6 +90,11 @@ public class Tree extends GameObject {
 			row.add(Textures.tileSetNatureBlocks.get(id));
 		}
 		this.tex_rows.add(row);
+	}
+
+	public Item getItem() {
+		// return new ItemWood(5, this.id, Textures.wood);
+		return null;
 	}
 
 }

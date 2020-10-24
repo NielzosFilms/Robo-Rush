@@ -57,4 +57,8 @@ public class ItemGround extends GameObject {
 		return this.inventoryItem;
 	}
 
+	public Item getItem() {
+		return null;
+	}
+
 }

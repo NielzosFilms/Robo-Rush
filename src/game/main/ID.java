@@ -2,10 +2,12 @@ package game.main;
 
 public enum ID {
 
-	Null(),
+	NULL(),
 
 	Player(), Enemy(), Particle(), Item(),
 
-	Tile(), Tree(), Mushroom(), Pebble();
+	Tile(), Tree(), Mushroom(),
+
+	Pebble(), Branch();
 
 }
