@@ -60,7 +60,7 @@ public class Inventory {
 		this.inventoryItems = new HashMap<Point, Item>();
 		this.hotbarItems = new HashMap<Integer, Item>();
 
-		inventoryItems.put(new Point(2, 0), new ItemRock(98, ITEM_ID.Rock, Textures.tileSetNatureBlocks.get(49)));
+		inventoryItems.put(new Point(2, 0), new ItemRock(98, ITEM_ID.Rock));
 
 		/*
 		 * for(int y = 0;y<2;y++) { for(int x = 0;x<size_x;x++) { items.put(new Point(x,

@@ -33,7 +33,7 @@ public class Pebble extends GameObject {
     }
 
     public void render(Graphics g) {
-        g.drawImage(tex, x, y, 16, 16, null);
+        g.drawImage(tex, x, y, this.width, this.height, null);
     }
 
     public Rectangle getBounds() {
@@ -41,11 +41,11 @@ public class Pebble extends GameObject {
     }
 
     public Rectangle getSelectBounds() {
-        return new Rectangle(x, y, 16, 16);
+        return new Rectangle(x, y, this.width, this.height);
     }
 
     public Item getItem() {
-        return new ItemRock(1, ITEM_ID.Rock, Textures.tileSetNatureBlocks.get(49));
+        return new ItemRock(1, ITEM_ID.Rock);
     }
 
 }

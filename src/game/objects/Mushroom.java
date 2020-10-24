@@ -41,7 +41,7 @@ public class Mushroom extends GameObject {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(this.tex, x, y, null);
+		g.drawImage(this.tex, x, y, this.width, this.height, null);
 	}
 
 	public Rectangle getBounds() {

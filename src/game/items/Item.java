@@ -14,10 +14,9 @@ public abstract class Item implements Cloneable {
     protected BufferedImage tex;
     protected ItemGround itemGround;
 
-    public Item(int amount, ITEM_ID itemType, BufferedImage tex) {
+    public Item(int amount, ITEM_ID itemType) {
         this.amount = amount;
         this.itemType = itemType;
-        this.tex = tex;
         this.itemGround = null;
     }
 

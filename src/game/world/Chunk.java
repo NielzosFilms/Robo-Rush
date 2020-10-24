@@ -13,6 +13,7 @@ import game.entities.Player;
 import game.lighting.Light;
 import game.main.GameObject;
 import game.main.ID;
+import game.objects.Branch;
 import game.objects.Mushroom;
 import game.objects.Pebble;
 import game.tiles.Tile;
@@ -47,7 +48,6 @@ public class Chunk {
 		this.textures = textures;
 		// entities.add(new Enemy((x+8)*16, (y+8)*16, ID.Enemy));
 		// generate chunk tiles 16x16 then add to world
-		tiles.add(new HashMap<Point, Tile>());
 		tiles.add(new HashMap<Point, Tile>());
 		entities.add(new LinkedList<GameObject>());
 		GenerateTiles(world, player);
@@ -125,21 +125,24 @@ public class Chunk {
 				int world_y = resized_y + y * 16;
 
 				if (World.getBiome(val, temp_val, moist_val) == BIOME.Forest) {
-					tiles.get(1).put(new Point(resized_x + x, resized_y + y),
-							new TileGrass(world_x, world_y, resized_x + x, resized_y + y, 1, BIOME.Forest, this, 0));
+					addTile(new TileGrass(world_x, world_y, resized_x + x, resized_y + y, 1, BIOME.Forest, this, 0));
 					int num = r.nextInt(100);
 					if (num == 0) {
-						entities.get(0).add(new Tree(world_x, world_y, 1, ID.Tree, BIOME.Forest, player));
+						addEntity(new Tree(world_x, world_y, 1, ID.Tree, BIOME.Forest, player));
 						int stick = r.nextInt(5);
 						if (stick == 0) {
-							// entities.get(0).add(new ) ADD STICK
+							int placement = r.nextInt(1);
+							if (placement == 0) {
+								addEntity(new Branch(world_x - 16, world_y, 0, ID.Branch));
+							} else {
+								addEntity(new Branch(world_x + 16, world_y, 0, ID.Branch));
+							}
 						}
 					} else if (num == 1) {
-						entities.get(0).add(new Pebble(world_x, world_y, 1, ID.Pebble));
+						addEntity(new Pebble(world_x, world_y, 0, ID.Pebble));
 					}
 				} else {
-					tiles.get(1).put(new Point(resized_x + x, resized_y + y),
-							new TileWater(world_x, world_y, resized_x + x, resized_y + y, 1, BIOME.Ocean, this, 0));
+					addTile(new TileWater(world_x, world_y, resized_x + x, resized_y + y, 1, BIOME.Ocean, this, 0));
 				}
 			}
 		}
@@ -205,6 +208,18 @@ public class Chunk {
 				tiles.add(new HashMap<Point, Tile>());
 			}
 			tiles.get(zIndex).put(new Point(tile.getChunkX(), tile.getChunkY()), tile);
+		}
+	}
+
+	public void addEntity(GameObject ent) {
+		int zIndex = ent.getZIndex();
+		if (zIndex < entities.size()) {
+			entities.get(zIndex).add(ent);
+		} else {
+			for (int i = 0; i <= zIndex; i++) {
+				entities.add(new LinkedList<GameObject>());
+			}
+			entities.get(zIndex).add(ent);
 		}
 	}
 }

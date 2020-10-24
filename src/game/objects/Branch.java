@@ -3,14 +3,18 @@ package game.objects;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import game.items.ITEM_ID;
 import game.items.Item;
+import game.items.ItemStick;
 import game.main.GameObject;
 import game.main.ID;
+import game.textures.Textures;
 
 public class Branch extends GameObject {
 
     public Branch(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
+        this.tex = Textures.tileSetNatureBlocks.get(27);
     }
 
     public void tick() {
@@ -18,7 +22,7 @@ public class Branch extends GameObject {
     }
 
     public void render(Graphics g) {
-
+        g.drawImage(this.tex, x, y, this.width, this.height, null);
     }
 
     public Rectangle getBounds() {
@@ -26,11 +30,11 @@ public class Branch extends GameObject {
     }
 
     public Rectangle getSelectBounds() {
-        return null;
+        return new Rectangle(x, y, this.width, this.height);
     }
 
     public Item getItem() {
-        return null;
+        return new ItemStick(1, ITEM_ID.Stick);
     }
 
 }

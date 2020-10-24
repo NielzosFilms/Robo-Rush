@@ -156,30 +156,30 @@ public class Handler {
 	public LinkedList<GameObject> getSelectableObjects(World world) {
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
 		LinkedList<GameObject> objs = new LinkedList<GameObject>();
-		ID[] ids = { ID.Tree, ID.Mushroom, ID.Item, ID.Pebble };
+		// ID[] ids = { ID.Tree, ID.Mushroom, ID.Item, ID.Pebble };
 
 		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
-				if (isInArray(ids, tempObject.getId())) {
+				if (tempObject.getSelectBounds() != null) {
 					objs.add(tempObject);
 				}
 			}
 		}
 
 		for (LinkedList<GameObject> chunk : chunks) {
-			for (GameObject object : chunk) {
-				if (isInArray(ids, object.getId())) {
-					objs.add(object);
+			for (GameObject tempObject : chunk) {
+				if (tempObject.getSelectBounds() != null) {
+					objs.add(tempObject);
 				}
 			}
 		}
 
 		// chunks
 		for (Chunk chunk : chunks_on_screen) {
-			for (GameObject obj : chunk.getEntities()) {
-				if (isInArray(ids, obj.getId())) {
-					objs.add(obj);
+			for (GameObject tempObject : chunk.getEntities()) {
+				if (tempObject.getSelectBounds() != null) {
+					objs.add(tempObject);
 				}
 			}
 		}

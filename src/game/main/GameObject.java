@@ -10,6 +10,7 @@ public abstract class GameObject {
 
 	protected BufferedImage tex;
 	protected int x, y;
+	protected int width = 16, height = 16;
 	protected ID id;
 	protected int z_index;
 	protected double velX;

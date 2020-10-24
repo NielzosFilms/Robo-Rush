@@ -58,7 +58,7 @@ public class Tree extends GameObject {
 	}
 
 	public void render(Graphics g) {
-		renderTreeTiles(g, x - 8, y - 16, 16);
+		renderTreeTiles(g, x - 8, y - this.width, this.height);
 		// g.drawRect(getBounds().x, getBounds().y, getBounds().width,
 		// getBounds().height);
 	}
@@ -77,11 +77,11 @@ public class Tree extends GameObject {
 	}
 
 	public Rectangle getBounds() {
-		return new Rectangle(x, y + 3, 16, 16 - 6);
+		return new Rectangle(x, y + 3, this.width, this.height - 6);
 	}
 
 	public Rectangle getSelectBounds() {
-		return new Rectangle(x, y, 16, 16);
+		return new Rectangle(x, y, this.width, this.height);
 	}
 
 	public void addTexRow(int[] tex_ids) {

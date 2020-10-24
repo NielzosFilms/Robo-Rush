@@ -209,7 +209,7 @@ public class Player extends GameObject {
 	}
 
 	public Rectangle getSelectBounds() {
-		return new Rectangle(x, y, 16, 16);
+		return null;
 	}
 
 	public int getHealth() {
