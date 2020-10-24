@@ -89,4 +89,6 @@ public abstract class GameObject {
 
 	public abstract Item getItem();
 
+	public abstract void interact();
+
 }

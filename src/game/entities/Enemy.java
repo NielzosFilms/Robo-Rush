@@ -35,4 +35,8 @@ public class Enemy extends GameObject {
 		return null;
 	}
 
+	public void interact() {
+
+	}
+
 }

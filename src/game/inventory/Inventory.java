@@ -40,6 +40,7 @@ public class Inventory {
 	private ParticleSystem particleSystem;
 	private Handler handler;
 	private Camera cam;
+	private World world;
 	private int hotbar_selected_item;
 
 	public Inventory(int size_x, int size_y, MouseInput mouseInput, ParticleSystem particleSystem, Handler handler,
@@ -363,58 +364,68 @@ public class Inventory {
 					}
 				}
 			}
+			if (!in_inventory && mouse_holding != null) {
+				try {
+					Item itemGround = (Item) mouse_holding.clone();
+					itemGround.setAmount(1);
+					mouse_holding.setAmount(mouse_holding.getAmount() - 1);
+					if (mouse_holding.getAmount() <= 0) {
+						mouse_holding = null;
+					}
+					handler.addObject(4, new ItemGround(mouseInput.getMouseWorldCoords().x - 8,
+							mouseInput.getMouseWorldCoords().y - 8, 1, ID.Item, itemGround));
+					return;
+				} catch (CloneNotSupportedException e1) {
+					e1.printStackTrace();
+				}
+
+			}
 		}
 	}
 
-	public void pickupItem(Handler handler, World world) {
-		LinkedList<GameObject> objs = handler.getSelectableObjects(world);
-		for (GameObject obj : objs) {
-			if (obj.getSelectBounds() != null) {
-				if (mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
-						obj.getSelectBounds().width, obj.getSelectBounds().height)) {
-					ITEM_ID itemType = ITEM_ID.NULL;
-					int add_amount = 1;
-					if (obj.getId() == ID.Item) {
-						ItemGround itemGround = (ItemGround) obj;
-						itemType = itemGround.getInventoryItem().getItemType();
-						add_amount = itemGround.getInventoryItem().getAmount();
-					} else {
-						if (obj.getItem() == null)
-							return;
-						itemType = obj.getItem().getItemType();
-						add_amount = obj.getItem().getAmount();
-					}
-					if (checkInventoryItem(itemType)) {
-						for (int y = 0; y < size_y; y++) {
-							for (int x = 0; x < size_x; x++) {
-								if (inventoryItems.containsKey(new Point(x, y))) {
-									Item item = inventoryItems.get(new Point(x, y));
-									if (item.getItemType() == itemType) {
-										int item_amount = item.getAmount();
-										int sum_amount = item_amount + add_amount;
-										// needs work
-										if (item_amount < MAX_STACK_SIZE && sum_amount <= MAX_STACK_SIZE) {
-											item.setAmount(sum_amount);
-											handler.findAndRemoveObject(obj, world);
-											return;
-										} else {
-											if (checkItemExistsBelowStackSize(item.getItemType(), add_amount)) {
-												continue;
-											} else {
-												addItemToInventory(handler, world, obj);
-												return;
-											}
-										}
-									}
+	public void pickupItem(GameObject obj) {
+
+		ITEM_ID itemType = ITEM_ID.NULL;
+		int add_amount = 1;
+		if (obj.getId() == ID.Item) {
+			ItemGround itemGround = (ItemGround) obj;
+			itemType = itemGround.getInventoryItem().getItemType();
+			add_amount = itemGround.getInventoryItem().getAmount();
+		} else {
+			if (obj.getItem() == null)
+				return;
+			itemType = obj.getItem().getItemType();
+			add_amount = obj.getItem().getAmount();
+		}
+		if (checkInventoryItem(itemType)) {
+			for (int y = 0; y < size_y; y++) {
+				for (int x = 0; x < size_x; x++) {
+					if (inventoryItems.containsKey(new Point(x, y))) {
+						Item item = inventoryItems.get(new Point(x, y));
+						if (item.getItemType() == itemType) {
+							int item_amount = item.getAmount();
+							int sum_amount = item_amount + add_amount;
+							// needs work
+							if (item_amount < MAX_STACK_SIZE && sum_amount <= MAX_STACK_SIZE) {
+								item.setAmount(sum_amount);
+								handler.findAndRemoveObject(obj, world);
+								return;
+							} else {
+								if (checkItemExistsBelowStackSize(item.getItemType(), add_amount)) {
+									continue;
+								} else {
+									addItemToInventory(handler, world, obj);
+									return;
 								}
 							}
 						}
-					} else {
-						addItemToInventory(handler, world, obj);
 					}
 				}
 			}
+		} else {
+			addItemToInventory(handler, world, obj);
 		}
+
 	}
 
 	private void addItemToInventory(Handler handler, World world, GameObject obj) {
@@ -531,6 +542,10 @@ public class Inventory {
 
 	public int getHotbarY() {
 		return Game.HEIGHT - 23;
+	}
+
+	public void setWorld(World world) {
+		this.world = world;
 	}
 
 	/*

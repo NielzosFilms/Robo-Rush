@@ -8,6 +8,7 @@ import java.util.Random;
 import game.items.ITEM_ID;
 import game.items.Item;
 import game.items.ItemRock;
+import game.main.Game;
 import game.main.GameObject;
 import game.main.ID;
 import game.textures.Textures;
@@ -45,7 +46,11 @@ public class Pebble extends GameObject {
     }
 
     public Item getItem() {
-        return new ItemRock(1, ITEM_ID.Rock);
+        return new ItemRock(5, ITEM_ID.Rock);
+    }
+
+    public void interact() {
+        Game.inventory.pickupItem(this);
     }
 
 }

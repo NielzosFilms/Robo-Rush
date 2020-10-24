@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import game.items.ITEM_ID;
 import game.items.Item;
 import game.items.ItemStick;
+import game.main.Game;
 import game.main.GameObject;
 import game.main.ID;
 import game.textures.Textures;
@@ -14,7 +15,7 @@ public class Branch extends GameObject {
 
     public Branch(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
-        this.tex = Textures.tileSetNatureBlocks.get(27);
+        this.tex = Textures.wood;
     }
 
     public void tick() {
@@ -35,6 +36,10 @@ public class Branch extends GameObject {
 
     public Item getItem() {
         return new ItemStick(1, ITEM_ID.Stick);
+    }
+
+    public void interact() {
+        Game.inventory.pickupItem(this);
     }
 
 }

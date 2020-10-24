@@ -63,8 +63,25 @@ public class KeyInput extends KeyAdapter {
 						else if (Game.showHitboxes)
 							Game.showHitboxes = false;
 					}
-					if (key == KeyEvent.VK_E)
-						inventory.pickupItem(handler, world);
+					if (key == KeyEvent.VK_E) {
+						LinkedList<GameObject> objs = handler.getSelectableObjects(world);
+						for (GameObject obj : objs) {
+							// if (obj.getSelectBounds() != null) {
+							if (Game.mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
+									obj.getSelectBounds().width, obj.getSelectBounds().height)) {
+								// Math.(Game.player);
+								double dis = Math.sqrt((obj.getX() - Game.player.getX())
+										* (obj.getX() - Game.player.getX())
+										+ (obj.getY() - Game.player.getY()) * (obj.getY() - Game.player.getY()));
+								// System.out.println(dis);
+								if (dis < 75) {
+									obj.interact();
+								}
+							}
+							// }
+						}
+					}
+					// inventory.pickupItem(handler, world);
 
 				}
 			}

@@ -24,6 +24,7 @@ import game.hud.HUD;
 import game.inventory.Inventory;
 import game.lighting.Light;
 import game.lighting.LightingSystem;
+import game.objects.House;
 import game.objects.Tree;
 import game.textures.Textures;
 import game.world.LevelLoader;
@@ -42,7 +43,7 @@ public class Game extends Canvas implements Runnable {
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.10.0 INFDEV";
+	public static final String VERSION = "ALPHA V 2.15.0 INFDEV";
 
 	private Thread thread;
 	private ImageRendering imageRenderer;
@@ -56,20 +57,22 @@ public class Game extends Canvas implements Runnable {
 
 	private Random r;
 
-	private Handler handler;
-	private ParticleSystem ps;
-	private KeyInput keyInput;
-	private MouseInput mouseInput;
-	private HUD hud;
+	public static Handler handler;
+	public static ParticleSystem ps;
+	public static KeyInput keyInput;
+	public static MouseInput mouseInput;
+	public static HUD hud;
 	public static Camera cam;
 	static Canvas canvas;
-	public Textures textures;
-	private Collision collision;
+	public static Textures textures;
+	public static Collision collision;
 
-	private LevelLoader ll;
+	public static Player player;
+
+	public static LevelLoader ll;
 	public static World world;
-	private Inventory inventory;
-	private LightingSystem lightingSystem;
+	public static Inventory inventory;
+	public static LightingSystem lightingSystem;
 	public static AudioFiles audioFiles;
 	// private static ArrayList<ArrayList<Long>> blocks;
 
@@ -98,12 +101,12 @@ public class Game extends Canvas implements Runnable {
 		ps = new ParticleSystem();
 
 		// blocks = ll.getLevelData();
-		ll.loadLevelData("assets/world/structures/top_down_map.json");
+		// ll.loadLevelData("assets/world/structures/top_down_map.json");
 
 		cam = new Camera(0, 0);
 		mouseInput.setCam(cam);
 
-		Player player = new Player(1000, -1400, 2, ID.Player, keyInput, textures);
+		player = new Player(0, 0, 2, ID.Player, keyInput, textures);
 		inventory = new Inventory(5, 4, mouseInput, ps, handler, cam);
 		mouseInput.setInventory(inventory);
 		keyInput.setInventory(inventory);
@@ -119,6 +122,7 @@ public class Game extends Canvas implements Runnable {
 		Long seed = 9034865798355343302L; // r.nextLong();
 		world = new World(player, textures);
 		world.generate(seed);
+		inventory.setWorld(world);
 		hud.setWorld(world);
 		collision = new Collision(handler, world, player);
 		keyInput.setWorld(world);
@@ -127,6 +131,8 @@ public class Game extends Canvas implements Runnable {
 		lightingSystem.setHandler(handler);
 		lightingSystem.setWorld(world);
 		lightingSystem.setCam(cam);
+
+		handler.addObject(1, new House(0, 0, 1, ID.House));
 
 		/*
 		 * handler.addLight(new Light(new Point(0, 300), textures.light));

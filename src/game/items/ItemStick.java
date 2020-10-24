@@ -9,7 +9,7 @@ public class ItemStick extends Item {
 
     public ItemStick(int amount, ITEM_ID itemType) {
         super(amount, itemType);
-        this.tex = Textures.tileSetNatureBlocks.get(27);
+        this.tex = Textures.wood;
         this.itemGround = new ItemGround(0, 0, 1, ID.Item, this);
     }
 

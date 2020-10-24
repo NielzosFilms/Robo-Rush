@@ -20,6 +20,7 @@ import game.tiles.Tile;
 import game.tiles.TileGrass;
 import game.tiles.TileWater;
 import game.objects.Tree;
+import game.structures.Structure;
 import game.textures.Textures;
 
 public class Chunk {
@@ -29,6 +30,8 @@ public class Chunk {
 	public LinkedList<LinkedList<GameObject>> entities = new LinkedList<LinkedList<GameObject>>();
 	public LinkedList<Light> lights = new LinkedList<Light>();
 	public LinkedList<HashMap<Point, Tile>> tiles = new LinkedList<HashMap<Point, Tile>>();
+	public LinkedList<HashMap<Point, Structure>> structures = new LinkedList<HashMap<Point, Structure>>();
+
 	public static int tile_width = 16, tile_height = 16;
 	public int x, y;
 	private static Long seed;
@@ -189,7 +192,7 @@ public class Chunk {
 	}
 
 	// OLD?
-	public void removeFromTilesEntities(GameObject object) {
+	public void removeEntity(GameObject object) {
 		for (LinkedList<GameObject> list : entities) {
 			if (list.contains(object)) {
 				list.remove(object);

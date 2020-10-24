@@ -57,4 +57,8 @@ public class Particle extends GameObject {
 		return null;
 	}
 
+	public void interact() {
+
+	}
+
 }

@@ -118,7 +118,7 @@ public class Handler {
 		}
 		for (LinkedList<GameObject> list : entities) {
 			for (GameObject obj : list) {
-				obj.render(g); // klopt niet meer
+				obj.render(g);
 			}
 		}
 
@@ -258,7 +258,7 @@ public class Handler {
 		// chunks
 		for (Chunk chunk : chunks_on_screen) {
 			// chunk.removeFromTilesEntities(item);
-			world.chunks.get(new Point(chunk.x, chunk.y)).removeFromTilesEntities(item);
+			world.chunks.get(new Point(chunk.x, chunk.y)).removeEntity(item);
 		}
 	}
 

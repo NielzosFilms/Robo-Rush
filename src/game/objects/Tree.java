@@ -30,7 +30,7 @@ public class Tree extends GameObject {
 		this.player = player;
 
 		tex_rows = new ArrayList<ArrayList<BufferedImage>>();
-		int tree_type = r.nextInt(5);
+		int tree_type = r.nextInt(2);
 		if (biome == BIOME.Forest) {
 			switch (tree_type) {
 				case 0:
@@ -38,8 +38,8 @@ public class Tree extends GameObject {
 					addTexRow(new int[] { 15, 16 });
 					break;
 				default:
-					addTexRow(new int[] { 0, 1 });
-					addTexRow(new int[] { 15, 16 });
+					addTexRow(new int[] { 6, 7 });
+					addTexRow(new int[] { 21, 22 });
 			}
 		}
 
@@ -51,9 +51,9 @@ public class Tree extends GameObject {
 		int tree_cenY = y + 8;
 
 		if (player_cenY > tree_cenY) {
-			this.setZIndex(1);
+			this.setZIndex(player.getZIndex() - 1);
 		} else {
-			this.setZIndex(3);
+			this.setZIndex(player.getZIndex() + 1);
 		}
 	}
 
@@ -95,6 +95,16 @@ public class Tree extends GameObject {
 	public Item getItem() {
 		// return new ItemWood(5, this.id, Textures.wood);
 		return null;
+	}
+
+	public void interact() {
+		ArrayList<BufferedImage> row_1 = this.tex_rows.get(0);
+		ArrayList<BufferedImage> row_2 = this.tex_rows.get(1);
+
+		this.tex_rows.clear();
+
+		this.tex_rows.add(row_2);
+		this.tex_rows.add(row_1);
 	}
 
 }

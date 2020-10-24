@@ -8,6 +8,8 @@ public enum ID {
 
 	Tile(), Tree(), Mushroom(),
 
+	House(),
+
 	Pebble(), Branch();
 
 }

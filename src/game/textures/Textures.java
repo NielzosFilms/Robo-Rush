@@ -18,7 +18,8 @@ public class Textures {
 			water_r_t_l, water_r_t, water_r_tr, water_r_t_r, water_r_r;
 
 	// tilesets / sheets
-	static BufferedImage tileSetForest, playerSheet, mushroom, tileSetDesert, tileSetWater, tileSetNatureObjects;
+	static BufferedImage tileSetForest, playerSheet, mushroom, tileSetDesert, tileSetWater, tileSetNatureObjects,
+			tileSetHouse;
 	public static BufferedImage entity_shadow;
 
 	// nature
@@ -38,6 +39,7 @@ public class Textures {
 	public static List<BufferedImage> tileSetDesertBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> tileSetWaterBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> tileSetNatureBlocks = new ArrayList<BufferedImage>();
+	public static List<BufferedImage> tileSetHouseBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> playerImg = new ArrayList<BufferedImage>();
 
 	public Textures() {
@@ -47,6 +49,7 @@ public class Textures {
 		tileSetDesert = loader.loadImage("assets/main/tile_sheets/desert_tile.png");
 		tileSetWater = loader.loadImage("assets/main/tile_sheets/water_tiles.png");
 		tileSetNatureObjects = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/3.png");
+		tileSetHouse = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/2.png");
 
 		playerSheet = loader.loadImage("assets/entities/player/player_sheet.png");
 		entity_shadow = loader.loadImage("assets/entities/shadow.png");
@@ -54,7 +57,7 @@ public class Textures {
 		mushroom = loader.loadImage("assets/world/nature/paddenstoel.png");
 		placeholder = loader.loadImage("assets/main/placeholder.png");
 
-		wood = loader.loadImage("assets/items/wood.png");
+		wood = loader.loadImage("assets/main/tile_sheets/stick.png");
 		inventory_bg = loader.loadImage("assets/main/hud/inventory_bg.png");
 
 		light = loader.loadImage("assets/main/lights/light_orange.png");
@@ -94,6 +97,13 @@ public class Textures {
 		for (int i = 0; i < tileSetNatureObjects.getHeight(); i += 32) {
 			for (int j = 0; j < tileSetNatureObjects.getWidth(); j += 32) {
 				tileSetNatureBlocks.add(nature_ss.grabImage(j, i, 32, 32));
+			}
+		}
+
+		SpriteSheet house_ss = new SpriteSheet(tileSetHouse);
+		for (int i = 0; i < tileSetHouse.getHeight(); i += 32) {
+			for (int j = 0; j < tileSetHouse.getWidth(); j += 32) {
+				tileSetHouseBlocks.add(house_ss.grabImage(j, i, 32, 32));
 			}
 		}
 

@@ -56,4 +56,8 @@ public class Mushroom extends GameObject {
 		return null;
 	}
 
+	public void interact() {
+
+	}
+
 }
