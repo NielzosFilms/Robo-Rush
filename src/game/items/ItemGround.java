@@ -2,10 +2,8 @@ package game.items;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import game.items.Item;
 import game.main.Game;
 import game.main.GameObject;
 import game.main.ID;
@@ -87,7 +85,7 @@ public class ItemGround extends GameObject {
 	}
 
 	public void interact() {
-		Game.inventory.pickupItem(this);
+		Game.inventoryOLD.pickupItem(this);
 	}
 
 }

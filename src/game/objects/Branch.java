@@ -39,7 +39,7 @@ public class Branch extends GameObject {
     }
 
     public void interact() {
-        Game.inventory.pickupItem(this);
+        Game.inventoryOLD.pickupItem(this);
     }
 
 }

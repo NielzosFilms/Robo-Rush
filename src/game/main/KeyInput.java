@@ -2,18 +2,15 @@ package game.main;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.FileNotFoundException;
-import java.security.KeyException;
 import java.util.LinkedList;
 
-import game.audioEngine.AudioPlayer;
-import game.inventory.Inventory;
+import game.inventory.Inventory_OLD;
 import game.world.World;
 
 public class KeyInput extends KeyAdapter {
 
 	private Handler handler;
-	private Inventory inventory;
+	private Inventory_OLD inventoryOLD;
 	private World world;
 
 	// public Map<Integer, Boolean> keysDown = new HashMap<Integer, Boolean>();
@@ -26,8 +23,8 @@ public class KeyInput extends KeyAdapter {
 		this.handler = handler;
 	}
 
-	public void setInventory(Inventory inventory) {
-		this.inventory = inventory;
+	public void setInventory(Inventory_OLD inventoryOLD) {
+		this.inventoryOLD = inventoryOLD;
 	}
 
 	public void setWorld(World world) {
@@ -88,28 +85,28 @@ public class KeyInput extends KeyAdapter {
 		}
 
 		if (key == KeyEvent.VK_I) {
-			inventory.switchInventoryState();
+			inventoryOLD.switchInventoryState();
 		}
 
-		if (!inventory.getInventoryOpen()) {
+		if (!inventoryOLD.getInventoryOpen()) {
 			if (key == KeyEvent.VK_1)
-				inventory.setHotbarSelected(0);
+				inventoryOLD.setHotbarSelected(0);
 			if (key == KeyEvent.VK_2)
-				inventory.setHotbarSelected(1);
+				inventoryOLD.setHotbarSelected(1);
 			if (key == KeyEvent.VK_3)
-				inventory.setHotbarSelected(2);
+				inventoryOLD.setHotbarSelected(2);
 			if (key == KeyEvent.VK_4)
-				inventory.setHotbarSelected(3);
+				inventoryOLD.setHotbarSelected(3);
 			if (key == KeyEvent.VK_5)
-				inventory.setHotbarSelected(4);
+				inventoryOLD.setHotbarSelected(4);
 			if (key == KeyEvent.VK_6)
-				inventory.setHotbarSelected(5);
+				inventoryOLD.setHotbarSelected(5);
 			if (key == KeyEvent.VK_7)
-				inventory.setHotbarSelected(6);
+				inventoryOLD.setHotbarSelected(6);
 			if (key == KeyEvent.VK_8)
-				inventory.setHotbarSelected(7);
+				inventoryOLD.setHotbarSelected(7);
 			if (key == KeyEvent.VK_9)
-				inventory.setHotbarSelected(8);
+				inventoryOLD.setHotbarSelected(8);
 		}
 
 		/*

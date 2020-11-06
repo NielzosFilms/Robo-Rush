@@ -5,27 +5,21 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.util.LinkedList;
 import java.util.Random;
 
-import game.audioEngine.AudioClip;
 import game.audioEngine.AudioFiles;
-import game.audioEngine.AudioPlayer;
-import game.items.ItemGround;
 import game.entities.Player;
 import game.entities.particles.Particle;
 import game.entities.particles.ParticleSystem;
 import game.hud.HUD;
 import game.inventory.Inventory;
-import game.lighting.Light;
+import game.inventory.InventorySystem;
+import game.inventory.Inventory_OLD;
 import game.lighting.LightingSystem;
 import game.objects.House;
-import game.objects.Tree;
 import game.textures.Textures;
 import game.world.LevelLoader;
 import game.world.World;
@@ -71,7 +65,8 @@ public class Game extends Canvas implements Runnable {
 
 	public static LevelLoader ll;
 	public static World world;
-	public static Inventory inventory;
+	public static Inventory_OLD inventoryOLD;
+	public static InventorySystem inventorySystem;
 	public static LightingSystem lightingSystem;
 	public static AudioFiles audioFiles;
 	// private static ArrayList<ArrayList<Long>> blocks;
@@ -107,10 +102,11 @@ public class Game extends Canvas implements Runnable {
 		mouseInput.setCam(cam);
 
 		player = new Player(0, 0, 2, ID.Player, keyInput, textures);
-		inventory = new Inventory(5, 4, mouseInput, ps, handler, cam);
-		mouseInput.setInventory(inventory);
-		keyInput.setInventory(inventory);
-		hud = new HUD(handler, player, inventory);
+		inventoryOLD = new Inventory_OLD(5, 4, mouseInput, ps, handler, cam);
+		inventorySystem = new InventorySystem();
+		mouseInput.setInventory(inventoryOLD);
+		keyInput.setInventory(inventoryOLD);
+		hud = new HUD(handler, player, inventoryOLD);
 		hud.setMouseInput(mouseInput);
 		hud.setCam(cam);
 		handler.addObject(player.getZIndex(), player);
@@ -122,7 +118,7 @@ public class Game extends Canvas implements Runnable {
 		Long seed = 9034865798355343302L; // r.nextLong();
 		world = new World(player, textures);
 		world.generate(seed);
-		inventory.setWorld(world);
+		inventoryOLD.setWorld(world);
 		hud.setWorld(world);
 		collision = new Collision(handler, world, player);
 		keyInput.setWorld(world);
@@ -201,6 +197,8 @@ public class Game extends Canvas implements Runnable {
 			ps.tick();
 			world.tick();
 			collision.tick();
+
+			inventorySystem.tick();
 
 			for (LinkedList<GameObject> list : handler.object_entities) {
 				for (int i = 0; i < list.size(); i++) {
@@ -290,9 +288,13 @@ public class Game extends Canvas implements Runnable {
 			Long finish = System.currentTimeMillis();
 			// System.out.println("Light System Render Time: " + (finish - start));
 
+
+
 			hud.renderCam(g, g2d);
 			g2d.translate(-cam.getX(), -cam.getY()); // end of cam
 			hud.render(g, g2d);
+
+			inventorySystem.render(g);
 		}
 
 		if (pauzed) {

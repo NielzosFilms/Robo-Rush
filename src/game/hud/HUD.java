@@ -5,11 +5,10 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.Arc2D;
 import java.util.LinkedList;
 
 import game.entities.Player;
-import game.inventory.Inventory;
+import game.inventory.Inventory_OLD;
 import game.main.Camera;
 import game.main.Game;
 import game.main.GameObject;
@@ -22,15 +21,15 @@ public class HUD {
 	private double velX, velY;
 	private Handler handler;
 	private Player player;
-	private Inventory inventory;
+	private Inventory_OLD inventoryOLD;
 	private MouseInput mouseInput;
 	private World world;
 	private Camera cam;
 
-	public HUD(Handler handler, Player player, Inventory inventory) {
+	public HUD(Handler handler, Player player, Inventory_OLD inventoryOLD) {
 		this.handler = handler;
 		this.player = player;
-		this.inventory = inventory;
+		this.inventoryOLD = inventoryOLD;
 	}
 
 	public void setCam(Camera cam) {
@@ -95,15 +94,15 @@ public class HUD {
 
 		drawPlayerStats(g);
 
-		inventory.render(g);
+		inventoryOLD.render(g);
 	}
 
 	private void drawPlayerStats(Graphics g) {
-		int hotbar_x = inventory.getHotbarX();
-		int hotbar_y = inventory.getHotbarY();
+		int hotbar_x = inventoryOLD.getHotbarX();
+		int hotbar_y = inventoryOLD.getHotbarY();
 		g.setColor(new Color(255, 46, 46));
-		g.fillRect(hotbar_x, hotbar_y - 4, player.getHealth() * (20 * inventory.getSizeX()) / 100, 3);
-		g.drawRect(hotbar_x, hotbar_y - 4, player.getHealth() * (20 * inventory.getSizeX()) / 100, 3);
+		g.fillRect(hotbar_x, hotbar_y - 4, player.getHealth() * (20 * inventoryOLD.getSizeX()) / 100, 3);
+		g.drawRect(hotbar_x, hotbar_y - 4, player.getHealth() * (20 * inventoryOLD.getSizeX()) / 100, 3);
 
 		g.setColor(new Color(255, 175, 46));
 		g.fillRect(hotbar_x - 6, hotbar_y - player.getFood() * 20 / 100 + 20, 2, player.getFood() * 20 / 100);
