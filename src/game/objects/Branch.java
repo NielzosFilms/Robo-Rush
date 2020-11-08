@@ -39,7 +39,12 @@ public class Branch extends GameObject {
     }
 
     public void interact() {
-        Game.inventoryOLD.pickupItem(this);
+        Game.inventorySystem.pickupItemToPlayerInv(this);
+    }
+
+    @Override
+    public void destroyed() {
+
     }
 
 }

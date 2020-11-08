@@ -260,6 +260,7 @@ public class Handler {
 			// chunk.removeFromTilesEntities(item);
 			world.chunks.get(new Point(chunk.x, chunk.y)).removeEntity(item);
 		}
+		item.destroyed();
 	}
 
 }

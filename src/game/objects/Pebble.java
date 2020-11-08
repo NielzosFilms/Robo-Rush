@@ -7,9 +7,11 @@ import java.util.Random;
 
 import game.items.ITEM_ID;
 import game.items.Item;
+import game.items.ItemGround;
 import game.items.ItemRock;
 import game.main.Game;
 import game.main.GameObject;
+import game.main.Handler;
 import game.main.ID;
 import game.textures.Textures;
 
@@ -50,7 +52,13 @@ public class Pebble extends GameObject {
     }
 
     public void interact() {
-        Game.inventoryOLD.pickupItem(this);
+        Game.handler.addObject(1, new ItemGround(x, y, 1, ID.Item, new ItemRock(5, ITEM_ID.Rock)));
+        Game.handler.findAndRemoveObject(this, Game.world);
+        //Game.inventorySystem.pickupItemToPlayerInv(this);
+    }
+
+    public void destroyed() {
+        //Game.handler.addObject(1, new ItemGround(x, y, 1, ID.Item, new ItemRock(5, ITEM_ID.Rock)));
     }
 
 }

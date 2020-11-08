@@ -7,18 +7,19 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import game.inventory.InventorySystem;
 import game.inventory.Inventory_OLD;
 
 public class MouseInput extends MouseAdapter implements MouseMotionListener, MouseWheelListener {
 
 	public int mouse_x, mouse_y;
-	private Inventory_OLD inventoryOLD;
+	private InventorySystem inventorySystem;
 	private Camera cam;
 
 	public MouseInput() {
 		this.mouse_x = 0;
 		this.mouse_y = 0;
-		this.inventoryOLD = inventoryOLD;
+		this.inventorySystem = inventorySystem;
 
 	}
 
@@ -32,7 +33,7 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 
 	public void mousePressed(MouseEvent e) {
 		if (Game.game_state == GAMESTATES.Game) {
-			inventoryOLD.mouseClicked(e);
+			inventorySystem.mouseClicked(e);
 		}
 
 		int mx = e.getX();
@@ -73,14 +74,14 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		// System.out.println("Mouse Wheel: "+e.getWheelRotation());
-		if (!inventoryOLD.getInventoryOpen()) {
-			int new_index = inventoryOLD.getHotbarSelected() + e.getWheelRotation();
-			if (new_index > inventoryOLD.getSizeX() - 1) {
+		if (!inventorySystem.inventoryIsOpen()) {
+			int new_index = inventorySystem.hotbar_selected + e.getWheelRotation();
+			if (new_index > inventorySystem.player_hotbar.getSizeX() - 1) {
 				new_index = 0;
 			} else if (new_index < 0) {
-				new_index = inventoryOLD.getSizeX() - 1;
+				new_index = inventorySystem.player_hotbar.getSizeX() - 1;
 			}
-			inventoryOLD.setHotbarSelected(new_index);
+			inventorySystem.hotbar_selected = new_index;
 		}
 	}
 
@@ -118,8 +119,8 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		return (mx > x && mx < x + width) && (my > y && my < y + height);
 	}
 
-	public void setInventory(Inventory_OLD inventoryOLD) {
-		this.inventoryOLD = inventoryOLD;
+	public void setInventory(InventorySystem inventorySystem) {
+		this.inventorySystem = inventorySystem;
 	}
 
 }

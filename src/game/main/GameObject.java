@@ -91,4 +91,6 @@ public abstract class GameObject {
 
 	public abstract void interact();
 
+	public abstract void destroyed();
+
 }

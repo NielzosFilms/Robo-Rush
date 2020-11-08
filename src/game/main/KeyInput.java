@@ -4,13 +4,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
+import game.inventory.InventorySystem;
 import game.inventory.Inventory_OLD;
 import game.world.World;
 
 public class KeyInput extends KeyAdapter {
 
 	private Handler handler;
-	private Inventory_OLD inventoryOLD;
+	private InventorySystem inventorySystem;
 	private World world;
 
 	// public Map<Integer, Boolean> keysDown = new HashMap<Integer, Boolean>();
@@ -23,8 +24,8 @@ public class KeyInput extends KeyAdapter {
 		this.handler = handler;
 	}
 
-	public void setInventory(Inventory_OLD inventoryOLD) {
-		this.inventoryOLD = inventoryOLD;
+	public void setInventory(InventorySystem inventorySystem) {
+		this.inventorySystem = inventorySystem;
 	}
 
 	public void setWorld(World world) {
@@ -35,56 +36,46 @@ public class KeyInput extends KeyAdapter {
 		int key = e.getKeyCode();
 
 		for (LinkedList<GameObject> list : handler.object_entities) {
-			for (int i = 0; i < list.size(); i++) {
-				GameObject tempObject = list.get(i);
-
+			for (GameObject tempObject : list) {
 				if (tempObject.getId() == ID.Player) {
-					if (key == KeyEvent.VK_W)
-						keysDown[0] = true;
-					if (key == KeyEvent.VK_S)
-						keysDown[1] = true;
-					if (key == KeyEvent.VK_A)
-						keysDown[2] = true;
-					if (key == KeyEvent.VK_D)
-						keysDown[3] = true;
-					if (key == KeyEvent.VK_SPACE) {
-						keysDown[4] = true;
-					}
-					if (key == KeyEvent.VK_SHIFT) {
-						keysDown[5] = true;
-					}
-					if (key == KeyEvent.VK_CONTROL) {
-						keysDown[6] = true;
-						if (!Game.showHitboxes)
-							Game.showHitboxes = true;
-						else if (Game.showHitboxes)
-							Game.showHitboxes = false;
-					}
-					if (key == KeyEvent.VK_E) {
-						LinkedList<GameObject> objs = handler.getSelectableObjects(world);
-						for (GameObject obj : objs) {
-							// if (obj.getSelectBounds() != null) {
-							if (Game.mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
-									obj.getSelectBounds().width, obj.getSelectBounds().height)) {
-								// Math.(Game.player);
-								double dis = Math.sqrt((obj.getX() - Game.player.getX())
-										* (obj.getX() - Game.player.getX())
-										+ (obj.getY() - Game.player.getY()) * (obj.getY() - Game.player.getY()));
-								// System.out.println(dis);
-								if (dis < 75) {
-									obj.interact();
-								}
-							}
-							// }
+					switch (key) {
+						case KeyEvent.VK_W -> keysDown[0] = true;
+						case KeyEvent.VK_S -> keysDown[1] = true;
+						case KeyEvent.VK_A -> keysDown[2] = true;
+						case KeyEvent.VK_D -> keysDown[3] = true;
+						case KeyEvent.VK_SPACE -> keysDown[4] = true;
+						case KeyEvent.VK_SHIFT -> keysDown[5] = true;
+						case KeyEvent.VK_CONTROL -> {
+							keysDown[6] = true;
+							Game.showHitboxes = !Game.showHitboxes;
 						}
+						case KeyEvent.VK_I -> tempObject.interact();
 					}
 					// inventory.pickupItem(handler, world);
-
 				}
 			}
 		}
 
-		if (key == KeyEvent.VK_I) {
+		if (key == KeyEvent.VK_E) {
+			LinkedList<GameObject> objs = handler.getSelectableObjects(world);
+			for (GameObject obj : objs) {
+				// if (obj.getSelectBounds() != null) {
+				if (Game.mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
+						obj.getSelectBounds().width, obj.getSelectBounds().height)) {
+					// Math.(Game.player);
+					double dis = Math.sqrt((obj.getX() - Game.player.getX())
+							* (obj.getX() - Game.player.getX())
+							+ (obj.getY() - Game.player.getY()) * (obj.getY() - Game.player.getY()));
+					// System.out.println(dis);
+					if (dis < 75) {
+						obj.interact();
+					}
+				}
+				// }
+			}
+		}
+
+		/*if (key == KeyEvent.VK_I) {
 			inventoryOLD.switchInventoryState();
 		}
 
@@ -107,7 +98,7 @@ public class KeyInput extends KeyAdapter {
 				inventoryOLD.setHotbarSelected(7);
 			if (key == KeyEvent.VK_9)
 				inventoryOLD.setHotbarSelected(8);
-		}
+		}*/
 
 		/*
 		 * if(Game.game_state == GAMESTATES.Menu) { if(key == KeyEvent.VK_ESCAPE)
@@ -133,49 +124,40 @@ public class KeyInput extends KeyAdapter {
 		int key = e.getKeyCode();
 
 		for (LinkedList<GameObject> list : handler.object_entities) {
-			for (int i = 0; i < list.size(); i++) {
-				GameObject tempObject = list.get(i);
-
+			for (GameObject tempObject : list) {
 				if (tempObject.getId() == ID.Player) {
-					if (key == KeyEvent.VK_W)
-						keysDown[0] = false;
-					if (key == KeyEvent.VK_S)
-						keysDown[1] = false;
-					if (key == KeyEvent.VK_A)
-						keysDown[2] = false;
-					if (key == KeyEvent.VK_D)
-						keysDown[3] = false;
-					if (key == KeyEvent.VK_SHIFT)
-						keysDown[5] = false;
-					if (key == KeyEvent.VK_CONTROL)
-						keysDown[6] = false;
-					if (key == KeyEvent.VK_SPACE)
-						keysDown[4] = false;
+					switch (key) {
+						case KeyEvent.VK_W -> keysDown[0] = false;
+						case KeyEvent.VK_S -> keysDown[1] = false;
+						case KeyEvent.VK_A -> keysDown[2] = false;
+						case KeyEvent.VK_D -> keysDown[3] = false;
+						case KeyEvent.VK_SPACE -> keysDown[4] = false;
+						case KeyEvent.VK_SHIFT -> keysDown[5] = false;
+						case KeyEvent.VK_CONTROL -> keysDown[6] = false;
+					}
 				}
 			}
 		}
 
-		if (key == KeyEvent.VK_F4) {
-			Game.DEDUG_MODE = !Game.DEDUG_MODE;
-		}
+		if (key == KeyEvent.VK_F4) Game.DEDUG_MODE = !Game.DEDUG_MODE;
 	}
 
 	public void tick() {
-		for (LinkedList<GameObject> list : handler.object_entities) {
-			for (int i = 0; i < list.size(); i++) {
-				GameObject tempObject = list.get(i);
-				if (tempObject.getId() == ID.Player) {
-					/*
-					 * if(keysDown.get(KeyEvent.VK_W) == true) tempObject.setVelY(-5);
-					 * if(keysDown.get(KeyEvent.VK_S) == true) tempObject.setVelY(5);
-					 * if((keysDown.get(KeyEvent.VK_W) == true && keysDown.get(KeyEvent.VK_S) ==
-					 * true) || (keysDown.get(KeyEvent.VK_W) == false && keysDown.get(KeyEvent.VK_S)
-					 * == false)) tempObject.setVelY(0);
-					 */
-
-				}
-			}
-		}
+//		for (LinkedList<GameObject> list : handler.object_entities) {
+//			for (int i = 0; i < list.size(); i++) {
+//				GameObject tempObject = list.get(i);
+//				if (tempObject.getId() == ID.Player) {
+//					/*
+//					 * if(keysDown.get(KeyEvent.VK_W) == true) tempObject.setVelY(-5);
+//					 * if(keysDown.get(KeyEvent.VK_S) == true) tempObject.setVelY(5);
+//					 * if((keysDown.get(KeyEvent.VK_W) == true && keysDown.get(KeyEvent.VK_S) ==
+//					 * true) || (keysDown.get(KeyEvent.VK_W) == false && keysDown.get(KeyEvent.VK_S)
+//					 * == false)) tempObject.setVelY(0);
+//					 */
+//
+//				}
+//			}
+//		}
 	}
 
 }

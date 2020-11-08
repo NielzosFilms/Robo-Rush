@@ -81,11 +81,16 @@ public class ItemGround extends GameObject {
 	}
 
 	public Item getItem() {
-		return null;
+		return this.inventoryItem;
 	}
 
 	public void interact() {
-		Game.inventoryOLD.pickupItem(this);
+		Game.inventorySystem.pickupItemToPlayerInv(this);
+	}
+
+	@Override
+	public void destroyed() {
+
 	}
 
 }

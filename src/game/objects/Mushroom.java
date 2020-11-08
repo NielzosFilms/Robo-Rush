@@ -60,4 +60,9 @@ public class Mushroom extends GameObject {
 
 	}
 
+	@Override
+	public void destroyed() {
+
+	}
+
 }

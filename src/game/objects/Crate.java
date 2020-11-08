@@ -37,4 +37,9 @@ public class Crate extends GameObject {
         // Game.inventory.pickupItem(this);
     }
 
+    @Override
+    public void destroyed() {
+
+    }
+
 }

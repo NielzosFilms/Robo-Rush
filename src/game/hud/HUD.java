@@ -21,15 +21,13 @@ public class HUD {
 	private double velX, velY;
 	private Handler handler;
 	private Player player;
-	private Inventory_OLD inventoryOLD;
 	private MouseInput mouseInput;
 	private World world;
 	private Camera cam;
 
-	public HUD(Handler handler, Player player, Inventory_OLD inventoryOLD) {
+	public HUD(Handler handler, Player player) {
 		this.handler = handler;
 		this.player = player;
-		this.inventoryOLD = inventoryOLD;
 	}
 
 	public void setCam(Camera cam) {
@@ -93,11 +91,10 @@ public class HUD {
 		 */
 
 		drawPlayerStats(g);
-
-		inventoryOLD.render(g);
 	}
 
 	private void drawPlayerStats(Graphics g) {
+		/*
 		int hotbar_x = inventoryOLD.getHotbarX();
 		int hotbar_y = inventoryOLD.getHotbarY();
 		g.setColor(new Color(255, 46, 46));
@@ -109,6 +106,7 @@ public class HUD {
 
 		g.setColor(new Color(46, 203, 255));
 		g.fillRect(hotbar_x - 9, hotbar_y - player.getWater() * 20 / 100 + 20, 2, player.getWater() * 20 / 100);
+		*/
 	}
 
 	private int getWorldCoordX(int screen_x) {

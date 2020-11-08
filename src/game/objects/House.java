@@ -82,4 +82,9 @@ public class House extends GameObject {
         Game.game_state = GAMESTATES.Menu;
     }
 
+    @Override
+    public void destroyed() {
+
+    }
+
 }

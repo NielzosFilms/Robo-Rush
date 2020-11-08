@@ -61,4 +61,9 @@ public class Particle extends GameObject {
 
 	}
 
+	@Override
+	public void destroyed() {
+
+	}
+
 }

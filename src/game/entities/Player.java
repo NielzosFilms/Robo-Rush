@@ -9,7 +9,10 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import game.inventory.Inventory;
+import game.items.ITEM_ID;
 import game.items.Item;
+import game.items.ItemRock;
 import game.main.Game;
 import game.main.GameObject;
 import game.main.ID;
@@ -32,11 +35,23 @@ public class Player extends GameObject {
 	private Animation walk_down, walk_up, walk_left, walk_right;
 	private Textures textures;
 
+	public Inventory inventory;
+	public Inventory hotbar;
+
 	public Player(int x, int y, int z_index, ID id, KeyInput keyInput, Textures textures) {
 		super(x, y, z_index, id);
 		this.keyInput = keyInput;
 		this.textures = textures;
 		this.direction = "down";
+
+		this.inventory = new Inventory(5, 5);
+		this.inventory.addItem(new ItemRock(5, ITEM_ID.Rock));
+		this.inventory.addItem(new ItemRock(300, ITEM_ID.Rock));
+
+		this.hotbar = new Inventory(5, 1);
+		int hotbar_x = Game.WIDTH / 2 - this.hotbar.getInventoryBounds().width / 2;
+		int hotbar_y = Game.HEIGHT - this.hotbar.getInventoryBounds().height;
+		this.hotbar.setXY(hotbar_x, hotbar_y);
 
 		// default = 100
 		this.health = 75;
@@ -233,6 +248,10 @@ public class Player extends GameObject {
 	}
 
 	public void interact() {
+		Game.inventorySystem.addOpenInventory(inventory);
+	}
+
+	public void destroyed() {
 
 	}
 

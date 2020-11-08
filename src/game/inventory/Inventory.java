@@ -1,5 +1,6 @@
 package game.inventory;
 
+import game.items.Item;
 import game.main.Game;
 
 import java.awt.*;
@@ -24,11 +25,29 @@ public class Inventory {
 		}
 	}
 
-	public void tick() {}
+	public void tick() {
+		for(InventorySlot slot : slots) {
+			slot.tick();
+		}
+	}
 
 	public void render(Graphics g) {
 		for(InventorySlot slot : slots) {
 			slot.render(g);
+		}
+	}
+
+	public void addItem(Item item) {
+		if(inventoryContainsItemAndCanStack(item)) {
+			InventorySlot slot = getNextStackableSlot(item);
+			slot.addItem(item, this);
+		} else {
+			if(hasFreeSlot()) {
+				InventorySlot slot = getNextFreeSlot();
+				if(slot != null) slot.setItem(item, this);
+			} else {
+				// drop overflow item?
+			}
 		}
 	}
 
@@ -57,5 +76,61 @@ public class Inventory {
 	}
 	public int getY() {
 		return this.y;
+	}
+
+	public boolean canAcceptItem(Item item) {
+		if(inventoryContainsItemAndCanStack(item)) {
+			return true;
+		} else {
+			return hasFreeSlot();
+		}
+	}
+
+	private InventorySlot getNextFreeSlot() {
+		for (InventorySlot slot : slots) {
+			if (!slot.hasItem()) {
+				return slot;
+			}
+		}
+		return null;
+	}
+
+	private boolean hasFreeSlot() {
+		for(InventorySlot slot : slots) {
+			if(!slot.hasItem()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean inventoryContainsItemAndCanStack(Item item) {
+		for(InventorySlot slot : slots) {
+			if(!slot.hasItem()) continue;
+			Item slotItem = slot.getItem();
+			if(slotItem.getItemType() == item.getItemType()) {
+				if(slotItem.getAmount() < InventorySystem.stackSize) return true;
+			}
+		}
+		return false;
+	}
+
+	private InventorySlot getNextStackableSlot(Item item) {
+		for(InventorySlot slot : slots) {
+			if(!slot.hasItem()) continue;
+			Item slotItem = slot.getItem();
+			if(slotItem.getItemType() == item.getItemType()) {
+				if(slotItem.getAmount() < InventorySystem.stackSize) return slot;
+			}
+		}
+		return null;
+	}
+
+	public int getSizeX() {
+		return this.size_x;
+	}
+
+	public int getSizeY() {
+		return this.size_y;
 	}
 }

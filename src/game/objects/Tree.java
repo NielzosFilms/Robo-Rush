@@ -107,4 +107,8 @@ public class Tree extends GameObject {
 		this.tex_rows.add(row_1);
 	}
 
+	public void destroyed() {
+
+	}
+
 }

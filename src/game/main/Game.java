@@ -102,11 +102,11 @@ public class Game extends Canvas implements Runnable {
 		mouseInput.setCam(cam);
 
 		player = new Player(0, 0, 2, ID.Player, keyInput, textures);
-		inventoryOLD = new Inventory_OLD(5, 4, mouseInput, ps, handler, cam);
+		//inventoryOLD = new Inventory_OLD(5, 4, mouseInput, ps, handler, cam);
 		inventorySystem = new InventorySystem();
-		mouseInput.setInventory(inventoryOLD);
-		keyInput.setInventory(inventoryOLD);
-		hud = new HUD(handler, player, inventoryOLD);
+		mouseInput.setInventory(inventorySystem);
+		keyInput.setInventory(inventorySystem);
+		hud = new HUD(handler, player);
 		hud.setMouseInput(mouseInput);
 		hud.setCam(cam);
 		handler.addObject(player.getZIndex(), player);
@@ -118,10 +118,11 @@ public class Game extends Canvas implements Runnable {
 		Long seed = 9034865798355343302L; // r.nextLong();
 		world = new World(player, textures);
 		world.generate(seed);
-		inventoryOLD.setWorld(world);
+		//inventoryOLD.setWorld(world);
 		hud.setWorld(world);
 		collision = new Collision(handler, world, player);
 		keyInput.setWorld(world);
+		inventorySystem.setWorld(world);
 
 		lightingSystem = new LightingSystem();
 		lightingSystem.setHandler(handler);
