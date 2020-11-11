@@ -13,13 +13,14 @@ import game.inventory.Inventory_OLD;
 public class MouseInput extends MouseAdapter implements MouseMotionListener, MouseWheelListener {
 
 	public int mouse_x, mouse_y;
+	public boolean dragging;
 	private InventorySystem inventorySystem;
 	private Camera cam;
 
 	public MouseInput() {
 		this.mouse_x = 0;
 		this.mouse_y = 0;
-		this.inventorySystem = inventorySystem;
+		this.dragging = false;
 
 	}
 
@@ -38,25 +39,11 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 
 		int mx = e.getX();
 		int my = e.getY();
-
-		if (e.getButton() == MouseEvent.BUTTON1) {
-
-		} else if (e.getButton() == MouseEvent.BUTTON3) {
-
-		}
-
 	}
 
 	public void mouseReleased(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
-
-		if (e.getButton() == MouseEvent.BUTTON1) {
-
-		} else if (e.getButton() == MouseEvent.BUTTON3) {
-
-		}
-
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -66,9 +53,13 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	public void mouseMoved(MouseEvent e) {
 		this.mouse_x = (int) (e.getX() / Game.SCALE_WIDTH);
 		this.mouse_y = (int) (e.getY() / Game.SCALE_HEIGHT);
+		this.dragging = false;
 	}
 
 	public void mouseDragged(MouseEvent e) {
+		this.mouse_x = (int) (e.getX() / Game.SCALE_WIDTH);
+		this.mouse_y = (int) (e.getY() / Game.SCALE_HEIGHT);
+		this.dragging = true;
 		// System.out.println("Mouse dragged"+ e.getX()+ " | "+e.getY());
 	}
 

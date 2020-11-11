@@ -9,14 +9,13 @@ import java.awt.event.MouseEvent;
 
 public class InventorySlot {
 	private Item item;
-	private int inv_x, inv_y;
+	private Inventory inv;
 	private int x, y;
 	private int w = InventorySystem.slot_w, h = InventorySystem.slot_h;
 	private boolean hover = false;
 
-	public InventorySlot(int inv_x, int inv_y, int x, int y) {
-		this.inv_x = inv_x;
-		this.inv_y = inv_y;
+	public InventorySlot(Inventory inv, int x, int y) {
+		this.inv = inv;
 		this.x = x;
 		this.y = y;
 	}
@@ -26,6 +25,8 @@ public class InventorySlot {
 	}
 
 	public void render(Graphics g) {
+		int inv_x = inv.getX();
+		int inv_y = inv.getY();
 		g.setColor(InventorySystem.slot_bg);
 		g.fillRect(inv_x + x, inv_y + y, w, h);
 
@@ -142,12 +143,7 @@ public class InventorySlot {
 	}
 	public boolean hasItem() { return this.item != null; }
 
-	public void setInvXY(int inv_x, int inv_y) {
-		this.inv_x = inv_x;
-		this.inv_y = inv_y;
-	}
-
 	public Rectangle getBounds() {
-		return new Rectangle(inv_x + x, inv_y + y, w, h);
+		return new Rectangle(inv.getX() + x, inv.getY() + y, w, h);
 	}
 }

@@ -21,7 +21,7 @@ public class Inventory {
 		for(int y = 0; y < size_y; y++) {
 			for(int x = 0; x < size_x; x++) {
 				// translate x, y to screen coords
-				slots.add(new InventorySlot(this.x, this.y,x + x * slot_w, y + y * slot_h));
+				slots.add(new InventorySlot(this, x + x * slot_w, y + y * slot_h));
 			}
 		}
 	}
@@ -85,9 +85,6 @@ public class Inventory {
 	public void setXY(int x, int y) {
 		this.x = x;
 		this.y = y;
-		for(InventorySlot slot : slots) {
-			slot.setInvXY(this.x, this.y);
-		}
 	}
 	public int getX() {
 		return this.x;
