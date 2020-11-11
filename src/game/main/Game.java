@@ -192,7 +192,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-		if (game_state == GAMESTATES.Game && !pauzed && world.loaded) {
+		if (game_state == GAMESTATES.Game && !pauzed && World.loaded) {
 
 			handler.tick(world);
 			ps.tick();
@@ -202,12 +202,12 @@ public class Game extends Canvas implements Runnable {
 			inventorySystem.tick();
 
 			for (LinkedList<GameObject> list : handler.object_entities) {
-				for (int i = 0; i < list.size(); i++) {
-					if (list.get(i).getId() == ID.Player) {
+				for (GameObject gameObject : list) {
+					if (gameObject.getId() == ID.Player) {
 
 						// world.getChunkPointWithCoords(list.get(i).x, list.get(i).y);
 
-						cam.tick(list.get(i));
+						cam.tick(gameObject);
 					}
 				}
 			}
@@ -254,42 +254,17 @@ public class Game extends Canvas implements Runnable {
 			new Text("TEST string", WIDTH / 2, HEIGHT / 2, 20, mouseInput).render(g, g2d);
 		}
 
-		if (game_state == GAMESTATES.Game && world.loaded) {
+		if (game_state == GAMESTATES.Game && World.loaded) {
 
 			g2d.translate(cam.getX(), cam.getY()); // start of cam
 
-			/*
-			 * for(int i = 0;i<7;i++) { g.drawImage(Textures.sky, i*Textures.sky.getWidth(),
-			 * 0, null); }
-			 */
-			// world.render(g);
-
 			handler.render(g, (int) -cam.getX(), (int) -cam.getY(), WIDTH, HEIGHT, world, ps);
-
-			// if(showHitboxes) {
-			/*
-			 * g.setColor(Color.blue); for(int i = 0;i<ll.rectangle_bounds.size();i++) {
-			 * g.drawRect(ll.rectangle_bounds.get(i).x+(x*16),
-			 * ll.rectangle_bounds.get(i).y+(y*16), ll.rectangle_bounds.get(i).width,
-			 * ll.rectangle_bounds.get(i).height); }
-			 * 
-			 * for(int i = 0;i<ll.polygon_bounds.size();i++) { g.setColor(Color.green);
-			 * g.drawPolygon(ll.polygon_bounds.get(i)); g.setColor(Color.cyan);
-			 * g.drawRect(ll.polygon_bounds.get(i).getBounds().x,
-			 * ll.polygon_bounds.get(i).getBounds().y,
-			 * ll.polygon_bounds.get(i).getBounds().width,
-			 * ll.polygon_bounds.get(i).getBounds().height); }
-			 */
-			// }
-			// g.drawRect(0, 192, 16*9, 16*4);
 
 			// ongeveer 30-35 ms
 			Long start = System.currentTimeMillis();
 			// lightingSystem.render(g);
 			Long finish = System.currentTimeMillis();
 			// System.out.println("Light System Render Time: " + (finish - start));
-
-
 
 			hud.renderCam(g, g2d);
 			g2d.translate(-cam.getX(), -cam.getY()); // end of cam
@@ -308,7 +283,7 @@ public class Game extends Canvas implements Runnable {
 		bs.show();
 	}
 
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		// System.setProperty("sun.java2d.opengl", "true");
 
 		canvas = new Game();
