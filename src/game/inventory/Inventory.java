@@ -2,6 +2,7 @@ package game.inventory;
 
 import game.items.Item;
 import game.main.Game;
+import game.main.MouseInput;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -40,22 +41,39 @@ public class Inventory {
 	public void addItem(Item item) {
 		if(inventoryContainsItemAndCanStack(item)) {
 			InventorySlot slot = getNextStackableSlot(item);
-			slot.addItem(item, this);
+			if(slot != null) {
+				Item rest = slot.addItem(item, this);
+				if (rest != null) {
+					this.addItem(rest);
+				}
+			}
 		} else {
 			if(hasFreeSlot()) {
 				InventorySlot slot = getNextFreeSlot();
-				if(slot != null) slot.setItem(item, this);
+				if(slot != null) {
+					Item rest = slot.addItem(item, this);
+					if(rest != null) this.addItem(rest);
+				}
 			} else {
 				// drop overflow item?
 			}
 		}
 	}
 
-	public void mouseLeftClick(MouseEvent e) {
+	public void mouseClick(MouseEvent e, MouseInput mouseInput, InventorySystem invSys) {
+		InventorySlot slot = getClickedSlot(e, mouseInput);
+		if (slot != null) {
+			slot.onClick(e,this,  invSys);
+		}
 	}
-	public void mouseMiddleClick(MouseEvent e) {
-	}
-	public void mouseRightClick(MouseEvent e) {
+
+	private InventorySlot getClickedSlot(MouseEvent e, MouseInput mouseInput) {
+		for(InventorySlot slot : slots) {
+			if(mouseInput.mouseOverLocalRect(slot.getBounds())) {
+				return slot;
+			}
+		}
+		return null;
 	}
 
 	public Rectangle getInventoryBounds() {

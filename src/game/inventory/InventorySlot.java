@@ -5,6 +5,7 @@ import game.main.Game;
 import game.main.MouseInput;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class InventorySlot {
 	private Item item;
@@ -36,33 +37,103 @@ public class InventorySlot {
 		}
 	}
 
-	public void setItem(Item item, Inventory inv) {
-		int stack_diff = item.getAmount() - InventorySystem.stackSize;
-		if(stack_diff > 0) {
-			item.setAmount(InventorySystem.stackSize);
-			this.item = item;
+	public void onClick(MouseEvent e, Inventory inv, InventorySystem invSys) {
+		switch (e.getButton()) {
+			case MouseEvent.BUTTON1 -> leftClick(inv, invSys);
+			case MouseEvent.BUTTON2 -> middleClick(inv, invSys);
+			case MouseEvent.BUTTON3 -> rightClick(inv, invSys);
+		}
+	}
+
+	private void leftClick(Inventory inv, InventorySystem invSys) {
+		if(invSys.isHolding()) {
+			if(this.hasItem()) {
+				if(invSys.getHolding().getItemType() == this.item.getItemType()) {
+					Item rest = this.addItem(invSys.getHolding(), inv);
+					invSys.setHolding(rest);
+				} else {
+					Item tmp = invSys.getHolding();
+					invSys.setHolding(this.getItem());
+					this.setItem(tmp);
+				}
+			} else {
+				this.setItem(invSys.getHolding());
+				invSys.clearHolding();
+			}
+		} else {
+			invSys.setHolding(this.getItem());
+			this.clearItem();
+		}
+	}
+	private void middleClick(Inventory inv, InventorySystem invSys) {
+
+	}
+	private void rightClick(Inventory inv, InventorySystem invSys) {
+		if(invSys.isHolding()) {
+			if(this.hasItem()) {
+				if(this.getItem().getItemType() == invSys.getHolding().getItemType()) {
+					if (this.getItem().getAmount() < InventorySystem.stackSize) {
+						this.getItem().setAmount(this.getItem().getAmount() + 1);
+						invSys.getHolding().setAmount(invSys.getHolding().getAmount() - 1);
+						if (invSys.getHolding().getAmount() <= 0) invSys.clearHolding();
+					}
+				}
+			} else {
+				try {
+					Item tmp = (Item) invSys.getHolding().clone();
+					tmp.setAmount(1);
+					this.setItem(tmp);
+					invSys.getHolding().setAmount(invSys.getHolding().getAmount() - 1);
+					if(invSys.getHolding().getAmount() <= 0) invSys.clearHolding();
+				} catch (CloneNotSupportedException e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
 			try {
-				Item ret = (Item)item.clone();
-				ret.setAmount(stack_diff);
-				inv.addItem(ret);
+				Item tmp = (Item) this.getItem().clone();
+				tmp.setAmount((int)Math.ceil(tmp.getAmount() / 2));
+				this.getItem().setAmount(this.getItem().getAmount() - tmp.getAmount());
+				if(this.getItem().getAmount() <= 0) this.clearItem();
+				if(tmp.getAmount() > 0) invSys.setHolding(tmp);
 			} catch (CloneNotSupportedException e) {
 				e.printStackTrace();
 			}
-		} else {
-			this.item = item;
 		}
 	}
-	public void addItem(Item item, Inventory inv) {
-		int sum = this.item.getAmount() + item.getAmount();
-		int stack_diff = sum - InventorySystem.stackSize;
-		if(stack_diff > 0) {
-			this.item.setAmount(InventorySystem.stackSize);
-			item.setAmount(stack_diff);
-			inv.addItem(item);
-		} else {
-			this.item.setAmount(sum);
-		}
+
+	public void setItem(Item item) {
+		this.item = item;
 	}
+	public Item addItem(Item item, Inventory inv) {
+		if(this.hasItem()) {
+			int sum = this.item.getAmount() + item.getAmount();
+			int stack_diff = sum - InventorySystem.stackSize;
+			if(stack_diff > 0) {
+				this.item.setAmount(InventorySystem.stackSize);
+				item.setAmount(stack_diff);
+				return item;
+			} else {
+				this.item.setAmount(sum);
+			}
+		} else {
+			if(item.getAmount() > InventorySystem.stackSize) {
+				try {
+					Item tmp = (Item) item.clone();
+					tmp.setAmount(InventorySystem.stackSize);
+					item.setAmount(item.getAmount() - InventorySystem.stackSize);
+					this.setItem(tmp);
+					return item;
+				} catch (CloneNotSupportedException e) {
+					e.printStackTrace();
+				}
+			} else {
+				this.setItem(item);
+			}
+		}
+		return null;
+	}
+
 	public Item getItem() {
 		return this.item;
 	}

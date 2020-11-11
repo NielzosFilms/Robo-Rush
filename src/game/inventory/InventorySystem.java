@@ -19,6 +19,7 @@ public class InventorySystem {
 	public static final Color slot_hover = new Color(255, 255, 255, 50);
 
 	private Handler handler;
+	private MouseInput mouseInput;
 	private World world;
 
 	public Inventory player_hotbar;
@@ -27,39 +28,34 @@ public class InventorySystem {
 	private ArrayList<Inventory> open_inventories = new ArrayList<>();
 
 	//public static boolean player_inventory_open = true;
-	public static Item holding = null;
+	private Item holding = null;
 
 	public InventorySystem() {
 		this.player_hotbar = Game.player.hotbar;
+		this.open_inventories.add(this.player_hotbar);
 		this.player_inv = Game.player.inventory;
+
 		this.handler = Game.handler;
+		this.mouseInput = Game.mouseInput;
 	}
 
 	public void tick() {
-		this.player_hotbar.tick();
 		for(Inventory inv : open_inventories) {
 			inv.tick();
 		}
 	}
 
 	public void render(Graphics g) {
-		player_hotbar.render(g);
-		//if(player_inventory_open) player_inventory.render(g);
-
 		for(Inventory inv : open_inventories) {
 			inv.render(g);
 		}
+		if(isHolding()) holding.render(g, mouseInput.mouse_x, mouseInput.mouse_y);
 	}
 
 	public void mouseClicked(MouseEvent e) {
 		for(Inventory inv : open_inventories) {
-			if(Game.mouseInput.mouseOverLocalRect(inv.getInventoryBounds())) {
-				switch (e.getButton()) {
-					case MouseEvent.BUTTON1 -> inv.mouseLeftClick(e);
-					case MouseEvent.BUTTON2 -> inv.mouseMiddleClick(e);
-					case MouseEvent.BUTTON3 -> inv.mouseRightClick(e);
-					default -> System.out.println("Mouse function not recognized");
-				}
+			if(mouseInput.mouseOverLocalRect(inv.getInventoryBounds())) {
+				inv.mouseClick(e, mouseInput, this);
 			} else {
 				mouseClickedOutside(e);
 			}
@@ -97,5 +93,21 @@ public class InventorySystem {
 
 	public boolean inventoryIsOpen() {
 		return this.open_inventories.size() > 0;
+	}
+
+	public boolean isHolding() {
+		return this.holding != null;
+	}
+
+	public void clearHolding() {
+		this.holding = null;
+	}
+
+	public void setHolding(Item item) {
+		this.holding = item;
+	}
+
+	public Item getHolding() {
+		return this.holding;
 	}
 }
