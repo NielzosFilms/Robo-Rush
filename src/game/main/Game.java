@@ -37,7 +37,7 @@ public class Game extends Canvas implements Runnable {
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
 	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.15.0 INFDEV";
+	public static final String VERSION = "ALPHA V 2.2.0 INFDEV";
 
 	private Thread thread;
 	private ImageRendering imageRenderer;
