@@ -15,9 +15,7 @@ import game.entities.Player;
 import game.entities.particles.Particle;
 import game.entities.particles.ParticleSystem;
 import game.hud.HUD;
-import game.inventory.Inventory;
 import game.inventory.InventorySystem;
-import game.inventory.Inventory_OLD;
 import game.lighting.LightingSystem;
 import game.objects.House;
 import game.textures.Textures;
@@ -47,7 +45,7 @@ public class Game extends Canvas implements Runnable {
 
 	public static boolean showHitboxes = false;
 	public static GAMESTATES game_state = GAMESTATES.Game;
-	public static boolean pauzed = false, inventory_open = false;
+	public static boolean pauzed = false;
 
 	private Random r;
 
@@ -65,11 +63,9 @@ public class Game extends Canvas implements Runnable {
 
 	public static LevelLoader ll;
 	public static World world;
-	public static Inventory_OLD inventoryOLD;
 	public static InventorySystem inventorySystem;
 	public static LightingSystem lightingSystem;
 	public static AudioFiles audioFiles;
-	// private static ArrayList<ArrayList<Long>> blocks;
 
 	public Game() {
 		handler = new Handler();
@@ -102,7 +98,6 @@ public class Game extends Canvas implements Runnable {
 		mouseInput.setCam(cam);
 
 		player = new Player(0, 0, 2, ID.Player, keyInput, textures);
-		//inventoryOLD = new Inventory_OLD(5, 4, mouseInput, ps, handler, cam);
 		inventorySystem = new InventorySystem();
 		mouseInput.setInventory(inventorySystem);
 		keyInput.setInventory(inventorySystem);
