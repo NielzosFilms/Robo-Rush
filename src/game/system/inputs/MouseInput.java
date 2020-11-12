@@ -11,12 +11,14 @@ import game.system.inventory.InventorySystem;
 import game.system.main.Camera;
 import game.enums.GAMESTATES;
 import game.system.main.Game;
+import game.system.menu.Menu;
 
 public class MouseInput extends MouseAdapter implements MouseMotionListener, MouseWheelListener {
 
 	public int mouse_x, mouse_y;
 	public boolean dragging;
 	private InventorySystem inventorySystem;
+	private Menu menu;
 	private Camera cam;
 
 	public MouseInput() {
@@ -35,12 +37,12 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	}
 
 	public void mousePressed(MouseEvent e) {
-		if (Game.game_state == GAMESTATES.Game) {
-			inventorySystem.mouseClicked(e);
-		}
-
 		int mx = e.getX();
 		int my = e.getY();
+		switch(Game.game_state) {
+			case Game -> inventorySystem.mouseClicked(e);
+			case Menu, Pauzed -> menu.mouseClicked(e);
+		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
@@ -114,6 +116,10 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 
 	public void setInventory(InventorySystem inventorySystem) {
 		this.inventorySystem = inventorySystem;
+	}
+
+	public void setMenu(Menu menu) {
+		this.menu = menu;
 	}
 
 }

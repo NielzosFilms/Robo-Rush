@@ -51,7 +51,6 @@ public class Game extends Canvas implements Runnable {
 
 	public static boolean showHitboxes = false;
 	public static GAMESTATES game_state = GAMESTATES.Game;
-	public static boolean pauzed = false;
 
 	private Random r;
 
@@ -85,6 +84,7 @@ public class Game extends Canvas implements Runnable {
 		audioFiles = new AudioFiles();
 
 		menu = new Menu();
+		mouseInput.setMenu(menu);
 
 		this.addKeyListener(keyInput);
 		this.addMouseListener(mouseInput);
@@ -197,7 +197,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-		if (game_state == GAMESTATES.Game && !pauzed && World.loaded) {
+		if (game_state == GAMESTATES.Game && World.loaded) {
 
 			handler.tick(world);
 			ps.tick();
@@ -225,7 +225,7 @@ public class Game extends Canvas implements Runnable {
 			 * AudioPlayer.stopSound(audioFiles.futureopolis); }
 			 */
 
-		} else if ((game_state == GAMESTATES.Game && pauzed) || game_state == GAMESTATES.Menu) {
+		} else if ((game_state == GAMESTATES.Pauzed) || game_state == GAMESTATES.Menu) {
 			menu.tick();
 		}
 	}
@@ -272,8 +272,8 @@ public class Game extends Canvas implements Runnable {
 
 			inventorySystem.render(g);
 
-			if (pauzed) {
-				menu.setState(MENUSTATES.pauzed);
+			if (game_state == GAMESTATES.Pauzed) {
+				menu.setState(MENUSTATES.Pauzed);
 				menu.render(g, g2d);
 			}
 		}

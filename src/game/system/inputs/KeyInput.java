@@ -4,6 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
+import game.enums.GAMESTATES;
 import game.system.inventory.InventorySystem;
 import game.system.main.Game;
 import game.system.main.GameObject;
@@ -75,6 +76,13 @@ public class KeyInput extends KeyAdapter {
 					}
 				}
 				// }
+			}
+		}
+		if(key == KeyEvent.VK_P) {
+			if(Game.game_state == GAMESTATES.Pauzed) {
+				Game.game_state = GAMESTATES.Game;
+			} else {
+				Game.game_state = GAMESTATES.Pauzed;
 			}
 		}
 
