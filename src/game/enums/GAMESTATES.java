@@ -2,8 +2,8 @@ package game.enums;
 
 public enum GAMESTATES {
 
-	Game(), Structure(),
+	Game, Structure,
 
-	Menu();
+	Menu;
 
 }

@@ -2,14 +2,14 @@ package game.enums;
 
 public enum ID {
 
-	NULL(),
+	NULL,
 
-	Player(), Enemy(), Particle(), Item(),
+	Player, Enemy, Particle, Item,
 
-	Tile(), Tree(), Mushroom(),
+	Tile, Tree, Mushroom,
 
-	House(),
+	House,
 
-	Pebble(), Branch();
+	Pebble, Branch;
 
 }

@@ -12,6 +12,7 @@ import java.util.Random;
 
 import game.enums.GAMESTATES;
 import game.enums.ID;
+import game.enums.MENUSTATES;
 import game.system.audioEngine.AudioFiles;
 import game.assets.entities.Player;
 import game.assets.entities.particles.Particle;
@@ -22,6 +23,7 @@ import game.system.inputs.MouseInput;
 import game.system.inventory.InventorySystem;
 import game.system.lighting.LightingSystem;
 import game.assets.objects.House;
+import game.system.menu.Menu;
 import game.textures.Textures;
 import game.system.world.LevelLoader;
 import game.system.world.World;
@@ -71,6 +73,8 @@ public class Game extends Canvas implements Runnable {
 	public static LightingSystem lightingSystem;
 	public static AudioFiles audioFiles;
 
+	public static Menu menu;
+
 	public Game() {
 		handler = new Handler();
 		keyInput = new KeyInput(handler);
@@ -79,6 +83,8 @@ public class Game extends Canvas implements Runnable {
 		textures = new Textures();
 
 		audioFiles = new AudioFiles();
+
+		menu = new Menu();
 
 		this.addKeyListener(keyInput);
 		this.addMouseListener(mouseInput);
@@ -219,8 +225,8 @@ public class Game extends Canvas implements Runnable {
 			 * AudioPlayer.stopSound(audioFiles.futureopolis); }
 			 */
 
-		} else if (game_state == GAMESTATES.Game && pauzed) {
-
+		} else if ((game_state == GAMESTATES.Game && pauzed) || game_state == GAMESTATES.Menu) {
+			menu.tick();
 		}
 	}
 
@@ -230,7 +236,6 @@ public class Game extends Canvas implements Runnable {
 			this.createBufferStrategy(3);
 			return;
 		}
-
 		Graphics g = bs.getDrawGraphics();
 		Graphics2D g2d = (Graphics2D) g;
 
@@ -240,21 +245,17 @@ public class Game extends Canvas implements Runnable {
 		 * g2d.transform(scalingTransform);
 		 */
 		g2d.scale(SCALE_WIDTH, SCALE_HEIGHT);
-
 		g.setColor(Color.decode("#d1e3ff"));
-		// g.setColor(Color.);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		if (game_state == GAMESTATES.Menu) {
-			g.setColor(Color.decode("#363636"));
-			g.fillRect(0, 0, WIDTH, HEIGHT);
-
-			g.setColor(Color.WHITE);
-			new Text("TEST string", WIDTH / 2, HEIGHT / 2, 20, mouseInput).render(g, g2d);
-		}
-
-		if (game_state == GAMESTATES.Game && World.loaded) {
-
+			menu.render(g, g2d);
+//			g.setColor(Color.decode("#363636"));
+//			g.fillRect(0, 0, WIDTH, HEIGHT);
+//
+//			g.setColor(Color.WHITE);
+//			new Text("TEST string", WIDTH / 2, HEIGHT / 2, 20, mouseInput).render(g, g2d);
+		} else if (game_state == GAMESTATES.Game && World.loaded) {
 			g2d.translate(cam.getX(), cam.getY()); // start of cam
 
 			handler.render(g, (int) -cam.getX(), (int) -cam.getY(), WIDTH, HEIGHT, world, ps);
@@ -270,11 +271,11 @@ public class Game extends Canvas implements Runnable {
 			hud.render(g, g2d);
 
 			inventorySystem.render(g);
-		}
 
-		if (pauzed) {
-			g.setColor(new Color(0, 0, 0, 0.5f));
-			g.fillRect(0, 0, WIDTH, HEIGHT);
+			if (pauzed) {
+				menu.setState(MENUSTATES.pauzed);
+				menu.render(g, g2d);
+			}
 		}
 
 		g.dispose();
