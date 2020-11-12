@@ -72,6 +72,7 @@ public class KeyInput extends KeyAdapter {
 							+ (obj.getY() - Game.player.getY()) * (obj.getY() - Game.player.getY()));
 					// System.out.println(dis);
 					if (dis < 75) {
+						// TODO distance is from top right?
 						obj.interact();
 					}
 				}
@@ -85,38 +86,6 @@ public class KeyInput extends KeyAdapter {
 				Game.game_state = GAMESTATES.Pauzed;
 			}
 		}
-
-		/*if (key == KeyEvent.VK_I) {
-			inventoryOLD.switchInventoryState();
-		}
-
-		if (!inventoryOLD.getInventoryOpen()) {
-			if (key == KeyEvent.VK_1)
-				inventoryOLD.setHotbarSelected(0);
-			if (key == KeyEvent.VK_2)
-				inventoryOLD.setHotbarSelected(1);
-			if (key == KeyEvent.VK_3)
-				inventoryOLD.setHotbarSelected(2);
-			if (key == KeyEvent.VK_4)
-				inventoryOLD.setHotbarSelected(3);
-			if (key == KeyEvent.VK_5)
-				inventoryOLD.setHotbarSelected(4);
-			if (key == KeyEvent.VK_6)
-				inventoryOLD.setHotbarSelected(5);
-			if (key == KeyEvent.VK_7)
-				inventoryOLD.setHotbarSelected(6);
-			if (key == KeyEvent.VK_8)
-				inventoryOLD.setHotbarSelected(7);
-			if (key == KeyEvent.VK_9)
-				inventoryOLD.setHotbarSelected(8);
-		}*/
-
-		/*
-		 * if(Game.game_state == GAMESTATES.Menu) { if(key == KeyEvent.VK_ESCAPE)
-		 * System.exit(1); } if(key == KeyEvent.VK_ESCAPE && !Game.pauzed) { Game.pauzed
-		 * = true; } else if(key == KeyEvent.VK_ESCAPE && Game.pauzed) { Game.pauzed =
-		 * false; }
-		 */
 		if (key == KeyEvent.VK_ESCAPE) {
 			// saving
 			// try {
