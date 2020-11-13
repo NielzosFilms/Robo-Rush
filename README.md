@@ -7,7 +7,7 @@ Its made purely with Java.
 ------------------------------------------------------------------------
 
 Game Version: `ALPHA V 2.9.3 INFDEV`<br>
-<img src="https://i.ibb.co/nscZM0g/game-preview.png" alt="Game Preview">
+<img src="./game_preview.png" alt="Game Preview">
 
 ------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ Game Version: `ALPHA V 2.9.3 INFDEV`<br>
 
 ### Current Version
 - `ALPHA`
-- [Exact Version](./src/game/main/Game.java#L41)
+- [Exact Version](./src/game/system/main/Game.java#L41)
 
 ------------------------------------------------------------------------
 
