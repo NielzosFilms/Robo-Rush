@@ -33,6 +33,7 @@ public class World {
 	}
 
 	public void tick() {
+		if(!loaded) return;
 		int camX = (Math.round(-Game.cam.getX() / 16));
 		int camY = (Math.round(-Game.cam.getY() / 16));
 		int camW = (Math.round(Game.WIDTH / 16));
@@ -243,6 +244,8 @@ public class World {
 		this.seed = seed;
 		this.temp_seed = r.nextLong();
 		this.moist_seed = r.nextLong();
+		loaded = false;
+		chunks.clear();
 
 		System.out.println("seed: " + this.seed);
 		System.out.println("Temperature seed: " + this.temp_seed);

@@ -40,7 +40,10 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		int mx = e.getX();
 		int my = e.getY();
 		switch(Game.game_state) {
-			case Game -> inventorySystem.mouseClicked(e);
+			case Game -> {
+				inventorySystem.mouseClicked(e);
+				Game.debug_hud.mousePressed(e);
+			}
 			case Menu, Pauzed -> menu.mouseClicked(e);
 		}
 	}
@@ -48,6 +51,10 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	public void mouseReleased(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
+		switch(Game.game_state) {
+			case Game -> Game.debug_hud.mouseReleased(e);
+			//case Menu, Pauzed -> menu.mouseClicked(e);
+		}
 	}
 
 	public void mouseClicked(MouseEvent e) {

@@ -17,6 +17,7 @@ import game.system.audioEngine.AudioFiles;
 import game.assets.entities.Player;
 import game.assets.entities.particles.Particle;
 import game.assets.entities.particles.ParticleSystem;
+import game.system.hud.DebugHUD;
 import game.system.hud.HUD;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
@@ -59,6 +60,7 @@ public class Game extends Canvas implements Runnable {
 	public static KeyInput keyInput;
 	public static MouseInput mouseInput;
 	public static HUD hud;
+	public static DebugHUD debug_hud;
 	public static Camera cam;
 	static Canvas canvas;
 	public static Textures textures;
@@ -114,6 +116,7 @@ public class Game extends Canvas implements Runnable {
 		hud = new HUD(handler, player);
 		hud.setMouseInput(mouseInput);
 		hud.setCam(cam);
+		debug_hud = new DebugHUD(mouseInput);
 		handler.addObject(player.getZIndex(), player);
 		// handler.addObject(1, new Enemy(8*16, 8*16, 2, ID.Enemy));
 
@@ -123,8 +126,8 @@ public class Game extends Canvas implements Runnable {
 		Long seed = 9034865798355343302L; // r.nextLong();
 		world = new World(player, textures);
 		world.generate(seed);
-		//inventoryOLD.setWorld(world);
 		hud.setWorld(world);
+		//inventoryOLD.setWorld(world);
 		collision = new Collision(handler, world, player);
 		keyInput.setWorld(world);
 		inventorySystem.setWorld(world);
@@ -217,6 +220,7 @@ public class Game extends Canvas implements Runnable {
 				}
 			}
 			hud.tick();
+			if(DEDUG_MODE) debug_hud.tick();
 
 			keyInput.tick();
 
@@ -267,8 +271,10 @@ public class Game extends Canvas implements Runnable {
 			// System.out.println("Light System Render Time: " + (finish - start));
 
 			hud.renderCam(g, g2d);
+			if(DEDUG_MODE) debug_hud.renderCam(g, g2d);
 			g2d.translate(-cam.getX(), -cam.getY()); // end of cam
 			hud.render(g, g2d);
+			if(DEDUG_MODE) debug_hud.render(g, g2d);
 
 			inventorySystem.render(g);
 
