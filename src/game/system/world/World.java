@@ -235,10 +235,9 @@ public class World {
 		chunks.clear();
 
 		System.out.println("seed: " + this.seed);
-		System.out.println("Temperature seed: " + this.temp_seed);
-		System.out.println("Moisture seed: " + this.moist_seed);
 
-		chunks.put(new Point(0, 0), new Chunk(0, 0, seed, temp_seed, moist_seed, this, player, textures));
+		Point chunk_point = getChunkPointWithCoords(player.getX(), player.getY());
+		chunks.put(chunk_point, new Chunk(chunk_point.x, chunk_point.y, seed, temp_seed, moist_seed, this, player, textures));
 
 		loaded = true;
 	}
