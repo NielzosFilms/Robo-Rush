@@ -6,7 +6,7 @@ Its made purely with Java.
 
 ------------------------------------------------------------------------
 
-Game Version: `ALPHA V 2.9.3 INFDEV`<br>
+Game Version: `ALPHA V 2.21.0 INFDEV`<br>
 <img src="./game_preview.png" alt="Game Preview">
 
 ------------------------------------------------------------------------
