@@ -63,20 +63,28 @@ public class Chunk {
 				GameObject entity = list.get(i);
 				if (entity.getX() > (this.x + 16) * 16) {
 					Chunk chunk = this.world.getChunkWithCoords(this.x + 16, this.y);
+					if(chunk == null) continue;
 					chunk.entities.get(0).add(entity);
 					list.remove(i);
+					return;
 				} else if (entity.getX() < (this.x) * 16) {
 					Chunk chunk = this.world.getChunkWithCoords(this.x - 16, this.y);
+					if(chunk == null) continue;
 					chunk.entities.get(0).add(entity);
 					list.remove(i);
+					return;
 				} else if (entity.getY() > (this.y + 16) * 16) {
 					Chunk chunk = this.world.getChunkWithCoords(this.x, this.y + 16);
+					if(chunk == null) continue;
 					chunk.entities.get(0).add(entity);
 					list.remove(i);
+					return;
 				} else if (entity.getY() < (this.y - 16) * 16) {
 					Chunk chunk = this.world.getChunkWithCoords(this.x, this.y - 16);
+					if(chunk == null) continue;
 					chunk.entities.get(0).add(entity);
 					list.remove(i);
+					return;
 				} else {
 					entity.tick();
 				}

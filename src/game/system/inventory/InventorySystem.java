@@ -2,6 +2,7 @@ package game.system.inventory;
 
 import game.assets.entities.Player;
 import game.assets.items.Item;
+import game.assets.items.ItemGround;
 import game.system.main.Game;
 import game.system.main.GameObject;
 import game.system.main.Handler;
@@ -88,6 +89,10 @@ public class InventorySystem {
 				handler.findAndRemoveObject(obj, world);
 			}
 		}
+	}
+
+	public void dropItem(Item item) {
+		handler.addObject(item.getItemGround());
 	}
 
 	public boolean inventoryIsOpen() {

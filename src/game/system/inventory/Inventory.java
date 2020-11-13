@@ -1,7 +1,9 @@
 package game.system.inventory;
 
 import game.assets.items.Item;
+import game.assets.items.ItemGround;
 import game.system.inputs.MouseInput;
+import game.system.main.Game;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -54,6 +56,7 @@ public class Inventory {
 					if(rest != null) this.addItem(rest);
 				}
 			} else {
+				System.out.println("drop item");
 				// drop overflow item?
 			}
 		}
