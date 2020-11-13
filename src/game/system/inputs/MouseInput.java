@@ -28,7 +28,9 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 
 	}
 
-	public void setCam(Camera cam) {
+	public void setRequirements(InventorySystem inventorySystem, Menu menu, Camera cam) {
+		this.inventorySystem = inventorySystem;
+		this.menu = menu;
 		this.cam = cam;
 	}
 
@@ -119,14 +121,6 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 
 	public boolean mouseOver(int mx, int my, int x, int y, int width, int height) {
 		return (mx > x && mx < x + width) && (my > y && my < y + height);
-	}
-
-	public void setInventory(InventorySystem inventorySystem) {
-		this.inventorySystem = inventorySystem;
-	}
-
-	public void setMenu(Menu menu) {
-		this.menu = menu;
 	}
 
 }

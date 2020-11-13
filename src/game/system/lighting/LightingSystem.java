@@ -26,8 +26,9 @@ public class LightingSystem {
 	public LightingSystem() {
 		
 	}
-	
-	public void setCam(Camera cam) {
+	public void setRequirements(Handler handler, World world, Camera cam) {
+		this.handler = handler;
+		this.world = world;
 		this.cam = cam;
 	}
 	
@@ -416,14 +417,6 @@ public class LightingSystem {
 	    	
 	    }else
 	        return null;
-	}
-	
-	public void setHandler(Handler handler) {
-		this.handler = handler;
-	}
-	
-	public void setWorld(World world) {
-		this.world = world;
 	}
 	
 }

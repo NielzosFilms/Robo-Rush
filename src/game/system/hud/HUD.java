@@ -24,21 +24,14 @@ public class HUD {
 	private World world;
 	private Camera cam;
 
-	public HUD(Handler handler, Player player) {
+	public HUD() {}
+
+	public void setRequirements(Handler handler, Player player, MouseInput mouseInput, World world, Camera cam) {
 		this.handler = handler;
 		this.player = player;
-	}
-
-	public void setCam(Camera cam) {
-		this.cam = cam;
-	}
-
-	public void setMouseInput(MouseInput mouseInput) {
 		this.mouseInput = mouseInput;
-	}
-
-	public void setWorld(World world) {
 		this.world = world;
+		this.cam = cam;
 	}
 
 	public void tick() {
@@ -83,29 +76,6 @@ public class HUD {
 			// g2d.drawString("BIOME: " + player.getCurrentBiome().toString(), 1, 45);
 			g2d.drawString("SEED: " + World.seed, 1, 70);
 		}
-
-		/*
-		 * g.setColor(new Color(0, 0, 0, 100)); g.fillArc(inventory.getHotbarX()-20,
-		 * inventory.getHotbarY(), 20, 20, 90, -360);
-		 */
-
-		drawPlayerStats(g);
-	}
-
-	private void drawPlayerStats(Graphics g) {
-		/*
-		int hotbar_x = inventoryOLD.getHotbarX();
-		int hotbar_y = inventoryOLD.getHotbarY();
-		g.setColor(new Color(255, 46, 46));
-		g.fillRect(hotbar_x, hotbar_y - 4, player.getHealth() * (20 * inventoryOLD.getSizeX()) / 100, 3);
-		g.drawRect(hotbar_x, hotbar_y - 4, player.getHealth() * (20 * inventoryOLD.getSizeX()) / 100, 3);
-
-		g.setColor(new Color(255, 175, 46));
-		g.fillRect(hotbar_x - 6, hotbar_y - player.getFood() * 20 / 100 + 20, 2, player.getFood() * 20 / 100);
-
-		g.setColor(new Color(46, 203, 255));
-		g.fillRect(hotbar_x - 9, hotbar_y - player.getWater() * 20 / 100 + 20, 2, player.getWater() * 20 / 100);
-		*/
 	}
 
 	private int getWorldCoordX(int screen_x) {

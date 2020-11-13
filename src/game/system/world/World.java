@@ -27,7 +27,9 @@ public class World {
 
 	private static OpenSimplexNoise noise;
 
-	public World(Player player, Textures textures) {
+	public World() {}
+
+	public void setRequirements(Player player, Textures textures) {
 		this.player = player;
 		this.textures = textures;
 	}
@@ -124,21 +126,6 @@ public class World {
 				}
 			}
 		}
-
-		/*
-		 * for(Chunk chunk : chunks) { if(OnScreen(chunk.x*16, chunk.y*16, 16, 16)) {
-		 * chunk.render(g); } }
-		 */
-
-		/*
-		 * for(int y = -32;y <= 32;y+=16) { for(int x = -32;x <= 32;x+=16) {
-		 * if(chunks.containsKey(new Point(x, y))) { chunks.get(new Point(x,
-		 * y)).render(g); } } }
-		 */
-
-		/*
-		 * chunks.get(0).get(0).render(g); chunks.get(16).get(0).render(g);
-		 */
 	}
 
 	// functions to get specific tiles/tiletypes

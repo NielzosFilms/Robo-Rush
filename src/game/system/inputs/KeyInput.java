@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 import game.enums.GAMESTATES;
+import game.system.inventory.Inventory;
 import game.system.inventory.InventorySystem;
 import game.system.main.Game;
 import game.system.main.GameObject;
@@ -18,21 +19,16 @@ public class KeyInput extends KeyAdapter {
 	private InventorySystem inventorySystem;
 	private World world;
 
-	// public Map<Integer, Boolean> keysDown = new HashMap<Integer, Boolean>();
+	public KeyInput() {}
+
 	/*
 	 * 0 = W 1 = S 2 = A 3 = D 4 = Space 5 = Shift 6 = Ctrl 7 = Tab
 	 */
 	public boolean[] keysDown = { false, false, false, false, false, false, false, false };
 
-	public KeyInput(Handler handler) {
+	public void setRequirements(Handler handler, InventorySystem inventorySystem, World world) {
 		this.handler = handler;
-	}
-
-	public void setInventory(InventorySystem inventorySystem) {
 		this.inventorySystem = inventorySystem;
-	}
-
-	public void setWorld(World world) {
 		this.world = world;
 	}
 

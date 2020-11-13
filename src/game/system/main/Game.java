@@ -31,129 +31,100 @@ import game.system.world.World;
 import game.system.menu.Text;
 
 public class Game extends Canvas implements Runnable {
-
 	private static final long serialVersionUID = 852753996046178928L;
-
 	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
 	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
 	public static final float RATIO = (float) NEW_WIDTH / NEW_HEIGHT;
 	public static final int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final int FPS = 60;
-	public static final String VERSION = "ALPHA V 2.2.0 INFDEV";
+	public static final String VERSION = "ALPHA V 2.21.0 INFDEV";
+
+	public static GAMESTATES game_state = GAMESTATES.Game;
+	public static boolean DEDUG_MODE = true;
+	public static boolean showHitboxes = false;
 
 	private Thread thread;
-	private ImageRendering imageRenderer;
 	private boolean running = true;
 	public static int current_fps = 0;
-	public static boolean DEDUG_MODE = true;
-
-	public static boolean showHitboxes = false;
-	public static GAMESTATES game_state = GAMESTATES.Game;
+	static Canvas canvas;
 
 	private Random r;
-
 	public static Handler handler;
-	public static ParticleSystem ps;
 	public static KeyInput keyInput;
 	public static MouseInput mouseInput;
-	public static HUD hud;
-	public static DebugHUD debug_hud;
-	public static Camera cam;
-	static Canvas canvas;
 	public static Textures textures;
-	public static Collision collision;
-
-	public static Player player;
-
-	public static LevelLoader ll;
-	public static World world;
-	public static InventorySystem inventorySystem;
-	public static LightingSystem lightingSystem;
 	public static AudioFiles audioFiles;
+	public static Collision collision;
+	public static Camera cam;
+	public static LevelLoader ll;
 
 	public static Menu menu;
+	public static HUD hud;
+	public static DebugHUD debug_hud;
+
+	public static InventorySystem inventorySystem;
+	public static LightingSystem lightingSystem;
+	public static ParticleSystem ps;
+	public static ImageRendering imageRenderer;
+
+	public static World world;
+	public static Player player;
 
 	public Game() {
-		handler = new Handler();
-		keyInput = new KeyInput(handler);
-		mouseInput = new MouseInput();
 		r = new Random();
-		textures = new Textures();
 
+		handler = new Handler();
+		keyInput = new KeyInput();
+		mouseInput = new MouseInput();
+		cam = new Camera(0, 0);
+		collision = new Collision();
+
+		textures = new Textures();
 		audioFiles = new AudioFiles();
 
+		inventorySystem = new InventorySystem();
+		ps = new ParticleSystem();
+		lightingSystem = new LightingSystem();
+
 		menu = new Menu();
-		mouseInput.setMenu(menu);
+		hud = new HUD();
+		debug_hud = new DebugHUD(mouseInput);
+
+		world = new World();
+
+		player = new Player(0, 0, 2, ID.Player, keyInput);
+		handler.addObject(player);
+
+		setRequirements();
+
+		addTestObjects();
 
 		this.addKeyListener(keyInput);
 		this.addMouseListener(mouseInput);
 		this.addMouseMotionListener(mouseInput);
 		this.addMouseWheelListener(mouseInput);
 		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
-
-		if (game_state == GAMESTATES.Game) {
-			loadGameRequirements();
-		}
-
 	}
 
-	public void loadGameRequirements() {
-		ps = new ParticleSystem();
+	private void setRequirements() {
+		keyInput.setRequirements(handler, inventorySystem, world);
+		mouseInput.setRequirements(inventorySystem, menu, cam);
+		collision.setRequirements(handler, world, player);
 
-		// blocks = ll.getLevelData();
-		// ll.loadLevelData("assets/world/structures/top_down_map.json");
+		inventorySystem.setRequirements(handler, mouseInput, world, player);
+		lightingSystem.setRequirements(handler, world, cam);
 
-		cam = new Camera(0, 0);
-		mouseInput.setCam(cam);
+		hud.setRequirements(handler, player, mouseInput, world, cam);
 
-		player = new Player(0, 0, 2, ID.Player, keyInput, textures);
-		inventorySystem = new InventorySystem();
-		mouseInput.setInventory(inventorySystem);
-		keyInput.setInventory(inventorySystem);
-		hud = new HUD(handler, player);
-		hud.setMouseInput(mouseInput);
-		hud.setCam(cam);
-		debug_hud = new DebugHUD(mouseInput);
-		handler.addObject(player.getZIndex(), player);
-		// handler.addObject(1, new Enemy(8*16, 8*16, 2, ID.Enemy));
-
-		ps.addParticle(new Particle(0, 0, 3, ID.Particle, 0, -1, 60, ps));
-		// handler.addObject(3, new Particle(0, 0, 3, ID.Particle, 0, -1, 60, handler));
-
+		world.setRequirements(player, textures);
 		Long seed = 9034865798355343302L; // r.nextLong();
-		world = new World(player, textures);
 		world.generate(seed);
-		hud.setWorld(world);
-		//inventoryOLD.setWorld(world);
-		collision = new Collision(handler, world, player);
-		keyInput.setWorld(world);
-		inventorySystem.setWorld(world);
+	}
 
-		lightingSystem = new LightingSystem();
-		lightingSystem.setHandler(handler);
-		lightingSystem.setWorld(world);
-		lightingSystem.setCam(cam);
-
-		handler.addObject(1, new House(0, 0, 1, ID.House));
-
-		/*
-		 * handler.addLight(new Light(new Point(0, 300), game.textures.light));
-		 * handler.addObject(1, new Tree(0, 250, 1, ID.Tree, "forest", player,
-		 * game.textures)); handler.addObject(1, new Tree(35, 320, 1, ID.Tree, "forest",
-		 * player, game.textures));
-		 */
-
-		// AudioPlayer.playSound(audioFiles.futureopolis, 0.1, true, 0);
-
-		/*
-		 * imageRenderer = new ImageRendering(canvas, this); imageRenderer.start();
-		 * imageRenderer.setLightingSystem(lightingSystem);
-		 */
-
-		// ll.LoadLevelHeightMap(handler);
+	private void addTestObjects() {
+		//handler.addObject(1, new House(0, 0, 1, ID.House));
+		ps.addParticle(new Particle(0, 0, 3, ID.Particle, 0, -1, 60, ps));
 	}
 
 	public synchronized void start() {
@@ -254,11 +225,6 @@ public class Game extends Canvas implements Runnable {
 
 		if (game_state == GAMESTATES.Menu) {
 			menu.render(g, g2d);
-//			g.setColor(Color.decode("#363636"));
-//			g.fillRect(0, 0, WIDTH, HEIGHT);
-//
-//			g.setColor(Color.WHITE);
-//			new Text("TEST string", WIDTH / 2, HEIGHT / 2, 20, mouseInput).render(g, g2d);
 		} else if (game_state == GAMESTATES.Game && World.loaded) {
 			g2d.translate(cam.getX(), cam.getY()); // start of cam
 
@@ -291,36 +257,7 @@ public class Game extends Canvas implements Runnable {
 
 	public static void main(String[] args) {
 		// System.setProperty("sun.java2d.opengl", "true");
-
 		canvas = new Game();
-
-	}
-
-	public static int clamp(int var, int min, int max) {
-		if (var <= min) {
-			var = min;
-		} else if (var >= max) {
-			var = max;
-		}
-		return var;
-	}
-
-	public static double clampDouble(double var, double min, double max) {
-		if (var <= min) {
-			var = min;
-		} else if (var >= max) {
-			var = max;
-		}
-		return var;
-	}
-
-	public static float clampFloat(float var, float min, float max) {
-		if (var <= min) {
-			var = min;
-		} else if (var >= max) {
-			var = max;
-		}
-		return var;
 	}
 
 }

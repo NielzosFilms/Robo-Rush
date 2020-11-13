@@ -12,7 +12,9 @@ public class Collision {
 	private World world;
 	private Player player;
 
-	public Collision(Handler handler, World world, Player player) {
+	public Collision() {}
+
+	public void setRequirements(Handler handler, World world, Player player) {
 		this.handler = handler;
 		this.world = world;
 		this.player = player;

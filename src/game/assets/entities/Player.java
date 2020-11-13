@@ -13,10 +13,10 @@ import game.system.main.Game;
 import game.system.main.GameObject;
 import game.enums.ID;
 import game.system.inputs.KeyInput;
-import game.textures.Animation;
-import game.textures.Textures;
 import game.enums.BIOME;
 import game.system.world.World;
+import game.textures.Animation;
+import game.textures.Textures;
 
 public class Player extends GameObject {
 
@@ -29,16 +29,14 @@ public class Player extends GameObject {
 
 	private Animation idle_down, idle_up, idle_left, idle_right;
 	private Animation walk_down, walk_up, walk_left, walk_right;
-	private Textures textures;
 
 	public Inventory inventory;
 	private Inventory inventory_test;
 	public Inventory hotbar;
 
-	public Player(int x, int y, int z_index, ID id, KeyInput keyInput, Textures textures) {
+	public Player(int x, int y, int z_index, ID id, KeyInput keyInput) {
 		super(x, y, z_index, id);
 		this.keyInput = keyInput;
-		this.textures = textures;
 		this.direction = "down";
 
 		this.inventory = new Inventory(5, 5);
@@ -62,24 +60,24 @@ public class Player extends GameObject {
 	}
 
 	private void initAnimations() {
-		idle_down = new Animation(8, textures.playerImg.get(0), textures.playerImg.get(1), textures.playerImg.get(2),
-				textures.playerImg.get(3));
-		idle_up = new Animation(8, textures.playerImg.get(36), textures.playerImg.get(37), textures.playerImg.get(38),
-				textures.playerImg.get(39));
-		idle_left = new Animation(8, textures.playerImg.get(24), textures.playerImg.get(25), textures.playerImg.get(26),
-				textures.playerImg.get(27));
-		idle_right = new Animation(8, textures.playerImg.get(12), textures.playerImg.get(13),
-				textures.playerImg.get(14), textures.playerImg.get(15));
+		idle_down = new Animation(8, Textures.playerImg.get(0), Textures.playerImg.get(1), Textures.playerImg.get(2),
+				Textures.playerImg.get(3));
+		idle_up = new Animation(8, Textures.playerImg.get(36), Textures.playerImg.get(37), Textures.playerImg.get(38),
+				Textures.playerImg.get(39));
+		idle_left = new Animation(8, Textures.playerImg.get(24), Textures.playerImg.get(25), Textures.playerImg.get(26),
+				Textures.playerImg.get(27));
+		idle_right = new Animation(8, Textures.playerImg.get(12), Textures.playerImg.get(13),
+				Textures.playerImg.get(14), Textures.playerImg.get(15));
 
-		walk_down = new Animation(5, textures.playerImg.get(6), textures.playerImg.get(7), textures.playerImg.get(8),
-				textures.playerImg.get(9), textures.playerImg.get(10), textures.playerImg.get(11));
-		walk_up = new Animation(5, textures.playerImg.get(42), textures.playerImg.get(43), textures.playerImg.get(44),
-				textures.playerImg.get(45), textures.playerImg.get(46), textures.playerImg.get(47));
-		walk_left = new Animation(5, textures.playerImg.get(30), textures.playerImg.get(31), textures.playerImg.get(32),
-				textures.playerImg.get(33), textures.playerImg.get(34), textures.playerImg.get(35));
-		walk_right = new Animation(5, textures.playerImg.get(18), textures.playerImg.get(19),
-				textures.playerImg.get(20), textures.playerImg.get(21), textures.playerImg.get(22),
-				textures.playerImg.get(23));
+		walk_down = new Animation(5, Textures.playerImg.get(6), Textures.playerImg.get(7), Textures.playerImg.get(8),
+				Textures.playerImg.get(9), Textures.playerImg.get(10), Textures.playerImg.get(11));
+		walk_up = new Animation(5, Textures.playerImg.get(42), Textures.playerImg.get(43), Textures.playerImg.get(44),
+				Textures.playerImg.get(45), Textures.playerImg.get(46), Textures.playerImg.get(47));
+		walk_left = new Animation(5, Textures.playerImg.get(30), Textures.playerImg.get(31), Textures.playerImg.get(32),
+				Textures.playerImg.get(33), Textures.playerImg.get(34), Textures.playerImg.get(35));
+		walk_right = new Animation(5, Textures.playerImg.get(18), Textures.playerImg.get(19),
+				Textures.playerImg.get(20), Textures.playerImg.get(21), Textures.playerImg.get(22),
+				Textures.playerImg.get(23));
 	}
 
 	public void tick() {

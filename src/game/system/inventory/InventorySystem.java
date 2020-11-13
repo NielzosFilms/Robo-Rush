@@ -1,5 +1,6 @@
 package game.system.inventory;
 
+import game.assets.entities.Player;
 import game.assets.items.Item;
 import game.system.main.Game;
 import game.system.main.GameObject;
@@ -21,22 +22,24 @@ public class InventorySystem {
 	private Handler handler;
 	private MouseInput mouseInput;
 	private World world;
-
-	public Inventory player_hotbar;
-	public int hotbar_selected;
 	private Inventory player_inv;
+	public Inventory player_hotbar;
+
+	public int hotbar_selected;
 	private ArrayList<Inventory> open_inventories = new ArrayList<>();
 
 	//public static boolean player_inventory_open = true;
 	private Item holding = null;
 
-	public InventorySystem() {
-		this.player_hotbar = Game.player.hotbar;
-		this.open_inventories.add(this.player_hotbar);
-		this.player_inv = Game.player.inventory;
+	public InventorySystem() {}
 
-		this.handler = Game.handler;
-		this.mouseInput = Game.mouseInput;
+	public void setRequirements(Handler handler, MouseInput mouseInput, World world, Player player) {
+		this.handler = handler;
+		this.mouseInput = mouseInput;
+		this.world = world;
+		this.player_hotbar = player.hotbar;
+		this.open_inventories.add(this.player_hotbar);
+		this.player_inv = player.inventory;
 	}
 
 	public void tick() {
@@ -85,10 +88,6 @@ public class InventorySystem {
 				handler.findAndRemoveObject(obj, world);
 			}
 		}
-	}
-
-	public void setWorld(World world) {
-		this.world = world;
 	}
 
 	public boolean inventoryIsOpen() {

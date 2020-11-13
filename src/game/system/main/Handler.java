@@ -135,7 +135,8 @@ public class Handler {
 		this.lights.add(light);
 	}
 
-	public void addObject(int z_index, GameObject object) {
+	public void addObject(GameObject object) {
+		int z_index = object.getZIndex();
 		while (z_index >= this.object_entities.size()) {// add new layers if it doesnt exist
 			this.object_entities.add(new LinkedList<GameObject>());
 		}
