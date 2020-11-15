@@ -1,4 +1,4 @@
-package game.system.audioEngine;
+package game.audioEngine;
 
 import java.io.File;
 

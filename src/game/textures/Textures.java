@@ -21,14 +21,13 @@ public class Textures {
 	public static List<BufferedImage> mushrooms = new ArrayList<BufferedImage>();
 
 	// inventory
-	public static BufferedImage wood;
-	public static BufferedImage inventory_bg;
 	public static BufferedImage placeholder;
 
 	// lights
 	public BufferedImage light;
 
-	public Font font;
+	// Menu
+	public static BufferedImage default_btn;
 
 	public static List<BufferedImage> tileSetForestBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> tileSetDesertBlocks = new ArrayList<BufferedImage>();
@@ -52,10 +51,9 @@ public class Textures {
 		mushroom = loader.loadImage("assets/world/nature/paddenstoel.png");
 		placeholder = loader.loadImage("assets/main/placeholder.png");
 
-		wood = loader.loadImage("assets/main/tile_sheets/stick.png");
-		inventory_bg = loader.loadImage("assets/main/hud/inventory_bg.png");
-
 		light = loader.loadImage("assets/main/lights/light_orange.png");
+
+		default_btn = loader.loadImage("assets/menu/buttons/default_btn.png");
 
 		// height_map = loader.loadImage("assets/main/height_map.png");
 

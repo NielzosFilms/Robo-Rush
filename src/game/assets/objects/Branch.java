@@ -15,7 +15,7 @@ public class Branch extends GameObject {
 
     public Branch(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
-        this.tex = Textures.wood;
+        this.tex = Textures.placeholder;
     }
 
     public void tick() {

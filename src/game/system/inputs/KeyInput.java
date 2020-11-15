@@ -75,13 +75,6 @@ public class KeyInput extends KeyAdapter {
 				// }
 			}
 		}
-		if(key == KeyEvent.VK_P) {
-			if(Game.game_state == GAMESTATES.Pauzed) {
-				Game.game_state = GAMESTATES.Game;
-			} else {
-				Game.game_state = GAMESTATES.Pauzed;
-			}
-		}
 		if (key == KeyEvent.VK_ESCAPE) {
 			// saving
 			// try {
@@ -91,7 +84,12 @@ public class KeyInput extends KeyAdapter {
 			// // TODO Auto-generated catch block
 			// e1.printStackTrace();
 			// }
-			System.exit(1);
+
+			switch(Game.game_state) {
+				case Game -> Game.game_state = GAMESTATES.Pauzed;
+				case Pauzed -> Game.game_state = GAMESTATES.Game;
+				case Menu -> System.exit(1);
+			}
 		}
 
 	}

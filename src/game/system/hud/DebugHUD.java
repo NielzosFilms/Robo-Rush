@@ -3,50 +3,45 @@ package game.system.hud;
 import game.assets.entities.Player;
 import game.system.inputs.MouseInput;
 import game.system.main.Game;
-import game.system.menu.Button;
+import game.system.world.World;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Random;
 
 public class DebugHUD {
 	private MouseInput mouse;
 	private Player player;
 
-	private Button btn;
+	public DebugHUD() {
+		//this.btn = new Button(50, 50, 30, 10, "New Seed");
+	}
 
-	public DebugHUD(MouseInput mouse) {
+	public void setRequirements(MouseInput mouse, Player player) {
 		this.mouse = mouse;
-		this.player = Game.player;
-		this.btn = new Button(50, 50, "New Seed");
+		this.player = player;
 	}
 
 	public void tick() {
-		if(mouse.mouseOverLocalRect(btn.getBounds())) {
-			btn.setState("hovered");
-		} else {
-			btn.setState("static");
-		}
 	}
 
 	public void render(Graphics g, Graphics2D g2d) {
-		btn.render(g, g2d);
+		Font font2 = new Font("SansSerif", Font.PLAIN, 4);
+		g2d.setFont(font2);
+		g2d.drawString("FPS: " + Game.current_fps, 1, 10);
+		if (Game.DEDUG_MODE) {
+			g2d.drawString("X: " + player.getX(), 1, 35);
+			g2d.drawString("Y: " + player.getY(), 1, 40);
+			// g2d.drawString("BIOME: " + player.getCurrentBiome().toString(), 1, 45);
+			g2d.drawString("SEED: " + World.seed, 1, 70);
+		}
 	}
 
 	public void renderCam(Graphics g, Graphics2D g2d) {
 	}
 
 	public void mousePressed(MouseEvent e) {
-		if(mouse.mouseOverLocalRect(btn.getBounds())) {
-			btn.setState("pressed");
-		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		if(mouse.mouseOverLocalRect(btn.getBounds())) {
-			Game.world.generate(new Random().nextLong());
-			btn.setState("clicked");
-		}
 	}
 }

@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 
 import game.assets.entities.Player;
@@ -16,7 +17,7 @@ import game.system.inputs.MouseInput;
 import game.system.world.World;
 
 public class HUD {
-
+	private DebugHUD debugHUD;
 	private double velX, velY;
 	private Handler handler;
 	private Player player;
@@ -24,7 +25,9 @@ public class HUD {
 	private World world;
 	private Camera cam;
 
-	public HUD() {}
+	public HUD() {
+		this.debugHUD = new DebugHUD();
+	}
 
 	public void setRequirements(Handler handler, Player player, MouseInput mouseInput, World world, Camera cam) {
 		this.handler = handler;
@@ -32,11 +35,11 @@ public class HUD {
 		this.mouseInput = mouseInput;
 		this.world = world;
 		this.cam = cam;
+		this.debugHUD.setRequirements(mouseInput, player);
 	}
 
 	public void tick() {
-		// get object when hovered over
-
+		if(Game.DEDUG_MODE) debugHUD.tick();
 	}
 
 	public void renderCam(Graphics g, Graphics2D g2d) {
@@ -52,6 +55,7 @@ public class HUD {
 				}
 			}
 		}
+		if(Game.DEDUG_MODE) debugHUD.renderCam(g, g2d);
 	}
 
 	public void render(Graphics g, Graphics2D g2d) {
@@ -67,15 +71,7 @@ public class HUD {
 		g2d.drawString(name, (Game.WIDTH - fontMetrics.stringWidth(name)),
 				fontMetrics.getHeight() + fontMetrics.getAscent());
 
-		Font font2 = new Font("SansSerif", Font.PLAIN, 4);
-		g2d.setFont(font2);
-		g2d.drawString("FPS: " + Game.current_fps, 1, 10);
-		if (Game.DEDUG_MODE) {
-			g2d.drawString("X: " + player.getX(), 1, 35);
-			g2d.drawString("Y: " + player.getY(), 1, 40);
-			// g2d.drawString("BIOME: " + player.getCurrentBiome().toString(), 1, 45);
-			g2d.drawString("SEED: " + World.seed, 1, 70);
-		}
+		if(Game.DEDUG_MODE) debugHUD.render(g, g2d);
 	}
 
 	private int getWorldCoordX(int screen_x) {
@@ -84,6 +80,13 @@ public class HUD {
 
 	private int getWorldCoordY(int screen_y) {
 		return (int) (screen_y - Math.round(-cam.getY()));
+	}
+
+	public void mousePressed(MouseEvent e) {
+		debugHUD.mousePressed(e);
+	}
+	public void mouseReleased(MouseEvent e) {
+		debugHUD.mouseReleased(e);
 	}
 
 }

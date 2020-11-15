@@ -90,14 +90,16 @@ public class InventorySlot {
 				}
 			}
 		} else {
-			try {
-				Item tmp = (Item) this.getItem().clone();
-				tmp.setAmount((int)Math.ceil(tmp.getAmount() / 2));
-				this.getItem().setAmount(this.getItem().getAmount() - tmp.getAmount());
-				if(this.getItem().getAmount() <= 0) this.clearItem();
-				if(tmp.getAmount() > 0) invSys.setHolding(tmp);
-			} catch (CloneNotSupportedException e) {
-				e.printStackTrace();
+			if(this.hasItem()) {
+				try {
+					Item tmp = (Item) this.getItem().clone();
+					tmp.setAmount((int) Math.ceil(tmp.getAmount() / 2));
+					this.getItem().setAmount(this.getItem().getAmount() - tmp.getAmount());
+					if (this.getItem().getAmount() <= 0) this.clearItem();
+					if (tmp.getAmount() > 0) invSys.setHolding(tmp);
+				} catch (CloneNotSupportedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

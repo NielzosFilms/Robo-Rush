@@ -13,22 +13,20 @@ import java.util.Random;
 import game.enums.GAMESTATES;
 import game.enums.ID;
 import game.enums.MENUSTATES;
-import game.system.audioEngine.AudioFiles;
+import game.audioEngine.AudioFiles;
 import game.assets.entities.Player;
 import game.assets.entities.particles.Particle;
 import game.assets.entities.particles.ParticleSystem;
-import game.system.hud.DebugHUD;
 import game.system.hud.HUD;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
 import game.system.inventory.InventorySystem;
 import game.system.lighting.LightingSystem;
-import game.assets.objects.House;
-import game.system.menu.Menu;
+import game.system.menu.MenuSystem;
+import game.textures.Fonts;
 import game.textures.Textures;
 import game.system.world.LevelLoader;
 import game.system.world.World;
-import game.system.menu.Text;
 
 public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 852753996046178928L;
@@ -40,7 +38,7 @@ public class Game extends Canvas implements Runnable {
 	public static final String TITLE = "Top Down Java Game";
 	public static final String VERSION = "ALPHA V 2.21.0 INFDEV";
 
-	public static GAMESTATES game_state = GAMESTATES.Game;
+	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEDUG_MODE = true;
 	public static boolean showHitboxes = false;
 
@@ -49,19 +47,20 @@ public class Game extends Canvas implements Runnable {
 	public static int current_fps = 0;
 	static Canvas canvas;
 
+	public static Textures textures;
+	public static AudioFiles audioFiles;
+	public static Fonts fonts;
+
 	private Random r;
 	public static Handler handler;
 	public static KeyInput keyInput;
 	public static MouseInput mouseInput;
-	public static Textures textures;
-	public static AudioFiles audioFiles;
 	public static Collision collision;
 	public static Camera cam;
 	public static LevelLoader ll;
 
-	public static Menu menu;
+	public static MenuSystem menuSystem;
 	public static HUD hud;
-	public static DebugHUD debug_hud;
 
 	public static InventorySystem inventorySystem;
 	public static LightingSystem lightingSystem;
@@ -82,14 +81,14 @@ public class Game extends Canvas implements Runnable {
 
 		textures = new Textures();
 		audioFiles = new AudioFiles();
+		fonts = new Fonts();
 
 		inventorySystem = new InventorySystem();
 		ps = new ParticleSystem();
 		lightingSystem = new LightingSystem();
 
-		menu = new Menu();
+		menuSystem = new MenuSystem();
 		hud = new HUD();
-		debug_hud = new DebugHUD(mouseInput);
 
 		world = new World();
 
@@ -97,6 +96,8 @@ public class Game extends Canvas implements Runnable {
 		handler.addObject(player);
 
 		setRequirements();
+
+		if(game_state == GAMESTATES.Game) generateRequirements();
 
 		addTestObjects();
 
@@ -109,7 +110,7 @@ public class Game extends Canvas implements Runnable {
 
 	private void setRequirements() {
 		keyInput.setRequirements(handler, inventorySystem, world);
-		mouseInput.setRequirements(inventorySystem, menu, cam);
+		mouseInput.setRequirements(this, inventorySystem, menuSystem, cam, hud);
 		collision.setRequirements(handler, world, player);
 
 		inventorySystem.setRequirements(handler, mouseInput, world, player);
@@ -117,7 +118,12 @@ public class Game extends Canvas implements Runnable {
 
 		hud.setRequirements(handler, player, mouseInput, world, cam);
 
+		menuSystem.setRequirements(mouseInput);
+
 		world.setRequirements(player, textures);
+	}
+
+	private void generateRequirements() {
 		Long seed = 9034865798355343302L; // r.nextLong();
 		world.generate(seed);
 	}
@@ -191,7 +197,6 @@ public class Game extends Canvas implements Runnable {
 				}
 			}
 			hud.tick();
-			if(DEDUG_MODE) debug_hud.tick();
 
 			keyInput.tick();
 
@@ -201,7 +206,7 @@ public class Game extends Canvas implements Runnable {
 			 */
 
 		} else if ((game_state == GAMESTATES.Pauzed) || game_state == GAMESTATES.Menu) {
-			menu.tick();
+			menuSystem.tick();
 		}
 	}
 
@@ -224,8 +229,9 @@ public class Game extends Canvas implements Runnable {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		if (game_state == GAMESTATES.Menu) {
-			menu.render(g, g2d);
-		} else if (game_state == GAMESTATES.Game && World.loaded) {
+			menuSystem.setState(MENUSTATES.Main);
+			menuSystem.render(g, g2d);
+		} else if ((game_state == GAMESTATES.Game || game_state == GAMESTATES.Pauzed) && World.loaded) {
 			g2d.translate(cam.getX(), cam.getY()); // start of cam
 
 			handler.render(g, (int) -cam.getX(), (int) -cam.getY(), WIDTH, HEIGHT, world, ps);
@@ -237,16 +243,14 @@ public class Game extends Canvas implements Runnable {
 			// System.out.println("Light System Render Time: " + (finish - start));
 
 			hud.renderCam(g, g2d);
-			if(DEDUG_MODE) debug_hud.renderCam(g, g2d);
 			g2d.translate(-cam.getX(), -cam.getY()); // end of cam
 			hud.render(g, g2d);
-			if(DEDUG_MODE) debug_hud.render(g, g2d);
 
 			inventorySystem.render(g);
 
 			if (game_state == GAMESTATES.Pauzed) {
-				menu.setState(MENUSTATES.Pauzed);
-				menu.render(g, g2d);
+				menuSystem.setState(MENUSTATES.Pauzed);
+				menuSystem.render(g, g2d);
 			}
 		}
 

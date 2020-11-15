@@ -1,44 +1,54 @@
 package game.system.menu;
 
-import game.enums.MENUSTATES;
 import game.system.inputs.MouseInput;
 import game.system.main.Game;
+import game.system.menu.buttons.Button;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
-public class Menu {
-	private static final int screenWidth = Game.WIDTH, screenHeight = Game.HEIGHT;
-	private MENUSTATES state;
-	private MouseInput mouse;
+public abstract class Menu {
+    protected static final int screenWidth = Game.WIDTH, screenHeight = Game.HEIGHT;
+    protected MouseInput mouse;
 
-	public Menu() {
-		this.state = MENUSTATES.Main;
-		this.mouse = Game.mouseInput;
-	}
+    protected ArrayList<Button> buttons = new ArrayList<>();
 
-	public void tick() {
+    public Menu(MouseInput mouse) {
+        super();
+        this.mouse = mouse;
+    }
 
-	}
+    public void tick() {
+        for(Button btn : buttons) {
+            btn.setHover(mouse.mouseOverLocalRect(btn.getBounds()));
+        }
+    }
 
-	public void render(Graphics g, Graphics2D g2d) {
-		if(state == MENUSTATES.Pauzed) {
-			g.setColor(new Color(0, 0, 0, 0.5f));
-			g.fillRect(0, 0, screenWidth, screenHeight);
-		}
-		//g.setColor(Color.BLUE);
-		//g.fillRect(0, 0, screenWidth, screenWidth);
-	}
+    public void render(Graphics g, Graphics2D g2d) {
+        renderBefore(g, g2d);
+        for(Button btn : buttons) {
+            btn.render(g, g2d);
+        }
+        renderAfter(g, g2d);
+    }
 
-	public void mouseClicked(MouseEvent e) {
-		System.out.println(mouse.mouse_x);
-		System.out.println(mouse.mouse_y);
-	}
+    public abstract void renderBefore(Graphics g, Graphics2D g2d);
+    public abstract void renderAfter(Graphics g, Graphics2D g2d);
 
-	public MENUSTATES getState() {
-		return state;
-	}
-	public void setState(MENUSTATES state) {
-		this.state = state;
-	}
+    public void mousePressed(MouseEvent e) {
+        for(Button btn : buttons) {
+            btn.setClick(mouse.mouseOverLocalRect(btn.getBounds()));
+        }
+    }
+
+    public void mouseReleased(MouseEvent e) {
+        for(Button btn : buttons) {
+            btn.setClick(false);
+            if(mouse.mouseOverLocalRect(btn.getBounds())) {
+                btn.handleClick(e);
+                return;
+            }
+        }
+    }
 }
