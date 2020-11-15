@@ -3,6 +3,7 @@ package game.system.menu.buttons;
 import game.enums.BUTTONS;
 import game.enums.GAMESTATES;
 import game.system.main.Game;
+import game.system.world.World;
 import game.textures.Textures;
 
 import java.awt.*;
@@ -22,7 +23,7 @@ public class ButtonPlay extends Button {
     }
 
     public void handleClick(MouseEvent e) {
-        Game.world.generate(new Random().nextLong());
+        if(!World.loaded) Game.world.generate(new Random().nextLong());
         Game.game_state = GAMESTATES.Game;
     }
 }
