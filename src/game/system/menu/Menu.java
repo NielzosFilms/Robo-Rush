@@ -3,6 +3,7 @@ package game.system.menu;
 import game.system.inputs.MouseInput;
 import game.system.main.Game;
 import game.system.menu.buttons.Button;
+import game.system.menu.menuAssets.TextField;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -14,6 +15,7 @@ public abstract class Menu {
     protected MouseInput mouse;
 
     protected ArrayList<Button> buttons = new ArrayList<>();
+    protected ArrayList<TextField> textFields = new ArrayList<>();
 
     public Menu(MouseInput mouse) {
         super();
@@ -24,15 +26,20 @@ public abstract class Menu {
         for(Button btn : buttons) {
             btn.setHover(mouse.mouseOverLocalRect(btn.getBounds()));
         }
-        tickAfter();
+        for(TextField textField : textFields) {
+            textField.tick();
+        }
     }
 
-    public abstract void tickAfter();
+    public abstract void tickAbs();
 
     public void render(Graphics g, Graphics2D g2d) {
         renderBefore(g, g2d);
         for(Button btn : buttons) {
             btn.render(g, g2d);
+        }
+        for(TextField textField : textFields) {
+            textField.render(g, g2d);
         }
         renderAfter(g, g2d);
     }
@@ -54,10 +61,14 @@ public abstract class Menu {
                 return;
             }
         }
-        mouseReleasedExtra(e);
+        for(TextField textField : textFields) {
+            textField.setFocus(mouse.mouseOverLocalRect(textField.getBounds()));
+        }
     }
 
-    public abstract void mouseReleasedExtra(MouseEvent e);
-
-	public abstract void keyPressed(KeyEvent e);
+	public void keyPressed(KeyEvent e) {
+        for(TextField textField : textFields) {
+            textField.keyPressed(e);
+        }
+    }
 }

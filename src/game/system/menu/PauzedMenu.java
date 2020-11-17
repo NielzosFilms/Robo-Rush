@@ -17,10 +17,7 @@ public class PauzedMenu extends Menu {
         buttons.get(0).alignCenterX(screenWidth);
     }
 
-    @Override
-    public void tickAfter() {
-
-    }
+    public void tickAbs() {}
 
     public void renderBefore(Graphics g, Graphics2D g2d) {
         g.setColor(new Color(0, 0, 0, 0.5f));
@@ -35,11 +32,4 @@ public class PauzedMenu extends Menu {
 
         g2d.drawString("Pauzed", (int)(screenWidth / 2 - bounds.getWidth() / 2), 20);
     }
-
-    @Override
-    public void mouseReleasedExtra(MouseEvent e) {
-
-    }
-
-    public void keyPressed(KeyEvent e) {}
 }
