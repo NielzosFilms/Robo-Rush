@@ -5,6 +5,7 @@ import game.system.main.Game;
 import game.system.menu.buttons.Button;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -23,7 +24,10 @@ public abstract class Menu {
         for(Button btn : buttons) {
             btn.setHover(mouse.mouseOverLocalRect(btn.getBounds()));
         }
+        tickAfter();
     }
+
+    public abstract void tickAfter();
 
     public void render(Graphics g, Graphics2D g2d) {
         renderBefore(g, g2d);
@@ -50,5 +54,10 @@ public abstract class Menu {
                 return;
             }
         }
+        mouseReleasedExtra(e);
     }
+
+    public abstract void mouseReleasedExtra(MouseEvent e);
+
+	public abstract void keyPressed(KeyEvent e);
 }

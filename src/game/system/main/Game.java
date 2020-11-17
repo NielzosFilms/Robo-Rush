@@ -109,7 +109,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void setRequirements() {
-		keyInput.setRequirements(handler, inventorySystem, world);
+		keyInput.setRequirements(handler, inventorySystem, world, menuSystem);
 		mouseInput.setRequirements(this, inventorySystem, menuSystem, cam, hud);
 		collision.setRequirements(handler, world, player);
 
@@ -198,7 +198,7 @@ public class Game extends Canvas implements Runnable {
 			}
 			hud.tick();
 
-			keyInput.tick();
+			//keyInput.tick();
 
 			/*
 			 * if(AudioPlayer.audioEnded(audioFiles.futureopolis)) {

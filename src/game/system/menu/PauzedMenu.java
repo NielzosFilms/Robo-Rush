@@ -6,6 +6,8 @@ import game.system.menu.buttons.ButtonMainMenu;
 import game.textures.Fonts;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 
 public class PauzedMenu extends Menu {
@@ -13,6 +15,11 @@ public class PauzedMenu extends Menu {
         super(mouse);
         buttons.add(new ButtonMainMenu(0, 200, 64, 32));
         buttons.get(0).alignCenterX(screenWidth);
+    }
+
+    @Override
+    public void tickAfter() {
+
     }
 
     public void renderBefore(Graphics g, Graphics2D g2d) {
@@ -28,4 +35,11 @@ public class PauzedMenu extends Menu {
 
         g2d.drawString("Pauzed", (int)(screenWidth / 2 - bounds.getWidth() / 2), 20);
     }
+
+    @Override
+    public void mouseReleasedExtra(MouseEvent e) {
+
+    }
+
+    public void keyPressed(KeyEvent e) {}
 }

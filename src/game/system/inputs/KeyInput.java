@@ -11,6 +11,7 @@ import game.system.main.Game;
 import game.system.main.GameObject;
 import game.system.main.Handler;
 import game.enums.ID;
+import game.system.menu.MenuSystem;
 import game.system.world.World;
 
 public class KeyInput extends KeyAdapter {
@@ -18,6 +19,7 @@ public class KeyInput extends KeyAdapter {
 	private Handler handler;
 	private InventorySystem inventorySystem;
 	private World world;
+	private MenuSystem menuSystem;
 
 	public KeyInput() {}
 
@@ -26,54 +28,60 @@ public class KeyInput extends KeyAdapter {
 	 */
 	public boolean[] keysDown = { false, false, false, false, false, false, false, false };
 
-	public void setRequirements(Handler handler, InventorySystem inventorySystem, World world) {
+	public void setRequirements(Handler handler, InventorySystem inventorySystem, World world, MenuSystem menuSystem) {
 		this.handler = handler;
 		this.inventorySystem = inventorySystem;
 		this.world = world;
+		this.menuSystem = menuSystem;
 	}
 
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
+		//System.out.println(e.getKeyChar());
 
-		for (LinkedList<GameObject> list : handler.object_entities) {
-			for (GameObject tempObject : list) {
-				if (tempObject.getId() == ID.Player) {
-					switch (key) {
-						case KeyEvent.VK_W -> keysDown[0] = true;
-						case KeyEvent.VK_S -> keysDown[1] = true;
-						case KeyEvent.VK_A -> keysDown[2] = true;
-						case KeyEvent.VK_D -> keysDown[3] = true;
-						case KeyEvent.VK_SPACE -> keysDown[4] = true;
-						case KeyEvent.VK_SHIFT -> keysDown[5] = true;
-						case KeyEvent.VK_CONTROL -> {
-							keysDown[6] = true;
-							Game.showHitboxes = !Game.showHitboxes;
+		if(Game.game_state == GAMESTATES.Game) {
+			for (LinkedList<GameObject> list : handler.object_entities) {
+				for (GameObject tempObject : list) {
+					if (tempObject.getId() == ID.Player) {
+						switch (key) {
+							case KeyEvent.VK_W -> keysDown[0] = true;
+							case KeyEvent.VK_S -> keysDown[1] = true;
+							case KeyEvent.VK_A -> keysDown[2] = true;
+							case KeyEvent.VK_D -> keysDown[3] = true;
+							case KeyEvent.VK_SPACE -> keysDown[4] = true;
+							case KeyEvent.VK_SHIFT -> keysDown[5] = true;
+							case KeyEvent.VK_CONTROL -> {
+								keysDown[6] = true;
+								Game.showHitboxes = !Game.showHitboxes;
+							}
+							case KeyEvent.VK_I -> tempObject.interact();
 						}
-						case KeyEvent.VK_I -> tempObject.interact();
+						// inventory.pickupItem(handler, world);
 					}
-					// inventory.pickupItem(handler, world);
 				}
 			}
-		}
 
-		if (key == KeyEvent.VK_E) {
-			LinkedList<GameObject> objs = handler.getSelectableObjects(world);
-			for (GameObject obj : objs) {
-				// if (obj.getSelectBounds() != null) {
-				if (Game.mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
-						obj.getSelectBounds().width, obj.getSelectBounds().height)) {
-					// Math.(Game.player);
-					double dis = Math.sqrt((obj.getX() - Game.player.getX())
-							* (obj.getX() - Game.player.getX())
-							+ (obj.getY() - Game.player.getY()) * (obj.getY() - Game.player.getY()));
-					// System.out.println(dis);
-					if (dis < 75) {
-						// TODO distance is from top right?
-						obj.interact();
+			if (key == KeyEvent.VK_E) {
+				LinkedList<GameObject> objs = handler.getSelectableObjects(world);
+				for (GameObject obj : objs) {
+					// if (obj.getSelectBounds() != null) {
+					if (Game.mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
+							obj.getSelectBounds().width, obj.getSelectBounds().height)) {
+						// Math.(Game.player);
+						double dis = Math.sqrt((obj.getX() - Game.player.getX())
+								* (obj.getX() - Game.player.getX())
+								+ (obj.getY() - Game.player.getY()) * (obj.getY() - Game.player.getY()));
+						// System.out.println(dis);
+						if (dis < 75) {
+							// TODO distance is from top right?
+							obj.interact();
+						}
 					}
+					// }
 				}
-				// }
 			}
+		} else {
+			menuSystem.keyPressed(e);
 		}
 		if (key == KeyEvent.VK_ESCAPE) {
 			// saving

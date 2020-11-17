@@ -8,6 +8,7 @@ import game.system.menu.buttons.ButtonPlay;
 import game.system.menu.buttons.ButtonQuit;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -50,6 +51,11 @@ public class MenuSystem {
 		if(active != null) active.mouseReleased(e);
 	}
 
+	public void keyPressed(KeyEvent e) {
+		Menu active = getActiveMenu();
+		if(active != null) active.keyPressed(e);
+	}
+
 	public Menu getActiveMenu() {
 		Menu ret;
 		switch(state) {
@@ -66,5 +72,4 @@ public class MenuSystem {
 	public void setState(MENUSTATES state) {
 		this.state = state;
 	}
-
 }
