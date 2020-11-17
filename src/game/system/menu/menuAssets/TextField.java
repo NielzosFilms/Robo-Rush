@@ -33,7 +33,7 @@ public class TextField {
 		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
 
 		} else {
-			text = text + e.getKeyChar();
+			addChar(e.getKeyChar());
 		}
 	}
 

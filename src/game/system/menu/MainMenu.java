@@ -53,6 +53,7 @@ public class MainMenu extends Menu {
     }
 
     public void keyPressed(KeyEvent e) {
+        textField.keyPressed(e);
     }
 
 }
