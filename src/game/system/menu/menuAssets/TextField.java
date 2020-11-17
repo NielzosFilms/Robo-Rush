@@ -30,10 +30,14 @@ public class TextField {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-
-		} else {
-			addChar(e.getKeyChar());
+		if(focus) {
+			switch(e.getKeyCode()) {
+				case KeyEvent.VK_BACK_SPACE -> {
+					if(buffer.length() > 0) buffer.deleteCharAt(buffer.length() - 1);
+				}
+				case KeyEvent.VK_ESCAPE -> focus = false;
+				default -> addChar(e.getKeyChar());
+			}
 		}
 	}
 
@@ -62,9 +66,9 @@ public class TextField {
 		g.setColor(Color.black);
 		g.setFont(font);
 		if(focus) {
-			g.drawString(text + (cursor ? CURSOR : ""), bounds.x, bounds.y);
+			g.drawString(text + (cursor ? CURSOR : ""), bounds.x, bounds.y + bounds.height);
 		} else {
-			g.drawString(text, bounds.x, bounds.y);
+			g.drawString(text, bounds.x, bounds.y + bounds.height);
 		}
 	}
 

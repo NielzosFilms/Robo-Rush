@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 
 public class MainMenu extends Menu {
-    private TextField textField;
     public MainMenu(MouseInput mouse) {
         super(mouse);
         ButtonQuit btnQuit = new ButtonQuit(0, 200, 64, 32);
