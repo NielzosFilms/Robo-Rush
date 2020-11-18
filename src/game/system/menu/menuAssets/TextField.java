@@ -23,7 +23,7 @@ public class TextField {
 		this.bounds = bounds;
 		this.fontSize = fontSize;
 		this.buffer = new StringBuffer();
-		this.font = Fonts.gameria_fonts.get(fontSize);
+		this.font = Fonts.default_fonts.get(fontSize);
 		this.maxLength = maxLength;
 		this.text = "textfield test text";
 		buffer = new StringBuffer(text);

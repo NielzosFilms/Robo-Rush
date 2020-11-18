@@ -4,6 +4,7 @@ import game.system.inputs.MouseInput;
 import game.system.main.Game;
 import game.system.menu.buttons.ButtonPlay;
 import game.system.menu.buttons.ButtonQuit;
+import game.system.menu.menuAssets.SliderInput;
 import game.system.menu.menuAssets.TextField;
 import game.textures.Fonts;
 
@@ -24,6 +25,7 @@ public class MainMenu extends Menu {
         buttons.add(btnQuit);
         buttons.add(btnPlay);
         textFields.add(new TextField(new Rectangle(50, 50, 50, 50), 10, 25));
+        sliders.add(new SliderInput(50, 200, 100, mouse));
     }
 
     public void tickAbs() {}
@@ -31,9 +33,9 @@ public class MainMenu extends Menu {
     public void renderBefore(Graphics g, Graphics2D g2d) {}
 
     public void renderAfter(Graphics g, Graphics2D g2d) {
-        g2d.setFont(Fonts.gameria_fonts.get(20));
+        g2d.setFont(Fonts.default_fonts.get(20));
         g.setColor(Color.BLACK);
-        FontMetrics fm = g2d.getFontMetrics(Fonts.gameria_fonts.get(20));
+        FontMetrics fm = g2d.getFontMetrics(Fonts.default_fonts.get(20));
         Rectangle2D bounds = fm.getStringBounds("Main Menu", g2d);
 
         g2d.drawString("Main Menu", (int)(screenWidth / 2 - bounds.getWidth() / 2), 20);

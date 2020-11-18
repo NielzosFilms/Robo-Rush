@@ -25,9 +25,9 @@ public class PauzedMenu extends Menu {
     }
 
     public void renderAfter(Graphics g, Graphics2D g2d) {
-        g2d.setFont(Fonts.gameria_fonts.get(20));
+        g2d.setFont(Fonts.default_fonts.get(20));
         g.setColor(Color.BLACK);
-        FontMetrics fm = g2d.getFontMetrics(Fonts.gameria_fonts.get(20));
+        FontMetrics fm = g2d.getFontMetrics(Fonts.default_fonts.get(20));
         Rectangle2D bounds = fm.getStringBounds("Pauzed", g2d);
 
         g2d.drawString("Pauzed", (int)(screenWidth / 2 - bounds.getWidth() / 2), 20);

@@ -3,6 +3,7 @@ package game.system.menu;
 import game.system.inputs.MouseInput;
 import game.system.main.Game;
 import game.system.menu.buttons.Button;
+import game.system.menu.menuAssets.SliderInput;
 import game.system.menu.menuAssets.TextField;
 
 import java.awt.*;
@@ -16,6 +17,7 @@ public abstract class Menu {
 
     protected ArrayList<Button> buttons = new ArrayList<>();
     protected ArrayList<TextField> textFields = new ArrayList<>();
+    protected ArrayList<SliderInput> sliders = new ArrayList<>();
 
     public Menu(MouseInput mouse) {
         super();
@@ -29,6 +31,9 @@ public abstract class Menu {
         for(TextField textField : textFields) {
             textField.tick();
         }
+        for(SliderInput slider : sliders) {
+            slider.tick();
+        }
     }
 
     public abstract void tickAbs();
@@ -41,6 +46,11 @@ public abstract class Menu {
         for(TextField textField : textFields) {
             textField.render(g, g2d);
         }
+        for(SliderInput slider : sliders) {
+            slider.render(g);
+        }
+        g.setColor(new Color(0, 0, 0, 150));
+        g.fillRect(mouse.mouse_x, mouse.mouse_y, 1, 1);
         renderAfter(g, g2d);
     }
 
@@ -50,6 +60,11 @@ public abstract class Menu {
     public void mousePressed(MouseEvent e) {
         for(Button btn : buttons) {
             btn.setClick(mouse.mouseOverLocalRect(btn.getBounds()));
+        }
+        for(SliderInput slider : sliders) {
+            if(mouse.mouseOverLocalRect(slider.getBounds())) {
+                slider.mousePressed(e);
+            }
         }
     }
 
@@ -63,6 +78,9 @@ public abstract class Menu {
         }
         for(TextField textField : textFields) {
             textField.setFocus(mouse.mouseOverLocalRect(textField.getBounds()));
+        }
+        for(SliderInput slider : sliders) {
+            slider.mouseReleased(e);
         }
     }
 
