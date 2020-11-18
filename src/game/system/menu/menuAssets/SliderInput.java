@@ -23,9 +23,8 @@ public class SliderInput {
 
 	public void tick() {
 		if(holding) {
-			knob.setX(mouse.mouse_x);
+			knob.setX(mouse.mouse_x + 4);
 			clampKnob();
-			System.out.println("slider %: " + this.getValue());
 		}
 	}
 
@@ -44,9 +43,9 @@ public class SliderInput {
 	}
 
 	public Rectangle getBounds() {
-		int knobW = knob.getWidth();
 		int knobH = knob.getHeight();
-		return new Rectangle(x, y - knobH / 2, width, 2 + knobH / 2);
+		//margins correct?
+		return new Rectangle(x-4, y - 4, width + 4, 2 + 4);
 	}
 
 	private void clampKnob() {
