@@ -53,7 +53,6 @@ public class KeyInput extends KeyAdapter {
 							case KeyEvent.VK_SHIFT -> keysDown[5] = true;
 							case KeyEvent.VK_CONTROL -> {
 								keysDown[6] = true;
-								Game.showHitboxes = !Game.showHitboxes;
 							}
 							case KeyEvent.VK_I -> tempObject.interact();
 						}

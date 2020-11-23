@@ -41,7 +41,6 @@ public class Game extends Canvas implements Runnable {
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEDUG_MODE = true;
-	public static boolean showHitboxes = false;
 
 	private Thread thread;
 	private boolean running = true;

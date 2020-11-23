@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import game.assets.items.*;
+import game.audioEngine.AudioFiles;
+import game.audioEngine.AudioPlayer;
 import game.enums.ITEM_ID;
 import game.system.inventory.Inventory;
 import game.system.inventory.InventorySlot;
@@ -98,11 +100,13 @@ public class Crate extends GameObject {
                 Game.handler.addObject(gnd_item);
             }
         }
+        AudioPlayer.playSound(AudioFiles.crete_destroy, 0.7, false, -100);
     }
 
     public void hit() {
         health = health - 15;
         if(health <= 0) Game.handler.findAndRemoveObject(this, Game.world);
+        if(health > 0)AudioPlayer.playSound(AudioFiles.crate_impact, 0.7, false, -100);
     }
 
 }
