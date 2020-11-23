@@ -109,4 +109,9 @@ public class Tree extends GameObject {
 
 	}
 
+	@Override
+	public void hit() {
+
+	}
+
 }

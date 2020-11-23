@@ -19,6 +19,7 @@ public class Textures {
 
 	// nature
 	public static List<BufferedImage> mushrooms = new ArrayList<BufferedImage>();
+	public static BufferedImage stick;
 
 	// inventory
 	public static BufferedImage placeholder;
@@ -49,6 +50,7 @@ public class Textures {
 		entity_shadow = loader.loadImage("assets/entities/shadow.png");
 
 		mushroom = loader.loadImage("assets/world/nature/paddenstoel.png");
+		stick = loader.loadImage("assets/main/tile_sheets/stick.png");
 		placeholder = loader.loadImage("assets/main/placeholder.png");
 
 		light = loader.loadImage("assets/main/lights/light_orange.png");

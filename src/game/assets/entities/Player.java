@@ -31,7 +31,6 @@ public class Player extends GameObject {
 	private Animation walk_down, walk_up, walk_left, walk_right;
 
 	public Inventory inventory;
-	private Inventory inventory_test;
 	public Inventory hotbar;
 
 	public Player(int x, int y, int z_index, ID id, KeyInput keyInput) {
@@ -42,9 +41,6 @@ public class Player extends GameObject {
 		this.inventory = new Inventory(5, 5);
 		this.inventory.addItem(new ItemRock(150, ITEM_ID.Rock));
 		this.inventory.addItem(new ItemStick(23, ITEM_ID.Stick));
-
-		this.inventory_test = new Inventory(5, 5);
-		this.inventory_test.setXY(250, this.inventory_test.getY());
 
 		this.hotbar = new Inventory(5, 1);
 		int hotbar_x = Game.WIDTH / 2 - this.hotbar.getInventoryBounds().width / 2;
@@ -247,10 +243,14 @@ public class Player extends GameObject {
 
 	public void interact() {
 		Game.inventorySystem.addOpenInventory(inventory);
-		Game.inventorySystem.addOpenInventory(inventory_test);
 	}
 
 	public void destroyed() {
+
+	}
+
+	@Override
+	public void hit() {
 
 	}
 

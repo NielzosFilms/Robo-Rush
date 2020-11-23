@@ -72,6 +72,13 @@ public class InventorySystem {
 
 	public void addOpenInventory(Inventory inv) {
 		if(!this.open_inventories.contains(inv)) {
+			if(this.open_inventories.size() > 2) closeAll();
+			// TODO change inventory positions
+			for(Inventory inventory : open_inventories) {
+				if(inv.getInventoryBounds().intersects(inventory.getInventoryBounds())) {
+					inv.setXY(inv.getX(), inv.getY() + inventory.getInventoryBounds().height);
+				}
+			}
 			this.open_inventories.add(inv);
 		} else {
 			removeOpenInventory(inv);
@@ -83,8 +90,8 @@ public class InventorySystem {
 
 	public void pickupItemToPlayerInv(GameObject obj) {
 		Item item = obj.getItem();
-		if(item != null) {
-			if(player_inv.canAcceptItem(item)) {
+		if (item != null) {
+			if (player_inv.canAcceptItem(item)) {
 				player_inv.addItem(item);
 				handler.findAndRemoveObject(obj, world);
 			}
@@ -113,5 +120,9 @@ public class InventorySystem {
 
 	public Item getHolding() {
 		return this.holding;
+	}
+
+	public void closeAll() {
+		this.open_inventories.clear();
 	}
 }

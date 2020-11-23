@@ -60,4 +60,9 @@ public class Pebble extends GameObject {
         //Game.handler.addObject(1, new ItemGround(x, y, 1, ID.Item, new ItemRock(5, ITEM_ID.Rock)));
     }
 
+    @Override
+    public void hit() {
+
+    }
+
 }

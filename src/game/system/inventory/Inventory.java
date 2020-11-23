@@ -62,6 +62,16 @@ public class Inventory {
 		}
 	}
 
+	// TODO stack overflow checks
+	public boolean addItemAtPos(Item item, int pos) {
+		InventorySlot slot = slots.get(pos);
+		if(!slot.hasItem()) {
+			slot.setItem(item);
+			return true;
+		}
+		return false;
+	}
+
 	public void mouseClick(MouseEvent e, MouseInput mouseInput, InventorySystem invSys) {
 		InventorySlot slot = getClickedSlot(e, mouseInput);
 		if (slot != null) {
@@ -149,5 +159,9 @@ public class Inventory {
 
 	public int getSizeY() {
 		return this.size_y;
+	}
+
+	public ArrayList<InventorySlot> getSlots() {
+		return slots;
 	}
 }

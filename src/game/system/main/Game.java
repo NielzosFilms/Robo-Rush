@@ -10,6 +10,7 @@ import java.awt.image.BufferStrategy;
 import java.util.LinkedList;
 import java.util.Random;
 
+import game.assets.objects.Crate;
 import game.enums.GAMESTATES;
 import game.enums.ID;
 import game.enums.MENUSTATES;
@@ -33,10 +34,10 @@ public class Game extends Canvas implements Runnable {
 	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
 	public static final float RATIO = (float) NEW_WIDTH / NEW_HEIGHT;
-	public static final int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
+	public static final int WIDTH = 485, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 2.21.0 INFDEV";
+	public static final String VERSION = "ALPHA V 2.3.0 INFDEV";
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEDUG_MODE = true;
@@ -110,7 +111,7 @@ public class Game extends Canvas implements Runnable {
 
 	private void setRequirements() {
 		keyInput.setRequirements(handler, inventorySystem, world, menuSystem);
-		mouseInput.setRequirements(this, inventorySystem, menuSystem, cam, hud);
+		mouseInput.setRequirements(this, inventorySystem, menuSystem, cam, hud, handler, world);
 		collision.setRequirements(handler, world, player);
 
 		inventorySystem.setRequirements(handler, mouseInput, world, player);
@@ -129,7 +130,8 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void addTestObjects() {
-		//handler.addObject(1, new House(0, 0, 1, ID.House));
+		handler.addObject(new Crate(0, 0, 1, ID.Crate));
+		handler.addObject(new Crate(16, 0, 1, ID.Crate));
 		ps.addParticle(new Particle(0, 0, 3, ID.Particle, 0, -1, 60, ps));
 	}
 

@@ -93,4 +93,9 @@ public class ItemGround extends GameObject {
 
 	}
 
+	@Override
+	public void hit() {
+
+	}
+
 }

@@ -1,5 +1,6 @@
 package game.system.inputs;
 
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
@@ -68,13 +69,16 @@ public class KeyInput extends KeyAdapter {
 					if (Game.mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
 							obj.getSelectBounds().width, obj.getSelectBounds().height)) {
 						// Math.(Game.player);
-						double dis = Math.sqrt((obj.getX() - Game.player.getX())
-								* (obj.getX() - Game.player.getX())
-								+ (obj.getY() - Game.player.getY()) * (obj.getY() - Game.player.getY()));
+						Rectangle obj_bounds = obj.getSelectBounds();
+						Rectangle player_bounds = Game.player.getBounds();
+						double dis = Math.sqrt((obj_bounds.getCenterX() - player_bounds.getCenterX())
+								* (obj_bounds.getCenterX() - player_bounds.getCenterX())
+								+ (obj_bounds.getCenterY() - player_bounds.getCenterY()) * (obj_bounds.getCenterY() - player_bounds.getCenterY()));
 						// System.out.println(dis);
-						if (dis < 75) {
-							// TODO distance is from top right?
+						if (dis < 50) {
+							// TODO distance is from top left?
 							obj.interact();
+							return;
 						}
 					}
 					// }
@@ -94,7 +98,13 @@ public class KeyInput extends KeyAdapter {
 			// }
 
 			switch(Game.game_state) {
-				case Game -> Game.game_state = GAMESTATES.Pauzed;
+				case Game -> {
+					if(inventorySystem.inventoryIsOpen()) {
+						inventorySystem.closeAll();
+					} else {
+						Game.game_state = GAMESTATES.Pauzed;
+					}
+				}
 				case Pauzed -> Game.game_state = GAMESTATES.Game;
 				case Menu -> System.exit(1);
 			}

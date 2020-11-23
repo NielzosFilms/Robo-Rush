@@ -8,8 +8,7 @@ public enum ID {
 
 	Tile, Tree, Mushroom,
 
-	House,
+	House, Crate,
 
 	Pebble, Branch;
-
 }

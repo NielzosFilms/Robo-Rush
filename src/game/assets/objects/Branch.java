@@ -47,4 +47,9 @@ public class Branch extends GameObject {
 
     }
 
+    @Override
+    public void hit() {
+
+    }
+
 }

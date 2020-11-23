@@ -7,13 +7,17 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.function.Function;
 
 import game.system.hud.HUD;
 import game.system.inventory.InventorySystem;
 import game.system.main.Camera;
 import game.system.main.Game;
+import game.system.main.GameObject;
+import game.system.main.Handler;
 import game.system.menu.MenuSystem;
+import game.system.world.World;
 
 public class MouseInput extends MouseAdapter implements MouseMotionListener, MouseWheelListener {
 	private Game game;
@@ -21,6 +25,8 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	private MenuSystem menuSystem;
 	private Camera cam;
 	private HUD hud;
+	private Handler handler;
+	private World world;
 
 	public int mouse_x, mouse_y;
 	public boolean dragging;
@@ -33,12 +39,14 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		this.dragging = false;
 	}
 
-	public void setRequirements(Game game, InventorySystem inventorySystem, MenuSystem menuSystem, Camera cam, HUD hud) {
+	public void setRequirements(Game game, InventorySystem inventorySystem, MenuSystem menuSystem, Camera cam, HUD hud, Handler handler, World world) {
 		this.game = game;
 		this.inventorySystem = inventorySystem;
 		this.menuSystem = menuSystem;
 		this.cam = cam;
 		this.hud = hud;
+		this.handler = handler;
+		this.world = world;
 	}
 
 	public void tick() {
@@ -48,6 +56,25 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	public void mousePressed(MouseEvent e) {
 		switch(Game.game_state) {
 			case Game -> {
+				LinkedList<GameObject> objs = handler.getSelectableObjects(world);
+				for (GameObject obj : objs) {
+					// if (obj.getSelectBounds() != null) {
+					if (Game.mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
+							obj.getSelectBounds().width, obj.getSelectBounds().height)) {
+						// Math.(Game.player);
+						Rectangle obj_bounds = obj.getSelectBounds();
+						Rectangle player_bounds = Game.player.getBounds();
+						double dis = Math.sqrt((obj_bounds.getCenterX() - player_bounds.getCenterX())
+								* (obj_bounds.getCenterX() - player_bounds.getCenterX())
+								+ (obj_bounds.getCenterY() - player_bounds.getCenterY()) * (obj_bounds.getCenterY() - player_bounds.getCenterY()));
+						// System.out.println(dis);
+						if (dis < 50) {
+							// TODO distance is from top left?
+							obj.hit();
+						}
+					}
+					// }
+				}
 				hud.mousePressed(e);
 				inventorySystem.mouseClicked(e);
 			}

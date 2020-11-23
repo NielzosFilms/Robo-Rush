@@ -30,4 +30,16 @@ public class Helpers {
         }
         return var;
     }
+
+    public static Point getWorldCoords(int x, int y, Camera cam) {
+        int xx = (int) (x + -cam.getX());
+        int yy = (int) (y + -cam.getY());
+        return new Point(xx, yy);
+    }
+
+    public static Point getScreenCoords(int x, int y, Camera cam) {
+        int xx = (int) (x + cam.getX());
+        int yy = (int) (y + cam.getY());
+        return new Point(xx, yy);
+    }
 }

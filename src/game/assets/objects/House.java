@@ -87,4 +87,9 @@ public class House extends GameObject {
 
     }
 
+    @Override
+    public void hit() {
+
+    }
+
 }

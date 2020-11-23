@@ -8,7 +8,7 @@ public class ItemStick extends Item {
 
     public ItemStick(int amount, ITEM_ID itemType) {
         super(amount, itemType);
-        this.tex = Textures.placeholder;
+        this.tex = Textures.stick;
         this.itemGround = new ItemGround(0, 0, 1, ID.Item, this);
     }
 
