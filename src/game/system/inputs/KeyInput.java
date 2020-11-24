@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 import game.enums.GAMESTATES;
+import game.enums.MENUSTATES;
 import game.system.inventory.Inventory;
 import game.system.inventory.InventorySystem;
 import game.system.main.Game;
@@ -102,6 +103,7 @@ public class KeyInput extends KeyAdapter {
 						inventorySystem.closeAll();
 					} else {
 						Game.game_state = GAMESTATES.Pauzed;
+						Game.menuSystem.setState(MENUSTATES.Pauzed);
 					}
 				}
 				case Pauzed -> Game.game_state = GAMESTATES.Game;

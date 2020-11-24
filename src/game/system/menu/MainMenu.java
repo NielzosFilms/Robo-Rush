@@ -8,6 +8,7 @@ import game.system.menu.buttons.ButtonSettings;
 import game.system.menu.menuAssets.SliderInput;
 import game.system.menu.menuAssets.TextField;
 import game.textures.Fonts;
+import game.textures.Textures;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +35,13 @@ public class MainMenu extends Menu {
 
     public void tickAbs() {}
 
-    public void renderBefore(Graphics g, Graphics2D g2d) {}
+    public void renderBefore(Graphics g, Graphics2D g2d) {
+        for(int y = 0;y < screenHeight;y+=16) {
+            for(int x = 0;x < screenWidth;x+=16) {
+                g.drawImage(Textures.tileSetForestBlocks.get(15*19 + 6), x, y, 16, 16, null);
+            }
+        }
+    }
 
     public void renderAfter(Graphics g, Graphics2D g2d) {
         g2d.setFont(Fonts.default_fonts.get(20));

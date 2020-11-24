@@ -2,6 +2,7 @@ package game.system.menu.buttons;
 
 import game.enums.BUTTONS;
 import game.enums.GAMESTATES;
+import game.enums.MENUSTATES;
 import game.system.main.Game;
 import game.textures.Fonts;
 import game.textures.Textures;
@@ -27,5 +28,6 @@ public class ButtonMainMenu extends Button {
 
     public void handleClick(MouseEvent e) {
         Game.game_state = GAMESTATES.Menu;
+        Game.menuSystem.setState(MENUSTATES.Main);
     }
 }

@@ -7,6 +7,7 @@ import game.system.menu.buttons.ButtonQuit;
 import game.system.menu.menuAssets.SliderInput;
 import game.system.menu.menuAssets.TextField;
 import game.textures.Fonts;
+import game.textures.Textures;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -30,7 +31,11 @@ public class SettingsMenu extends Menu {
 	}
 
 	public void renderBefore(Graphics g, Graphics2D g2d) {
-
+		for(int y = 0;y < screenHeight;y+=16) {
+			for(int x = 0;x < screenWidth;x+=16) {
+				g.drawImage(Textures.tileSetForestBlocks.get(15*19 + 6), x, y, 16, 16, null);
+			}
+		}
 	}
 
 	public void renderAfter(Graphics g, Graphics2D g2d) {
