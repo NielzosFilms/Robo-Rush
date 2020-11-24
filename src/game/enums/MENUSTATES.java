@@ -1,5 +1,5 @@
 package game.enums;
 
 public enum MENUSTATES {
-	Main, Pauzed,
+	Main, Pauzed, Settings,
 }

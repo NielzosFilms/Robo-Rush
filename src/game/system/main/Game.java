@@ -230,7 +230,7 @@ public class Game extends Canvas implements Runnable {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		if (game_state == GAMESTATES.Menu) {
-			menuSystem.setState(MENUSTATES.Main);
+			//menuSystem.setState(MENUSTATES.Main);
 			menuSystem.render(g, g2d);
 		} else if ((game_state == GAMESTATES.Game || game_state == GAMESTATES.Pauzed) && World.loaded) {
 			g2d.translate(cam.getX(), cam.getY()); // start of cam
@@ -250,7 +250,7 @@ public class Game extends Canvas implements Runnable {
 			inventorySystem.render(g);
 
 			if (game_state == GAMESTATES.Pauzed) {
-				menuSystem.setState(MENUSTATES.Pauzed);
+				//menuSystem.setState(MENUSTATES.Pauzed);
 				menuSystem.render(g, g2d);
 			}
 		}

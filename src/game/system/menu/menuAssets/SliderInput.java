@@ -60,4 +60,9 @@ public class SliderInput {
 		int max = width;
 		return 100 / max * knobX;
 	}
+
+	public void alignCenterX(int screenWidth) {
+		this.x = screenWidth / 2 - width / 2;
+		knob.setX(x);
+	}
 }

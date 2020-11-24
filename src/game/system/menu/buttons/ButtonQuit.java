@@ -1,6 +1,7 @@
 package game.system.menu.buttons;
 
 import game.enums.BUTTONS;
+import game.textures.Fonts;
 import game.textures.Textures;
 
 import java.awt.*;
@@ -15,6 +16,10 @@ public class ButtonQuit extends Button {
         this.setColor(g);
         g.drawImage(Textures.default_btn, x, y, null);
         g.fillRect(x, y, width, height);
+
+        g.setColor(Color.BLACK);
+        g.setFont(Fonts.default_fonts.get(10));
+        g.drawString("Quit", x, y + height / 2);
     }
     public void handleClick(MouseEvent e) {
         System.out.println("(╯°□°）╯︵ ┻━┻");

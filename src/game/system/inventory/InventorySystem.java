@@ -103,7 +103,7 @@ public class InventorySystem {
 	}
 
 	public boolean inventoryIsOpen() {
-		return this.open_inventories.size() > 0;
+		return this.open_inventories.size() > 1;
 	}
 
 	public boolean isHolding() {
@@ -124,5 +124,6 @@ public class InventorySystem {
 
 	public void closeAll() {
 		this.open_inventories.clear();
+		this.open_inventories.add(player_hotbar);
 	}
 }

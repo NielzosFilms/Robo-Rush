@@ -4,6 +4,7 @@ import game.system.inputs.MouseInput;
 import game.system.main.Game;
 import game.system.menu.buttons.ButtonPlay;
 import game.system.menu.buttons.ButtonQuit;
+import game.system.menu.buttons.ButtonSettings;
 import game.system.menu.menuAssets.SliderInput;
 import game.system.menu.menuAssets.TextField;
 import game.textures.Fonts;
@@ -22,10 +23,13 @@ public class MainMenu extends Menu {
 
         ButtonPlay btnPlay = new ButtonPlay(0, 50, 64, 32);
         btnPlay.alignCenterX(screenWidth);
+
+        ButtonSettings btnSettings = new ButtonSettings(0, 125, 64, 32);
+        btnSettings.alignCenterX(screenWidth);
+
         buttons.add(btnQuit);
         buttons.add(btnPlay);
-        textFields.add(new TextField(new Rectangle(50, 50, 50, 50), 10, 25));
-        sliders.add(new SliderInput(50, 200, 100, mouse));
+        buttons.add(btnSettings);
     }
 
     public void tickAbs() {}

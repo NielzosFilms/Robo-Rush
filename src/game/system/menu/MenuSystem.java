@@ -14,11 +14,12 @@ import java.util.ArrayList;
 
 public class MenuSystem {
 	private static final int screenWidth = Game.WIDTH, screenHeight = Game.HEIGHT;
-	private MENUSTATES state;
+	public MENUSTATES state;
 	private MouseInput mouse;
 
 	private MainMenu mainMenu;
 	private PauzedMenu pauzedMenu;
+	private SettingsMenu settingsMenu;
 
 	public MenuSystem() {
 		this.state = MENUSTATES.Main;
@@ -29,6 +30,7 @@ public class MenuSystem {
 
 		this.mainMenu = new MainMenu(mouse);
 		this.pauzedMenu = new PauzedMenu(mouse);
+		this.settingsMenu = new SettingsMenu(mouse);
 	}
 
 	public void tick() {
@@ -60,6 +62,7 @@ public class MenuSystem {
 		Menu ret;
 		switch(state) {
 			case Main -> ret = mainMenu;
+			case Settings -> ret = settingsMenu;
 			case Pauzed -> ret = pauzedMenu;
 			default -> ret = null;
 		}
@@ -69,6 +72,7 @@ public class MenuSystem {
 	public MENUSTATES getState() {
 		return state;
 	}
+
 	public void setState(MENUSTATES state) {
 		this.state = state;
 	}

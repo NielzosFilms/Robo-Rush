@@ -79,6 +79,7 @@ public class Crate extends GameObject {
 
     public Rectangle getSelectBounds() {
         return new Rectangle(x, y, width, height);
+        
     }
 
     public Item getItem() {
@@ -100,13 +101,13 @@ public class Crate extends GameObject {
                 Game.handler.addObject(gnd_item);
             }
         }
-        AudioPlayer.playSound(AudioFiles.crete_destroy, 0.7, false, -100);
+        AudioPlayer.playSound(AudioFiles.crate_destroy, 0.7, false, 0);
     }
 
     public void hit() {
         health = health - 15;
         if(health <= 0) Game.handler.findAndRemoveObject(this, Game.world);
-        if(health > 0)AudioPlayer.playSound(AudioFiles.crate_impact, 0.7, false, -100);
+        if(health > 0)AudioPlayer.playSound(AudioFiles.crate_impact, 0.7, false, 0);
     }
 
 }

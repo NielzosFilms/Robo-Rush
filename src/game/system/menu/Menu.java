@@ -49,8 +49,6 @@ public abstract class Menu {
         for(SliderInput slider : sliders) {
             slider.render(g);
         }
-        g.setColor(new Color(0, 0, 0, 150));
-        g.fillRect(mouse.mouse_x, mouse.mouse_y, 1, 1);
         renderAfter(g, g2d);
     }
 
