@@ -66,7 +66,7 @@ public class Particle extends GameObject {
 	}
 
 	@Override
-	public void hit() {
+	public void hit(int damage) {
 
 	}
 

@@ -94,6 +94,6 @@ public abstract class GameObject {
 
 	public abstract void destroyed();
 
-	public abstract void hit();
+	public abstract void hit(int damage);
 
 }

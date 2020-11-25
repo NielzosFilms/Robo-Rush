@@ -45,7 +45,7 @@ public class Enemy extends GameObject {
 	}
 
 	@Override
-	public void hit() {
+	public void hit(int damage) {
 
 	}
 

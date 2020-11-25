@@ -61,7 +61,7 @@ public class Pebble extends GameObject {
     }
 
     @Override
-    public void hit() {
+    public void hit(int damage) {
 
     }
 

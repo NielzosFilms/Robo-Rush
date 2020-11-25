@@ -98,8 +98,8 @@ public class Crate extends GameObject {
         AudioPlayer.playSound(AudioFiles.crate_destroy, 0.7, false, 0);
     }
 
-    public void hit() {
-        healthBar.subtractHealth(2);
+    public void hit(int damage) {
+        healthBar.subtractHealth(damage);
         if(healthBar.dead()) Game.handler.findAndRemoveObject(this, Game.world);
         if(healthBar.dead())AudioPlayer.playSound(AudioFiles.crate_impact, 0.7, false, 0);
     }

@@ -31,8 +31,6 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	public int mouse_x, mouse_y;
 	public boolean dragging;
 
-	public static ArrayList<Function> functions = new ArrayList<>();
-
 	public MouseInput() {
 		this.mouse_x = 0;
 		this.mouse_y = 0;
@@ -70,7 +68,7 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 						// System.out.println(dis);
 						if (dis < 50) {
 							// TODO distance is from top left?
-							obj.hit();
+							obj.hit(1);
 						}
 					}
 					// }
