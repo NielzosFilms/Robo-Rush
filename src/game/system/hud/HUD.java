@@ -2,8 +2,11 @@ package game.system.hud;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.function.Function;
 
+import game.assets.HealthBar;
 import game.assets.entities.Player;
 import game.system.main.Camera;
 import game.system.main.Game;
@@ -20,6 +23,8 @@ public class HUD {
 	private MouseInput mouseInput;
 	private World world;
 	private Camera cam;
+
+	private ArrayList<HealthBar> healthBars = new ArrayList<>();
 
 	public HUD() {
 		this.debugHUD = new DebugHUD();
@@ -39,6 +44,10 @@ public class HUD {
 	}
 
 	public void renderCam(Graphics g, Graphics2D g2d) {
+		for(HealthBar healthBar : healthBars) {
+			healthBar.render(g);
+		}
+
 		LinkedList<GameObject> objs = handler.getSelectableObjects(world);
 		for (GameObject obj : objs) {
 			if (obj.getSelectBounds() != null) {
@@ -92,6 +101,14 @@ public class HUD {
 	}
 	public void mouseReleased(MouseEvent e) {
 		debugHUD.mouseReleased(e);
+	}
+
+	public void addHealthBar(HealthBar healthBar) {
+		healthBars.add(healthBar);
+	}
+
+	public void removeHealthBar(HealthBar healthBar) {
+		healthBars.remove(healthBar);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
+import game.assets.HealthBar;
 import game.assets.items.*;
 import game.audioEngine.AudioFiles;
 import game.audioEngine.AudioPlayer;
@@ -19,15 +20,17 @@ import game.system.main.Helpers;
 import game.textures.Textures;
 
 public class Crate extends GameObject {
-    private int health = 100;
     private Inventory inv;
     private Random rand = new Random();
+    private HealthBar healthBar;
 
     public Crate(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
         inv = new Inventory(3, 2);
         fillInventory();
         inv.setXY(300, 100);
+
+        healthBar = new HealthBar(x - 8, y - 8, 0, 10);
     }
 
     private void fillInventory() {
@@ -48,6 +51,7 @@ public class Crate extends GameObject {
     }
 
     public void tick() {
+        healthBar.tick();
         Rectangle obj_bounds = this.getSelectBounds();
         Rectangle player_bounds = Game.player.getBounds();
         double dis = Math.sqrt((obj_bounds.getCenterX() - player_bounds.getCenterX())
@@ -60,17 +64,6 @@ public class Crate extends GameObject {
 
     public void render(Graphics g) {
         g.drawImage(Textures.tileSetHouseBlocks.get(6), x, y, width, height, null);
-        if(health != 100) {
-            g.setColor(new Color(0, 0, 0, 100));
-            g.fillRect(x - width / 2, y - height / 2, (width * 2), (height / 4));
-            g.setColor(new Color(187, 34, 34));
-            g.fillRect(x - width / 2, y - height / 2, getHealthWidth(), (height / 4));
-        }
-    }
-
-    private int getHealthWidth() {
-        float tot_width = width * 2;
-        return (int)(tot_width / 100 * health);
     }
 
     public Rectangle getBounds() {
@@ -91,6 +84,7 @@ public class Crate extends GameObject {
     }
 
     public void destroyed() {
+        Game.hud.removeHealthBar(healthBar);
         Game.inventorySystem.removeOpenInventory(inv);
         for(InventorySlot slot : inv.getSlots()) {
             if(slot.hasItem()) {
@@ -105,9 +99,9 @@ public class Crate extends GameObject {
     }
 
     public void hit() {
-        health = health - 15;
-        if(health <= 0) Game.handler.findAndRemoveObject(this, Game.world);
-        if(health > 0)AudioPlayer.playSound(AudioFiles.crate_impact, 0.7, false, 0);
+        healthBar.subtractHealth(2);
+        if(healthBar.dead()) Game.handler.findAndRemoveObject(this, Game.world);
+        if(healthBar.dead())AudioPlayer.playSound(AudioFiles.crate_impact, 0.7, false, 0);
     }
 
 }
