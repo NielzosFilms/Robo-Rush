@@ -30,7 +30,8 @@ public class InventorySlot {
 		g.setColor(InventorySystem.slot_bg);
 		g.fillRect(inv_x + x, inv_y + y, w, h);
 
-		if(this.item != null) item.render(g, inv_x + x, inv_y + y);
+		int margin = (int)Math.floor((InventorySystem.slot_w - InventorySystem.item_w) / 2);
+		if(this.item != null) item.render(g, inv_x + x + margin, inv_y + y + margin);
 
 		if(hover) {
 			g.setColor(InventorySystem.slot_hover);

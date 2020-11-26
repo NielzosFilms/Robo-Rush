@@ -52,6 +52,9 @@ public class Crate extends GameObject {
 
     public void tick() {
         healthBar.tick();
+        if(healthBar.dead()) Game.handler.findAndRemoveObject(this, Game.world);
+        if(healthBar.dead())AudioPlayer.playSound(AudioFiles.crate_impact, 0.7, false, 0);
+
         Rectangle obj_bounds = this.getSelectBounds();
         Rectangle player_bounds = Game.player.getBounds();
         double dis = Math.sqrt((obj_bounds.getCenterX() - player_bounds.getCenterX())
@@ -100,8 +103,6 @@ public class Crate extends GameObject {
 
     public void hit(int damage) {
         healthBar.subtractHealth(damage);
-        if(healthBar.dead()) Game.handler.findAndRemoveObject(this, Game.world);
-        if(healthBar.dead())AudioPlayer.playSound(AudioFiles.crate_impact, 0.7, false, 0);
     }
 
 }

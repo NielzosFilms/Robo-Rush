@@ -1,7 +1,6 @@
 package game.assets.items;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.Random;
 
 import game.system.main.Game;
@@ -96,6 +95,13 @@ public class ItemGround extends GameObject {
 	@Override
 	public void hit(int damage) {
 
+	}
+
+	public void setCoords(Point coords) {
+		x = coords.x;
+		y = coords.y;
+		buffer_x = coords.x;
+		buffer_y = coords.y;
 	}
 
 }

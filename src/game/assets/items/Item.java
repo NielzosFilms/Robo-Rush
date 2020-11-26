@@ -58,7 +58,7 @@ public abstract class Item implements Cloneable {
     }
 
     public ItemGround getItemGround() {
-        return this.itemGround;
+        return new ItemGround(itemGround.getX(), itemGround.getY(), itemGround.getZIndex(), itemGround.getId(), this);
     }
 
     public void setItemGround(ItemGround itemGround) {

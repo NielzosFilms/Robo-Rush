@@ -22,7 +22,7 @@ public class Inventory {
 		for(int y = 0; y < size_y; y++) {
 			for(int x = 0; x < size_x; x++) {
 				// translate x, y to screen coords
-				slots.add(new InventorySlot(this, x + x * slot_w, y + y * slot_h));
+				slots.add(new InventorySlot(this, x * slot_w, y * slot_h));
 			}
 		}
 	}
@@ -36,6 +36,10 @@ public class Inventory {
 	public void render(Graphics g) {
 		for(InventorySlot slot : slots) {
 			slot.render(g);
+		}
+		if(Game.DEDUG_MODE) {
+			g.setColor(Color.magenta);
+			g.drawRect(getInventoryBounds().x, getInventoryBounds().y, getInventoryBounds().width, getInventoryBounds().height);
 		}
 	}
 
@@ -57,7 +61,10 @@ public class Inventory {
 				}
 			} else {
 				System.out.println("drop item");
-				// drop overflow item?
+				ItemGround item_gnd = item.getItemGround();
+				Point new_coords = new Point(Game.player.getX(), Game.player.getY());
+				item_gnd.setCoords(new_coords);
+				Game.inventorySystem.dropItem(item_gnd);
 			}
 		}
 	}
