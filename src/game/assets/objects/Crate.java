@@ -39,9 +39,9 @@ public class Crate extends GameObject {
             boolean again = true;
             Item item;
             if(rand.nextInt(2) == 0) {
-                item = new ItemRock(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Rock);
+                item = new ItemRock(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Rock, false);
             } else {
-                item = new ItemStick(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Stick);
+                item = new ItemStick(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Stick, false);
             }
             item.setAmount(rand.nextInt(InventorySystem.stackSize));
             while(again) {
@@ -54,7 +54,6 @@ public class Crate extends GameObject {
     public void tick() {
         healthBar.tick();
         if(healthBar.dead()) Game.handler.findAndRemoveObject(this, Game.world);
-        if(healthBar.dead())AudioPlayer.playSound(AudioFiles.crate_impact, 0.7, false, 0);
 
         Rectangle obj_bounds = this.getSelectBounds();
         Rectangle player_bounds = Game.player.getBounds();

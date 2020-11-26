@@ -8,6 +8,7 @@ import game.system.inputs.MouseInput;
 import game.system.world.World;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -58,7 +59,7 @@ public class InventorySystem {
 			Inventory inv = open_inventories.get(i);
 			inv.render(g);
 		}
-		if(isHolding()) holding.render(g, mouseInput.mouse_x, mouseInput.mouse_y);
+		if(isHolding()) holding.render(g, mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2);
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -79,10 +80,20 @@ public class InventorySystem {
 
 	public void mouseClickedOutside(MouseEvent e) {
 		if(holding != null) {
-			ItemGround item_gnd = holding.getItemGround();
-			Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
-			item_gnd.setCoords(world_coords);
-			dropItem(item_gnd);
+			if(e.getButton() == MouseEvent.BUTTON1) {
+				System.out.println("Handle Item Place");
+			}
+		}
+	}
+
+	public void keyPressed(KeyEvent e) {
+		if(holding != null) {
+			if(e.getKeyCode() == KeyEvent.VK_Q) {
+				ItemGround item_gnd = holding.getItemGround();
+				Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2, cam);
+				item_gnd.setCoords(world_coords);
+				dropItem(item_gnd);
+			}
 		}
 	}
 
@@ -144,4 +155,5 @@ public class InventorySystem {
 		this.open_inventories.clear();
 		this.open_inventories.add(player_hotbar);
 	}
+
 }

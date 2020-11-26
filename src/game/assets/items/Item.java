@@ -12,11 +12,13 @@ public abstract class Item implements Cloneable {
     protected ITEM_ID itemType;
     protected BufferedImage tex;
     protected ItemGround itemGround;
+    protected boolean placeable;
 
-    public Item(int amount, ITEM_ID itemType) {
+    public Item(int amount, ITEM_ID itemType, boolean placeable) {
         this.amount = amount;
         this.itemType = itemType;
         this.itemGround = null;
+        this.placeable = placeable;
     }
 
     public void render(Graphics g, int x, int y) {
@@ -65,4 +67,13 @@ public abstract class Item implements Cloneable {
         this.itemGround = itemGround;
     }
 
+    public boolean isPlaceable() {
+        return placeable;
+    }
+
+    public void setPlaceable(boolean placeable) {
+        this.placeable = placeable;
+    }
+
+    public abstract void place();
 }

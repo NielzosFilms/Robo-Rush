@@ -40,8 +40,8 @@ public class Player extends GameObject {
 		this.direction = "down";
 
 		this.inventory = new Inventory(5, 5);
-		this.inventory.addItem(new ItemRock(150, ITEM_ID.Rock));
-		this.inventory.addItem(new ItemStick(23, ITEM_ID.Stick));
+		this.inventory.addItem(new ItemRock(150, ITEM_ID.Rock, false));
+		this.inventory.addItem(new ItemStick(23, ITEM_ID.Stick, false));
 
 		this.hotbar = new Inventory(5, 1);
 		int hotbar_x = Game.WIDTH / 2 - this.hotbar.getInventoryBounds().width / 2;

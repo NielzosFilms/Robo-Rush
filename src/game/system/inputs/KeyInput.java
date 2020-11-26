@@ -84,6 +84,7 @@ public class KeyInput extends KeyAdapter {
 					// }
 				}
 			}
+			inventorySystem.keyPressed(e);
 		} else {
 			menuSystem.keyPressed(e);
 		}
