@@ -34,6 +34,7 @@ public abstract class Menu {
         for(SliderInput slider : sliders) {
             slider.tick();
         }
+        tickAbs();
     }
 
     public abstract void tickAbs();

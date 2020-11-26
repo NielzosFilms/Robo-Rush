@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.function.Function;
 
+import game.assets.entities.Player;
 import game.system.hud.HUD;
 import game.system.inventory.InventorySystem;
 import game.system.main.Camera;
@@ -27,6 +28,7 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	private HUD hud;
 	private Handler handler;
 	private World world;
+	private Player player;
 
 	public int mouse_x, mouse_y;
 	public boolean dragging;
@@ -37,7 +39,7 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		this.dragging = false;
 	}
 
-	public void setRequirements(Game game, InventorySystem inventorySystem, MenuSystem menuSystem, Camera cam, HUD hud, Handler handler, World world) {
+	public void setRequirements(Game game, InventorySystem inventorySystem, MenuSystem menuSystem, Camera cam, HUD hud, Handler handler, World world, Player player) {
 		this.game = game;
 		this.inventorySystem = inventorySystem;
 		this.menuSystem = menuSystem;
@@ -45,6 +47,7 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		this.hud = hud;
 		this.handler = handler;
 		this.world = world;
+		this.player = player;
 	}
 
 	public void tick() {
@@ -67,8 +70,10 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 								+ (obj_bounds.getCenterY() - player_bounds.getCenterY()) * (obj_bounds.getCenterY() - player_bounds.getCenterY()));
 						// System.out.println(dis);
 						if (dis < 50) {
-							// TODO distance is from top left?
-							obj.hit(1);
+							//TODO Change damage to player holding
+							if(player.canHit()) {
+								obj.hit(player.getExpectedDamage());
+							}
 						}
 					}
 					// }

@@ -3,6 +3,8 @@ package game.system.menu;
 import game.enums.MENUSTATES;
 import game.system.inputs.MouseInput;
 import game.system.menu.buttons.ButtonMainMenu;
+import game.system.menu.buttons.ButtonResume;
+import game.system.menu.buttons.ButtonSettings;
 import game.textures.Fonts;
 
 import java.awt.*;
@@ -15,6 +17,12 @@ public class PauzedMenu extends Menu {
         super(mouse);
         buttons.add(new ButtonMainMenu(0, 200, 64, 32));
         buttons.get(0).alignCenterX(screenWidth);
+
+        buttons.add(new ButtonSettings(0, 125, 64, 32));
+        buttons.get(1).alignCenterX(screenWidth);
+
+        buttons.add(new ButtonResume(0, 50, 64, 32));
+        buttons.get(2).alignCenterX(screenWidth);
     }
 
     public void tickAbs() {}

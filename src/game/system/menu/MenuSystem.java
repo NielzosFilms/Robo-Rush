@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class MenuSystem {
 	private static final int screenWidth = Game.WIDTH, screenHeight = Game.HEIGHT;
 	public MENUSTATES state;
+	public MENUSTATES previous_state;
 	private MouseInput mouse;
 
 	private MainMenu mainMenu;
@@ -74,6 +75,9 @@ public class MenuSystem {
 	}
 
 	public void setState(MENUSTATES state) {
+		this.previous_state = this.state;
 		this.state = state;
 	}
+
+	public MENUSTATES getPreviousState() { return this.previous_state; }
 }

@@ -17,6 +17,7 @@ import game.system.main.Game;
 import game.system.main.GameObject;
 import game.enums.ID;
 import game.system.main.Helpers;
+import game.system.main.Settings;
 import game.textures.Textures;
 
 public class Crate extends GameObject {
@@ -98,10 +99,12 @@ public class Crate extends GameObject {
                 Game.handler.addObject(gnd_item);
             }
         }
-        AudioPlayer.playSound(AudioFiles.crate_destroy, 0.7, false, 0);
+        System.out.println(Settings.sound_vol);
+        AudioPlayer.playSound(AudioFiles.crate_destroy, Settings.sound_vol, false, 0);
     }
 
     public void hit(int damage) {
+        AudioPlayer.playSound(AudioFiles.crate_impact, Settings.sound_vol, false, 0);
         healthBar.subtractHealth(damage);
     }
 

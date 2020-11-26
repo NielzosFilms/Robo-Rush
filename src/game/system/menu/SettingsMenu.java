@@ -2,6 +2,7 @@ package game.system.menu;
 
 import game.enums.MENUSTATES;
 import game.system.inputs.MouseInput;
+import game.system.main.Settings;
 import game.system.menu.buttons.ButtonBack;
 import game.system.menu.buttons.ButtonQuit;
 import game.system.menu.menuAssets.SliderInput;
@@ -21,13 +22,15 @@ public class SettingsMenu extends Menu {
 		this.buttons.add(btnBack);
 
 		//textFields.add(new TextField(new Rectangle(50, 50, 50, 50), 10, 25));
-		SliderInput slider = new SliderInput(50, 50, 100, mouse);
+		SliderInput slider = new SliderInput(50, 50, 100, mouse, 100);
 		slider.alignCenterX(screenWidth);
 		this.sliders.add(slider);
 	}
 
 	public void tickAbs() {
-
+		int vol = this.sliders.get(0).getValue();
+		System.out.println(vol);
+		Settings.setSoundVolPercent(vol);
 	}
 
 	public void renderBefore(Graphics g, Graphics2D g2d) {

@@ -13,12 +13,13 @@ public class SliderInput {
 
 	private int x, y, width;
 
-	public SliderInput(int x, int y, int width, MouseInput mouse) {
+	public SliderInput(int x, int y, int width, MouseInput mouse, int value) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.mouse = mouse;
 		this.knob = new SliderKnob(x, y, this);
+		setValue(value);
 	}
 
 	public void tick() {
@@ -59,6 +60,10 @@ public class SliderInput {
 		knobX = knobX - x;
 		int max = width;
 		return 100 / max * knobX;
+	}
+
+	public void setValue(int value) {
+		knob.setX(x + (width / 100 * value));
 	}
 
 	public void alignCenterX(int screenWidth) {

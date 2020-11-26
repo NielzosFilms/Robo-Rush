@@ -29,6 +29,6 @@ public class ButtonBack extends Button {
 	}
 
 	public void handleClick(MouseEvent e) {
-		Game.menuSystem.setState(goto_state);
+		Game.menuSystem.setState(Game.menuSystem.getPreviousState());
 	}
 }

@@ -110,7 +110,7 @@ public class Game extends Canvas implements Runnable {
 
 	private void setRequirements() {
 		keyInput.setRequirements(handler, inventorySystem, world, menuSystem);
-		mouseInput.setRequirements(this, inventorySystem, menuSystem, cam, hud, handler, world);
+		mouseInput.setRequirements(this, inventorySystem, menuSystem, cam, hud, handler, world, player);
 		collision.setRequirements(handler, world, player);
 
 		inventorySystem.setRequirements(handler, mouseInput, world, player, cam);
