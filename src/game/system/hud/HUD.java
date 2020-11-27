@@ -44,8 +44,8 @@ public class HUD {
 	}
 
 	public void renderCam(Graphics g, Graphics2D g2d) {
-		for(HealthBar healthBar : healthBars) {
-			healthBar.render(g);
+		for(int i=0; i<healthBars.size(); i++) {
+			healthBars.get(i).render(g);
 		}
 
 		LinkedList<GameObject> objs = handler.getSelectableObjects(world);

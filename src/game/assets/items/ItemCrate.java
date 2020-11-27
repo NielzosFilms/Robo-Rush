@@ -17,7 +17,7 @@ public class ItemCrate extends Item {
 	}
 
 	public boolean place(int x, int y) {
-		if(!Game.handler.objectExistsAtCoords(new Point(x, y), 1, 16, 16)) {
+		if(!Game.handler.objectExistsAtCoords(new Point(x, y), 1)) {
 			Game.handler.addObject(new Crate(x, y, 1, ID.Crate));
 			return true;
 		}

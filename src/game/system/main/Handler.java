@@ -2,6 +2,7 @@ package game.system.main;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import game.assets.entities.particles.Particle;
@@ -284,13 +285,20 @@ public class Handler {
 		item.destroyed();
 	}
 
-	public boolean objectExistsAtCoords(Point coords, int z_index, int item_w, int item_h) {
+	public boolean objectExistsAtCoords(Point coords, int z_index) {
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
-		Point tileCoords = Helpers.getTileCoords(coords, item_w, item_h);
-		// TODO make it with a rectangle bounds?
-		for(GameObject obj : object_entities.get(z_index)) {
-			if(obj.x == tileCoords.x && obj.y == tileCoords.y) {
-				return true;
+
+		for(LinkedList<GameObject> list : object_entities) {
+			for(GameObject obj : list) {
+				if(obj.getBounds() != null) {
+					if(obj.getBounds().contains(coords)) {
+						return true;
+					}
+				} else {
+					if(obj.getX() == coords.x && obj.getY() == coords.y) {
+						return true;
+					}
+				}
 			}
 		}
 
@@ -301,9 +309,15 @@ public class Handler {
 //		}
 
 		for(Chunk chunk : chunks_on_screen) {
-			for(GameObject obj : world.chunks.get(new Point(chunk.x, chunk.y)).getEntities()) {
-				if(obj.x == tileCoords.x && obj.y == tileCoords.y) {
-					return true;
+			for(GameObject obj : chunk.getEntities()) {
+				if(obj.getBounds() != null) {
+					if(obj.getBounds().contains(coords)) {
+						return true;
+					}
+				} else {
+					if(obj.getX() == coords.x && obj.getY() == coords.y) {
+						return true;
+					}
 				}
 			}
 		}
