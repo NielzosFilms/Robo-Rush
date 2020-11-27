@@ -50,7 +50,7 @@ public class Handler {
 					int x = tempObject.getX();
 					int y = tempObject.getY();
 					if (world.getChunkPointWithCoords(x, y) != null) { // adds enemy to a chunk to be unloaded
-						System.out.println(tempObject.getId());
+						Logger.print(String.valueOf(tempObject.getId()));
 						world.chunks.get(world.getChunkPointWithCoords(x, y)).entities.get(0).add(tempObject);
 						list.remove(i);
 					}
