@@ -4,11 +4,13 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
+import game.assets.items.ItemCrate;
 import game.system.inventory.Inventory;
 import game.enums.ITEM_ID;
 import game.assets.items.Item;
 import game.assets.items.ItemRock;
 import game.assets.items.ItemStick;
+import game.system.inventory.InventorySystem;
 import game.system.main.Game;
 import game.system.main.GameObject;
 import game.enums.ID;
@@ -40,8 +42,9 @@ public class Player extends GameObject {
 		this.direction = "down";
 
 		this.inventory = new Inventory(5, 5);
-		this.inventory.addItem(new ItemRock(150, ITEM_ID.Rock, false));
-		this.inventory.addItem(new ItemStick(23, ITEM_ID.Stick, false));
+		this.inventory.addItem(new ItemRock(InventorySystem.stackSize, ITEM_ID.Rock));
+		this.inventory.addItem(new ItemStick(InventorySystem.stackSize, ITEM_ID.Stick));
+		this.inventory.addItem(new ItemCrate(InventorySystem.stackSize, ITEM_ID.Crate));
 
 		this.hotbar = new Inventory(5, 1);
 		int hotbar_x = Game.WIDTH / 2 - this.hotbar.getInventoryBounds().width / 2;

@@ -28,7 +28,7 @@ public class Crate extends GameObject {
     public Crate(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
         inv = new Inventory(3, 2);
-        fillInventory();
+        //fillInventory();
         inv.setXY(300, 100);
 
         healthBar = new HealthBar(x - 8, y - 8, 0, 10);
@@ -39,9 +39,9 @@ public class Crate extends GameObject {
             boolean again = true;
             Item item;
             if(rand.nextInt(2) == 0) {
-                item = new ItemRock(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Rock, false);
+                item = new ItemRock(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Rock);
             } else {
-                item = new ItemStick(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Stick, false);
+                item = new ItemStick(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Stick);
             }
             item.setAmount(rand.nextInt(InventorySystem.stackSize));
             while(again) {
@@ -98,13 +98,16 @@ public class Crate extends GameObject {
                 Game.handler.addObject(gnd_item);
             }
         }
-        System.out.println(Settings.sound_vol);
         AudioPlayer.playSound(AudioFiles.crate_destroy, Settings.sound_vol, false, 0);
     }
 
     public void hit(int damage) {
         AudioPlayer.playSound(AudioFiles.crate_impact, Settings.sound_vol, false, 0);
         healthBar.subtractHealth(damage);
+    }
+
+    public void addItemToInv(Item item) {
+        this.inv.addItem(item);
     }
 
 }

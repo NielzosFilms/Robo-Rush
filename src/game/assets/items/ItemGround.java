@@ -97,11 +97,14 @@ public class ItemGround extends GameObject {
 
 	}
 
-	public void setCoords(Point coords) {
-		x = coords.x;
-		y = coords.y;
-		buffer_x = coords.x;
-		buffer_y = coords.y;
+	public void setX(int x) {
+		this.x = x;
+		buffer_x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+		buffer_y = y;
 	}
 
 }

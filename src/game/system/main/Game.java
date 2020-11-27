@@ -243,11 +243,12 @@ public class Game extends Canvas implements Runnable {
 			Long finish = System.currentTimeMillis();
 			// System.out.println("Light System Render Time: " + (finish - start));
 
+			inventorySystem.renderCam(g);
 			hud.renderCam(g, g2d);
 			g2d.translate(-cam.getX(), -cam.getY()); // end of cam
 			hud.render(g, g2d);
-
 			inventorySystem.render(g);
+
 
 			if (game_state == GAMESTATES.Pauzed) {
 				//menuSystem.setState(MENUSTATES.Pauzed);

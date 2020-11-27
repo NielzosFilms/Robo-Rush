@@ -35,7 +35,7 @@ public class Branch extends GameObject {
     }
 
     public Item getItem() {
-        return new ItemStick(1, ITEM_ID.Stick, false);
+        return new ItemStick(1, ITEM_ID.Stick);
     }
 
     public void interact() {

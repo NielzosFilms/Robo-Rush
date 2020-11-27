@@ -52,6 +52,18 @@ public class InventorySystem {
 		}
 	}
 
+	public void renderCam(Graphics g) {
+		if(isHolding()) {
+			if(holding.placeable()) {
+				if(!mouseOverInventory()) {
+					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
+					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
+					holding.render(g, tile_coords.x, tile_coords.y);
+				}
+			}
+		}
+	}
+
 	public void render(Graphics g) {
 		// NOTICE using this for loop instead of "Inventory inv : open_inventories"
 		// will fix the removing inventory inside bug
@@ -59,7 +71,15 @@ public class InventorySystem {
 			Inventory inv = open_inventories.get(i);
 			inv.render(g);
 		}
-		if(isHolding()) holding.render(g, mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2);
+		if(isHolding()) {
+			if(!holding.placeable()) {
+				holding.render(g, mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2);
+			} else {
+				if(mouseOverInventory()) {
+					holding.render(g, mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2);
+				}
+			}
+		}
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -81,7 +101,14 @@ public class InventorySystem {
 	public void mouseClickedOutside(MouseEvent e) {
 		if(holding != null) {
 			if(e.getButton() == MouseEvent.BUTTON1) {
-				System.out.println("Handle Item Place");
+				if(holding.placeable()) {
+					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
+					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
+					if(holding.place(tile_coords.x, tile_coords.y)) {
+						holding.setAmount(holding.getAmount() - 1);
+						if(holding.getAmount() <= 0) clearHolding();
+					}
+				}
 			}
 		}
 	}
@@ -91,7 +118,8 @@ public class InventorySystem {
 			if(e.getKeyCode() == KeyEvent.VK_Q) {
 				ItemGround item_gnd = holding.getItemGround();
 				Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2, cam);
-				item_gnd.setCoords(world_coords);
+				item_gnd.setX(world_coords.x);
+				item_gnd.setY(world_coords.y);
 				dropItem(item_gnd);
 			}
 		}
@@ -154,6 +182,15 @@ public class InventorySystem {
 	public void closeAll() {
 		this.open_inventories.clear();
 		this.open_inventories.add(player_hotbar);
+	}
+
+	private boolean mouseOverInventory() {
+		for(int i=0; i<open_inventories.size(); i++) {
+			if(mouseInput.mouseOverLocalRect(open_inventories.get(i).getInventoryBounds())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

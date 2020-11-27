@@ -63,7 +63,8 @@ public class Inventory {
 				System.out.println("drop item");
 				ItemGround item_gnd = item.getItemGround();
 				Point new_coords = new Point(Game.player.getX(), Game.player.getY());
-				item_gnd.setCoords(new_coords);
+				item_gnd.setX(new_coords.x);
+				item_gnd.setY(new_coords.y);
 				Game.inventorySystem.dropItem(item_gnd);
 			}
 		}
