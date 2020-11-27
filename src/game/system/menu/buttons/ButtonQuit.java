@@ -1,6 +1,7 @@
 package game.system.menu.buttons;
 
 import game.enums.BUTTONS;
+import game.system.main.Logger;
 import game.textures.Fonts;
 import game.textures.Textures;
 
@@ -22,7 +23,7 @@ public class ButtonQuit extends Button {
         g.drawString("Quit", x, y + height / 2);
     }
     public void handleClick(MouseEvent e) {
-        System.out.println("(╯°□°）╯︵ ┻━┻");
+        Logger.print("(╯°□°）╯︵ ┻━┻");
         System.exit(1);
     }
 }

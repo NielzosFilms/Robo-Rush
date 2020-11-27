@@ -1,5 +1,7 @@
 package game.audioEngine;
 
+import game.system.main.Logger;
+
 import java.io.File;
 
 import javax.sound.sampled.AudioInputStream;
@@ -16,7 +18,7 @@ public class AudioClip {
 	public AudioClip(String path) {
 		file = new File(path);
 		if(!file.exists()) {
-			System.out.println("Error >> AudioClip Not Found!");
+			Logger.printError("AudioClip Not Found!");
 		}
 	}
 	

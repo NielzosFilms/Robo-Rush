@@ -2,6 +2,7 @@ package game.system.menu;
 
 import game.system.inputs.MouseInput;
 import game.system.main.Game;
+import game.system.main.Logger;
 import game.system.menu.buttons.ButtonPlay;
 import game.system.menu.buttons.ButtonQuit;
 import game.system.menu.buttons.ButtonSettings;

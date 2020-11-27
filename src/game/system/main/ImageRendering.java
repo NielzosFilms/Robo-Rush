@@ -89,7 +89,7 @@ public class ImageRendering implements Runnable{
 		Long start = System.currentTimeMillis();
 		lightingSystem.render(g);
 		Long finish = System.currentTimeMillis();
-		System.out.println("Light System Render Time: " + ( finish - start ) );
+		Logger.print("Light System Render Time: " + ( finish - start ) );
 		
 		g.dispose();
 		g2d.dispose();

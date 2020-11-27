@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Random;
 
+import game.system.main.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -121,7 +122,7 @@ public class LevelLoader {
 
 			for (Object layer : layers) {
 				if (((JSONObject) layer).get("objects") != null) {
-					System.out.println("test");
+					Logger.print("test");
 					JSONArray objects = (JSONArray) ((JSONObject) layer).get("objects");
 					JSONObject collisionLayer = (JSONObject) objects.get(0);
 					ArrayList<Rectangle> rectangle_bounds = new ArrayList<Rectangle>();

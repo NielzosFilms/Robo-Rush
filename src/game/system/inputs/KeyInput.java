@@ -13,6 +13,7 @@ import game.system.main.Game;
 import game.system.main.GameObject;
 import game.system.main.Handler;
 import game.enums.ID;
+import game.system.main.Logger;
 import game.system.menu.MenuSystem;
 import game.system.world.World;
 
@@ -39,7 +40,6 @@ public class KeyInput extends KeyAdapter {
 
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		//System.out.println(e.getKeyChar());
 
 		if(Game.game_state == GAMESTATES.Game) {
 			for (LinkedList<GameObject> list : handler.object_entities) {

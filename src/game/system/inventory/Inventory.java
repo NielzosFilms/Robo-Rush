@@ -60,7 +60,6 @@ public class Inventory {
 					if(rest != null) this.addItem(rest);
 				}
 			} else {
-				System.out.println("drop item");
 				ItemGround item_gnd = item.getItemGround();
 				Point new_coords = new Point(Game.player.getX(), Game.player.getY());
 				item_gnd.setX(new_coords.x);

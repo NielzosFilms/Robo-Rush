@@ -14,6 +14,7 @@ import java.util.Random;
 import game.assets.entities.Player;
 import game.enums.BIOME;
 import game.system.main.Game;
+import game.system.main.Logger;
 import game.textures.Textures;
 
 public class World {
@@ -234,7 +235,7 @@ public class World {
 		loaded = false;
 		chunks.clear();
 
-		System.out.println("seed: " + this.seed);
+		Logger.print("[seed]: " + this.seed);
 
 		Point chunk_point = getChunkPointWithCoords(player.getX(), player.getY());
 		chunks.put(chunk_point, new Chunk(chunk_point.x, chunk_point.y, seed, temp_seed, moist_seed, this, player, textures));
