@@ -265,4 +265,30 @@ public class Handler {
 		item.destroyed();
 	}
 
+	public boolean objectExistsAtCoords(Point coords, int z_index, World world, int item_w, int item_h) {
+		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
+		Point tileCoords = Helpers.getTileCoords(coords, item_w, item_h);
+		// TODO make it with a rectangle bounds?
+		for(GameObject obj : object_entities.get(z_index)) {
+			if(obj.x == tileCoords.x && obj.y == tileCoords.y) {
+				return true;
+			}
+		}
+
+//		for(GameObject obj : chunks.get(z_index)) {
+//			if(obj.x == tileCoords.x && obj.y == tileCoords.y) {
+//				return true;
+//			}
+//		}
+
+		for(Chunk chunk : chunks_on_screen) {
+			for(GameObject obj : world.chunks.get(new Point(chunk.x, chunk.y)).entities.get(z_index)) {
+				if(obj.x == tileCoords.x && obj.y == tileCoords.y) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 }
