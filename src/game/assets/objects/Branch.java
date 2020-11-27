@@ -2,6 +2,7 @@ package game.assets.objects;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.Random;
 
 import game.enums.ITEM_ID;
 import game.assets.items.Item;
@@ -15,7 +16,7 @@ public class Branch extends GameObject {
 
     public Branch(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
-        this.tex = Textures.placeholder;
+        this.tex = Textures.stick.get(new Random().nextInt(Textures.stick.size()));
     }
 
     public void tick() {

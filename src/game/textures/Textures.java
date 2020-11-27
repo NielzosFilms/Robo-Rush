@@ -19,7 +19,12 @@ public class Textures {
 
 	// nature
 	public static List<BufferedImage> mushrooms = new ArrayList<BufferedImage>();
-	public static BufferedImage stick;
+
+	private static BufferedImage stick_png;
+	public static List<BufferedImage> stick = new ArrayList<>();
+
+	private static BufferedImage stone_png;
+	public static List<BufferedImage> stone = new ArrayList<>();
 
 	// inventory
 	public static BufferedImage placeholder;
@@ -30,12 +35,18 @@ public class Textures {
 	// Menu
 	public static BufferedImage default_btn;
 
+	//HUD
+	public static BufferedImage healthbar;
+	private static BufferedImage healthbar_content_img;
+
 	public static List<BufferedImage> tileSetForestBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> tileSetDesertBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> tileSetWaterBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> tileSetNatureBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> tileSetHouseBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> playerImg = new ArrayList<BufferedImage>();
+
+	public static List<BufferedImage> healthbar_content = new ArrayList<>();
 
 	public Textures() {
 		BufferedImageLoader loader = new BufferedImageLoader();
@@ -50,12 +61,16 @@ public class Textures {
 		entity_shadow = loader.loadImage("assets/entities/shadow.png");
 
 		mushroom = loader.loadImage("assets/world/nature/paddenstoel.png");
-		stick = loader.loadImage("assets/main/tile_sheets/stick.png");
+		stick_png = loader.loadImage("assets/items/stick.png");
+		stone_png = loader.loadImage("assets/items/stone.png");
 		placeholder = loader.loadImage("assets/main/placeholder.png");
 
 		light = loader.loadImage("assets/main/lights/light_orange.png");
 
 		default_btn = loader.loadImage("assets/menu/buttons/default_btn.png");
+
+		healthbar = loader.loadImage("assets/main/hud/healthbar.png");
+		healthbar_content_img = loader.loadImage("assets/main/hud/healthbar_content.png");
 
 		// height_map = loader.loadImage("assets/main/height_map.png");
 
@@ -99,6 +114,25 @@ public class Textures {
 		for (int i = 0; i < tileSetHouse.getHeight(); i += 32) {
 			for (int j = 0; j < tileSetHouse.getWidth(); j += 32) {
 				tileSetHouseBlocks.add(house_ss.grabImage(j, i, 32, 32));
+			}
+		}
+
+		SpriteSheet healthbar_content_ss = new SpriteSheet(healthbar_content_img);
+		for (int i = 0; i < healthbar_content_img.getWidth(); i++) {
+			healthbar_content.add(healthbar_content_ss.grabImage(i, 0, 1, 2));
+		}
+
+		SpriteSheet stick_ss = new SpriteSheet(stick_png);
+		for (int i = 0; i < stick_png.getHeight(); i += 16) {
+			for (int j = 0; j < stick_png.getWidth(); j += 16) {
+				stick.add(stick_ss.grabImage(j, i, 16, 16));
+			}
+		}
+
+		SpriteSheet stone_ss = new SpriteSheet(stone_png);
+		for (int i = 0; i < stone_png.getHeight(); i += 16) {
+			for (int j = 0; j < stone_png.getWidth(); j += 16) {
+				stone.add(stone_ss.grabImage(j, i, 16, 16));
 			}
 		}
 

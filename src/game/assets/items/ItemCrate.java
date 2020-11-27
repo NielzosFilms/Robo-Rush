@@ -17,12 +17,12 @@ public class ItemCrate extends Item {
 	}
 
 	public boolean place(int x, int y) {
-//		if(Game.handler.objectExistsAtCoords(new Point(x, y), 1, Game.world, 16, 16)) {
-//			Game.handler.addObject(new Crate(x, y, 1, ID.Crate));
-//			return true;
-//		}
-		Game.handler.addObject(new Crate(x, y, 1, ID.Crate));
-		return true;
-		//return false;
+		if(!Game.handler.objectExistsAtCoords(new Point(x, y), 1, 16, 16)) {
+			Game.handler.addObject(new Crate(x, y, 1, ID.Crate));
+			return true;
+		}
+//		Game.handler.addObject(new Crate(x, y, 1, ID.Crate));
+//		return true;
+		return false;
 	}
 }

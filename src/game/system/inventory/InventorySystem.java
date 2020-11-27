@@ -149,7 +149,7 @@ public class InventorySystem {
 		if (item != null) {
 			if (player_inv.canAcceptItem(item)) {
 				player_inv.addItem(item);
-				handler.findAndRemoveObject(obj, world);
+				handler.findAndRemoveObject(obj);
 			}
 		}
 	}

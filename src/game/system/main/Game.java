@@ -37,7 +37,7 @@ public class Game extends Canvas implements Runnable {
 	public static final int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 2.31.0 INFDEV";
+	public static final String VERSION = "ALPHA V 2.32.0 INFDEV";
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEDUG_MODE = false;
@@ -93,9 +93,9 @@ public class Game extends Canvas implements Runnable {
 		world = new World();
 
 		player = new Player(0, 0, 2, ID.Player, keyInput);
-		handler.addObject(player);
 
 		setRequirements();
+		handler.addObject(player);
 
 		if(game_state == GAMESTATES.Game) generateRequirements();
 
@@ -109,6 +109,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void setRequirements() {
+		handler.setRequirements(world, cam, ps);
 		keyInput.setRequirements(handler, inventorySystem, world, menuSystem);
 		mouseInput.setRequirements(this, inventorySystem, menuSystem, cam, hud, handler, world, player);
 		collision.setRequirements(handler, world, player);
@@ -180,7 +181,7 @@ public class Game extends Canvas implements Runnable {
 	private void tick() {
 		if (game_state == GAMESTATES.Game && World.loaded) {
 
-			handler.tick(world);
+			handler.tick();
 			ps.tick();
 			world.tick();
 			collision.tick();
@@ -235,7 +236,7 @@ public class Game extends Canvas implements Runnable {
 		} else if ((game_state == GAMESTATES.Game || game_state == GAMESTATES.Pauzed) && World.loaded) {
 			g2d.translate(cam.getX(), cam.getY()); // start of cam
 
-			handler.render(g, (int) -cam.getX(), (int) -cam.getY(), WIDTH, HEIGHT, world, ps);
+			handler.render(g, WIDTH, HEIGHT);
 
 			// ongeveer 30-35 ms
 			Long start = System.currentTimeMillis();

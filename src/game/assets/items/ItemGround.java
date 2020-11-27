@@ -57,7 +57,7 @@ public class ItemGround extends GameObject {
 		}
 		lifeTimer--;
 		if (lifeTimer <= 0) {
-			Game.handler.findAndRemoveObject(this, Game.world);
+			Game.handler.findAndRemoveObject(this);
 			// Game.handler.removeObject(z_index, this);
 		}
 	}

@@ -2,6 +2,7 @@ package game.assets;
 
 import game.system.main.Game;
 import game.system.main.Helpers;
+import game.textures.Textures;
 
 import java.awt.*;
 
@@ -9,7 +10,7 @@ public class HealthBar {
     private static final Color background = new Color(0, 0, 0, 127);
     private Color healthBar_color = new Color(205,0,0);
     private int min = 0, max = 100;
-    private int w = 32, h = 4;
+    private int w = 24, h = 4;
     private int health;
     private int x, y;
 
@@ -26,20 +27,17 @@ public class HealthBar {
 
     public void render(Graphics g) {
         if(health != max) {
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setStroke(new BasicStroke(0.5f));
-            g.setColor(background);
-            g.fillRect(x, y, w, h);
-            g.setColor(healthBar_color);
-            g.fillRect(x, y, getDrawWidth(), h);
-            g.setColor(Color.black);
-            g.drawRect(x, y, w, h);
-            g2d.setStroke(new BasicStroke(1));
+            g.drawImage(Textures.healthbar, x, y, 24, 4, null);
+            int health_perc = getHealthPercent();
+            int until = (int)((float)(Textures.healthbar_content.size()) / 100 * health_perc);
+            for(int i=0; i<until; i++) {
+                g.drawImage(Textures.healthbar_content.get(i), x + i + 1, y + 1, 1, 2, null);
+            }
         }
     }
 
     public boolean dead() {
-        return health <= 0;
+        return health <= min;
     }
 
     public void subtractHealth(int amount) {

@@ -13,6 +13,9 @@ import game.system.world.Chunk;
 import game.system.world.World;
 
 public class Handler {
+	private World world;
+	private Camera cam;
+	private ParticleSystem ps;
 
 	public LinkedList<LinkedList<GameObject>> object_entities = new LinkedList<LinkedList<GameObject>>();
 	// public LinkedList<LinkedList<Tile>> object_tiles = new
@@ -32,7 +35,13 @@ public class Handler {
 		}
 	}
 
-	public void tick(World world) {
+	public void setRequirements(World world, Camera cam, ParticleSystem ps) {
+		this.world = world;
+		this.cam = cam;
+		this.ps = ps;
+	}
+
+	public void tick() {
 		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
@@ -40,6 +49,7 @@ public class Handler {
 					int x = tempObject.getX();
 					int y = tempObject.getY();
 					if (world.getChunkPointWithCoords(x, y) != null) { // adds enemy to a chunk to be unloaded
+						System.out.println(tempObject.getId());
 						world.chunks.get(world.getChunkPointWithCoords(x, y)).entities.get(0).add(tempObject);
 						list.remove(i);
 					}
@@ -59,7 +69,9 @@ public class Handler {
 		}
 	}
 
-	public void render(Graphics g, int camX, int camY, int width, int height, World world, ParticleSystem ps) {
+	public void render(Graphics g, int width, int height) {
+		int camX = (int)-cam.getX();
+		int camY = (int)-cam.getY();
 		LinkedList<LinkedList<GameObject>> entities = new LinkedList<LinkedList<GameObject>>();
 		LinkedList<LinkedList<Tile>> tiles = new LinkedList<LinkedList<Tile>>();
 
@@ -140,7 +152,14 @@ public class Handler {
 		while (z_index >= this.object_entities.size()) {// add new layers if it doesnt exist
 			this.object_entities.add(new LinkedList<GameObject>());
 		}
-		this.object_entities.get(z_index).add(object);
+
+		int x = object.getX();
+		int y = object.getY();
+		if (world.getChunkWithCoords(world.getChunkPointWithCoords(x, y).x, world.getChunkPointWithCoords(x, y).y) != null) {
+			world.getChunkWithCoords(world.getChunkPointWithCoords(x, y).x, world.getChunkPointWithCoords(x, y).y).addEntity(object);
+		} else {
+			this.object_entities.get(z_index).add(object);
+		}
 	}
 
 	public void removeObject(int z_index, GameObject object) {
@@ -189,7 +208,7 @@ public class Handler {
 		return objs;
 	}
 
-	public LinkedList<GameObject> getShadowObjects(World world) {
+	public LinkedList<GameObject> getShadowObjects() {
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
 		LinkedList<GameObject> objs = new LinkedList<GameObject>();
 		ID[] ids = { ID.Tree, ID.Player };
@@ -223,7 +242,7 @@ public class Handler {
 		return objs;
 	}
 
-	public LinkedList<Light> getLights(World world) {
+	public LinkedList<Light> getLights() {
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
 		LinkedList<Light> lights = new LinkedList<Light>();
 
@@ -246,7 +265,7 @@ public class Handler {
 		return false;
 	}
 
-	public void findAndRemoveObject(GameObject item, World world) {
+	public void findAndRemoveObject(GameObject item) {
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
 
 		for (LinkedList<GameObject> list : object_entities) {
@@ -265,7 +284,7 @@ public class Handler {
 		item.destroyed();
 	}
 
-	public boolean objectExistsAtCoords(Point coords, int z_index, World world, int item_w, int item_h) {
+	public boolean objectExistsAtCoords(Point coords, int z_index, int item_w, int item_h) {
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
 		Point tileCoords = Helpers.getTileCoords(coords, item_w, item_h);
 		// TODO make it with a rectangle bounds?
@@ -282,7 +301,7 @@ public class Handler {
 //		}
 
 		for(Chunk chunk : chunks_on_screen) {
-			for(GameObject obj : world.chunks.get(new Point(chunk.x, chunk.y)).entities.get(z_index)) {
+			for(GameObject obj : world.chunks.get(new Point(chunk.x, chunk.y)).getEntities()) {
 				if(obj.x == tileCoords.x && obj.y == tileCoords.y) {
 					return true;
 				}

@@ -41,8 +41,8 @@ public class LightingSystem {
 		BufferedImage overlay = getBufferedImageMap(null, null, null);
 		g.drawImage(overlay, 0, 0, null);
 		
-		LinkedList<Light> lights = handler.getLights(world);
-		LinkedList<GameObject> objects = handler.getShadowObjects(world);
+		LinkedList<Light> lights = handler.getLights();
+		LinkedList<GameObject> objects = handler.getShadowObjects();
 		for(Light light : lights) {
 //			int lightMap_x = light.getX()-80;
 //			int lightMap_y = light.getY()-80;

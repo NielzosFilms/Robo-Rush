@@ -22,12 +22,7 @@ public class Pebble extends GameObject {
     public Pebble(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
 
-        int rand = r.nextInt(1);
-        if (rand == 1) {
-            this.tex = Textures.tileSetNatureBlocks.get(48);
-        } else {
-            this.tex = Textures.tileSetNatureBlocks.get(49);
-        }
+        this.tex = Textures.stone.get(new Random().nextInt(Textures.stone.size()));
     }
 
     public void tick() {
@@ -52,7 +47,7 @@ public class Pebble extends GameObject {
 
     public void interact() {
         Game.handler.addObject(new ItemGround(x, y, 1, ID.Item, new ItemRock(5, ITEM_ID.Rock)));
-        Game.handler.findAndRemoveObject(this, Game.world);
+        Game.handler.findAndRemoveObject(this);
         //Game.inventorySystem.pickupItemToPlayerInv(this);
     }
 

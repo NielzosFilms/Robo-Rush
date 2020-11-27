@@ -31,7 +31,7 @@ public class Crate extends GameObject {
         //fillInventory();
         inv.setXY(300, 100);
 
-        healthBar = new HealthBar(x - 8, y - 8, 0, 10);
+        healthBar = new HealthBar(x - 4, y - 8, 0, 10);
     }
 
     private void fillInventory() {
@@ -53,7 +53,7 @@ public class Crate extends GameObject {
 
     public void tick() {
         healthBar.tick();
-        if(healthBar.dead()) Game.handler.findAndRemoveObject(this, Game.world);
+        if(healthBar.dead()) Game.handler.findAndRemoveObject(this);
 
         Rectangle obj_bounds = this.getSelectBounds();
         Rectangle player_bounds = Game.player.getBounds();
