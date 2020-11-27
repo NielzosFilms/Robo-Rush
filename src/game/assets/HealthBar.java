@@ -8,6 +8,8 @@ import java.awt.*;
 
 public class HealthBar {
     private static final Color background = new Color(0, 0, 0, 127);
+    private static final int HIDE_DELAY = 60*5;
+    private int hide_timer = HIDE_DELAY;
     private Color healthBar_color = new Color(205,0,0);
     private int min = 0, max = 100;
     private int w = 24, h = 4;
@@ -23,10 +25,12 @@ public class HealthBar {
         Game.hud.addHealthBar(this);
     }
 
-    public void tick() {}
+    public void tick() {
+        if(hide_timer > 0) hide_timer--;
+    }
 
     public void render(Graphics g) {
-        if(health != max) {
+        if(health != max && hide_timer != 0) {
             g.drawImage(Textures.healthbar, x, y, 24, 4, null);
             int health_perc = getHealthPercent();
             int until = (int)((float)(Textures.healthbar_content.size()) / 100 * health_perc);
@@ -41,11 +45,13 @@ public class HealthBar {
     }
 
     public void subtractHealth(int amount) {
+        hide_timer = HIDE_DELAY;
         health = health - amount;
     }
 
     public void addHealth(int amount) {
-        health = health + amount;
+        hide_timer = HIDE_DELAY;
+        health = Helpers.clampInt(health + amount, min, max);
     }
 
     public int getHealthPercent() {
@@ -54,5 +60,9 @@ public class HealthBar {
 
     private int getDrawWidth() {
         return (int)(w / max * health);
+    }
+
+    public boolean showing() {
+        return hide_timer > 0;
     }
 }

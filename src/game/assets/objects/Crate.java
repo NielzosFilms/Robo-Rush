@@ -21,6 +21,12 @@ import game.system.main.Settings;
 import game.textures.Textures;
 
 public class Crate extends GameObject {
+    private final int REGEN_DELAY_AFTER_HIT = 60*10;
+    private final int REGEN_DELAY = 30;
+    private final int REGEN_AMOUNT = 1;
+    private int regen_timer_after_hit = 0;
+    private int regen_timer = 0;
+
     private Inventory inv;
     private Random rand = new Random();
     private HealthBar healthBar;
@@ -52,6 +58,16 @@ public class Crate extends GameObject {
     }
 
     public void tick() {
+        if(regen_timer_after_hit > 0) {
+            regen_timer_after_hit--;
+        } else {
+            if(regen_timer > 0) {
+                regen_timer--;
+            } else {
+                healthBar.addHealth(REGEN_AMOUNT);
+                regen_timer = REGEN_DELAY;
+            }
+        }
         healthBar.tick();
         if(healthBar.dead()) Game.handler.findAndRemoveObject(this);
 
@@ -102,6 +118,7 @@ public class Crate extends GameObject {
     }
 
     public void hit(int damage) {
+        regen_timer_after_hit = REGEN_DELAY_AFTER_HIT;
         AudioPlayer.playSound(AudioFiles.crate_impact, Settings.sound_vol, false, 0);
         healthBar.subtractHealth(damage);
     }
