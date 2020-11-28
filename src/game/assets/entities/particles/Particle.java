@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import game.assets.items.Item;
+import game.system.main.Game;
 import game.system.main.GameObject;
 import game.system.main.Handler;
 import game.enums.ID;
@@ -13,24 +14,26 @@ public class Particle extends GameObject {
 
 	private int lifetime;
 	private float velX, velY;
-	private Handler handler;
+	private float buffer_x, buffer_y;
 	private ParticleSystem ps;
 	private int alpha;
 
-	public Particle(int x, int y, int z_index, ID id, float velX, float velY, int lifetime, ParticleSystem ps) {
-		super(x, y, z_index, id);
+	public Particle(int x, int y, float velX, float velY, int lifetime) {
+		super(x, y, 0, ID.NULL);
+		this.buffer_x = x;
+		this.buffer_y = y;
 		this.lifetime = lifetime;
 		this.velX = velX;
 		this.velY = velY;
-		this.handler = handler;
-		this.ps = ps;
+		this.ps = Game.ps;
 		this.alpha = 255;
 	}
 
 	public void tick() {
-
-		y = Math.round(y + velY);
-		x = Math.round(x + velX);
+		buffer_x += velX;
+		buffer_y += velY;
+		x = Math.round(buffer_x);
+		y = Math.round(buffer_y);
 		lifetime--;
 		alpha = alpha - (alpha / lifetime);
 		if (lifetime <= 1) {

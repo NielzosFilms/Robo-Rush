@@ -10,6 +10,7 @@ import java.awt.image.BufferStrategy;
 import java.util.LinkedList;
 import java.util.Random;
 
+import game.assets.entities.TargetDummy;
 import game.assets.objects.Crate;
 import game.enums.GAMESTATES;
 import game.enums.ID;
@@ -130,8 +131,9 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void addTestObjects() {
-		handler.addObject(new Crate(0, 0, 1, ID.Crate));
-		handler.addObject(new Crate(16, 0, 1, ID.Crate));
+//		handler.addObject(new Crate(0, 0, 1, ID.Crate));
+//		handler.addObject(new Crate(16, 0, 1, ID.Crate));
+		handler.addObject(new TargetDummy(0, 0, 1, ID.NULL));
 		//ps.addParticle(new Particle(0, 0, 3, ID.Particle, 0, -1, 60, ps));
 	}
 

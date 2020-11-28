@@ -12,6 +12,7 @@ public abstract class Item implements Cloneable {
     protected Item_Ground itemGround;
     protected int durability = 100;
     protected int damage = 0;
+    protected int attack_speed = 0;
     protected boolean placeable = false;
     protected boolean stackable = true;
 
@@ -111,5 +112,13 @@ public abstract class Item implements Cloneable {
 
     public void setStackable(boolean stackable) {
         this.stackable = stackable;
+    }
+
+    public int getAttack_speed() {
+        return attack_speed;
+    }
+
+    public void setAttack_speed(int attack_speed) {
+        this.attack_speed = attack_speed;
     }
 }

@@ -81,7 +81,6 @@ public class InventorySystem {
 			inv.render(g);
 			if(inv == player_hotbar) {
 				Rectangle bnds = inv.getSlots().get(hotbar_selected).getBounds();
-				Logger.print(String.valueOf(hotbar_selected));
 				g.setColor(new Color(255, 255, 255, 127));
 				g.drawRect(bnds.x, bnds.y, bnds.width, bnds.height);
 			}

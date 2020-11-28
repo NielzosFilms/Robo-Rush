@@ -6,6 +6,8 @@ import java.util.Random;
 
 import game.assets.items.Item_Crate;
 import game.assets.items.tools.Tool_WoodenAxe;
+import game.assets.items.tools.Tool_WoodenPickaxe;
+import game.assets.items.tools.Tool_WoodenSword;
 import game.system.inventory.Inventory;
 import game.enums.ITEM_ID;
 import game.assets.items.Item;
@@ -17,6 +19,7 @@ import game.system.main.GameObject;
 import game.enums.ID;
 import game.system.inputs.KeyInput;
 import game.enums.BIOME;
+import game.system.main.Logger;
 import game.system.world.World;
 import game.textures.Animation;
 import game.textures.Textures;
@@ -54,6 +57,8 @@ public class Player extends GameObject {
 		int hotbar_y = Game.HEIGHT - this.hotbar.getInventoryBounds().height;
 		this.hotbar.setXY(hotbar_x, hotbar_y);
 		this.hotbar.addItem(new Tool_WoodenAxe(ITEM_ID.Wooden_Axe));
+		this.hotbar.addItem(new Tool_WoodenPickaxe(ITEM_ID.Wooden_Pickaxe));
+		this.hotbar.addItem(new Tool_WoodenSword(ITEM_ID.Wooden_Sword));
 
 		// default = 100
 		this.health = 75;
@@ -264,17 +269,14 @@ public class Player extends GameObject {
 	}
 
 	public boolean canHit() {
-		if(attack_timer == 0) {
-			attack_timer = ATTACK_DELAY;
-			return true;
-		}
-		return false;
+		return attack_timer == 0;
 	}
 
 	public int getExpectedDamage() {
 		// Get hotbar selected item
 		// Calculate damage output
 		int damage_output = DEFAULT_ATTACK_DAMAGE;
+		int attack_delay = ATTACK_DELAY;
 //		if(Game.inventorySystem.isHolding()) {
 //			Item holding = Game.inventorySystem.getHolding();
 //			damage_output += holding.getDamage();
@@ -282,7 +284,11 @@ public class Player extends GameObject {
 		Item holding = Game.inventorySystem.getHotbarSelectedItem();
 		if(holding != null) {
 			damage_output += holding.getDamage();
+			attack_delay += holding.getAttack_speed();
 		}
+
+		attack_timer = attack_delay;
+		Logger.print("new attack_delay: " + attack_delay);
 		return damage_output;
 	}
 

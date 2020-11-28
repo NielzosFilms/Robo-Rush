@@ -96,8 +96,8 @@ public class Handler {
 		}
 
 		// particles
-		LinkedList<Particle> particles = ps.getParticles();
-		for (Particle particle : particles) {
+		LinkedList<GameObject> particles = ps.getParticles();
+		for (GameObject particle : particles) {
 			entities.get(particle.getZIndex()).add(particle);
 		}
 
