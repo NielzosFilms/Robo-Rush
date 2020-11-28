@@ -56,9 +56,17 @@ public class InventorySystem {
 		if(isHolding()) {
 			if(holding.placeable()) {
 				if(!mouseOverInventory()) {
+					Graphics2D g2d = (Graphics2D) g;
 					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
 					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
+					Rectangle bnds = new Rectangle(tile_coords.x, tile_coords.y, item_w, item_h);
+					if(Helpers.getDistanceBetweenBounds(Game.player.getBounds(), bnds) < Game.player.REACH) {
+						g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
+					} else {
+						g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
+					}
 					holding.render(g, tile_coords.x, tile_coords.y);
+					g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 				}
 			}
 		}
@@ -104,9 +112,12 @@ public class InventorySystem {
 				if(holding.placeable()) {
 					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
 					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
-					if(holding.place(tile_coords.x, tile_coords.y)) {
-						holding.setAmount(holding.getAmount() - 1);
-						if(holding.getAmount() <= 0) clearHolding();
+					Rectangle bnds = new Rectangle(tile_coords.x, tile_coords.y, item_w, item_h);
+					if(Helpers.getDistanceBetweenBounds(Game.player.getBounds(), bnds) < Game.player.REACH) {
+						if (holding.place(tile_coords.x, tile_coords.y)) {
+							holding.setAmount(holding.getAmount() - 1);
+							if (holding.getAmount() <= 0) clearHolding();
+						}
 					}
 				}
 			}
@@ -161,6 +172,10 @@ public class InventorySystem {
 
 	public boolean inventoryIsOpen() {
 		return this.open_inventories.size() > 1;
+	}
+
+	public boolean openInventoriesContains(Inventory inv) {
+		return this.open_inventories.contains(inv);
 	}
 
 	public boolean isHolding() {

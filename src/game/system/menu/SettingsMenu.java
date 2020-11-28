@@ -29,7 +29,6 @@ public class SettingsMenu extends Menu {
 
 	public void tickAbs() {
 		int vol = this.sliders.get(0).getValue();
-		System.out.println(vol);
 		Settings.setSoundVolPercent(vol);
 	}
 

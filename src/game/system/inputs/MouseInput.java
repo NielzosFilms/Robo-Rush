@@ -13,10 +13,7 @@ import java.util.function.Function;
 import game.assets.entities.Player;
 import game.system.hud.HUD;
 import game.system.inventory.InventorySystem;
-import game.system.main.Camera;
-import game.system.main.Game;
-import game.system.main.GameObject;
-import game.system.main.Handler;
+import game.system.main.*;
 import game.system.menu.MenuSystem;
 import game.system.world.World;
 
@@ -59,24 +56,15 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 			case Game -> {
 				LinkedList<GameObject> objs = handler.getSelectableObjects(world);
 				for (GameObject obj : objs) {
-					// if (obj.getSelectBounds() != null) {
 					if (Game.mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
 							obj.getSelectBounds().width, obj.getSelectBounds().height)) {
-						// Math.(Game.player);
-						Rectangle obj_bounds = obj.getSelectBounds();
-						Rectangle player_bounds = Game.player.getBounds();
-						double dis = Math.sqrt((obj_bounds.getCenterX() - player_bounds.getCenterX())
-								* (obj_bounds.getCenterX() - player_bounds.getCenterX())
-								+ (obj_bounds.getCenterY() - player_bounds.getCenterY()) * (obj_bounds.getCenterY() - player_bounds.getCenterY()));
-						// System.out.println(dis);
-						if (dis < 50) {
+						if (Helpers.getDistanceBetweenBounds(Game.player.getBounds(), obj.getSelectBounds()) < Game.player.REACH) {
 							//TODO Change damage to player holding
 							if(player.canHit()) {
 								obj.hit(player.getExpectedDamage());
 							}
 						}
 					}
-					// }
 				}
 				hud.mousePressed(e);
 				inventorySystem.mouseClicked(e);

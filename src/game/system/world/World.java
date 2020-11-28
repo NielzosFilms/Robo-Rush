@@ -13,7 +13,9 @@ import java.util.Random;
 
 import game.assets.entities.Player;
 import game.enums.BIOME;
+import game.system.lighting.Light;
 import game.system.main.Game;
+import game.system.main.GameObject;
 import game.system.main.Logger;
 import game.textures.Textures;
 
@@ -129,6 +131,30 @@ public class World {
 		}
 	}
 
+	public boolean addEntityToChunk(GameObject entity) {
+		int x = entity.getX();
+		int y = entity.getY();
+		Chunk crsp_chunk = getChunkWithCoordsPoint(getChunkPointWithCoords(x, y));
+		if (crsp_chunk != null) { // adds enemy to a chunk to be unloaded
+			Logger.print(String.valueOf(entity.getId()));
+			crsp_chunk.addEntity(entity);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean addLightToChunk(Light light) {
+		int x = light.getX();
+		int y = light.getY();
+		Chunk crsp_chunk = getChunkWithCoordsPoint(getChunkPointWithCoords(x, y));
+		if (crsp_chunk != null) { // adds enemy to a chunk to be unloaded
+			crsp_chunk.addLight(light);
+
+			return true;
+		}
+		return false;
+	}
+
 	// functions to get specific tiles/tiletypes
 
 	private boolean OnScreen(int x, int y, int w, int h) {
@@ -139,6 +165,10 @@ public class World {
 	public Chunk getChunkWithCoords(int x, int y) {
 		Point chunk_point = new Point(x, y);
 		return chunks.get(chunk_point);
+	}
+
+	public Chunk getChunkWithCoordsPoint(Point coords) {
+		return chunks.get(coords);
 	}
 
 	public Point getChunkPointWithCoords(int x, int y) {

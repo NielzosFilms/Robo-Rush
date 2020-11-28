@@ -9,11 +9,8 @@ import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
 import game.system.inventory.Inventory;
 import game.system.inventory.InventorySystem;
-import game.system.main.Game;
-import game.system.main.GameObject;
-import game.system.main.Handler;
+import game.system.main.*;
 import game.enums.ID;
-import game.system.main.Logger;
 import game.system.menu.MenuSystem;
 import game.system.world.World;
 
@@ -65,23 +62,13 @@ public class KeyInput extends KeyAdapter {
 			if (key == KeyEvent.VK_E) {
 				LinkedList<GameObject> objs = handler.getSelectableObjects(world);
 				for (GameObject obj : objs) {
-					// if (obj.getSelectBounds() != null) {
 					if (Game.mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
 							obj.getSelectBounds().width, obj.getSelectBounds().height)) {
-						// Math.(Game.player);
-						Rectangle obj_bounds = obj.getSelectBounds();
-						Rectangle player_bounds = Game.player.getBounds();
-						double dis = Math.sqrt((obj_bounds.getCenterX() - player_bounds.getCenterX())
-								* (obj_bounds.getCenterX() - player_bounds.getCenterX())
-								+ (obj_bounds.getCenterY() - player_bounds.getCenterY()) * (obj_bounds.getCenterY() - player_bounds.getCenterY()));
-						// System.out.println(dis);
-						if (dis < 50) {
-							// TODO distance is from top left?
+						if (Helpers.getDistanceBetweenBounds(Game.player.getBounds(), obj.getSelectBounds()) < Game.player.REACH) {
 							obj.interact();
 							return;
 						}
 					}
-					// }
 				}
 			}
 			inventorySystem.keyPressed(e);

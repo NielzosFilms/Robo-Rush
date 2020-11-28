@@ -22,6 +22,7 @@ import game.textures.Textures;
 
 public class Player extends GameObject {
 	private static final int ATTACK_DELAY = 15;
+	public final int REACH = 50;
 	Random r = new Random();
 	private KeyInput keyInput;
 

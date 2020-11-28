@@ -2,10 +2,8 @@ package game.assets.items;
 
 import game.enums.ITEM_ID;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.Color;
-import java.awt.Font;
 
 public abstract class Item implements Cloneable {
     protected int amount;

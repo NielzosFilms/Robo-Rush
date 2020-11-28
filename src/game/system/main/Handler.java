@@ -23,12 +23,6 @@ public class Handler {
 	// LinkedList<LinkedList<Tile>>();
 
 	public LinkedList<Light> lights = new LinkedList<Light>();
-	public LinkedList<LinkedList<GameObject>> chunks = new LinkedList<LinkedList<GameObject>>(); // add everything to
-																									// their
-																									// corresponding
-																									// chunks and loop
-																									// throught the
-																									// chunks
 
 	public Handler() {
 		for (int i = 0; i < 4; i++) {
@@ -46,27 +40,16 @@ public class Handler {
 		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
-				if (tempObject.getId() != ID.Player) {
-					int x = tempObject.getX();
-					int y = tempObject.getY();
-					if (world.getChunkPointWithCoords(x, y) != null) { // adds enemy to a chunk to be unloaded
-						Logger.print(String.valueOf(tempObject.getId()));
-						world.chunks.get(world.getChunkPointWithCoords(x, y)).entities.get(0).add(tempObject);
-						list.remove(i);
-					}
-				} else {
+				if (tempObject.getId() == ID.Player) {
 					tempObject.tick();
+				} else {
+					if(world.addEntityToChunk(tempObject)) list.remove(tempObject);
 				}
 			}
 		}
 
 		for (Light light : lights) {
-			int x = light.getX();
-			int y = light.getY();
-			if (world.getChunkPointWithCoords(x, y) != null) { // adds enemy to a chunk to be unloaded
-				world.chunks.get(world.getChunkPointWithCoords(x, y)).lights.add(light);
-				lights.remove(light);
-			}
+			if(world.addLightToChunk(light)) lights.remove(light);
 		}
 	}
 
@@ -89,12 +72,6 @@ public class Handler {
 						&& tempObject.getX() - 16 < camX + width && tempObject.getY() - 16 < camY + height) {
 					entities.get(tempObject.getZIndex()).add(tempObject);
 				}
-			}
-		}
-
-		for (LinkedList<GameObject> chunk : chunks) {
-			for (GameObject object : chunk) {
-				entities.get(object.getZIndex()).add(object);
 			}
 		}
 
@@ -154,17 +131,13 @@ public class Handler {
 			this.object_entities.add(new LinkedList<GameObject>());
 		}
 
-		int x = object.getX();
-		int y = object.getY();
-		if (world.getChunkWithCoords(world.getChunkPointWithCoords(x, y).x, world.getChunkPointWithCoords(x, y).y) != null) {
-			world.getChunkWithCoords(world.getChunkPointWithCoords(x, y).x, world.getChunkPointWithCoords(x, y).y).addEntity(object);
-		} else {
+		if(!world.addEntityToChunk(object)) {
 			this.object_entities.get(z_index).add(object);
 		}
 	}
 
-	public void removeObject(int z_index, GameObject object) {
-		this.object_entities.get(z_index).remove(object);
+	public void removeObject(GameObject object) {
+		this.object_entities.get(object.getZIndex()).remove(object);
 	}
 
 	public void addTile(int z_index, Tile tile) {
@@ -183,14 +156,6 @@ public class Handler {
 		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
-				if (tempObject.getSelectBounds() != null) {
-					objs.add(tempObject);
-				}
-			}
-		}
-
-		for (LinkedList<GameObject> chunk : chunks) {
-			for (GameObject tempObject : chunk) {
 				if (tempObject.getSelectBounds() != null) {
 					objs.add(tempObject);
 				}
@@ -219,14 +184,6 @@ public class Handler {
 				GameObject tempObject = list.get(i);
 				if (isInArray(ids, tempObject.getId())) {
 					objs.add(tempObject);
-				}
-			}
-		}
-
-		for (LinkedList<GameObject> chunk : chunks) {
-			for (GameObject object : chunk) {
-				if (isInArray(ids, object.getId())) {
-					objs.add(object);
 				}
 			}
 		}
@@ -273,14 +230,9 @@ public class Handler {
 			list.remove(item);
 		}
 
-		for (LinkedList<GameObject> chunk : chunks) {
-			chunk.remove(item);
-		}
-
 		// chunks
 		for (Chunk chunk : chunks_on_screen) {
-			// chunk.removeFromTilesEntities(item);
-			world.chunks.get(new Point(chunk.x, chunk.y)).removeEntity(item);
+			world.getChunkWithCoords(chunk.x, chunk.y).removeEntity(item);
 		}
 		item.destroyed();
 	}
@@ -291,7 +243,7 @@ public class Handler {
 		for(LinkedList<GameObject> list : object_entities) {
 			for(GameObject obj : list) {
 				if(obj.getBounds() != null) {
-					if(obj.getBounds().contains(coords)) {
+					if(obj.getBounds().contains(coords) || obj.getX() == coords.x && obj.getY() == coords.y) {
 						return true;
 					}
 				} else {
@@ -302,6 +254,7 @@ public class Handler {
 			}
 		}
 
+
 //		for(GameObject obj : chunks.get(z_index)) {
 //			if(obj.x == tileCoords.x && obj.y == tileCoords.y) {
 //				return true;
@@ -311,7 +264,7 @@ public class Handler {
 		for(Chunk chunk : chunks_on_screen) {
 			for(GameObject obj : chunk.getEntities()) {
 				if(obj.getBounds() != null) {
-					if(obj.getBounds().contains(coords)) {
+					if(obj.getBounds().contains(coords) || obj.getX() == coords.x && obj.getY() == coords.y) {
 						return true;
 					}
 				} else {

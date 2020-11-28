@@ -8,10 +8,7 @@ import java.util.function.Function;
 
 import game.assets.HealthBar;
 import game.assets.entities.Player;
-import game.system.main.Camera;
-import game.system.main.Game;
-import game.system.main.GameObject;
-import game.system.main.Handler;
+import game.system.main.*;
 import game.system.inputs.MouseInput;
 import game.system.world.World;
 
@@ -53,13 +50,8 @@ public class HUD {
 			if (obj.getSelectBounds() != null) {
 				if (mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
 						obj.getSelectBounds().width, obj.getSelectBounds().height)) {
-					Rectangle obj_bounds = obj.getSelectBounds();
-					Rectangle player_bounds = Game.player.getBounds();
-					double dis = Math.sqrt((obj_bounds.getCenterX() - player_bounds.getCenterX())
-							* (obj_bounds.getCenterX() - player_bounds.getCenterX())
-							+ (obj_bounds.getCenterY() - player_bounds.getCenterY()) * (obj_bounds.getCenterY() - player_bounds.getCenterY()));
-					// System.out.println(dis);
-					if (dis < 50) {
+
+					if (Helpers.getDistanceBetweenBounds(Game.player.getBounds(), obj.getSelectBounds()) < Game.player.REACH) {
 						// TODO nicer selectboxes
 						g.setColor(new Color(255, 255, 255, 127));
 						g.drawRect(obj.getSelectBounds().x, obj.getSelectBounds().y, obj.getSelectBounds().width,

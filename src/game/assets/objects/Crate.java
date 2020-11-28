@@ -83,6 +83,10 @@ public class Crate extends GameObject {
 
     public void render(Graphics g) {
         g.drawImage(Textures.tileSetHouseBlocks.get(6), x, y, width, height, null);
+        if(Game.inventorySystem.openInventoriesContains(this.inv)) {
+            g.setColor(new Color(255, 255, 255, 127));
+            g.drawRect(getSelectBounds().x, getSelectBounds().y, getSelectBounds().width, getSelectBounds().height);
+        }
     }
 
     public Rectangle getBounds() {

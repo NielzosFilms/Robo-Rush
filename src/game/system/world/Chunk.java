@@ -233,4 +233,8 @@ public class Chunk {
 			entities.get(zIndex).add(ent);
 		}
 	}
+
+	public void addLight(Light light) {
+		lights.add(light);
+	}
 }
