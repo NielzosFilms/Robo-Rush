@@ -6,7 +6,7 @@ import java.util.Random;
 
 import game.enums.ITEM_ID;
 import game.assets.items.Item;
-import game.assets.items.ItemStick;
+import game.assets.items.Item_Stick;
 import game.system.main.Game;
 import game.system.main.GameObject;
 import game.enums.ID;
@@ -36,7 +36,7 @@ public class Branch extends GameObject {
     }
 
     public Item getItem() {
-        return new ItemStick(1, ITEM_ID.Stick);
+        return new Item_Stick(1, ITEM_ID.Stick);
     }
 
     public void interact() {

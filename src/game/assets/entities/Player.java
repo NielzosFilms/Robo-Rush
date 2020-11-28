@@ -4,12 +4,13 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
-import game.assets.items.ItemCrate;
+import game.assets.items.Item_Crate;
+import game.assets.items.tools.Tool_WoodenAxe;
 import game.system.inventory.Inventory;
 import game.enums.ITEM_ID;
 import game.assets.items.Item;
-import game.assets.items.ItemRock;
-import game.assets.items.ItemStick;
+import game.assets.items.Item_Rock;
+import game.assets.items.Item_Stick;
 import game.system.inventory.InventorySystem;
 import game.system.main.Game;
 import game.system.main.GameObject;
@@ -22,6 +23,7 @@ import game.textures.Textures;
 
 public class Player extends GameObject {
 	private static final int ATTACK_DELAY = 15;
+	private static final int DEFAULT_ATTACK_DAMAGE = 1;
 	public final int REACH = 50;
 	Random r = new Random();
 	private KeyInput keyInput;
@@ -43,14 +45,15 @@ public class Player extends GameObject {
 		this.direction = "down";
 
 		this.inventory = new Inventory(5, 5);
-		this.inventory.addItem(new ItemRock(InventorySystem.stackSize, ITEM_ID.Rock));
-		this.inventory.addItem(new ItemStick(InventorySystem.stackSize, ITEM_ID.Stick));
-		this.inventory.addItem(new ItemCrate(InventorySystem.stackSize, ITEM_ID.Crate));
+		this.inventory.addItem(new Item_Rock(InventorySystem.stackSize, ITEM_ID.Rock));
+		this.inventory.addItem(new Item_Stick(InventorySystem.stackSize, ITEM_ID.Stick));
+		this.inventory.addItem(new Item_Crate(InventorySystem.stackSize, ITEM_ID.Crate));
 
 		this.hotbar = new Inventory(5, 1);
 		int hotbar_x = Game.WIDTH / 2 - this.hotbar.getInventoryBounds().width / 2;
 		int hotbar_y = Game.HEIGHT - this.hotbar.getInventoryBounds().height;
 		this.hotbar.setXY(hotbar_x, hotbar_y);
+		this.hotbar.addItem(new Tool_WoodenAxe(ITEM_ID.Wooden_Axe));
 
 		// default = 100
 		this.health = 75;
@@ -271,7 +274,16 @@ public class Player extends GameObject {
 	public int getExpectedDamage() {
 		// Get hotbar selected item
 		// Calculate damage output
-		return 4;
+		int damage_output = DEFAULT_ATTACK_DAMAGE;
+//		if(Game.inventorySystem.isHolding()) {
+//			Item holding = Game.inventorySystem.getHolding();
+//			damage_output += holding.getDamage();
+//		}
+		Item holding = Game.inventorySystem.getHotbarSelectedItem();
+		if(holding != null) {
+			damage_output += holding.getDamage();
+		}
+		return damage_output;
 	}
 
 }

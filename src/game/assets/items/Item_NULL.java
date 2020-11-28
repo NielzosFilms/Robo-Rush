@@ -4,12 +4,12 @@ import game.enums.ITEM_ID;
 import game.enums.ID;
 import game.textures.Textures;
 
-public class ItemStick extends Item {
+public class Item_NULL extends Item {
 
-    public ItemStick(int amount, ITEM_ID itemType) {
+    public Item_NULL(int amount, ITEM_ID itemType) {
         super(amount, itemType);
-        this.tex = Textures.stick.get(3);
-        this.itemGround = new ItemGround(0, 0, 1, ID.Item, this);
+        this.tex = Textures.placeholder;
+        this.itemGround = new Item_Ground(0, 0, 1, ID.NULL, this);
     }
 
     @Override

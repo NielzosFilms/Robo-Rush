@@ -123,22 +123,6 @@ public class KeyInput extends KeyAdapter {
 		if (key == KeyEvent.VK_F4) Game.DEDUG_MODE = !Game.DEDUG_MODE;
 	}
 
-	public void tick() {
-//		for (LinkedList<GameObject> list : handler.object_entities) {
-//			for (int i = 0; i < list.size(); i++) {
-//				GameObject tempObject = list.get(i);
-//				if (tempObject.getId() == ID.Player) {
-//					/*
-//					 * if(keysDown.get(KeyEvent.VK_W) == true) tempObject.setVelY(-5);
-//					 * if(keysDown.get(KeyEvent.VK_S) == true) tempObject.setVelY(5);
-//					 * if((keysDown.get(KeyEvent.VK_W) == true && keysDown.get(KeyEvent.VK_S) ==
-//					 * true) || (keysDown.get(KeyEvent.VK_W) == false && keysDown.get(KeyEvent.VK_S)
-//					 * == false)) tempObject.setVelY(0);
-//					 */
-//
-//				}
-//			}
-//		}
-	}
+	public void tick() {}
 
 }

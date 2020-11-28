@@ -4,12 +4,12 @@ import game.enums.ITEM_ID;
 import game.enums.ID;
 import game.textures.Textures;
 
-public class ItemRock extends Item {
+public class Item_Wood extends Item {
 
-    public ItemRock(int amount, ITEM_ID itemType) {
+    public Item_Wood(int amount, ITEM_ID itemType) {
         super(amount, itemType);
-        this.tex = Textures.stone.get(3);
-        this.itemGround = new ItemGround(0, 0, 1, ID.Item, this);
+        this.tex = Textures.tileSetNatureBlocks.get(23);
+        this.itemGround = new Item_Ground(0, 0, 1, ID.Item, this);
     }
 
     @Override

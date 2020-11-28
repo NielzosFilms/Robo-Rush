@@ -1,8 +1,6 @@
 package game.assets.objects;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Random;
 
 import game.assets.HealthBar;
@@ -16,7 +14,6 @@ import game.system.inventory.InventorySystem;
 import game.system.main.Game;
 import game.system.main.GameObject;
 import game.enums.ID;
-import game.system.main.Helpers;
 import game.system.main.Settings;
 import game.textures.Textures;
 
@@ -37,7 +34,7 @@ public class Crate extends GameObject {
         //fillInventory();
         inv.setXY(300, 100);
 
-        healthBar = new HealthBar(x - 4, y - 8, 0, 10);
+        healthBar = new HealthBar(x - 4, y - 8, 0, 3);
     }
 
     private void fillInventory() {
@@ -45,9 +42,9 @@ public class Crate extends GameObject {
             boolean again = true;
             Item item;
             if(rand.nextInt(2) == 0) {
-                item = new ItemRock(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Rock);
+                item = new Item_Rock(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Rock);
             } else {
-                item = new ItemStick(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Stick);
+                item = new Item_Stick(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Stick);
             }
             item.setAmount(rand.nextInt(InventorySystem.stackSize));
             while(again) {
@@ -112,7 +109,7 @@ public class Crate extends GameObject {
         for(InventorySlot slot : inv.getSlots()) {
             if(slot.hasItem()) {
                 Item inv_item = slot.getItem();
-                ItemGround gnd_item = inv_item.getItemGround();
+                Item_Ground gnd_item = inv_item.getItemGround();
                 gnd_item.setX(x);
                 gnd_item.setY(y);
                 Game.handler.addObject(gnd_item);

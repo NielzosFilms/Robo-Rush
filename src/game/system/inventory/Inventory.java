@@ -1,7 +1,7 @@
 package game.system.inventory;
 
 import game.assets.items.Item;
-import game.assets.items.ItemGround;
+import game.assets.items.Item_Ground;
 import game.system.inputs.MouseInput;
 import game.system.main.Game;
 
@@ -60,7 +60,7 @@ public class Inventory {
 					if(rest != null) this.addItem(rest);
 				}
 			} else {
-				ItemGround item_gnd = item.getItemGround();
+				Item_Ground item_gnd = item.getItemGround();
 				Point new_coords = new Point(Game.player.getX(), Game.player.getY());
 				item_gnd.setX(new_coords.x);
 				item_gnd.setY(new_coords.y);

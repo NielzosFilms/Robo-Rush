@@ -39,6 +39,10 @@ public class Textures {
 	public static BufferedImage healthbar;
 	private static BufferedImage healthbar_content_img;
 
+	//ITEMS
+	private static BufferedImage tools_png;
+	public static List<BufferedImage> tools = new ArrayList<>();
+
 	public static List<BufferedImage> tileSetForestBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> tileSetDesertBlocks = new ArrayList<BufferedImage>();
 	public static List<BufferedImage> tileSetWaterBlocks = new ArrayList<BufferedImage>();
@@ -71,6 +75,8 @@ public class Textures {
 
 		healthbar = loader.loadImage("assets/main/hud/healthbar.png");
 		healthbar_content_img = loader.loadImage("assets/main/hud/healthbar_content.png");
+
+		tools_png = loader.loadImage("assets/items/tools.png");
 
 		// height_map = loader.loadImage("assets/main/height_map.png");
 
@@ -133,6 +139,13 @@ public class Textures {
 		for (int i = 0; i < stone_png.getHeight(); i += 16) {
 			for (int j = 0; j < stone_png.getWidth(); j += 16) {
 				stone.add(stone_ss.grabImage(j, i, 16, 16));
+			}
+		}
+
+		SpriteSheet tools_ss = new SpriteSheet(tools_png);
+		for (int i = 0; i < tools_png.getHeight(); i += 16) {
+			for (int j = 0; j < tools_png.getWidth(); j += 16) {
+				tools.add(tools_ss.grabImage(j, i, 16, 16));
 			}
 		}
 

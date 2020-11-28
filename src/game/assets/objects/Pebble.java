@@ -7,8 +7,8 @@ import java.util.Random;
 
 import game.enums.ITEM_ID;
 import game.assets.items.Item;
-import game.assets.items.ItemGround;
-import game.assets.items.ItemRock;
+import game.assets.items.Item_Ground;
+import game.assets.items.Item_Rock;
 import game.system.main.Game;
 import game.system.main.GameObject;
 import game.enums.ID;
@@ -42,11 +42,11 @@ public class Pebble extends GameObject {
     }
 
     public Item getItem() {
-        return new ItemRock(5, ITEM_ID.Rock);
+        return new Item_Rock(5, ITEM_ID.Rock);
     }
 
     public void interact() {
-        Game.handler.addObject(new ItemGround(x, y, 1, ID.Item, new ItemRock(5, ITEM_ID.Rock)));
+        Game.handler.addObject(new Item_Ground(x, y, 1, ID.Item, new Item_Rock(5, ITEM_ID.Rock)));
         Game.handler.findAndRemoveObject(this);
         //Game.inventorySystem.pickupItemToPlayerInv(this);
     }

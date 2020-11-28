@@ -8,7 +8,7 @@ import game.system.main.GameObject;
 import game.enums.ID;
 import game.textures.Textures;
 
-public class ItemGround extends GameObject {
+public class Item_Ground extends GameObject {
 
 	private Random r = new Random();
 
@@ -20,7 +20,7 @@ public class ItemGround extends GameObject {
 
 	private double buffer_x, buffer_y;
 
-	public ItemGround(int x, int y, int z_index, ID id, Item inventoryItem) {
+	public Item_Ground(int x, int y, int z_index, ID id, Item inventoryItem) {
 		super(x, y, z_index, id);
 		this.inventoryItem = inventoryItem;
 		velY = (r.nextDouble() * 3) - 2;

@@ -8,12 +8,12 @@ import game.textures.Textures;
 
 import java.awt.*;
 
-public class ItemCrate extends Item {
-	public ItemCrate(int amount, ITEM_ID itemType) {
+public class Item_Crate extends Item {
+	public Item_Crate(int amount, ITEM_ID itemType) {
 		super(amount, itemType);
 		this.setPlaceable(true);
 		this.tex = Textures.tileSetHouseBlocks.get(6);
-		this.itemGround = new ItemGround(0, 0, 1, ID.Item, this);
+		this.itemGround = new Item_Ground(0, 0, 1, ID.Item, this);
 	}
 
 	public boolean place(int x, int y) {

@@ -2,7 +2,7 @@ package game.system.inventory;
 
 import game.assets.entities.Player;
 import game.assets.items.Item;
-import game.assets.items.ItemGround;
+import game.assets.items.Item_Ground;
 import game.system.main.*;
 import game.system.inputs.MouseInput;
 import game.system.world.World;
@@ -10,6 +10,7 @@ import game.system.world.World;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 
 public class InventorySystem {
@@ -27,7 +28,7 @@ public class InventorySystem {
 	private Camera cam;
 	public Inventory player_hotbar;
 
-	public int hotbar_selected;
+	public int hotbar_selected = 0;
 	private ArrayList<Inventory> open_inventories = new ArrayList<>();
 
 	//public static boolean player_inventory_open = true;
@@ -78,6 +79,12 @@ public class InventorySystem {
 		for(int i=0; i<open_inventories.size(); i++) {
 			Inventory inv = open_inventories.get(i);
 			inv.render(g);
+			if(inv == player_hotbar) {
+				Rectangle bnds = inv.getSlots().get(hotbar_selected).getBounds();
+				Logger.print(String.valueOf(hotbar_selected));
+				g.setColor(new Color(255, 255, 255, 127));
+				g.drawRect(bnds.x, bnds.y, bnds.width, bnds.height);
+			}
 		}
 		if(isHolding()) {
 			if(!holding.placeable()) {
@@ -124,15 +131,40 @@ public class InventorySystem {
 		}
 	}
 
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		if (!inventoryIsOpen()) {
+			int new_index = hotbar_selected + e.getWheelRotation();
+			if (new_index > player_hotbar.getSizeX() - 1) {
+				new_index = 0;
+			} else if (new_index < 0) {
+				new_index = player_hotbar.getSizeX() - 1;
+			}
+			setHotbarSelected(new_index);
+		}
+	}
+
 	public void keyPressed(KeyEvent e) {
 		if(holding != null) {
-			if(e.getKeyCode() == KeyEvent.VK_Q) {
-				ItemGround item_gnd = holding.getItemGround();
-				Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2, cam);
-				item_gnd.setX(world_coords.x);
-				item_gnd.setY(world_coords.y);
-				dropItem(item_gnd);
+			switch (e.getKeyCode()) {
+				case KeyEvent.VK_Q -> {
+					Item_Ground item_gnd = holding.getItemGround();
+					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2, cam);
+					item_gnd.setX(world_coords.x);
+					item_gnd.setY(world_coords.y);
+					dropItem(item_gnd);
+				}
 			}
+		}
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_1 -> setHotbarSelected(0);
+			case KeyEvent.VK_2 -> setHotbarSelected(1);
+			case KeyEvent.VK_3 -> setHotbarSelected(2);
+			case KeyEvent.VK_4 -> setHotbarSelected(3);
+			case KeyEvent.VK_5 -> setHotbarSelected(4);
+			case KeyEvent.VK_6 -> setHotbarSelected(5);
+			case KeyEvent.VK_7 -> setHotbarSelected(6);
+			case KeyEvent.VK_8 -> setHotbarSelected(7);
+			case KeyEvent.VK_9 -> setHotbarSelected(8);
 		}
 	}
 
@@ -165,7 +197,7 @@ public class InventorySystem {
 		}
 	}
 
-	public void dropItem(ItemGround item) {
+	public void dropItem(Item_Ground item) {
 		handler.addObject(item);
 		holding = null;
 	}
@@ -206,6 +238,32 @@ public class InventorySystem {
 			}
 		}
 		return false;
+	}
+
+	public void setHotbarSelected(int index) {
+		this.hotbar_selected = Helpers.clampInt(index, 0, this.player_hotbar.getSizeX() - 1);
+	}
+
+	public void addHotbarSelected(int amount) {
+		int new_index = this.hotbar_selected + amount;
+		if(new_index > this.player_hotbar.getSizeX() - 1) {
+			this.setHotbarSelected(0);
+		} else {
+			this.setHotbarSelected(new_index);
+		}
+	}
+
+	public void subHotbarSelected(int amount) {
+		int new_index = this.hotbar_selected - amount;
+		if(new_index < 0) {
+			this.setHotbarSelected(this.player_hotbar.getSizeX()-1);
+		} else {
+			this.setHotbarSelected(new_index);
+		}
+	}
+
+	public Item getHotbarSelectedItem() {
+		return this.player_hotbar.getSlots().get(hotbar_selected).getItem();
 	}
 
 }

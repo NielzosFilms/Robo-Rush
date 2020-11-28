@@ -96,16 +96,7 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		//System.out.println("Mouse Wheel: "+e.getWheelRotation());
-		if (!inventorySystem.inventoryIsOpen()) {
-			int new_index = inventorySystem.hotbar_selected + e.getWheelRotation();
-			if (new_index > inventorySystem.player_hotbar.getSizeX() - 1) {
-				new_index = 0;
-			} else if (new_index < 0) {
-				new_index = inventorySystem.player_hotbar.getSizeX() - 1;
-			}
-			inventorySystem.hotbar_selected = new_index;
-		}
+		inventorySystem.mouseWheelMoved(e);
 	}
 
 	public boolean mouseOverLocalVar(int x, int y, int width, int height) {

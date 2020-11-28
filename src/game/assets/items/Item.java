@@ -9,8 +9,11 @@ public abstract class Item implements Cloneable {
     protected int amount;
     protected ITEM_ID itemType;
     protected BufferedImage tex;
-    protected ItemGround itemGround;
+    protected Item_Ground itemGround;
+    protected int durability = 100;
+    protected int damage = 0;
     protected boolean placeable = false;
+    protected boolean stackable = true;
 
     public Item(int amount, ITEM_ID itemType) {
         this.amount = amount;
@@ -23,7 +26,7 @@ public abstract class Item implements Cloneable {
         g.setFont(font);
         g.setColor(Color.WHITE);
         g.drawImage(this.tex, x, y, 16, 16, null);
-        g.drawString("" + this.amount, x, y + 16);
+        if(stackable) g.drawString("" + this.amount, x, y + 16);
 
         g.drawString(this.itemType.toString(), x, y + 2);
     }
@@ -56,11 +59,11 @@ public abstract class Item implements Cloneable {
         this.tex = tex;
     }
 
-    public ItemGround getItemGround() {
-        return new ItemGround(itemGround.getX(), itemGround.getY(), itemGround.getZIndex(), itemGround.getId(), this);
+    public Item_Ground getItemGround() {
+        return new Item_Ground(itemGround.getX(), itemGround.getY(), itemGround.getZIndex(), itemGround.getId(), this);
     }
 
-    public void setItemGround(ItemGround itemGround) {
+    public void setItemGround(Item_Ground itemGround) {
         this.itemGround = itemGround;
     }
 
@@ -77,4 +80,36 @@ public abstract class Item implements Cloneable {
     }
 
     public abstract boolean place(int x, int y);
+
+    public int getDurability() {
+        return durability;
+    }
+
+    public void setDurability(int durability) {
+        this.durability = durability;
+    }
+
+    public void subDurability(int durability) {
+        this.durability -= durability;
+    }
+
+    public void addDurability(int durability) {
+        this.durability += durability;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public boolean isStackable() {
+        return stackable;
+    }
+
+    public void setStackable(boolean stackable) {
+        this.stackable = stackable;
+    }
 }
