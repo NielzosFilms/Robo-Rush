@@ -19,7 +19,7 @@ On this page is some more in depth info about the game.
 ### World Generation Info
 - Infinite terrain generation
 - `World` consists of multiple `Chunk's`
-- 'Biome' generation is based off of this chart:
+- `Biome` generation is based off of this chart:
 <img src="./biome_guide.png" alt="Biome Guide Chart">
 
 ------------------------------------------------------------------------
