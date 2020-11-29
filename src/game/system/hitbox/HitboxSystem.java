@@ -4,7 +4,6 @@ import game.system.main.GameObject;
 import game.system.main.Handler;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class HitboxSystem {
