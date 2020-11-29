@@ -54,18 +54,6 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	public void mousePressed(MouseEvent e) {
 		switch(Game.game_state) {
 			case Game -> {
-				LinkedList<GameObject> objs = handler.getSelectableObjects();
-				for (GameObject obj : objs) {
-					if (Game.mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
-							obj.getSelectBounds().width, obj.getSelectBounds().height)) {
-						if (Helpers.getDistanceBetweenBounds(Game.player.getBounds(), obj.getSelectBounds()) < Game.player.REACH) {
-							//TODO Change damage to player holding
-							if(player.canHit()) {
-								obj.hit(player.getExpectedDamage());
-							}
-						}
-					}
-				}
 				hud.mousePressed(e);
 				inventorySystem.mouseClicked(e);
 			}

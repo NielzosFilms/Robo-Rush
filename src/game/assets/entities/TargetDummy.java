@@ -1,7 +1,5 @@
 package game.assets.entities;
 
-import game.assets.entities.particles.Particle;
-import game.assets.entities.particles.Particle_DamageNumber;
 import game.assets.items.Item;
 import game.audioEngine.AudioFiles;
 import game.audioEngine.AudioPlayer;
@@ -55,7 +53,6 @@ public class TargetDummy extends GameObject {
     }
 
     public void hit(int damage) {
-        Game.ps.addParticle(new Particle_DamageNumber(x, y-height / 2, 0f, -0.3f, 40, damage));
         AudioPlayer.playSound(AudioFiles.crate_impact, Settings.sound_vol, false, 0);
     }
 }

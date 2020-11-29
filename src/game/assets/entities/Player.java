@@ -4,11 +4,12 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
-import game.assets.entities.particles.Particle_DamageNumber;
 import game.assets.items.Item_Crate;
 import game.assets.items.tools.Tool_WoodenAxe;
 import game.assets.items.tools.Tool_WoodenPickaxe;
 import game.assets.items.tools.Tool_WoodenSword;
+import game.system.hitbox.Hitbox;
+import game.system.hitbox.HitboxContainer;
 import game.system.inventory.Inventory;
 import game.enums.ITEM_ID;
 import game.assets.items.Item;
@@ -265,10 +266,16 @@ public class Player extends GameObject {
 	}
 
 	public void hit(int damage) {
-		Game.ps.addParticle(new Particle_DamageNumber(x, y-height / 2, 0f, -0.3f, 40, damage));
+
 	}
 
-	public boolean canHit() {
+	public void attack() {
+		Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
+				new Hitbox(x-4, y-4, 32, 32, 0, 30, getExpectedDamage()),
+		}, this));
+	}
+
+	public boolean canAttack() {
 		return attack_timer == 0;
 	}
 

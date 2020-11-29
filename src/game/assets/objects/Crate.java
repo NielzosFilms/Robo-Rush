@@ -34,7 +34,7 @@ public class Crate extends GameObject {
         //fillInventory();
         inv.setXY(300, 100);
 
-        healthBar = new HealthBar(x - 4, y - 8, 0, 3);
+        healthBar = new HealthBar(x - 4, y - 8, 0, 7);
     }
 
     private void fillInventory() {

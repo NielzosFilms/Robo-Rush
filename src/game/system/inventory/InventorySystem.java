@@ -120,19 +120,21 @@ public class InventorySystem {
 					}
 				}
 			}
+		} else {
+			if(Game.player.canAttack()) {
+				Game.player.attack();
+			}
 		}
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if (!inventoryIsOpen()) {
-			int new_index = hotbar_selected + e.getWheelRotation();
-			if (new_index > player_hotbar.getSizeX() - 1) {
-				new_index = 0;
-			} else if (new_index < 0) {
-				new_index = player_hotbar.getSizeX() - 1;
-			}
-			setHotbarSelected(new_index);
+		int new_index = hotbar_selected + e.getWheelRotation();
+		if (new_index > player_hotbar.getSizeX() - 1) {
+			new_index = 0;
+		} else if (new_index < 0) {
+			new_index = player_hotbar.getSizeX() - 1;
 		}
+		setHotbarSelected(new_index);
 	}
 
 	public void keyPressed(KeyEvent e) {

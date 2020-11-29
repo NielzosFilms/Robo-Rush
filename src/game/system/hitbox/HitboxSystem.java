@@ -1,5 +1,7 @@
 package game.system.hitbox;
 
+import game.system.particles.Particle_DamageNumber;
+import game.system.main.Game;
 import game.system.main.GameObject;
 import game.system.main.Handler;
 
@@ -29,6 +31,7 @@ public class HitboxSystem {
                         if(hitbox.active()) {
                             if(object.getBounds().intersects(hitbox.getBounds())) {
                                 object.hit(hitbox.getDamage());
+                                Game.ps.addParticle(new Particle_DamageNumber(object.getX(), object.getY(), 0f, -0.3f, 40, hitbox.getDamage()));
                                 hitboxContainers.get(i).addHitObject(object);
                             }
                         }

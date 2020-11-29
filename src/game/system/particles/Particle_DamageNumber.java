@@ -1,10 +1,9 @@
-package game.assets.entities.particles;
+package game.system.particles;
 
 import game.assets.items.Item;
 import game.enums.ID;
 import game.system.main.Game;
 import game.system.main.GameObject;
-import game.system.main.Handler;
 import game.textures.Fonts;
 
 import java.awt.*;

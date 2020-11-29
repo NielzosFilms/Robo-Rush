@@ -2,11 +2,9 @@ package game.system.main;
 
 import java.awt.Graphics;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
-import game.assets.entities.particles.Particle;
-import game.assets.entities.particles.ParticleSystem;
+import game.system.particles.ParticleSystem;
 import game.enums.ID;
 import game.system.lighting.Light;
 import game.assets.tiles.Tile;
@@ -93,12 +91,6 @@ public class Handler {
 				entities.get(obj.getZIndex()).add(obj);
 			}
 
-		}
-
-		// particles
-		LinkedList<GameObject> particles = ps.getParticles();
-		for (GameObject particle : particles) {
-			entities.get(particle.getZIndex()).add(particle);
 		}
 
 		// RENDER

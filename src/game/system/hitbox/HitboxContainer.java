@@ -11,11 +11,12 @@ public class HitboxContainer {
     private LinkedList<Hitbox> hitboxes = new LinkedList<>();
     private LinkedList<GameObject> objects_hit = new LinkedList<>();
 
-    public HitboxContainer(Hitbox[] hitboxes) {
+    public HitboxContainer(Hitbox[] hitboxes, GameObject created_by) {
         for(Hitbox hitbox : hitboxes) {
             hitbox.setParent(this);
             this.hitboxes.add(hitbox);
         }
+        objects_hit.add(created_by);
     }
 
     public void tick() {

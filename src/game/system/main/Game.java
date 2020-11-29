@@ -11,16 +11,11 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import game.assets.entities.TargetDummy;
-import game.assets.objects.Crate;
 import game.enums.GAMESTATES;
 import game.enums.ID;
-import game.enums.MENUSTATES;
 import game.audioEngine.AudioFiles;
 import game.assets.entities.Player;
-import game.assets.entities.particles.Particle;
-import game.assets.entities.particles.ParticleSystem;
-import game.system.hitbox.Hitbox;
-import game.system.hitbox.HitboxContainer;
+import game.system.particles.ParticleSystem;
 import game.system.hitbox.HitboxSystem;
 import game.system.hud.HUD;
 import game.system.inputs.KeyInput;
@@ -141,11 +136,6 @@ public class Game extends Canvas implements Runnable {
 //		handler.addObject(new Crate(16, 0, 1, ID.Crate));
 		handler.addObject(new TargetDummy(0, 0, 1, ID.NULL));
 		//ps.addParticle(new Particle(0, 0, 3, ID.Particle, 0, -1, 60, ps));
-		hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
-				new Hitbox(-16, -16, 4, 4, 105, 30, 10),
-				new Hitbox(-12, -16, 4, 4, 120, 30, 10),
-		}));
-
 	}
 
 	public synchronized void start() {
@@ -251,6 +241,7 @@ public class Game extends Canvas implements Runnable {
 			g2d.translate(cam.getX(), cam.getY()); // start of cam
 
 			handler.render(g, WIDTH, HEIGHT);
+			ps.render(g);
 			hitboxSystem.render(g);
 
 			// ongeveer 30-35 ms

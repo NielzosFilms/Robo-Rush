@@ -1,4 +1,4 @@
-package game.assets.entities.particles;
+package game.system.particles;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -7,7 +7,6 @@ import java.awt.Rectangle;
 import game.assets.items.Item;
 import game.system.main.Game;
 import game.system.main.GameObject;
-import game.system.main.Handler;
 import game.enums.ID;
 
 public class Particle extends GameObject {
