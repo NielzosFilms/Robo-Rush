@@ -2,7 +2,7 @@ package game.enums;
 
 public enum ID {
 
-	NULL,
+	NULL, Hitbox,
 
 	Player, Enemy, Particle, Item,
 

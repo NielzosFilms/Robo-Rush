@@ -45,7 +45,7 @@ public class HUD {
 			healthBars.get(i).render(g);
 		}
 
-		LinkedList<GameObject> objs = handler.getSelectableObjects(world);
+		LinkedList<GameObject> objs = handler.getSelectableObjects();
 		for (GameObject obj : objs) {
 			if (obj.getSelectBounds() != null) {
 				if (mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,

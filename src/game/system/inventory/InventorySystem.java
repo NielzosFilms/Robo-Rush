@@ -97,14 +97,7 @@ public class InventorySystem {
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		Inventory inv_clicked = null;
-		for(int i=0; i<open_inventories.size(); i++) {
-			Inventory inv = open_inventories.get(i);
-			if(mouseInput.mouseOverLocalRect(inv.getInventoryBounds())) {
-				inv_clicked = inv;
-				break;
-			}
-		}
+		Inventory inv_clicked = getHoveredInventory();
 		if(inv_clicked != null) {
 			inv_clicked.mouseClick(e, mouseInput, this);
 		} else {
@@ -155,15 +148,15 @@ public class InventorySystem {
 			}
 		}
 		switch (e.getKeyCode()) {
-			case KeyEvent.VK_1 -> setHotbarSelected(0);
-			case KeyEvent.VK_2 -> setHotbarSelected(1);
-			case KeyEvent.VK_3 -> setHotbarSelected(2);
-			case KeyEvent.VK_4 -> setHotbarSelected(3);
-			case KeyEvent.VK_5 -> setHotbarSelected(4);
-			case KeyEvent.VK_6 -> setHotbarSelected(5);
-			case KeyEvent.VK_7 -> setHotbarSelected(6);
-			case KeyEvent.VK_8 -> setHotbarSelected(7);
-			case KeyEvent.VK_9 -> setHotbarSelected(8);
+			case KeyEvent.VK_1 -> hotbarKeyPressed(1);
+			case KeyEvent.VK_2 -> hotbarKeyPressed(2);
+			case KeyEvent.VK_3 -> hotbarKeyPressed(3);
+			case KeyEvent.VK_4 -> hotbarKeyPressed(4);
+			case KeyEvent.VK_5 -> hotbarKeyPressed(5);
+			case KeyEvent.VK_6 -> hotbarKeyPressed(6);
+			case KeyEvent.VK_7 -> hotbarKeyPressed(7);
+			case KeyEvent.VK_8 -> hotbarKeyPressed(8);
+			case KeyEvent.VK_9 -> hotbarKeyPressed(9);
 		}
 	}
 
@@ -243,6 +236,38 @@ public class InventorySystem {
 		this.hotbar_selected = Helpers.clampInt(index, 0, this.player_hotbar.getSizeX() - 1);
 	}
 
+	private void hotbarKeyPressed(int index) {
+		index -= 1;
+		setHotbarSelected(index);
+		if(isHolding()) {
+			Item hotbar_item = getHotbarSelectedItem();
+			if(hotbar_item == null) {
+				setHotbarSelectedItem(holding);
+				clearHolding();
+			}
+		} else if(mouseOverInventory()) {
+			Inventory inv = getHoveredInventory();
+			for(int i=0; i<inv.getSlots().size(); i++) {
+				InventorySlot invSlot = inv.getSlots().get(i);
+				if(mouseInput.mouseOverLocalRect(invSlot.getBounds())) {
+					Item hotbar_item = getHotbarSelectedItem();
+					setHotbarSelectedItem(invSlot.getItem());
+					invSlot.setItem(hotbar_item);
+				}
+			}
+		}
+	}
+
+	public Inventory getHoveredInventory() {
+		for(int i=0; i<open_inventories.size(); i++) {
+			Inventory inv = open_inventories.get(i);
+			if(mouseInput.mouseOverLocalRect(inv.getInventoryBounds())) {
+				return inv;
+			}
+		}
+		return null;
+	}
+
 	public void addHotbarSelected(int amount) {
 		int new_index = this.hotbar_selected + amount;
 		if(new_index > this.player_hotbar.getSizeX() - 1) {
@@ -263,6 +288,10 @@ public class InventorySystem {
 
 	public Item getHotbarSelectedItem() {
 		return this.player_hotbar.getSlots().get(hotbar_selected).getItem();
+	}
+
+	public void setHotbarSelectedItem(Item item) {
+		this.player_hotbar.getSlots().get(hotbar_selected).setItem(item);
 	}
 
 }

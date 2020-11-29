@@ -60,7 +60,7 @@ public class KeyInput extends KeyAdapter {
 			}
 
 			if (key == KeyEvent.VK_E) {
-				LinkedList<GameObject> objs = handler.getSelectableObjects(world);
+				LinkedList<GameObject> objs = handler.getSelectableObjects();
 				for (GameObject obj : objs) {
 					if (Game.mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
 							obj.getSelectBounds().width, obj.getSelectBounds().height)) {

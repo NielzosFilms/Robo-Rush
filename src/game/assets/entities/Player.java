@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
+import game.assets.entities.particles.Particle_DamageNumber;
 import game.assets.items.Item_Crate;
 import game.assets.items.tools.Tool_WoodenAxe;
 import game.assets.items.tools.Tool_WoodenPickaxe;
@@ -263,9 +264,8 @@ public class Player extends GameObject {
 
 	}
 
-	@Override
 	public void hit(int damage) {
-
+		Game.ps.addParticle(new Particle_DamageNumber(x, y-height / 2, 0f, -0.3f, 40, damage));
 	}
 
 	public boolean canHit() {

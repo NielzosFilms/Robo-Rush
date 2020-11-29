@@ -19,6 +19,9 @@ import game.audioEngine.AudioFiles;
 import game.assets.entities.Player;
 import game.assets.entities.particles.Particle;
 import game.assets.entities.particles.ParticleSystem;
+import game.system.hitbox.Hitbox;
+import game.system.hitbox.HitboxContainer;
+import game.system.hitbox.HitboxSystem;
 import game.system.hud.HUD;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
@@ -38,10 +41,10 @@ public class Game extends Canvas implements Runnable {
 	public static final int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 2.33.0 INFDEV";
+	public static final String VERSION = "ALPHA V 2.36.0 INFDEV";
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
-	public static boolean DEDUG_MODE = false;
+	public static boolean DEDUG_MODE = true;
 
 	private Thread thread;
 	private boolean running = true;
@@ -57,6 +60,7 @@ public class Game extends Canvas implements Runnable {
 	public static KeyInput keyInput;
 	public static MouseInput mouseInput;
 	public static Collision collision;
+	public static HitboxSystem hitboxSystem;
 	public static Camera cam;
 	public static LevelLoader ll;
 
@@ -79,6 +83,7 @@ public class Game extends Canvas implements Runnable {
 		mouseInput = new MouseInput();
 		cam = new Camera(0, 0);
 		collision = new Collision();
+		hitboxSystem = new HitboxSystem();
 
 		textures = new Textures();
 		audioFiles = new AudioFiles();
@@ -114,6 +119,7 @@ public class Game extends Canvas implements Runnable {
 		keyInput.setRequirements(handler, inventorySystem, world, menuSystem);
 		mouseInput.setRequirements(this, inventorySystem, menuSystem, cam, hud, handler, world, player);
 		collision.setRequirements(handler, world, player);
+		hitboxSystem.setRequirements(handler);
 
 		inventorySystem.setRequirements(handler, mouseInput, world, player, cam);
 		lightingSystem.setRequirements(handler, world, cam);
@@ -135,6 +141,11 @@ public class Game extends Canvas implements Runnable {
 //		handler.addObject(new Crate(16, 0, 1, ID.Crate));
 		handler.addObject(new TargetDummy(0, 0, 1, ID.NULL));
 		//ps.addParticle(new Particle(0, 0, 3, ID.Particle, 0, -1, 60, ps));
+		hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
+				new Hitbox(-16, -16, 4, 4, 105, 30, 10),
+				new Hitbox(-12, -16, 4, 4, 120, 30, 10),
+		}));
+
 	}
 
 	public synchronized void start() {
@@ -187,6 +198,7 @@ public class Game extends Canvas implements Runnable {
 			ps.tick();
 			world.tick();
 			collision.tick();
+			hitboxSystem.tick();
 
 			inventorySystem.tick();
 
@@ -239,6 +251,7 @@ public class Game extends Canvas implements Runnable {
 			g2d.translate(cam.getX(), cam.getY()); // start of cam
 
 			handler.render(g, WIDTH, HEIGHT);
+			hitboxSystem.render(g);
 
 			// ongeveer 30-35 ms
 			Long start = System.currentTimeMillis();

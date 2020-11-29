@@ -148,7 +148,31 @@ public class Handler {
 		// remove tile
 	}
 
-	public LinkedList<GameObject> getSelectableObjects(World world) {
+	public LinkedList<GameObject> getBoundsObjects() {
+		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
+		LinkedList<GameObject> objs = new LinkedList<GameObject>();
+
+		for (LinkedList<GameObject> list : object_entities) {
+			for (int i = 0; i < list.size(); i++) {
+				GameObject tempObject = list.get(i);
+				if (tempObject.getBounds() != null) {
+					objs.add(tempObject);
+				}
+			}
+		}
+
+		for (Chunk chunk : chunks_on_screen) {
+			for (GameObject tempObject : chunk.getEntities()) {
+				if (tempObject.getBounds() != null) {
+					objs.add(tempObject);
+				}
+			}
+		}
+
+		return objs;
+	}
+
+	public LinkedList<GameObject> getSelectableObjects() {
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
 		LinkedList<GameObject> objs = new LinkedList<GameObject>();
 		// ID[] ids = { ID.Tree, ID.Mushroom, ID.Item, ID.Pebble };
