@@ -1,7 +1,6 @@
 package game.assets.entities;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.Random;
 
 import game.assets.items.Item_Crate;
@@ -19,13 +18,10 @@ import game.assets.items.Item;
 import game.assets.items.Item_Rock;
 import game.assets.items.Item_Stick;
 import game.system.inventory.InventorySystem;
-import game.system.main.Game;
-import game.system.main.GameObject;
+import game.system.main.*;
 import game.enums.ID;
 import game.system.inputs.KeyInput;
 import game.enums.BIOME;
-import game.system.main.Logger;
-import game.system.main.Settings;
 import game.system.world.World;
 import game.textures.Animation;
 import game.textures.Textures;
@@ -276,6 +272,9 @@ public class Player extends GameObject {
 	public void attack(DIRECTIONS direction) {
 		int dmg = getExpectedDamage();
 		AudioPlayer.playSound(AudioFiles.swing, 0.5f, false, 0);
+		// TODO make direction function 8 way instead of 4
+		Point screenCoords = Helpers.getScreenCoords((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), Game.cam);
+		Logger.print(Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y)).toString());
 		switch (direction) {
 			case up -> {
 				Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{

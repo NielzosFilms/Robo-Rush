@@ -1,5 +1,6 @@
 package game.system.main;
 
+import game.enums.DIRECTIONS;
 import game.system.inventory.InventorySystem;
 
 import java.awt.*;
@@ -64,5 +65,24 @@ public class Helpers {
         Point cent_1 = new Point((int)bounds_1.getCenterX(), (int)bounds_1.getCenterY());
         Point cent_2 = new Point((int)bounds_2.getCenterX(), (int)bounds_2.getCenterY());
         return getDistance(cent_1, cent_2);
+    }
+
+    public static DIRECTIONS getDirection(Point origin, Point target) {
+        int x_diff = Math.abs(target.x) - Math.abs(origin.x);
+        int y_diff = Math.abs(target.y) - Math.abs(origin.y);
+
+        if(Math.abs(x_diff) > Math.abs(y_diff)) {
+            if(target.x < origin.x) {
+                return DIRECTIONS.left;
+            } else {
+                return DIRECTIONS.right;
+            }
+        } else {
+            if(target.y < origin.y) {
+                return DIRECTIONS.up;
+            } else {
+                return DIRECTIONS.down;
+            }
+        }
     }
 }
