@@ -8,6 +8,9 @@ import game.assets.items.Item_Crate;
 import game.assets.items.tools.Tool_WoodenAxe;
 import game.assets.items.tools.Tool_WoodenPickaxe;
 import game.assets.items.tools.Tool_WoodenSword;
+import game.audioEngine.AudioFiles;
+import game.audioEngine.AudioPlayer;
+import game.enums.DIRECTIONS;
 import game.system.hitbox.Hitbox;
 import game.system.hitbox.HitboxContainer;
 import game.system.inventory.Inventory;
@@ -22,6 +25,7 @@ import game.enums.ID;
 import game.system.inputs.KeyInput;
 import game.enums.BIOME;
 import game.system.main.Logger;
+import game.system.main.Settings;
 import game.system.world.World;
 import game.textures.Animation;
 import game.textures.Textures;
@@ -33,7 +37,7 @@ public class Player extends GameObject {
 	Random r = new Random();
 	private KeyInput keyInput;
 
-	private String direction;
+	private DIRECTIONS direction;
 	private int health, food, water;
 	private static int needs_timer = 0;
 	private int attack_timer = 0;
@@ -47,7 +51,7 @@ public class Player extends GameObject {
 	public Player(int x, int y, int z_index, ID id, KeyInput keyInput) {
 		super(x, y, z_index, id);
 		this.keyInput = keyInput;
-		this.direction = "down";
+		this.direction = DIRECTIONS.down;
 
 		this.inventory = new Inventory(5, 5);
 		this.inventory.addItem(new Item_Rock(InventorySystem.stackSize, ITEM_ID.Rock));
@@ -103,20 +107,20 @@ public class Player extends GameObject {
 
 		if (keyInput.keysDown[2] && !keyInput.keysDown[3]) {
 			velX = -walk_speed;
-			direction = "left";
+			direction = DIRECTIONS.left;
 		} else if (keyInput.keysDown[3] && !keyInput.keysDown[2]) {
 			velX = walk_speed;
-			direction = "right";
+			direction = DIRECTIONS.right;
 		} else {
 			velX = 0;
 		}
 
 		if (keyInput.keysDown[0] && !keyInput.keysDown[1]) {
 			velY = -walk_speed;
-			direction = "up";
+			direction = DIRECTIONS.up;
 		} else if (keyInput.keysDown[1] && !keyInput.keysDown[0]) {
 			velY = walk_speed;
-			direction = "down";
+			direction = DIRECTIONS.down;
 		} else {
 			velY = 0;
 		}
@@ -163,25 +167,25 @@ public class Player extends GameObject {
 	}
 
 	private void updateAnimations() {
-		if (direction == "down") {
+		if (direction == DIRECTIONS.down) {
 			if (velY == 0) {
 				idle_down.runAnimation();
 			} else {
 				walk_down.runAnimation();
 			}
-		} else if (direction == "up") {
+		} else if (direction == DIRECTIONS.up) {
 			if (velY == 0) {
 				idle_up.runAnimation();
 			} else {
 				walk_up.runAnimation();
 			}
-		} else if (direction == "left") {
+		} else if (direction == DIRECTIONS.left) {
 			if (velX == 0) {
 				idle_left.runAnimation();
 			} else {
 				walk_left.runAnimation();
 			}
-		} else if (direction == "right") {
+		} else if (direction == DIRECTIONS.right) {
 			if (velX == 0) {
 				idle_right.runAnimation();
 			} else {
@@ -194,25 +198,25 @@ public class Player extends GameObject {
 	}
 
 	public void render(Graphics g) {
-		if (direction == "down") {
+		if (direction == DIRECTIONS.down) {
 			if (velY == 0) {
 				idle_down.drawAnimation(g, x, y);
 			} else {
 				walk_down.drawAnimation(g, x, y);
 			}
-		} else if (direction == "up") {
+		} else if (direction == DIRECTIONS.up) {
 			if (velY == 0) {
 				idle_up.drawAnimation(g, x, y);
 			} else {
 				walk_up.drawAnimation(g, x, y);
 			}
-		} else if (direction == "left") {
+		} else if (direction == DIRECTIONS.left) {
 			if (velX == 0) {
 				idle_left.drawAnimation(g, x, y);
 			} else {
 				walk_left.drawAnimation(g, x, y);
 			}
-		} else if (direction == "right") {
+		} else if (direction == DIRECTIONS.right) {
 			if (velX == 0) {
 				idle_right.drawAnimation(g, x, y);
 			} else {
@@ -269,10 +273,19 @@ public class Player extends GameObject {
 
 	}
 
-	public void attack() {
-		Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
-				new Hitbox(x-4, y-4, 32, 32, 0, 30, getExpectedDamage()),
-		}, this));
+	public void attack(DIRECTIONS direction) {
+		int dmg = getExpectedDamage();
+		AudioPlayer.playSound(AudioFiles.swing, 0.5f, false, 0);
+		switch (direction) {
+			case up -> {
+				Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
+						new Hitbox(x-8, y-16, 32, 16, 0, 10, dmg),
+				}, this));
+			}
+		}
+//		Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
+//				new Hitbox(x-4, y-4, 32, 32, 0, 30, getExpectedDamage()),
+//		}, this));
 	}
 
 	public boolean canAttack() {

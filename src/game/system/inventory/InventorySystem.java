@@ -3,6 +3,9 @@ package game.system.inventory;
 import game.assets.entities.Player;
 import game.assets.items.Item;
 import game.assets.items.Item_Ground;
+import game.audioEngine.AudioFiles;
+import game.audioEngine.AudioPlayer;
+import game.enums.DIRECTIONS;
 import game.system.main.*;
 import game.system.inputs.MouseInput;
 import game.system.world.World;
@@ -122,7 +125,7 @@ public class InventorySystem {
 			}
 		} else {
 			if(Game.player.canAttack()) {
-				Game.player.attack();
+				Game.player.attack(DIRECTIONS.up);
 			}
 		}
 	}
