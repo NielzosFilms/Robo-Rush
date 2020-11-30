@@ -269,22 +269,38 @@ public class Player extends GameObject {
 
 	}
 
-	public void attack(DIRECTIONS direction) {
+	public void attack() {
+		//Item holding = Game.inventorySystem.getHotbarSelectedItem();
 		int dmg = getExpectedDamage();
 		AudioPlayer.playSound(AudioFiles.swing, 0.5f, false, 0);
 		// TODO make direction function 8 way instead of 4
 		Point screenCoords = Helpers.getScreenCoords((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), Game.cam);
-		Logger.print(Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y)).toString());
+		DIRECTIONS direction = Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
+		Logger.print(direction.name());
+		//this.direction = direction;
+
 		switch (direction) {
 			case up -> {
 				Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
-						new Hitbox(x-8, y-16, 32, 16, 0, 10, dmg),
+						new Hitbox(x-8, y-16, 32, 16, 0, 5, dmg),
+				}, this));
+			}
+			case down -> {
+				Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
+						new Hitbox(x-8, y+getBounds().height + 16, 32, 16, 0, 5, dmg),
+				}, this));
+			}
+			case left -> {
+				Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
+						new Hitbox(x-24, y, 16, 32, 0, 5, dmg),
+				}, this));
+			}
+			case right -> {
+				Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
+						new Hitbox(x+getBounds().width + 16, y, 16, 32, 0, 5, dmg),
 				}, this));
 			}
 		}
-//		Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
-//				new Hitbox(x-4, y-4, 32, 32, 0, 30, getExpectedDamage()),
-//		}, this));
 	}
 
 	public boolean canAttack() {
@@ -307,7 +323,7 @@ public class Player extends GameObject {
 		}
 
 		attack_timer = attack_delay;
-		Logger.print("new attack_delay: " + attack_delay);
+		//Logger.print("new attack_delay: " + attack_delay);
 		return damage_output;
 	}
 

@@ -72,7 +72,9 @@ public class Helpers {
         int y_diff = Math.abs(target.y) - Math.abs(origin.y);
 
         if(Math.abs(x_diff) > Math.abs(y_diff)) {
-            if(target.x < origin.x) {
+            if(Math.abs(x_diff) > Math.abs(y_diff) - 5 && Math.abs(x_diff) < Math.abs(y_diff) + 5) {
+                return DIRECTIONS.up_left;
+            } else if(target.x < origin.x) {
                 return DIRECTIONS.left;
             } else {
                 return DIRECTIONS.right;

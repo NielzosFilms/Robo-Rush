@@ -2,6 +2,7 @@ package game.textures;
 
 import java.awt.Font;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

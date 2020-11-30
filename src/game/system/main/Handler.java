@@ -1,15 +1,14 @@
 package game.system.main;
 
-import java.awt.Graphics;
-import java.awt.Point;
-import java.util.LinkedList;
-
-import game.system.particles.ParticleSystem;
+import game.assets.tiles.Tile;
 import game.enums.ID;
 import game.system.lighting.Light;
-import game.assets.tiles.Tile;
+import game.system.particles.ParticleSystem;
 import game.system.world.Chunk;
 import game.system.world.World;
+
+import java.awt.*;
+import java.util.LinkedList;
 
 public class Handler {
 	private World world;

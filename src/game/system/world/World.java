@@ -2,15 +2,11 @@ package game.system.world;
 
 import java.awt.Graphics;
 import java.awt.Point;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Random;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.util.*;
 
+import com.google.gson.Gson;
 import game.assets.entities.Player;
 import game.enums.BIOME;
 import game.system.lighting.Light;
@@ -18,6 +14,8 @@ import game.system.main.Game;
 import game.system.main.GameObject;
 import game.system.main.Logger;
 import game.textures.Textures;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class World {
 
@@ -136,7 +134,7 @@ public class World {
 		int y = entity.getY();
 		Chunk crsp_chunk = getChunkWithCoordsPoint(getChunkPointWithCoords(x, y));
 		if (crsp_chunk != null) { // adds enemy to a chunk to be unloaded
-			Logger.print(String.valueOf(entity.getId()));
+			//Logger.print(String.valueOf(entity.getId()));
 			crsp_chunk.addEntity(entity);
 			return true;
 		}
@@ -273,18 +271,36 @@ public class World {
 		loaded = true;
 	}
 
-	public void saveChunks(String fileName) throws FileNotFoundException {
-
+	public void saveChunks() {
+		String directory = "saves/";
+		Logger.print("Save world");
 		// Gson library to save to json, makes it readable
+		/*try {
+			FileOutputStream fos = new FileOutputStream(directory + "test_save.txt");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			//PrintWriter pw = new PrintWriter(fos);
 
-		PrintWriter pw = new PrintWriter(new FileOutputStream(fileName));
-		Iterator it = chunks.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			pw.println(pair.getKey() + ";" + pair.getValue());
-			it.remove(); // avoids a ConcurrentModificationException
-		}
-		pw.close();
+			Chunk chunk = chunks.get(new Point(0, 0));
+			for(GameObject obj : chunk.getEntities()) {
+				oos.writeObject(obj);
+			}
+
+			FileInputStream fis = new FileInputStream(directory + "test_save.txt");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+
+			System.out.println(ois.readObject());
+
+			//pw.close();
+			fos.close();
+			oos.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}*/
+
 	}
 
 	public void loadChunks(String fileName) throws FileNotFoundException {

@@ -9,6 +9,7 @@ import game.textures.Textures;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 
 public class ButtonMainMenu extends Button {
     public ButtonMainMenu(int x, int y, int width, int height) {
@@ -28,6 +29,7 @@ public class ButtonMainMenu extends Button {
 
     public void handleClick(MouseEvent e) {
         Game.game_state = GAMESTATES.Menu;
+        Game.world.saveChunks();
         Game.menuSystem.setState(MENUSTATES.Main);
     }
 }

@@ -125,7 +125,7 @@ public class InventorySystem {
 			}
 		} else {
 			if(Game.player.canAttack()) {
-				Game.player.attack(DIRECTIONS.up);
+				Game.player.attack();
 			}
 		}
 	}

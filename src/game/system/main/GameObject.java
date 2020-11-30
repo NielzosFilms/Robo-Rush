@@ -3,6 +3,7 @@ package game.system.main;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 import game.assets.items.Item;
 import game.enums.ID;
