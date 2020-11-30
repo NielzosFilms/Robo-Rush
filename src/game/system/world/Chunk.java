@@ -3,6 +3,7 @@ package game.system.world;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -23,7 +24,7 @@ import game.assets.objects.Tree;
 import game.assets.structures.Structure;
 import game.textures.Textures;
 
-public class Chunk {
+public class Chunk implements Serializable {
 
 	private static Random r = new Random();
 

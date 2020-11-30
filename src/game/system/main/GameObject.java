@@ -8,7 +8,7 @@ import java.io.Serializable;
 import game.assets.items.Item;
 import game.enums.ID;
 
-public abstract class GameObject {
+public abstract class GameObject implements Serializable {
 
 	protected BufferedImage tex;
 	protected int x, y;

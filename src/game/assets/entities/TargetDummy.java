@@ -9,7 +9,9 @@ import game.system.main.GameObject;
 import game.system.main.Settings;
 import game.textures.Textures;
 
+import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
 public class TargetDummy extends GameObject {
     public TargetDummy(int x, int y, int z_index, ID id) {

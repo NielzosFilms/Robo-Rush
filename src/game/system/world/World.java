@@ -6,7 +6,6 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.util.*;
 
-import com.google.gson.Gson;
 import game.assets.entities.Player;
 import game.enums.BIOME;
 import game.system.lighting.Light;
@@ -17,7 +16,7 @@ import game.textures.Textures;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-public class World {
+public class World implements Serializable {
 
 	public static Long seed, temp_seed, moist_seed;
 	public HashMap<Point, Chunk> chunks = new HashMap<Point, Chunk>();
@@ -274,7 +273,13 @@ public class World {
 	public void saveChunks() {
 		String directory = "saves/";
 		Logger.print("Save world");
-		// Gson library to save to json, makes it readable
+		try {
+			FileOutputStream fos = new FileOutputStream(directory + "test_save.data");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		/*try {
 			FileOutputStream fos = new FileOutputStream(directory + "test_save.txt");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);

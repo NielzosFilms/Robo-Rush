@@ -7,9 +7,10 @@ import game.system.main.Game;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Inventory {
+public class Inventory implements Serializable {
 	private final int slot_w = InventorySystem.slot_w, slot_h = InventorySystem.slot_h;
 	private int x = 100, y = 100;
 	private int size_x, size_y;
