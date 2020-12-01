@@ -24,7 +24,7 @@ public class Particle extends GameObject {
 		this.lifetime = lifetime;
 		this.velX = velX;
 		this.velY = velY;
-		this.ps = Game.ps;
+		this.ps = Game.world.getPs();
 		this.alpha = 255;
 	}
 

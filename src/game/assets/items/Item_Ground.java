@@ -57,7 +57,7 @@ public class Item_Ground extends GameObject {
 		}
 		lifeTimer--;
 		if (lifeTimer <= 0) {
-			Game.handler.findAndRemoveObject(this);
+			Game.world.getHandler().findAndRemoveObject(this);
 			// Game.handler.removeObject(z_index, this);
 		}
 	}
@@ -84,7 +84,7 @@ public class Item_Ground extends GameObject {
 	}
 
 	public void interact() {
-		Game.inventorySystem.pickupItemToPlayerInv(this);
+		Game.world.getInventorySystem().pickupItemToPlayerInv(this);
 	}
 
 	@Override

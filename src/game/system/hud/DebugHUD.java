@@ -7,11 +7,12 @@ import game.system.world.World;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
-public class DebugHUD {
-	private MouseInput mouse;
-	private Player player;
-	private World world;
+public class DebugHUD implements Serializable {
+	private transient MouseInput mouse;
+	private transient Player player;
+	private transient World world;
 
 	public DebugHUD() {
 		//this.btn = new Button(50, 50, 30, 10, "New Seed");

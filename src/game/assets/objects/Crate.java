@@ -69,7 +69,7 @@ public class Crate extends GameObject {
             }
         }
         healthBar.tick();
-        if(healthBar.dead()) Game.handler.findAndRemoveObject(this);
+        if(healthBar.dead()) Game.world.getHandler().findAndRemoveObject(this);
 
         Rectangle obj_bounds = this.getSelectBounds();
         Rectangle player_bounds = Game.world.getPlayer().getBounds();
@@ -77,13 +77,13 @@ public class Crate extends GameObject {
                 * (obj_bounds.getCenterX() - player_bounds.getCenterX())
                 + (obj_bounds.getCenterY() - player_bounds.getCenterY()) * (obj_bounds.getCenterY() - player_bounds.getCenterY()));
         if (dis > 50) {
-            Game.inventorySystem.removeOpenInventory(inv);
+            Game.world.getInventorySystem().removeOpenInventory(inv);
         }
     }
 
     public void render(Graphics g) {
         g.drawImage(this.tex.getTexure(), x, y, width, height, null);
-        if(Game.inventorySystem.openInventoriesContains(this.inv)) {
+        if(Game.world.getInventorySystem().openInventoriesContains(this.inv)) {
             g.setColor(new Color(255, 255, 255, 127));
             g.drawRect(getSelectBounds().x, getSelectBounds().y, getSelectBounds().width, getSelectBounds().height);
         }
@@ -103,19 +103,19 @@ public class Crate extends GameObject {
     }
 
     public void interact() {
-        Game.inventorySystem.addOpenInventory(inv);
+        Game.world.getInventorySystem().addOpenInventory(inv);
     }
 
     public void destroyed() {
-        Game.hud.removeHealthBar(healthBar);
-        Game.inventorySystem.removeOpenInventory(inv);
+        Game.world.getHud().removeHealthBar(healthBar);
+        Game.world.getInventorySystem().removeOpenInventory(inv);
         for(InventorySlot slot : inv.getSlots()) {
             if(slot.hasItem()) {
                 Item inv_item = slot.getItem();
                 Item_Ground gnd_item = inv_item.getItemGround();
                 gnd_item.setX(x);
                 gnd_item.setY(y);
-                Game.handler.addObject(gnd_item);
+                Game.world.getHandler().addObject(gnd_item);
             }
         }
         AudioPlayer.playSound(AudioFiles.crate_destroy, Settings.sound_vol, false, 0);

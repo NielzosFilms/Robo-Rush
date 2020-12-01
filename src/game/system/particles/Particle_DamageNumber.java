@@ -23,7 +23,7 @@ public class Particle_DamageNumber extends GameObject {
         this.lifetime = lifetime;
         this.velX = velX;
         this.velY = velY;
-        this.ps = Game.ps;
+        this.ps = Game.world.getPs();
         this.alpha = 255;
         this.damage_amount = damage_amount;
     }

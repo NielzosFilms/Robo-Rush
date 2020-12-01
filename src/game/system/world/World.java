@@ -1,7 +1,6 @@
 package game.system.world;
 
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.util.*;
@@ -9,11 +8,16 @@ import java.util.*;
 import game.assets.entities.Player;
 import game.enums.BIOME;
 import game.enums.ID;
+import game.system.hitbox.HitboxSystem;
+import game.system.hud.HUD;
 import game.system.inputs.KeyInput;
+import game.system.inputs.MouseInput;
+import game.system.inventory.InventorySlot;
+import game.system.inventory.InventorySystem;
 import game.system.lighting.Light;
-import game.system.main.Game;
-import game.system.main.GameObject;
-import game.system.main.Logger;
+import game.system.lighting.LightingSystem;
+import game.system.main.*;
+import game.system.particles.ParticleSystem;
 import game.textures.Textures;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -32,25 +36,71 @@ public class World implements Serializable {
 
 	private static OpenSimplexNoise noise;
 
+	private Handler handler;
+	private Camera cam;
+	private static Collision collision;
+	private static HitboxSystem hitboxSystem;
+
+	private HUD hud;
+
+	private static InventorySystem inventorySystem;
+	private static LightingSystem lightingSystem;
+	private static ParticleSystem ps;
+
 	public World() {
-		this.player = new Player(0, 0, 2, ID.Player, null);
+		player = new Player(0, 0, 2, ID.Player, null);
+
+		handler = new Handler();
+		cam = new Camera(0, 0);
+		collision = new Collision();
+		hitboxSystem = new HitboxSystem();
+
+		inventorySystem = new InventorySystem();
+		ps = new ParticleSystem();
+		lightingSystem = new LightingSystem();
+
+		hud = new HUD();
 	}
 
-	public void setRequirements(Textures textures, KeyInput keyInput) {
+	public void setRequirements(Textures textures, KeyInput keyInput, MouseInput mouseInput) {
 		this.textures = textures;
 		this.keyInput = keyInput;
 		this.player.setKeyInput(this.keyInput);
+
+		handler.setRequirements(this, cam, ps);
+		collision.setRequirements(handler, this, this.player);
+		hitboxSystem.setRequirements(handler);
+
+		inventorySystem.setRequirements(handler, mouseInput, this, this.player, cam);
+		lightingSystem.setRequirements(handler, this, cam);
+
+		hud.setRequirements(handler, this.player, mouseInput, this, cam);
+		handler.addObject(this.player);
 	}
 
 	public void tick() {
 		if(!loaded) return;
-		int camX = (Math.round(-Game.cam.getX() / 16));
-		int camY = (Math.round(-Game.cam.getY() / 16));
+		int camX = (Math.round(-cam.getX() / 16));
+		int camY = (Math.round(-cam.getY() / 16));
 		int camW = (Math.round(Game.WIDTH / 16));
 		int camH = (Math.round(Game.HEIGHT / 16));
 
-		runWaterAnimations();
+		handler.tick();
+		ps.tick();
 
+		runWaterAnimations();
+		putEntitiesIntoChunks(camX, camY, camW, camH);
+
+		collision.tick();
+		hitboxSystem.tick();
+
+		inventorySystem.tick();
+		cam.tick(player);
+		hud.tick();
+
+	}
+
+	private void putEntitiesIntoChunks(int camX, int camY, int camW, int camH) {
 		for (int y = camY - 32; y < camY + camH + 16; y++) {
 			for (int x = camX - 32; x < camX + camW + 16; x++) {
 				if (chunks.containsKey(new Point(x, y))) {
@@ -94,8 +144,8 @@ public class World implements Serializable {
 	public LinkedList<Chunk> getChunksOnScreen() {
 		LinkedList<Chunk> tmp_chunks = new LinkedList<Chunk>();
 
-		int camX = (Math.round(-Game.cam.getX() / 16));
-		int camY = (Math.round(-Game.cam.getY() / 16));
+		int camX = (Math.round(-cam.getX() / 16));
+		int camY = (Math.round(-cam.getY() / 16));
 		int camW = (Math.round(Game.WIDTH / 16));
 		int camH = (Math.round(Game.HEIGHT / 16));
 
@@ -110,30 +160,24 @@ public class World implements Serializable {
 		return tmp_chunks;
 	}
 
-	public void render(Graphics g) {
+	public void render(Graphics g, Graphics2D g2d) {
+		g2d.translate(cam.getX(), cam.getY()); // start of cam
 
-		int camX = (Math.round(-Game.cam.getX() / 16));
-		int camY = (Math.round(-Game.cam.getY() / 16));
-		int camW = (Math.round(Game.WIDTH / 16));
-		int camH = (Math.round(Game.HEIGHT / 16));
+		handler.render(g, Game.WIDTH, Game.HEIGHT);
+		ps.render(g);
+		hitboxSystem.render(g);
 
-		for (int y = camY - 32; y < camY + camH + 16; y++) {
-			for (int x = camX - 32; x < camX + camW + 16; x++) {
-				if (chunks.containsKey(new Point(x, y))) {
-					Chunk chunk = chunks.get(new Point(x, y));
-					chunk.renderTiles(g);
-				}
-			}
-		}
+		// ongeveer 30-35 ms
+		Long start = System.currentTimeMillis();
+		// lightingSystem.render(g);
+		Long finish = System.currentTimeMillis();
+		// System.out.println("Light System Render Time: " + (finish - start));
 
-		for (int y = camY - 32; y < camY + camH + 16; y++) {
-			for (int x = camX - 32; x < camX + camW + 16; x++) {
-				if (chunks.containsKey(new Point(x, y))) {
-					Chunk chunk = chunks.get(new Point(x, y));
-					chunk.renderEntities(g);
-				}
-			}
-		}
+		inventorySystem.renderCam(g);
+		hud.renderCam(g, g2d);
+		g2d.translate(-cam.getX(), -cam.getY()); // end of cam
+		hud.render(g, g2d);
+		inventorySystem.render(g);
 	}
 
 	public boolean addEntityToChunk(GameObject entity) {
@@ -163,8 +207,8 @@ public class World implements Serializable {
 	// functions to get specific tiles/tiletypes
 
 	private boolean OnScreen(int x, int y, int w, int h) {
-		return (x + (16 * 16) > -Game.cam.getX() && x < -Game.cam.getX() + Game.WIDTH)
-				&& (y + (16 * 16) > -Game.cam.getY() && y < -Game.cam.getY() + Game.HEIGHT);
+		return (x + (16 * 16) > -cam.getX() && x < -cam.getX() + Game.WIDTH)
+				&& (y + (16 * 16) > -cam.getY() && y < -cam.getY() + Game.HEIGHT);
 	}
 
 	public Chunk getChunkWithCoords(int x, int y) {
@@ -298,5 +342,69 @@ public class World implements Serializable {
 		this.seed = seed;
 		this.temp_seed = temp_seed;
 		this.moist_seed = moist_seed;
+	}
+
+	public Handler getHandler() {
+		return handler;
+	}
+
+	public void setHandler(Handler handler) {
+		this.handler = handler;
+	}
+
+	public Camera getCam() {
+		return cam;
+	}
+
+	public void setCam(Camera cam) {
+		this.cam = cam;
+	}
+
+	public Collision getCollision() {
+		return collision;
+	}
+
+	public void setCollision(Collision collision) {
+		this.collision = collision;
+	}
+
+	public HitboxSystem getHitboxSystem() {
+		return hitboxSystem;
+	}
+
+	public void setHitboxSystem(HitboxSystem hitboxSystem) {
+		this.hitboxSystem = hitboxSystem;
+	}
+
+	public HUD getHud() {
+		return hud;
+	}
+
+	public void setHud(HUD hud) {
+		this.hud = hud;
+	}
+
+	public InventorySystem getInventorySystem() {
+		return inventorySystem;
+	}
+
+	public void setInventorySystem(InventorySystem inventorySystem) {
+		this.inventorySystem = inventorySystem;
+	}
+
+	public LightingSystem getLightingSystem() {
+		return lightingSystem;
+	}
+
+	public void setLightingSystem(LightingSystem lightingSystem) {
+		this.lightingSystem = lightingSystem;
+	}
+
+	public ParticleSystem getPs() {
+		return ps;
+	}
+
+	public void setPs(ParticleSystem ps) {
+		this.ps = ps;
 	}
 }

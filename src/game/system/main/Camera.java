@@ -1,6 +1,8 @@
 package game.system.main;
 
-public class Camera {
+import java.io.Serializable;
+
+public class Camera implements Serializable {
 
 	public float x, y;
 	

@@ -48,20 +48,12 @@ public class Game extends Canvas implements Runnable {
 	public static Fonts fonts;
 
 	private Random r;
-	public static Handler handler;
 	public static KeyInput keyInput;
 	public static MouseInput mouseInput;
-	public static Collision collision;
-	public static HitboxSystem hitboxSystem;
-	public static Camera cam;
 	public static LevelLoader ll;
 
 	public static MenuSystem menuSystem;
-	public static HUD hud;
 
-	public static InventorySystem inventorySystem;
-	public static LightingSystem lightingSystem;
-	public static ParticleSystem ps;
 	public static ImageRendering imageRenderer;
 
 	public static World world;
@@ -69,30 +61,19 @@ public class Game extends Canvas implements Runnable {
 	public Game() {
 		r = new Random();
 
-		handler = new Handler(); // goto world
 		keyInput = new KeyInput();
 		mouseInput = new MouseInput();
-		cam = new Camera(0, 0); // goto world
-		collision = new Collision(); // goto world
-		hitboxSystem = new HitboxSystem(); // goto world
 
 		textures = new Textures();
 		audioFiles = new AudioFiles();
 		fonts = new Fonts();
 
-		inventorySystem = new InventorySystem(); // goto world
-		ps = new ParticleSystem(); // goto world
-		lightingSystem = new LightingSystem(); // goto world
-
 		menuSystem = new MenuSystem();
-		hud = new HUD(); // goto world
 
 		world = new World();
 		setRequirements();
 
 		if(game_state == GAMESTATES.Game) generateRequirements();
-
-		addTestObjects();
 
 		this.addKeyListener(keyInput);
 		this.addMouseListener(mouseInput);
@@ -102,34 +83,17 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void setRequirements() {
+		world.setRequirements(textures, keyInput, mouseInput);
 
-		handler.setRequirements(world, cam, ps);
-		keyInput.setRequirements(handler, inventorySystem, world, menuSystem);
-		mouseInput.setRequirements(this, inventorySystem, menuSystem, cam, hud, handler, world, world.getPlayer());
-		collision.setRequirements(handler, world, world.getPlayer());
-		hitboxSystem.setRequirements(handler);
-
-		inventorySystem.setRequirements(handler, mouseInput, world, world.getPlayer(), cam);
-		lightingSystem.setRequirements(handler, world, cam);
-
-		hud.setRequirements(handler, world.getPlayer(), mouseInput, world, cam);
+		keyInput.setRequirements(world);
+		mouseInput.setRequirements(this, world);
 
 		menuSystem.setRequirements(mouseInput);
-
-		world.setRequirements(textures, keyInput);
-		handler.addObject(world.getPlayer());
 	}
 
 	private void generateRequirements() {
 		Long seed = 9034865798355343302L; // r.nextLong();
 		world.generate(seed);
-	}
-
-	private void addTestObjects() {
-//		handler.addObject(new Crate(0, 0, 1, ID.Crate));
-//		handler.addObject(new Crate(16, 0, 1, ID.Crate));
-		handler.addObject(new TargetDummy(0, 0, 1, ID.NULL));
-		//ps.addParticle(new Particle(0, 0, 3, ID.Particle, 0, -1, 60, ps));
 	}
 
 	public synchronized void start() {
@@ -177,28 +141,7 @@ public class Game extends Canvas implements Runnable {
 
 	private void tick() {
 		if (game_state == GAMESTATES.Game && World.loaded) {
-
-			handler.tick();
-			ps.tick();
 			world.tick();
-			collision.tick();
-			hitboxSystem.tick();
-
-			inventorySystem.tick();
-
-			for (LinkedList<GameObject> list : handler.object_entities) {
-				for (GameObject gameObject : list) {
-					if (gameObject.getId() == ID.Player) {
-
-						// world.getChunkPointWithCoords(list.get(i).x, list.get(i).y);
-
-						cam.tick(gameObject);
-					}
-				}
-			}
-			hud.tick();
-
-			//keyInput.tick();
 
 			/*
 			 * if(AudioPlayer.audioEnded(audioFiles.futureopolis)) {
@@ -232,24 +175,7 @@ public class Game extends Canvas implements Runnable {
 			//menuSystem.setState(MENUSTATES.Main);
 			menuSystem.render(g, g2d);
 		} else if ((game_state == GAMESTATES.Game || game_state == GAMESTATES.Pauzed) && World.loaded) {
-			g2d.translate(cam.getX(), cam.getY()); // start of cam
-
-			handler.render(g, WIDTH, HEIGHT);
-			ps.render(g);
-			hitboxSystem.render(g);
-
-			// ongeveer 30-35 ms
-			Long start = System.currentTimeMillis();
-			// lightingSystem.render(g);
-			Long finish = System.currentTimeMillis();
-			// System.out.println("Light System Render Time: " + (finish - start));
-
-			inventorySystem.renderCam(g);
-			hud.renderCam(g, g2d);
-			g2d.translate(-cam.getX(), -cam.getY()); // end of cam
-			hud.render(g, g2d);
-			inventorySystem.render(g);
-
+			world.render(g, g2d);
 
 			if (game_state == GAMESTATES.Pauzed) {
 				//menuSystem.setState(MENUSTATES.Pauzed);

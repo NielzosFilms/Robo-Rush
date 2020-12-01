@@ -42,7 +42,7 @@ public class Branch extends GameObject {
     }
 
     public void interact() {
-        Game.inventorySystem.pickupItemToPlayerInv(this);
+        Game.world.getInventorySystem().pickupItemToPlayerInv(this);
     }
 
     @Override

@@ -8,12 +8,13 @@ import game.system.world.Chunk;
 import game.system.world.World;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Handler {
-	private World world;
-	private Camera cam;
-	private ParticleSystem ps;
+public class Handler implements Serializable {
+	private transient World world;
+	private transient Camera cam;
+	private transient ParticleSystem ps;
 
 	public LinkedList<LinkedList<GameObject>> object_entities = new LinkedList<LinkedList<GameObject>>();
 	// public LinkedList<LinkedList<Tile>> object_tiles = new

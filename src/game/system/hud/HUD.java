@@ -2,6 +2,7 @@ package game.system.hud;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.function.Function;
@@ -12,14 +13,14 @@ import game.system.main.*;
 import game.system.inputs.MouseInput;
 import game.system.world.World;
 
-public class HUD {
+public class HUD implements Serializable {
 	private DebugHUD debugHUD;
-	private double velX, velY;
-	private Handler handler;
-	private Player player;
-	private MouseInput mouseInput;
-	private World world;
-	private Camera cam;
+	private transient double velX, velY;
+	private transient Handler handler;
+	private transient Player player;
+	private transient MouseInput mouseInput;
+	private transient World world;
+	private transient Camera cam;
 
 	private ArrayList<HealthBar> healthBars = new ArrayList<>();
 

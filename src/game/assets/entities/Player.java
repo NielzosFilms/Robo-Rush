@@ -292,7 +292,7 @@ public class Player extends GameObject {
 	}
 
 	public void interact() {
-		Game.inventorySystem.addOpenInventory(inventory);
+		Game.world.getInventorySystem().addOpenInventory(inventory);
 	}
 
 	public void destroyed() {
@@ -308,29 +308,29 @@ public class Player extends GameObject {
 		int dmg = getExpectedDamage();
 		AudioPlayer.playSound(AudioFiles.swing, 0.5f, false, 0);
 		// TODO make direction function 8 way instead of 4
-		Point screenCoords = Helpers.getScreenCoords((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), Game.cam);
+		Point screenCoords = Helpers.getScreenCoords((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), Game.world.getCam());
 		DIRECTIONS direction = Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
 		Logger.print(direction.name());
 		//this.direction = direction;
 
 		switch (direction) {
 			case up -> {
-				Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
+				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
 						new Hitbox(x-8, y-16, 32, 16, 0, 5, dmg),
 				}, this));
 			}
 			case down -> {
-				Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
+				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
 						new Hitbox(x-8, y+getBounds().height + 16, 32, 16, 0, 5, dmg),
 				}, this));
 			}
 			case left -> {
-				Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
+				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
 						new Hitbox(x-24, y, 16, 32, 0, 5, dmg),
 				}, this));
 			}
 			case right -> {
-				Game.hitboxSystem.addHitboxContainer(new HitboxContainer(new Hitbox[]{
+				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
 						new Hitbox(x+getBounds().width + 16, y, 16, 32, 0, 5, dmg),
 				}, this));
 			}
@@ -350,7 +350,7 @@ public class Player extends GameObject {
 //			Item holding = Game.inventorySystem.getHolding();
 //			damage_output += holding.getDamage();
 //		}
-		Item holding = Game.inventorySystem.getHotbarSelectedItem();
+		Item holding = Game.world.getInventorySystem().getHotbarSelectedItem();
 		if(holding != null) {
 			damage_output += holding.getDamage();
 			attack_delay += holding.getAttack_speed();

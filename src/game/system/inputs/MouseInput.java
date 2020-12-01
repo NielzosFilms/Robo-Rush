@@ -36,15 +36,15 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		this.dragging = false;
 	}
 
-	public void setRequirements(Game game, InventorySystem inventorySystem, MenuSystem menuSystem, Camera cam, HUD hud, Handler handler, World world, Player player) {
+	public void setRequirements(Game game, World world) {
 		this.game = game;
-		this.inventorySystem = inventorySystem;
-		this.menuSystem = menuSystem;
-		this.cam = cam;
-		this.hud = hud;
-		this.handler = handler;
+		this.inventorySystem = world.getInventorySystem();
+		this.menuSystem = Game.menuSystem;
+		this.cam = world.getCam();
+		this.hud = world.getHud();
+		this.handler = world.getHandler();
 		this.world = world;
-		this.player = player;
+		this.player = world.getPlayer();
 	}
 
 	public void tick() {

@@ -31,7 +31,7 @@ public class HitboxSystem {
                         if(hitbox.active()) {
                             if(object.getBounds().intersects(hitbox.getBounds())) {
                                 object.hit(hitbox.getDamage());
-                                Game.ps.addParticle(new Particle_DamageNumber(object.getX(), object.getY(), 0f, -0.3f, 40, hitbox.getDamage()));
+                                Game.world.getPs().addParticle(new Particle_DamageNumber(object.getX(), object.getY(), 0f, -0.3f, 40, hitbox.getDamage()));
                                 hitboxContainers.get(i).addHitObject(object);
                             }
                         }

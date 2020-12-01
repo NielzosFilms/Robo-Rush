@@ -47,8 +47,8 @@ public class Pebble extends GameObject {
     }
 
     public void interact() {
-        Game.handler.addObject(new Item_Ground(x, y, 1, ID.Item, new Item_Rock(5, ITEM_ID.Rock)));
-        Game.handler.findAndRemoveObject(this);
+        Game.world.getHandler().addObject(new Item_Ground(x, y, 1, ID.Item, new Item_Rock(5, ITEM_ID.Rock)));
+        Game.world.getHandler().findAndRemoveObject(this);
         //Game.inventorySystem.pickupItemToPlayerInv(this);
     }
 

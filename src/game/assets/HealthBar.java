@@ -23,7 +23,7 @@ public class HealthBar implements Serializable {
         this.min = min;
         this.max = max;
         this.health = max;
-        Game.hud.addHealthBar(this);
+        Game.world.getHud().addHealthBar(this);
     }
 
     public void tick() {

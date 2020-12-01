@@ -28,11 +28,11 @@ public class KeyInput extends KeyAdapter {
 	 */
 	public boolean[] keysDown = { false, false, false, false, false, false, false, false };
 
-	public void setRequirements(Handler handler, InventorySystem inventorySystem, World world, MenuSystem menuSystem) {
-		this.handler = handler;
-		this.inventorySystem = inventorySystem;
+	public void setRequirements(World world) {
+		this.handler = world.getHandler();
+		this.inventorySystem = world.getInventorySystem();
 		this.world = world;
-		this.menuSystem = menuSystem;
+		this.menuSystem = Game.menuSystem;
 	}
 
 	public void keyPressed(KeyEvent e) {
