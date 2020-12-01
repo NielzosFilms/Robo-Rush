@@ -1,6 +1,7 @@
 package game.assets.entities;
 
 import java.awt.*;
+import java.security.Key;
 import java.util.Random;
 
 import game.assets.items.Item_Crate;
@@ -33,7 +34,7 @@ public class Player extends GameObject {
 	private static final int DEFAULT_ATTACK_DAMAGE = 1;
 	public final int REACH = 50;
 	Random r = new Random();
-	private KeyInput keyInput;
+	private transient KeyInput keyInput;
 
 	private DIRECTIONS direction;
 	private int health, food, water;
@@ -358,6 +359,10 @@ public class Player extends GameObject {
 		attack_timer = attack_delay;
 		//Logger.print("new attack_delay: " + attack_delay);
 		return damage_output;
+	}
+
+	public void setKeyInput(KeyInput keyInput) {
+		this.keyInput = keyInput;
 	}
 
 }

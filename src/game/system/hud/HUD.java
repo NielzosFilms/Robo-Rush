@@ -51,7 +51,7 @@ public class HUD {
 				if (mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
 						obj.getSelectBounds().width, obj.getSelectBounds().height)) {
 
-					if (Helpers.getDistanceBetweenBounds(Game.player.getBounds(), obj.getSelectBounds()) < Game.player.REACH) {
+					if (Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), obj.getSelectBounds()) < Game.world.getPlayer().REACH) {
 						// TODO nicer selectboxes
 						g.setColor(new Color(255, 255, 255, 127));
 						g.drawRect(obj.getSelectBounds().x, obj.getSelectBounds().y, obj.getSelectBounds().width,

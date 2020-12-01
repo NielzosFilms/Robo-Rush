@@ -42,13 +42,13 @@ public class House extends GameObject {
     }
 
     public void tick() {
-        int player_cenY = Game.player.getY() + (16 + 8) / 2;
+        int player_cenY = Game.world.getPlayer().getY() + (16 + 8) / 2;
         int tree_cenY = y + (16 * 2);
 
         if (player_cenY > tree_cenY) {
-            this.setZIndex(Game.player.getZIndex() - 1);
+            this.setZIndex(Game.world.getPlayer().getZIndex() - 1);
         } else {
-            this.setZIndex(Game.player.getZIndex() + 1);
+            this.setZIndex(Game.world.getPlayer().getZIndex() + 1);
         }
     }
 

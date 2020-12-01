@@ -25,13 +25,13 @@ public class TargetDummy extends GameObject {
     }
 
     public void tick() {
-        int player_cenX = (int) Game.player.getBounds().getCenterX();
-        int player_cenY = (int) Game.player.getBounds().getCenterY();
+        int player_cenX = (int) Game.world.getPlayer().getBounds().getCenterX();
+        int player_cenY = (int) Game.world.getPlayer().getBounds().getCenterY();
 
         if (player_cenY > getBounds().getCenterY()) {
-            this.setZIndex(Game.player.getZIndex() - 1);
+            this.setZIndex(Game.world.getPlayer().getZIndex() - 1);
         } else {
-            this.setZIndex(Game.player.getZIndex() + 1);
+            this.setZIndex(Game.world.getPlayer().getZIndex() + 1);
         }
     }
 

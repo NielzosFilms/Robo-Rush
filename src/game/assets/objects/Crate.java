@@ -72,7 +72,7 @@ public class Crate extends GameObject {
         if(healthBar.dead()) Game.handler.findAndRemoveObject(this);
 
         Rectangle obj_bounds = this.getSelectBounds();
-        Rectangle player_bounds = Game.player.getBounds();
+        Rectangle player_bounds = Game.world.getPlayer().getBounds();
         double dis = Math.sqrt((obj_bounds.getCenterX() - player_bounds.getCenterX())
                 * (obj_bounds.getCenterX() - player_bounds.getCenterX())
                 + (obj_bounds.getCenterY() - player_bounds.getCenterY()) * (obj_bounds.getCenterY() - player_bounds.getCenterY()));

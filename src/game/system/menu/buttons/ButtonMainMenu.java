@@ -29,7 +29,7 @@ public class ButtonMainMenu extends Button {
 
     public void handleClick(MouseEvent e) {
         Game.game_state = GAMESTATES.Menu;
-        Game.world.saveChunks();
+        Game.saveChunks();
         Game.menuSystem.setState(MENUSTATES.Main);
     }
 }

@@ -64,7 +64,7 @@ public class InventorySystem {
 					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
 					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
 					Rectangle bnds = new Rectangle(tile_coords.x, tile_coords.y, item_w, item_h);
-					if(Helpers.getDistanceBetweenBounds(Game.player.getBounds(), bnds) < Game.player.REACH) {
+					if(Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), bnds) < Game.world.getPlayer().REACH) {
 						g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
 					} else {
 						g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
@@ -115,7 +115,7 @@ public class InventorySystem {
 					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
 					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
 					Rectangle bnds = new Rectangle(tile_coords.x, tile_coords.y, item_w, item_h);
-					if(Helpers.getDistanceBetweenBounds(Game.player.getBounds(), bnds) < Game.player.REACH) {
+					if(Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), bnds) < Game.world.getPlayer().REACH) {
 						if (holding.place(tile_coords.x, tile_coords.y)) {
 							holding.setAmount(holding.getAmount() - 1);
 							if (holding.getAmount() <= 0) clearHolding();
@@ -124,8 +124,8 @@ public class InventorySystem {
 				}
 			}
 		} else {
-			if(Game.player.canAttack()) {
-				Game.player.attack();
+			if(Game.world.getPlayer().canAttack()) {
+				Game.world.getPlayer().attack();
 			}
 		}
 	}

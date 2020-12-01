@@ -1,12 +1,8 @@
 package game.system.main;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -23,6 +19,7 @@ import game.system.inputs.MouseInput;
 import game.system.inventory.InventorySystem;
 import game.system.lighting.LightingSystem;
 import game.system.menu.MenuSystem;
+import game.system.world.Chunk;
 import game.textures.Fonts;
 import game.textures.Textures;
 import game.system.world.LevelLoader;
@@ -68,7 +65,6 @@ public class Game extends Canvas implements Runnable {
 	public static ImageRendering imageRenderer;
 
 	public static World world;
-	public static Player player;
 
 	public Game() {
 		r = new Random();
@@ -93,10 +89,8 @@ public class Game extends Canvas implements Runnable {
 
 		world = new World();
 
-		player = new Player(0, 0, 2, ID.Player, keyInput);
-
+		//loadChunks();
 		setRequirements();
-		handler.addObject(player);
 
 		if(game_state == GAMESTATES.Game) generateRequirements();
 
@@ -107,34 +101,38 @@ public class Game extends Canvas implements Runnable {
 		this.addMouseMotionListener(mouseInput);
 		this.addMouseWheelListener(mouseInput);
 		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
+
+		//World.loaded = true;
 	}
 
 	private void setRequirements() {
+
 		handler.setRequirements(world, cam, ps);
 		keyInput.setRequirements(handler, inventorySystem, world, menuSystem);
-		mouseInput.setRequirements(this, inventorySystem, menuSystem, cam, hud, handler, world, player);
-		collision.setRequirements(handler, world, player);
+		mouseInput.setRequirements(this, inventorySystem, menuSystem, cam, hud, handler, world, world.getPlayer());
+		collision.setRequirements(handler, world, world.getPlayer());
 		hitboxSystem.setRequirements(handler);
 
-		inventorySystem.setRequirements(handler, mouseInput, world, player, cam);
+		inventorySystem.setRequirements(handler, mouseInput, world, world.getPlayer(), cam);
 		lightingSystem.setRequirements(handler, world, cam);
 
-		hud.setRequirements(handler, player, mouseInput, world, cam);
+		hud.setRequirements(handler, world.getPlayer(), mouseInput, world, cam);
 
 		menuSystem.setRequirements(mouseInput);
 
-		world.setRequirements(player, textures);
+		world.setRequirements(textures, keyInput);
+		handler.addObject(world.getPlayer());
 	}
 
 	private void generateRequirements() {
-		Long seed = 9034865798355343302L; // r.nextLong();
-		world.generate(seed);
+//		Long seed = 9034865798355343302L; // r.nextLong();
+//		world.generate(seed);
 	}
 
 	private void addTestObjects() {
 //		handler.addObject(new Crate(0, 0, 1, ID.Crate));
 //		handler.addObject(new Crate(16, 0, 1, ID.Crate));
-		handler.addObject(new TargetDummy(0, 0, 1, ID.NULL));
+		//handler.addObject(new TargetDummy(0, 0, 1, ID.NULL));
 		//ps.addParticle(new Particle(0, 0, 3, ID.Particle, 0, -1, 60, ps));
 	}
 
@@ -266,6 +264,35 @@ public class Game extends Canvas implements Runnable {
 		g.dispose();
 		g2d.dispose();
 		bs.show();
+	}
+
+	public static void saveChunks() {
+		String directory = "saves/";
+		Logger.print("Save world");
+		try {
+			FileOutputStream fos = new FileOutputStream(directory + "test_save.data");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(world);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void loadChunks() {
+		String directory = "saves/";
+		Logger.print("Load world");
+		try {
+			FileInputStream fis = new FileInputStream(directory + "test_save.data");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			World loaded = (World) ois.readObject();
+			world = loaded;
+			System.out.println(loaded.getPlayer().getX() + " " +loaded.getPlayer().getY());
+			ois.close();
+			fis.close();
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {

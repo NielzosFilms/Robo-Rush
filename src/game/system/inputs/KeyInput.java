@@ -64,7 +64,7 @@ public class KeyInput extends KeyAdapter {
 				for (GameObject obj : objs) {
 					if (Game.mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
 							obj.getSelectBounds().width, obj.getSelectBounds().height)) {
-						if (Helpers.getDistanceBetweenBounds(Game.player.getBounds(), obj.getSelectBounds()) < Game.player.REACH) {
+						if (Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), obj.getSelectBounds()) < Game.world.getPlayer().REACH) {
 							obj.interact();
 							return;
 						}

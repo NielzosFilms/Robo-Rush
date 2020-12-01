@@ -8,6 +8,8 @@ import java.util.*;
 
 import game.assets.entities.Player;
 import game.enums.BIOME;
+import game.enums.ID;
+import game.system.inputs.KeyInput;
 import game.system.lighting.Light;
 import game.system.main.Game;
 import game.system.main.GameObject;
@@ -16,22 +18,28 @@ import game.textures.Textures;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import static game.system.main.Game.keyInput;
+
 public class World implements Serializable {
 
 	public static Long seed, temp_seed, moist_seed;
 	public HashMap<Point, Chunk> chunks = new HashMap<Point, Chunk>();
 	public static boolean loaded = false;
 	private Player player;
-	private Textures textures;
+	private transient Textures textures;
 	private Random r;
+	private transient KeyInput keyInput;
 
 	private static OpenSimplexNoise noise;
 
-	public World() {}
+	public World() {
+		this.player = new Player(0, 0, 2, ID.Player, null);
+	}
 
-	public void setRequirements(Player player, Textures textures) {
-		this.player = player;
+	public void setRequirements(Textures textures, KeyInput keyInput) {
 		this.textures = textures;
+		this.keyInput = keyInput;
+		this.player.setKeyInput(this.keyInput);
 	}
 
 	public void tick() {
@@ -266,36 +274,11 @@ public class World implements Serializable {
 
 		Point chunk_point = getChunkPointWithCoords(player.getX(), player.getY());
 		chunks.put(chunk_point, new Chunk(chunk_point.x, chunk_point.y, seed, temp_seed, moist_seed, this, player, textures));
-
 		loaded = true;
 	}
 
-	public void saveChunks() {
-		String directory = "saves/";
-		Logger.print("Save world");
-		try {
-			FileOutputStream fos = new FileOutputStream(directory + "test_save.data");
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			//oos.writeObject(chunks.get(new Point(0, 0)));
-		} catch (IOException e) {
-			//System.out.println(e);
-			e.printStackTrace();
-		}
-
-	}
-
-	public void loadChunks() {
-		String directory = "saves/";
-		Logger.print("Load world");
-		try {
-			FileInputStream fis = new FileInputStream(directory + "test_save.data");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			//Chunk chunk = (Chunk) ois.readObject();
-			//System.out.println(chunk.getEntities());
-			//chunks.put(new Point(0, 0), chunk);
-		} catch (IOException e) {
-			System.out.println(e);
-		}
+	public Player getPlayer() {
+		return this.player;
 	}
 
 }

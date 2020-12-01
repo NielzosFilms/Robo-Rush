@@ -2,5 +2,6 @@ bin/
 out/
 .idea/
 .settings/
+saves/
 .classpath
 .project

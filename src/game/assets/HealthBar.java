@@ -5,8 +5,9 @@ import game.system.main.Helpers;
 import game.textures.Textures;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class HealthBar {
+public class HealthBar implements Serializable {
     private static final Color background = new Color(0, 0, 0, 127);
     private static final int HIDE_DELAY = 60*5;
     private int hide_timer = HIDE_DELAY;

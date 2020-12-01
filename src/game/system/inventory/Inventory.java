@@ -62,7 +62,7 @@ public class Inventory implements Serializable {
 				}
 			} else {
 				Item_Ground item_gnd = item.getItemGround();
-				Point new_coords = new Point(Game.player.getX(), Game.player.getY());
+				Point new_coords = new Point(Game.world.getPlayer().getX(), Game.world.getPlayer().getY());
 				item_gnd.setX(new_coords.x);
 				item_gnd.setY(new_coords.y);
 				Game.inventorySystem.dropItem(item_gnd);
