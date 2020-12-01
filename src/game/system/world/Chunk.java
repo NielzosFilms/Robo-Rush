@@ -38,8 +38,8 @@ public class Chunk implements Serializable {
 	private static Long seed;
 	private static Long temp_seed;
 	private static Long moist_seed;
-	private World world;
-	private Textures textures;
+	private transient World world;
+	private transient Textures textures;
 
 	public Chunk(int x, int y, Long seed, Long temp_seed, Long moist_seed, World world, Player player,
 			Textures textures) {

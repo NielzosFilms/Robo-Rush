@@ -4,8 +4,9 @@ import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
-public class Animation {
+public class Animation implements Serializable {
 
 	private int speed;
 	private int frames;
@@ -14,8 +15,8 @@ public class Animation {
 	
 	private boolean mirrorW;
 	
-	private BufferedImage[] images;
-	private BufferedImage currentImg;
+	private transient BufferedImage[] images;
+	private transient BufferedImage currentImg;
 	
 	public Animation(int speed, BufferedImage... args) {
 		this.speed = speed;

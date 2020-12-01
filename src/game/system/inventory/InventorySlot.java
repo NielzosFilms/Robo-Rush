@@ -5,8 +5,9 @@ import game.system.main.Game;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
-public class InventorySlot {
+public class InventorySlot implements Serializable {
 	private Item item;
 	private Inventory inv;
 	private int x, y;

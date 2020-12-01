@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Textures implements Serializable {
+public class Textures {
 	public static Animation water;
 	public static Animation water_d_br, water_d_b_r, water_d_b, water_d_bl, water_d_b_l, water_d_l, water_d_tl,
 			water_d_t_l, water_d_t, water_d_tr, water_d_t_r, water_d_r;

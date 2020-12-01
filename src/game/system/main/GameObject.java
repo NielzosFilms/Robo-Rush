@@ -10,7 +10,7 @@ import game.enums.ID;
 
 public abstract class GameObject implements Serializable {
 
-	protected BufferedImage tex;
+	protected transient BufferedImage tex;
 	protected int x, y;
 	protected int width = 16, height = 16;
 	protected ID id;

@@ -17,7 +17,6 @@ import game.textures.Textures;
 public class Pebble extends GameObject {
 
     private Random r = new Random();
-    private BufferedImage tex;
 
     public Pebble(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);

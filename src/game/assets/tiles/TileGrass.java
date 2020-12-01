@@ -13,9 +13,7 @@ public class TileGrass extends Tile {
 
     private boolean top = true, right = true, bottom = true, left = true;
     private boolean top_left = true, top_right = true, bottom_left = true, bottom_right = true;
-
-    private BufferedImage texture;
-    private List<BufferedImage> TEXTURE_LIST = Textures.tileSetForestBlocks;
+    private transient List<BufferedImage> TEXTURE_LIST = Textures.tileSetForestBlocks;
 
     public TileGrass(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk, int tex_id) {
         super(x, y, chunk_x, chunk_y, z_index, biome, chunk, tex_id);

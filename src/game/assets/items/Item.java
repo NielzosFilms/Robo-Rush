@@ -4,11 +4,12 @@ import game.enums.ITEM_ID;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
-public abstract class Item implements Cloneable {
+public abstract class Item implements Cloneable, Serializable {
     protected int amount;
     protected ITEM_ID itemType;
-    protected BufferedImage tex;
+    protected transient BufferedImage tex;
     protected Item_Ground itemGround;
     protected int durability = 100;
     protected int damage = 0;

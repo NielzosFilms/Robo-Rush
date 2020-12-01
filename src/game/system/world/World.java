@@ -276,41 +276,26 @@ public class World implements Serializable {
 		try {
 			FileOutputStream fos = new FileOutputStream(directory + "test_save.data");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(this);
+			//oos.writeObject(chunks.get(new Point(0, 0)));
 		} catch (IOException e) {
+			//System.out.println(e);
 			e.printStackTrace();
 		}
-		/*try {
-			FileOutputStream fos = new FileOutputStream(directory + "test_save.txt");
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			//PrintWriter pw = new PrintWriter(fos);
-
-			Chunk chunk = chunks.get(new Point(0, 0));
-			for(GameObject obj : chunk.getEntities()) {
-				oos.writeObject(obj);
-			}
-
-			FileInputStream fis = new FileInputStream(directory + "test_save.txt");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-
-			System.out.println(ois.readObject());
-
-			//pw.close();
-			fos.close();
-			oos.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}*/
 
 	}
 
-	public void loadChunks(String fileName) throws FileNotFoundException {
-
-		// read file save to chunks list
+	public void loadChunks() {
+		String directory = "saves/";
+		Logger.print("Load world");
+		try {
+			FileInputStream fis = new FileInputStream(directory + "test_save.data");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			//Chunk chunk = (Chunk) ois.readObject();
+			//System.out.println(chunk.getEntities());
+			//chunks.put(new Point(0, 0), chunk);
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 	}
 
 }

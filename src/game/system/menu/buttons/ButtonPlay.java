@@ -28,6 +28,7 @@ public class ButtonPlay extends Button {
     }
 
     public void handleClick(MouseEvent e) {
+        Game.world.loadChunks();
         if(!World.loaded) Game.world.generate(new Random().nextLong());
         Game.game_state = GAMESTATES.Game;
     }

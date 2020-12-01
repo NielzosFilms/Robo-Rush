@@ -3,11 +3,12 @@ package game.assets.tiles;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 import game.enums.BIOME;
 import game.system.world.Chunk;
 
-public abstract class Tile {
+public abstract class Tile implements Serializable {
 
     protected int x, y, chunk_x, chunk_y;
     protected BIOME biome;
@@ -16,7 +17,7 @@ public abstract class Tile {
     protected int tex_id; // this really needed?
     protected int tileSize = 16;
 
-    protected BufferedImage texture;
+    protected transient BufferedImage texture;
 
     public Tile(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk, int tex_id) {
         this.x = x;
