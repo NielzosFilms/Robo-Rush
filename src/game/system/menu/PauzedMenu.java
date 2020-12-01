@@ -4,6 +4,7 @@ import game.enums.MENUSTATES;
 import game.system.inputs.MouseInput;
 import game.system.menu.buttons.ButtonMainMenu;
 import game.system.menu.buttons.ButtonResume;
+import game.system.menu.buttons.ButtonSave;
 import game.system.menu.buttons.ButtonSettings;
 import game.textures.Fonts;
 
@@ -23,6 +24,8 @@ public class PauzedMenu extends Menu {
 
         buttons.add(new ButtonResume(0, 50, 64, 32));
         buttons.get(2).alignCenterX(screenWidth);
+
+        buttons.add(new ButtonSave(0, 200, 64, 32));
     }
 
     public void tickAbs() {}

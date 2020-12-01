@@ -22,7 +22,7 @@ import static game.system.main.Game.keyInput;
 
 public class World implements Serializable {
 
-	public static Long seed, temp_seed, moist_seed;
+	public Long seed, temp_seed, moist_seed;
 	public HashMap<Point, Chunk> chunks = new HashMap<Point, Chunk>();
 	public static boolean loaded = false;
 	private Player player;
@@ -202,14 +202,14 @@ public class World implements Serializable {
 		return BIOME.Ocean;
 	}
 
-	public static BIOME getBiomeWithCoords(int x, int y) {
+	public BIOME getBiomeWithCoords(int x, int y) {
 		x /= 16;
 		y /= 16;
 		float[] arr = getHeightMapValuePoint(x, y);
 		return getBiome(arr[0], arr[1], arr[2]);
 	}
 
-	public static float[] getHeightMapValuePoint(int x, int y) {
+	public float[] getHeightMapValuePoint(int x, int y) {
 		// x = x/16/16;
 		// y = y/16/16;
 		float[][] osn = generateOctavedSimplexNoise(x, y, 1, 1, 3, 0.4f, 0.05f, seed);
@@ -219,7 +219,7 @@ public class World implements Serializable {
 		return arr;
 	}
 
-	public static float[][] generateOctavedSimplexNoise(int xx, int yy, int width, int height, int octaves,
+	public float[][] generateOctavedSimplexNoise(int xx, int yy, int width, int height, int octaves,
 			float roughness, float scale, Long seed) {
 		float[][] totalNoise = new float[width][height];
 		float layerFrequency = scale;
@@ -247,19 +247,16 @@ public class World implements Serializable {
 		return totalNoise;
 	}
 
-	public static float[][] getOsn(int x, int y, int w, int h) {
-		float[][] osn = generateOctavedSimplexNoise(x, y, w, h, 3, 0.4f, 0.05f, seed);
-		return osn;
+	public float[][] getOsn(int x, int y, int w, int h) {
+		return generateOctavedSimplexNoise(x, y, w, h, 3, 0.4f, 0.05f, seed);
 	}
 
-	public static float[][] getTemperatureOsn(int x, int y, int w, int h) {
-		float[][] temp_osn = generateOctavedSimplexNoise(x, y, 16, 16, 3, 0.4f, 0.02f, temp_seed);
-		return temp_osn;
+	public float[][] getTemperatureOsn(int x, int y, int w, int h) {
+		return generateOctavedSimplexNoise(x, y, 16, 16, 3, 0.4f, 0.02f, temp_seed);
 	}
 
-	public static float[][] getMoistureOsn(int x, int y, int w, int h) {
-		float[][] moist_osn = generateOctavedSimplexNoise(x, y, 16, 16, 3, 0.4f, 0.02f, moist_seed);
-		return moist_osn;
+	public float[][] getMoistureOsn(int x, int y, int w, int h) {
+		return generateOctavedSimplexNoise(x, y, 16, 16, 3, 0.4f, 0.02f, moist_seed);
 	}
 
 	public void generate(Long seed) {
@@ -281,4 +278,25 @@ public class World implements Serializable {
 		return this.player;
 	}
 
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public Long getSeed() {
+		return this.seed;
+	}
+
+	public Long getTemp_seed() {
+		return temp_seed;
+	}
+
+	public Long getMoist_seed() {
+		return moist_seed;
+	}
+
+	public void setSeeds(Long seed, Long temp_seed, Long moist_seed) {
+		this.seed = seed;
+		this.temp_seed = temp_seed;
+		this.moist_seed = moist_seed;
+	}
 }

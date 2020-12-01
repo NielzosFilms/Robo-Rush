@@ -33,7 +33,7 @@ public class HUD {
 		this.mouseInput = mouseInput;
 		this.world = world;
 		this.cam = cam;
-		this.debugHUD.setRequirements(mouseInput, player);
+		this.debugHUD.setRequirements(mouseInput, player, world);
 	}
 
 	public void tick() {

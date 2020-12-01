@@ -88,8 +88,6 @@ public class Game extends Canvas implements Runnable {
 		hud = new HUD();
 
 		world = new World();
-
-		//loadChunks();
 		setRequirements();
 
 		if(game_state == GAMESTATES.Game) generateRequirements();
@@ -105,7 +103,7 @@ public class Game extends Canvas implements Runnable {
 		//World.loaded = true;
 	}
 
-	private void setRequirements() {
+	public void setRequirements() {
 
 		handler.setRequirements(world, cam, ps);
 		keyInput.setRequirements(handler, inventorySystem, world, menuSystem);
@@ -125,14 +123,14 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void generateRequirements() {
-//		Long seed = 9034865798355343302L; // r.nextLong();
-//		world.generate(seed);
+		Long seed = 9034865798355343302L; // r.nextLong();
+		world.generate(seed);
 	}
 
 	private void addTestObjects() {
 //		handler.addObject(new Crate(0, 0, 1, ID.Crate));
 //		handler.addObject(new Crate(16, 0, 1, ID.Crate));
-		//handler.addObject(new TargetDummy(0, 0, 1, ID.NULL));
+		handler.addObject(new TargetDummy(0, 0, 1, ID.NULL));
 		//ps.addParticle(new Particle(0, 0, 3, ID.Particle, 0, -1, 60, ps));
 	}
 
@@ -277,22 +275,6 @@ public class Game extends Canvas implements Runnable {
 			e.printStackTrace();
 		}
 
-	}
-
-	public void loadChunks() {
-		String directory = "saves/";
-		Logger.print("Load world");
-		try {
-			FileInputStream fis = new FileInputStream(directory + "test_save.data");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			World loaded = (World) ois.readObject();
-			world = loaded;
-			System.out.println(loaded.getPlayer().getX() + " " +loaded.getPlayer().getY());
-			ois.close();
-			fis.close();
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static void main(String[] args) {

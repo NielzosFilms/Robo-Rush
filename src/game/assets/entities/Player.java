@@ -284,7 +284,7 @@ public class Player extends GameObject {
 	}
 
 	public BIOME getCurrentBiome() {
-		return World.getBiomeWithCoords(x, y);
+		return Game.world.getBiomeWithCoords(x, y);
 	}
 
 	public Item getItem() {

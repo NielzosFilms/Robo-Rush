@@ -11,14 +11,16 @@ import java.awt.event.MouseEvent;
 public class DebugHUD {
 	private MouseInput mouse;
 	private Player player;
+	private World world;
 
 	public DebugHUD() {
 		//this.btn = new Button(50, 50, 30, 10, "New Seed");
 	}
 
-	public void setRequirements(MouseInput mouse, Player player) {
+	public void setRequirements(MouseInput mouse, Player player, World world) {
 		this.mouse = mouse;
 		this.player = player;
+		this.world = world;
 	}
 
 	public void tick() {
@@ -32,7 +34,7 @@ public class DebugHUD {
 			g2d.drawString("X: " + player.getX(), 1, 35);
 			g2d.drawString("Y: " + player.getY(), 1, 40);
 			// g2d.drawString("BIOME: " + player.getCurrentBiome().toString(), 1, 45);
-			g2d.drawString("SEED: " + World.seed, 1, 70);
+			g2d.drawString("SEED: " + world.getSeed(), 1, 70);
 		}
 	}
 

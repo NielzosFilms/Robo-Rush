@@ -7,6 +7,7 @@ import java.util.Random;
 import java.awt.Point;
 
 import game.enums.BIOME;
+import game.system.main.Game;
 import game.system.world.Chunk;
 import game.system.world.World;
 
@@ -24,7 +25,7 @@ public class TileHelperFunctions {
                 return false;
             }
         } else {
-            float[] arr = World.getHeightMapValuePoint(this_chunk.x + ((x - this_chunk.x) / 16) + offset_x,
+            float[] arr = Game.world.getHeightMapValuePoint(this_chunk.x + ((x - this_chunk.x) / 16) + offset_x,
                     this_chunk.y + ((y - this_chunk.y) / 16) + offset_y);
             if (biome != getBiomeFromHeightMap(arr)) {
                 // this.biome_bg = getBiomeFromHeightMap(arr);
@@ -59,7 +60,7 @@ public class TileHelperFunctions {
                 }
             }
         } else {
-            float[] arr = World.getHeightMapValuePoint(this_chunk.x + ((x - this_chunk.x) / 16) + offset_x,
+            float[] arr = Game.world.getHeightMapValuePoint(this_chunk.x + ((x - this_chunk.x) / 16) + offset_x,
                     this_chunk.y + ((y - this_chunk.y) / 16) + offset_y);
             if (biome != getBiomeFromHeightMap(arr)) {
                 if (biomes.containsKey(getBiomeFromHeightMap(arr))) {

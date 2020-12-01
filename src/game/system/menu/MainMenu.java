@@ -3,6 +3,7 @@ package game.system.menu;
 import game.system.inputs.MouseInput;
 import game.system.main.Game;
 import game.system.main.Logger;
+import game.system.menu.buttons.ButtonLoad;
 import game.system.menu.buttons.ButtonPlay;
 import game.system.menu.buttons.ButtonQuit;
 import game.system.menu.buttons.ButtonSettings;
@@ -32,6 +33,8 @@ public class MainMenu extends Menu {
         buttons.add(btnQuit);
         buttons.add(btnPlay);
         buttons.add(btnSettings);
+
+        buttons.add(new ButtonLoad(0, 50, 64, 32));
     }
 
     public void tickAbs() {}
