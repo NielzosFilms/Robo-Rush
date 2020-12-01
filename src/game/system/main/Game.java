@@ -69,23 +69,23 @@ public class Game extends Canvas implements Runnable {
 	public Game() {
 		r = new Random();
 
-		handler = new Handler();
+		handler = new Handler(); // goto world
 		keyInput = new KeyInput();
 		mouseInput = new MouseInput();
-		cam = new Camera(0, 0);
-		collision = new Collision();
-		hitboxSystem = new HitboxSystem();
+		cam = new Camera(0, 0); // goto world
+		collision = new Collision(); // goto world
+		hitboxSystem = new HitboxSystem(); // goto world
 
 		textures = new Textures();
 		audioFiles = new AudioFiles();
 		fonts = new Fonts();
 
-		inventorySystem = new InventorySystem();
-		ps = new ParticleSystem();
-		lightingSystem = new LightingSystem();
+		inventorySystem = new InventorySystem(); // goto world
+		ps = new ParticleSystem(); // goto world
+		lightingSystem = new LightingSystem(); // goto world
 
 		menuSystem = new MenuSystem();
-		hud = new HUD();
+		hud = new HUD(); // goto world
 
 		world = new World();
 		setRequirements();
@@ -99,8 +99,6 @@ public class Game extends Canvas implements Runnable {
 		this.addMouseMotionListener(mouseInput);
 		this.addMouseWheelListener(mouseInput);
 		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
-
-		//World.loaded = true;
 	}
 
 	public void setRequirements() {
