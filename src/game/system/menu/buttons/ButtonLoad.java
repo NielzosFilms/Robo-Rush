@@ -43,8 +43,12 @@ public class ButtonLoad extends Button {
 			FileInputStream fis = new FileInputStream(directory + "test_save.data");
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			World loaded_world = (World) ois.readObject();
-			Game.world = loaded_world;
-			Game.world.setPlayer(loaded_world.getPlayer());
+//			Game.world = loaded_world;
+//			Game.world.setPlayer(loaded_world.getPlayer());
+			Game.world.chunks = loaded_world.chunks;
+			//Game.handler.removeObject(Game.world.getPlayer());
+			//Game.world.setPlayer(loaded_world.getPlayer());
+			//Game.handler.addObject(Game.world.getPlayer());
 			Game.world.setSeeds(loaded_world.getSeed(), loaded_world.getTemp_seed(), loaded_world.getMoist_seed());
 			ois.close();
 			fis.close();
