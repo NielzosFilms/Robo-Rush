@@ -10,32 +10,35 @@ import game.enums.GAMESTATES;
 import game.system.main.Game;
 import game.system.main.GameObject;
 import game.enums.ID;
+import game.system.menu.Text;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 import game.textures.Textures;
 
 public class House extends GameObject {
 
-    private ArrayList<ArrayList<BufferedImage>> tex_rows = new ArrayList<ArrayList<BufferedImage>>();
+    private ArrayList<ArrayList<Texture>> tex_rows = new ArrayList<ArrayList<Texture>>();
 
     public House(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
-        tex_rows.add(new ArrayList<BufferedImage>());
-        tex_rows.add(new ArrayList<BufferedImage>());
-        tex_rows.add(new ArrayList<BufferedImage>());
+        tex_rows.add(new ArrayList<Texture>());
+        tex_rows.add(new ArrayList<Texture>());
+        tex_rows.add(new ArrayList<Texture>());
 
-        tex_rows.get(0).add(Textures.tileSetHouseBlocks.get(86));
-        tex_rows.get(0).add(Textures.tileSetHouseBlocks.get(87));
-        tex_rows.get(0).add(Textures.tileSetHouseBlocks.get(88));
-        tex_rows.get(0).add(Textures.tileSetHouseBlocks.get(89));
+        tex_rows.get(0).add(new Texture(TEXTURE_LIST.house_list, 6, 8));
+        tex_rows.get(0).add(new Texture(TEXTURE_LIST.house_list, 7, 8));
+        tex_rows.get(0).add(new Texture(TEXTURE_LIST.house_list, 8, 8));
+        tex_rows.get(0).add(new Texture(TEXTURE_LIST.house_list, 9, 8));
 
-        tex_rows.get(1).add(Textures.tileSetHouseBlocks.get(96));
-        tex_rows.get(1).add(Textures.tileSetHouseBlocks.get(97));
-        tex_rows.get(1).add(Textures.tileSetHouseBlocks.get(98));
-        tex_rows.get(1).add(Textures.tileSetHouseBlocks.get(99));
+        tex_rows.get(1).add(new Texture(TEXTURE_LIST.house_list, 6, 9));
+        tex_rows.get(1).add(new Texture(TEXTURE_LIST.house_list, 7, 9));
+        tex_rows.get(1).add(new Texture(TEXTURE_LIST.house_list, 8, 9));
+        tex_rows.get(1).add(new Texture(TEXTURE_LIST.house_list, 9, 9));
 
-        tex_rows.get(2).add(Textures.tileSetHouseBlocks.get(106));
-        tex_rows.get(2).add(Textures.tileSetHouseBlocks.get(107));
-        tex_rows.get(2).add(Textures.tileSetHouseBlocks.get(108));
-        tex_rows.get(2).add(Textures.tileSetHouseBlocks.get(109));
+        tex_rows.get(2).add(new Texture(TEXTURE_LIST.house_list, 6, 10));
+        tex_rows.get(2).add(new Texture(TEXTURE_LIST.house_list, 7, 10));
+        tex_rows.get(2).add(new Texture(TEXTURE_LIST.house_list, 8, 10));
+        tex_rows.get(2).add(new Texture(TEXTURE_LIST.house_list, 9, 10));
     }
 
     public void tick() {
@@ -56,9 +59,9 @@ public class House extends GameObject {
     private void renderTreeTiles(Graphics g, int local_x, int local_y, int tile_size) {
         int r = 0;
         int c = 0;
-        for (ArrayList<BufferedImage> row : tex_rows) {
-            for (BufferedImage tex : row) {
-                g.drawImage(tex, local_x + (c * tile_size), local_y + (r * tile_size), tile_size, tile_size, null);
+        for (ArrayList<Texture> row : tex_rows) {
+            for (Texture tex : row) {
+                g.drawImage(tex.getTexure(), local_x + (c * tile_size), local_y + (r * tile_size), tile_size, tile_size, null);
                 c++;
             }
             r++;

@@ -24,6 +24,8 @@ import game.system.inputs.KeyInput;
 import game.enums.BIOME;
 import game.system.world.World;
 import game.textures.Animation;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 import game.textures.Textures;
 
 public class Player extends GameObject {
@@ -71,24 +73,55 @@ public class Player extends GameObject {
 	}
 
 	private void initAnimations() {
-		idle_down = new Animation(8, Textures.playerImg.get(0), Textures.playerImg.get(1), Textures.playerImg.get(2),
-				Textures.playerImg.get(3));
-		idle_up = new Animation(8, Textures.playerImg.get(36), Textures.playerImg.get(37), Textures.playerImg.get(38),
-				Textures.playerImg.get(39));
-		idle_left = new Animation(8, Textures.playerImg.get(24), Textures.playerImg.get(25), Textures.playerImg.get(26),
-				Textures.playerImg.get(27));
-		idle_right = new Animation(8, Textures.playerImg.get(12), Textures.playerImg.get(13),
-				Textures.playerImg.get(14), Textures.playerImg.get(15));
+		idle_down = new Animation(8,
+				new Texture(TEXTURE_LIST.player_list, 0, 0),
+				new Texture(TEXTURE_LIST.player_list, 1, 0),
+				new Texture(TEXTURE_LIST.player_list, 2, 0),
+				new Texture(TEXTURE_LIST.player_list, 3, 0));
+		idle_up = new Animation(8,
+				new Texture(TEXTURE_LIST.player_list, 0, 6),
+				new Texture(TEXTURE_LIST.player_list, 1, 6),
+				new Texture(TEXTURE_LIST.player_list, 2, 6),
+				new Texture(TEXTURE_LIST.player_list, 3, 6));
+		idle_left = new Animation(8,
+				new Texture(TEXTURE_LIST.player_list, 0, 4),
+				new Texture(TEXTURE_LIST.player_list, 1, 4),
+				new Texture(TEXTURE_LIST.player_list, 2, 4),
+				new Texture(TEXTURE_LIST.player_list, 3, 4));
+		idle_right = new Animation(8,
+				new Texture(TEXTURE_LIST.player_list, 0, 2),
+				new Texture(TEXTURE_LIST.player_list, 1, 2),
+				new Texture(TEXTURE_LIST.player_list, 2, 2),
+				new Texture(TEXTURE_LIST.player_list, 3, 2));
 
-		walk_down = new Animation(5, Textures.playerImg.get(6), Textures.playerImg.get(7), Textures.playerImg.get(8),
-				Textures.playerImg.get(9), Textures.playerImg.get(10), Textures.playerImg.get(11));
-		walk_up = new Animation(5, Textures.playerImg.get(42), Textures.playerImg.get(43), Textures.playerImg.get(44),
-				Textures.playerImg.get(45), Textures.playerImg.get(46), Textures.playerImg.get(47));
-		walk_left = new Animation(5, Textures.playerImg.get(30), Textures.playerImg.get(31), Textures.playerImg.get(32),
-				Textures.playerImg.get(33), Textures.playerImg.get(34), Textures.playerImg.get(35));
-		walk_right = new Animation(5, Textures.playerImg.get(18), Textures.playerImg.get(19),
-				Textures.playerImg.get(20), Textures.playerImg.get(21), Textures.playerImg.get(22),
-				Textures.playerImg.get(23));
+		walk_down = new Animation(5,
+				new Texture(TEXTURE_LIST.player_list, 0, 1),
+				new Texture(TEXTURE_LIST.player_list, 1, 1),
+				new Texture(TEXTURE_LIST.player_list, 2, 1),
+				new Texture(TEXTURE_LIST.player_list, 3, 1),
+				new Texture(TEXTURE_LIST.player_list, 4, 1),
+				new Texture(TEXTURE_LIST.player_list, 5, 1));
+		walk_up = new Animation(5,
+				new Texture(TEXTURE_LIST.player_list, 0, 7),
+				new Texture(TEXTURE_LIST.player_list, 1, 7),
+				new Texture(TEXTURE_LIST.player_list, 2, 7),
+				new Texture(TEXTURE_LIST.player_list, 3, 7),
+				new Texture(TEXTURE_LIST.player_list, 4, 7),
+				new Texture(TEXTURE_LIST.player_list, 5, 7));
+		walk_left = new Animation(5,
+				new Texture(TEXTURE_LIST.player_list, 0, 5),
+				new Texture(TEXTURE_LIST.player_list, 1, 5),
+				new Texture(TEXTURE_LIST.player_list, 2, 5),
+				new Texture(TEXTURE_LIST.player_list, 3, 5),
+				new Texture(TEXTURE_LIST.player_list, 4, 5),
+				new Texture(TEXTURE_LIST.player_list, 5, 5));
+		walk_right = new Animation(5,
+				new Texture(TEXTURE_LIST.player_list, 0, 3),
+				new Texture(TEXTURE_LIST.player_list, 1, 3),
+				new Texture(TEXTURE_LIST.player_list, 2, 3),
+				new Texture(TEXTURE_LIST.player_list, 3, 3),
+				new Texture(TEXTURE_LIST.player_list, 4, 3),
+				new Texture(TEXTURE_LIST.player_list, 5, 3));
 	}
 
 	public void tick() {

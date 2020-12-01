@@ -7,11 +7,12 @@ import java.util.ArrayList;
 
 import game.enums.STRUCTURE_TYPE;
 import game.system.main.GameObject;
+import game.textures.Texture;
 
 public abstract class Structure {
 
-    protected ArrayList<BufferedImage> imageLayers = new ArrayList<BufferedImage>();
-    protected ArrayList<GameObject> objects = new ArrayList<GameObject>();
+    protected ArrayList<Texture> imageLayers = new ArrayList<>();
+    protected ArrayList<GameObject> objects = new ArrayList<>();
     protected int x, y;
     protected int width = 16, height = 16;
     protected STRUCTURE_TYPE structureType;
@@ -59,11 +60,11 @@ public abstract class Structure {
         return this.structureType;
     }
 
-    public void addImageLayer(BufferedImage img) {
-        this.imageLayers.add(img);
+    public void addImageLayer(Texture tex) {
+        this.imageLayers.add(tex);
     }
 
-    public ArrayList<BufferedImage> getImageLayers() {
+    public ArrayList<Texture> getImageLayers() {
         return this.imageLayers;
     }
 

@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 import game.enums.BIOME;
 import game.system.world.Chunk;
+import game.textures.Texture;
 
 public abstract class Tile implements Serializable {
 
@@ -14,19 +15,17 @@ public abstract class Tile implements Serializable {
     protected BIOME biome;
     protected Chunk chunk;
     protected int z_index;
-    protected int tex_id; // this really needed?
     protected int tileSize = 16;
 
-    protected transient BufferedImage texture;
+    protected Texture texture;
 
-    public Tile(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk, int tex_id) {
+    public Tile(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk) {
         this.x = x;
         this.y = y;
         this.chunk_x = chunk_x;
         this.chunk_y = chunk_y;
         this.z_index = z_index;
         this.biome = biome;
-        this.tex_id = tex_id;
         this.chunk = chunk;
     }
 
@@ -90,21 +89,11 @@ public abstract class Tile implements Serializable {
         this.z_index = z_index;
     }
 
-    public int getTexId() {
-        return this.tex_id;
-    }
-
-    public void setTexId(int tex_id) {
-        this.tex_id = tex_id;
-    }
-
-    public BufferedImage getTexture() {
+    public Texture getTexture() {
         return this.texture;
     }
 
-    public abstract void setTextureWithId();
-
-    public abstract void findAndSetEdgeTexture();
+    public void setTexture(Texture texture) {this.texture = texture; }
 
     public int getTileSize() {
         return this.tileSize;
@@ -117,4 +106,8 @@ public abstract class Tile implements Serializable {
     public abstract Rectangle getBounds();
 
     public abstract Rectangle getSelectBounds();
+
+    public abstract void findAndSetEdgeTexture();
+
+    public abstract void update();
 }

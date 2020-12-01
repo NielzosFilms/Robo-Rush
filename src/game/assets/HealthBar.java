@@ -33,9 +33,9 @@ public class HealthBar {
         if(health != max && hide_timer != 0) {
             g.drawImage(Textures.healthbar, x, y, 24, 4, null);
             int health_perc = getHealthPercent();
-            int until = (int)((float)(Textures.healthbar_content.size()) / 100 * health_perc);
+            int until = (int)((float)(Textures.healthbar_list.size()) / 100 * health_perc);
             for(int i=0; i<until; i++) {
-                g.drawImage(Textures.healthbar_content.get(i), x + i + 1, y + 1, 1, 2, null);
+                g.drawImage(Textures.healthbar_list.get(i), x + i + 1, y + 1, 1, 2, null);
             }
         }
     }

@@ -4,6 +4,8 @@ import game.assets.objects.Crate;
 import game.enums.ID;
 import game.enums.ITEM_ID;
 import game.system.main.Game;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 import game.textures.Textures;
 
 import java.awt.*;
@@ -12,7 +14,7 @@ public class Item_Crate extends Item {
 	public Item_Crate(int amount, ITEM_ID itemType) {
 		super(amount, itemType);
 		this.setPlaceable(true);
-		this.tex = Textures.tileSetHouseBlocks.get(6);
+		this.tex = new Texture(TEXTURE_LIST.house_list, 6, 0);
 		this.itemGround = new Item_Ground(0, 0, 1, ID.Item, this);
 	}
 

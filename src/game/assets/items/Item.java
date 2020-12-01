@@ -1,6 +1,7 @@
 package game.assets.items;
 
 import game.enums.ITEM_ID;
+import game.textures.Texture;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,7 +10,7 @@ import java.io.Serializable;
 public abstract class Item implements Cloneable, Serializable {
     protected int amount;
     protected ITEM_ID itemType;
-    protected transient BufferedImage tex;
+    protected Texture tex;
     protected Item_Ground itemGround;
     protected int durability = 100;
     protected int damage = 0;
@@ -27,7 +28,7 @@ public abstract class Item implements Cloneable, Serializable {
         Font font = new Font("SansSerif", Font.PLAIN, 3);
         g.setFont(font);
         g.setColor(Color.WHITE);
-        g.drawImage(this.tex, x, y, 16, 16, null);
+        g.drawImage(this.tex.getTexure(), x, y, 16, 16, null);
         if(stackable) g.drawString("" + this.amount, x, y + 16);
 
         g.drawString(this.itemType.toString(), x, y + 2);
@@ -53,11 +54,11 @@ public abstract class Item implements Cloneable, Serializable {
         this.itemType = itemType;
     }
 
-    public BufferedImage getTexture() {
+    public Texture getTexture() {
         return this.tex;
     }
 
-    public void setTexture(BufferedImage tex) {
+    public void setTexture(Texture tex) {
         this.tex = tex;
     }
 

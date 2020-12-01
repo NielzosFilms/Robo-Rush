@@ -64,7 +64,7 @@ public class Item_Ground extends GameObject {
 
 	public void render(Graphics g) {
 		g.drawImage(Textures.entity_shadow, x, y + 5, null);
-		g.drawImage(inventoryItem.getTexture(), x + x_diff, y + y_diff, 16, 16, null);
+		g.drawImage(inventoryItem.getTexture().getTexure(), x + x_diff, y + y_diff, 16, 16, null);
 	}
 
 	public Rectangle getBounds() {

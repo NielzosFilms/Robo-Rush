@@ -39,7 +39,7 @@ public class MainMenu extends Menu {
     public void renderBefore(Graphics g, Graphics2D g2d) {
         for(int y = 0;y < screenHeight;y+=16) {
             for(int x = 0;x < screenWidth;x+=16) {
-                g.drawImage(Textures.tileSetForestBlocks.get(15*19 + 6), x, y, 16, 16, null);
+                g.drawImage(Textures.forest_list.get(new Point(6, 19)), x, y, 16, 16, null);
             }
         }
     }

@@ -137,7 +137,7 @@ public class Chunk implements Serializable {
 				int world_y = resized_y + y * 16;
 
 				if (World.getBiome(val, temp_val, moist_val) == BIOME.Forest) {
-					addTile(new TileGrass(world_x, world_y, resized_x + x, resized_y + y, 1, BIOME.Forest, this, 0));
+					addTile(new TileGrass(world_x, world_y, resized_x + x, resized_y + y, 1, BIOME.Forest, this));
 					int num = r.nextInt(100);
 					if (num == 0) {
 						addEntity(new Tree(world_x, world_y, 1, ID.Tree, BIOME.Forest, player));
@@ -154,7 +154,7 @@ public class Chunk implements Serializable {
 						addEntity(new Pebble(world_x, world_y, 0, ID.Pebble));
 					}
 				} else {
-					addTile(new TileWater(world_x, world_y, resized_x + x, resized_y + y, 1, BIOME.Ocean, this, 0));
+					addTile(new TileWater(world_x, world_y, resized_x + x, resized_y + y, 1, BIOME.Ocean, this));
 				}
 			}
 		}

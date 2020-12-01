@@ -8,11 +8,11 @@ import java.util.Random;
 import game.assets.items.Item;
 import game.system.main.GameObject;
 import game.enums.ID;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 import game.textures.Textures;
 
 public class Mushroom extends GameObject {
-
-	private BufferedImage tex;
 	private Random r;
 
 	public Mushroom(int x, int y, int z_index, ID id) {
@@ -21,7 +21,7 @@ public class Mushroom extends GameObject {
 
 		int num = r.nextInt(20);
 
-		if (num == 0) {
+		/*if (num == 0) {
 			this.tex = Textures.mushrooms.get(3);
 		} else if (num >= 1 && num <= 5) {
 			this.tex = Textures.mushrooms.get(1);
@@ -31,7 +31,8 @@ public class Mushroom extends GameObject {
 			this.tex = Textures.mushrooms.get(4);
 		} else {
 			this.tex = Textures.mushrooms.get(0);
-		}
+		}*/
+		this.tex = null;
 
 		// this.tex = game.textures.mushroom;
 	}
@@ -41,7 +42,7 @@ public class Mushroom extends GameObject {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(this.tex, x, y, this.width, this.height, null);
+		//g.drawImage(this.tex, x, y, this.width, this.height, null);
 	}
 
 	public Rectangle getBounds() {

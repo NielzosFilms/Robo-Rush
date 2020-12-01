@@ -2,13 +2,15 @@ package game.assets.items;
 
 import game.enums.ITEM_ID;
 import game.enums.ID;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 import game.textures.Textures;
 
 public class Item_NULL extends Item {
 
     public Item_NULL(int amount, ITEM_ID itemType) {
         super(amount, itemType);
-        this.tex = Textures.placeholder;
+        this.tex = new Texture(TEXTURE_LIST.house_list, 0, 0);
         this.itemGround = new Item_Ground(0, 0, 1, ID.NULL, this);
     }
 

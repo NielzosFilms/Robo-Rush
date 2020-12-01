@@ -1,26 +1,39 @@
 package game.assets.tiles;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 import game.textures.Textures;
 import game.enums.BIOME;
 import game.system.world.Chunk;
 
 public class TileGrass extends Tile {
-
     private boolean top = true, right = true, bottom = true, left = true;
     private boolean top_left = true, top_right = true, bottom_left = true, bottom_right = true;
-    private transient List<BufferedImage> TEXTURE_LIST = Textures.tileSetForestBlocks;
 
-    public TileGrass(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk, int tex_id) {
-        super(x, y, chunk_x, chunk_y, z_index, biome, chunk, tex_id);
+    private Texture tex_top_left = new Texture(TEXTURE_LIST.forest_list, 0, 0),
+            tex_top = new Texture(TEXTURE_LIST.forest_list, 1, 0),
+            tex_top_right = new Texture(TEXTURE_LIST.forest_list, 2, 0),
+            tex_left = new Texture(TEXTURE_LIST.forest_list, 0, 1),
+            tex_center = new Texture(TEXTURE_LIST.forest_list, 1, 1),
+            tex_right = new Texture(TEXTURE_LIST.forest_list, 2, 1),
+            tex_bot_left = new Texture(TEXTURE_LIST.forest_list, 0, 2),
+            tex_bot = new Texture(TEXTURE_LIST.forest_list, 1, 2),
+            tex_bot_right = new Texture(TEXTURE_LIST.forest_list, 2, 2),
+            tex_inverse_bot_right = new Texture(TEXTURE_LIST.forest_list, 3, 0),
+            tex_inverse_bot_left = new Texture(TEXTURE_LIST.forest_list, 4, 0),
+            tex_inverse_top_right = new Texture(TEXTURE_LIST.forest_list, 3, 1),
+            tex_inverse_top_left = new Texture(TEXTURE_LIST.forest_list, 4, 1);
+
+    public TileGrass(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk) {
+        super(x, y, chunk_x, chunk_y, z_index, biome, chunk);
     }
 
     public void render(Graphics g) {
-        g.drawImage(this.texture, x, y, this.tileSize, this.tileSize, null);
+        g.drawImage(this.texture.getTexure(), x, y, this.tileSize, this.tileSize, null);
     }
 
     public void findAndSetEdgeTexture() {
@@ -38,56 +51,47 @@ public class TileGrass extends Tile {
         bottom_right = TileHelperFunctions.checkSameNeighbourBiome(biome, chunk.getTileMap(), chunk, chunk_x, chunk_y,
                 1, 1);
 
-        this.tex_id = getTexId();
-        // add water as bg
-        /**
-         * 
-         * TEMPORARY
-         * 
-         */
-        if (this.tex_id != 16) {
-            this.tex_id = 16;
-            TileWater water = new TileWater(x, y, chunk_x, chunk_y, 2, biome, chunk, tex_id);
-            water.setWaterType(top, right, bottom, left, top_left, top_right, bottom_left, bottom_right);
-            chunk.addTile(water);
-        }
-        setTextureWithId();
+        this.texture = getTextureWithBooleans();
     }
 
-    public int getTexId() {
+    public void update() {
+        findAndSetEdgeTexture();
+    }
+
+    public Texture getTextureWithBooleans() {
         if (top && right && bottom && left) {
             if (!top_left) {
-                return 19;
+                return tex_inverse_top_left;
             } else if (!top_right) {
-                return 18;
+                return tex_inverse_top_right;
             } else if (!bottom_left) {
-                return 4;
+                return tex_inverse_bot_left;
             } else if (!bottom_right) {
-                return 3;
+                return tex_inverse_bot_right;
             }
         }
 
         if (!top && !right && !bottom && !left) {
-            return 16;
+            return tex_center;
         } else if (!top && !right) {
-            return 2;
+            return tex_top_right;
         } else if (!right && !bottom) {
-            return 32;
+            return tex_bot_right;
         } else if (!bottom && !left) {
-            return 30;
+            return tex_bot_left;
         } else if (!left && !top) {
-            return 0;
+            return tex_top_left;
         } else if (!top) {
-            return 1;
+            return tex_top;
         } else if (!right) {
-            return 17;
+            return tex_right;
         } else if (!bottom) {
-            return 31;
+            return tex_bot;
         } else if (!left) {
-            return 15;
+            return tex_left;
         }
 
-        return 16;
+        return tex_center;
     }
 
     public Rectangle getBounds() {
@@ -96,10 +100,6 @@ public class TileGrass extends Tile {
 
     public Rectangle getSelectBounds() {
         return null;
-    }
-
-    public void setTextureWithId() {
-        this.texture = TEXTURE_LIST.get(this.tex_id);
     }
 
 }

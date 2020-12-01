@@ -7,6 +7,8 @@ import game.enums.ID;
 import game.system.main.Game;
 import game.system.main.GameObject;
 import game.system.main.Settings;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 import game.textures.Textures;
 
 import javax.swing.*;
@@ -14,8 +16,12 @@ import java.awt.*;
 import java.io.Serializable;
 
 public class TargetDummy extends GameObject {
+    private Texture top_tex;
+    private Texture bot_tex;
     public TargetDummy(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
+        this.top_tex = new Texture(TEXTURE_LIST.house_list, 6, 1);
+        this.bot_tex = new Texture(TEXTURE_LIST.house_list, 6, 2);
     }
 
     public void tick() {
@@ -30,8 +36,8 @@ public class TargetDummy extends GameObject {
     }
 
     public void render(Graphics g) {
-        g.drawImage(Textures.tileSetHouseBlocks.get(16), x, y-height, width, height, null);
-        g.drawImage(Textures.tileSetHouseBlocks.get(26), x, y, width, height, null);
+        g.drawImage(top_tex.getTexure(), x, y-height, width, height, null);
+        g.drawImage(bot_tex.getTexure(), x, y, width, height, null);
     }
 
     public Rectangle getBounds() {

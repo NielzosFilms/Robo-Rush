@@ -15,13 +15,13 @@ public class Animation implements Serializable {
 	
 	private boolean mirrorW;
 	
-	private transient BufferedImage[] images;
-	private transient BufferedImage currentImg;
+	private Texture[] images;
+	private Texture currentImg;
 	
-	public Animation(int speed, BufferedImage... args) {
+	public Animation(int speed, Texture... args) {
 		this.speed = speed;
 		this.mirrorW = false;
-		images = new BufferedImage[args.length];
+		images = new Texture[args.length];
 		for(int i = 0; i < args.length; i++) {
 			images[i] = args[i];
 		}
@@ -60,25 +60,25 @@ public class Animation implements Serializable {
 	public void drawAnimation(Graphics g, int x, int y) {
 		if(mirrorW) {
 			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-			tx.translate(-currentImg.getWidth(null), 0);
+			tx.translate(-currentImg.getTexure().getWidth(null), 0);
 			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-			BufferedImage temp = op.filter(currentImg, null);
+			BufferedImage temp = op.filter(currentImg.getTexure(), null);
 			g.drawImage(temp, x, y, null);
 			
 		}else
-			g.drawImage(currentImg, x, y, null);
+			g.drawImage(currentImg.getTexure(), x, y, null);
 	}
 	
 	public void drawAnimation(Graphics g, int x, int y, int scaleX, int scaleY) {
 		if(mirrorW) {
 			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-			tx.translate(-currentImg.getWidth(null), 0);
+			tx.translate(-currentImg.getTexure().getWidth(null), 0);
 			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-			BufferedImage temp = op.filter(currentImg, null);
+			BufferedImage temp = op.filter(currentImg.getTexure(), null);
 			g.drawImage(temp, x, y, scaleX, scaleY, null);
 			
 		}else
-			g.drawImage(currentImg, x, y, scaleX, scaleY, null);
+			g.drawImage(currentImg.getTexure(), x, y, scaleX, scaleY, null);
 	}
 	
 }

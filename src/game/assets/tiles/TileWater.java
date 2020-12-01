@@ -12,8 +12,8 @@ public class TileWater extends Tile {
     private boolean top = true, right = true, bottom = true, left = true;
     private boolean top_left = true, top_right = true, bottom_left = true, bottom_right = true;
 
-    public TileWater(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk, int tex_id) {
-        super(x, y, chunk_x, chunk_y, z_index, biome, chunk, tex_id);
+    public TileWater(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk) {
+        super(x, y, chunk_x, chunk_y, z_index, biome, chunk);
     }
 
     public void render(Graphics g) {
@@ -64,6 +64,10 @@ public class TileWater extends Tile {
     }
 
     public void findAndSetEdgeTexture() {
+    }
+
+    public void update() {
+
     }
 
     public void setTextureWithId() {

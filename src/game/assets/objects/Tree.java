@@ -10,12 +10,14 @@ import game.assets.entities.Player;
 import game.assets.items.Item;
 import game.system.main.GameObject;
 import game.enums.ID;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 import game.textures.Textures;
 import game.enums.BIOME;
 
 public class Tree extends GameObject {
 
-	private ArrayList<ArrayList<BufferedImage>> tex_rows;
+	private ArrayList<ArrayList<Texture>> tex_rows;
 
 	private BIOME biome;
 	private Player player;
@@ -27,19 +29,16 @@ public class Tree extends GameObject {
 		this.biome = biome;
 		this.player = player;
 
-		tex_rows = new ArrayList<ArrayList<BufferedImage>>();
+		tex_rows = new ArrayList<ArrayList<Texture>>();
 		int tree_type = r.nextInt(2);
-		if (biome == BIOME.Forest) {
-			switch (tree_type) {
-				case 0:
-					addTexRow(new int[] { 0, 1 });
-					addTexRow(new int[] { 15, 16 });
-					break;
-				default:
-					addTexRow(new int[] { 6, 7 });
-					addTexRow(new int[] { 21, 22 });
-			}
-		}
+		tex_rows.add(new ArrayList<>());
+		tex_rows.add(new ArrayList<>());
+
+		tex_rows.get(0).add(new Texture(TEXTURE_LIST.nature_list, 0, 0));
+		tex_rows.get(0).add(new Texture(TEXTURE_LIST.nature_list, 1, 0));
+
+		tex_rows.get(1).add(new Texture(TEXTURE_LIST.nature_list, 0, 1));
+		tex_rows.get(1).add(new Texture(TEXTURE_LIST.nature_list, 1, 1));
 
 	}
 
@@ -64,9 +63,9 @@ public class Tree extends GameObject {
 	private void renderTreeTiles(Graphics g, int local_x, int local_y, int tile_size) {
 		int r = 0;
 		int c = 0;
-		for (ArrayList<BufferedImage> row : tex_rows) {
-			for (BufferedImage tex : row) {
-				g.drawImage(tex, local_x + (c * tile_size), local_y + (r * tile_size), tile_size, tile_size, null);
+		for (ArrayList<Texture> row : tex_rows) {
+			for (Texture tex : row) {
+				g.drawImage(tex.getTexure(), local_x + (c * tile_size), local_y + (r * tile_size), tile_size, tile_size, null);
 				c++;
 			}
 			r++;
@@ -82,22 +81,14 @@ public class Tree extends GameObject {
 		return new Rectangle(x, y, this.width, this.height);
 	}
 
-	public void addTexRow(int[] tex_ids) {
-		ArrayList<BufferedImage> row = new ArrayList<BufferedImage>();
-		for (int id : tex_ids) {
-			row.add(Textures.tileSetNatureBlocks.get(id));
-		}
-		this.tex_rows.add(row);
-	}
-
 	public Item getItem() {
 		// return new ItemWood(5, this.id, Textures.wood);
 		return null;
 	}
 
 	public void interact() {
-		ArrayList<BufferedImage> row_1 = this.tex_rows.get(0);
-		ArrayList<BufferedImage> row_2 = this.tex_rows.get(1);
+		ArrayList<Texture> row_1 = this.tex_rows.get(0);
+		ArrayList<Texture> row_2 = this.tex_rows.get(1);
 
 		this.tex_rows.clear();
 

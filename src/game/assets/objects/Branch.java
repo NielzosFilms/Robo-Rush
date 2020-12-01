@@ -10,13 +10,15 @@ import game.assets.items.Item_Stick;
 import game.system.main.Game;
 import game.system.main.GameObject;
 import game.enums.ID;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 import game.textures.Textures;
 
 public class Branch extends GameObject {
 
     public Branch(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
-        this.tex = Textures.stick.get(new Random().nextInt(Textures.stick.size()));
+        this.tex = new Texture(TEXTURE_LIST.stick, 0, 0);
     }
 
     public void tick() {
@@ -24,7 +26,7 @@ public class Branch extends GameObject {
     }
 
     public void render(Graphics g) {
-        g.drawImage(this.tex, x, y, this.width, this.height, null);
+        g.drawImage(this.tex.getTexure(), x, y, this.width, this.height, null);
     }
 
     public Rectangle getBounds() {

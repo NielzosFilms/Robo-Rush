@@ -15,6 +15,8 @@ import game.system.main.Game;
 import game.system.main.GameObject;
 import game.enums.ID;
 import game.system.main.Settings;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 import game.textures.Textures;
 
 public class Crate extends GameObject {
@@ -35,6 +37,7 @@ public class Crate extends GameObject {
         inv.setXY(300, 100);
 
         healthBar = new HealthBar(x - 4, y - 8, 0, 7);
+        this.tex = new Texture(TEXTURE_LIST.house_list, 6, 0);
     }
 
     private void fillInventory() {
@@ -79,7 +82,7 @@ public class Crate extends GameObject {
     }
 
     public void render(Graphics g) {
-        g.drawImage(Textures.tileSetHouseBlocks.get(6), x, y, width, height, null);
+        g.drawImage(this.tex.getTexure(), x, y, width, height, null);
         if(Game.inventorySystem.openInventoriesContains(this.inv)) {
             g.setColor(new Color(255, 255, 255, 127));
             g.drawRect(getSelectBounds().x, getSelectBounds().y, getSelectBounds().width, getSelectBounds().height);

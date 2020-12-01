@@ -12,6 +12,8 @@ import game.assets.items.Item_Rock;
 import game.system.main.Game;
 import game.system.main.GameObject;
 import game.enums.ID;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 import game.textures.Textures;
 
 public class Pebble extends GameObject {
@@ -21,7 +23,7 @@ public class Pebble extends GameObject {
     public Pebble(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
 
-        this.tex = Textures.stone.get(new Random().nextInt(Textures.stone.size()));
+        this.tex = new Texture(TEXTURE_LIST.stone, 0, 0);
     }
 
     public void tick() {
@@ -29,7 +31,7 @@ public class Pebble extends GameObject {
     }
 
     public void render(Graphics g) {
-        g.drawImage(tex, x, y, this.width, this.height, null);
+        g.drawImage(tex.getTexure(), x, y, this.width, this.height, null);
     }
 
     public Rectangle getBounds() {

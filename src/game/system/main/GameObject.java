@@ -7,10 +7,11 @@ import java.io.Serializable;
 
 import game.assets.items.Item;
 import game.enums.ID;
+import game.textures.Texture;
 
 public abstract class GameObject implements Serializable {
 
-	protected transient BufferedImage tex;
+	protected Texture tex;
 	protected int x, y;
 	protected int width = 16, height = 16;
 	protected ID id;
@@ -77,11 +78,11 @@ public abstract class GameObject implements Serializable {
 		this.z_index = z_index;
 	}
 
-	public BufferedImage getTexture() {
+	public Texture getTexture() {
 		return this.tex;
 	}
 
-	public void setTexture(BufferedImage tex) {
+	public void setTexture(Texture tex) {
 		this.tex = tex;
 	}
 
