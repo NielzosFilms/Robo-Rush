@@ -83,7 +83,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void setRequirements() {
-		world.setRequirements(textures, keyInput, mouseInput);
+		world.setRequirements(new Player(0, 0, 2, ID.Player, null), textures, keyInput, mouseInput);
 
 		keyInput.setRequirements(world);
 		mouseInput.setRequirements(this, world);

@@ -14,9 +14,10 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class InventorySystem {
+public class InventorySystem implements Serializable {
 	public static final int slot_w = 18, slot_h = 18;
 	public static final int item_w = 16, item_h = 16;
 	public static final int stackSize = 99;
@@ -24,12 +25,12 @@ public class InventorySystem {
 	public static final Color slot_outline = new Color(20, 20, 20, 255);
 	public static final Color slot_hover = new Color(255, 255, 255, 50);
 
-	private Handler handler;
-	private MouseInput mouseInput;
-	private World world;
-	private Inventory player_inv;
-	private Camera cam;
-	public Inventory player_hotbar;
+	private transient Handler handler;
+	private transient MouseInput mouseInput;
+	private transient World world;
+	private transient Inventory player_inv;
+	private transient Camera cam;
+	public transient Inventory player_hotbar;
 
 	public int hotbar_selected = 0;
 	private ArrayList<Inventory> open_inventories = new ArrayList<>();

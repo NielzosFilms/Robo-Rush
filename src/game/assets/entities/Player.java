@@ -38,7 +38,7 @@ public class Player extends GameObject {
 
 	private DIRECTIONS direction;
 	private int health, food, water;
-	private static int needs_timer = 0;
+	private int needs_timer = 0;
 	private int attack_timer = 0;
 
 	private Animation idle_down, idle_up, idle_left, idle_right;

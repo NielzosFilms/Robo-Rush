@@ -113,4 +113,12 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		return new Point((int) (mouse_x + -cam.getX()), (int) (mouse_y + -cam.getY()));
 	}
 
+	public void setWorld(World world) {
+		this.inventorySystem = world.getInventorySystem();
+		this.cam = world.getCam();
+		this.hud = world.getHud();
+		this.handler = world.getHandler();
+		this.world = world;
+		this.player = world.getPlayer();
+	}
 }

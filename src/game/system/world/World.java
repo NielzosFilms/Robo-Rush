@@ -43,29 +43,35 @@ public class World implements Serializable {
 
 	private HUD hud;
 
-	private static InventorySystem inventorySystem;
+	private InventorySystem inventorySystem;
 	private static LightingSystem lightingSystem;
 	private static ParticleSystem ps;
 
 	public World() {
-		player = new Player(0, 0, 2, ID.Player, null);
-
 		handler = new Handler();
 		cam = new Camera(0, 0);
-		collision = new Collision();
-		hitboxSystem = new HitboxSystem();
-
 		inventorySystem = new InventorySystem();
-		ps = new ParticleSystem();
-		lightingSystem = new LightingSystem();
 
 		hud = new HUD();
 	}
 
-	public void setRequirements(Textures textures, KeyInput keyInput, MouseInput mouseInput) {
+	public void setRequirements(Player player, Textures textures, KeyInput keyInput, MouseInput mouseInput) {
+		collision = new Collision();
+		hitboxSystem = new HitboxSystem();
+
+		ps = new ParticleSystem();
+		lightingSystem = new LightingSystem();
+
 		this.textures = textures;
 		this.keyInput = keyInput;
-		this.player.setKeyInput(this.keyInput);
+		if(this.player != null) handler.removeObject(this.player);
+		this.player = player;
+		this.player.setKeyInput(keyInput);
+		this.player.setId(ID.Player);
+
+		this.keyInput = keyInput;
+		keyInput.setRequirements(this);
+		mouseInput.setWorld(this);
 
 		handler.setRequirements(this, cam, ps);
 		collision.setRequirements(handler, this, this.player);
@@ -181,6 +187,7 @@ public class World implements Serializable {
 	}
 
 	public boolean addEntityToChunk(GameObject entity) {
+		if(entity.getId() == ID.Player) return false;
 		int x = entity.getX();
 		int y = entity.getY();
 		Chunk crsp_chunk = getChunkWithCoordsPoint(getChunkPointWithCoords(x, y));
@@ -323,6 +330,7 @@ public class World implements Serializable {
 	}
 
 	public void setPlayer(Player player) {
+		handler.removeObject(this.player);
 		this.player = player;
 	}
 

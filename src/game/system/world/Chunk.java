@@ -35,10 +35,10 @@ public class Chunk implements Serializable {
 
 	public static int tile_width = 16, tile_height = 16;
 	public int x, y;
-	private static Long seed;
-	private static Long temp_seed;
-	private static Long moist_seed;
-	private transient World world;
+	private Long seed;
+	private Long temp_seed;
+	private Long moist_seed;
+	private World world;
 	private transient Textures textures;
 
 	public Chunk(int x, int y, Long seed, Long temp_seed, Long moist_seed, World world, Player player,
