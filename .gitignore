@@ -2,6 +2,7 @@ bin/
 out/
 .idea/
 .settings/
+META-INF/
 saves/
 .classpath
 .project
