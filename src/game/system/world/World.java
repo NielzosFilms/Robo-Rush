@@ -317,6 +317,7 @@ public class World implements Serializable {
 		this.moist_seed = r.nextLong();
 		loaded = false;
 		chunks.clear();
+		setRequirements(new Player(0, 0, 2, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
 
 		Logger.print("[seed]: " + this.seed);
 

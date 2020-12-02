@@ -2,6 +2,7 @@ package game.system.menu.buttons;
 
 import game.enums.BUTTONS;
 import game.enums.GAMESTATES;
+import game.enums.MENUSTATES;
 import game.system.main.Game;
 import game.system.world.World;
 import game.textures.Fonts;
@@ -28,8 +29,7 @@ public class ButtonPlay extends Button {
     }
 
     public void handleClick(MouseEvent e) {
-        //Game.world.loadChunks();
-        if(!World.loaded) Game.world.generate(new Random().nextLong());
-        Game.game_state = GAMESTATES.Game;
+        Game.menuSystem.update();
+        Game.menuSystem.setState(MENUSTATES.SaveSlotSelect);
     }
 }

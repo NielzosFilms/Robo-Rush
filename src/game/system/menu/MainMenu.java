@@ -33,8 +33,6 @@ public class MainMenu extends Menu {
         buttons.add(btnQuit);
         buttons.add(btnPlay);
         buttons.add(btnSettings);
-
-        buttons.add(new ButtonLoad(0, 50, 64, 32));
     }
 
     public void tickAbs() {}

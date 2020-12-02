@@ -24,10 +24,11 @@ public class ButtonMainMenu extends Button {
 
         g.setColor(Color.BLACK);
         g.setFont(Fonts.default_fonts.get(10));
-        g.drawString("Main Menu", x, y + height / 2);
+        g.drawString("Save and Exit", x, y + height / 2);
     }
 
     public void handleClick(MouseEvent e) {
+        Game.saveChunks();
         Game.game_state = GAMESTATES.Menu;
         Game.menuSystem.setState(MENUSTATES.Main);
     }

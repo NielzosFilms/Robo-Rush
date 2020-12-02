@@ -38,6 +38,8 @@ public class Game extends Canvas implements Runnable {
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEDUG_MODE = true;
 
+	public static int current_loaded_save_slot;
+
 	private Thread thread;
 	private boolean running = true;
 	public static int current_fps = 0;
@@ -189,16 +191,17 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public static void saveChunks() {
+		menuSystem.setSaving(true);
 		String directory = "saves/";
-		Logger.print("Save world");
+		Logger.print("Save world: " + current_loaded_save_slot);
 		try {
-			FileOutputStream fos = new FileOutputStream(directory + "test_save.data");
+			FileOutputStream fos = new FileOutputStream(directory + "save_slot_" + current_loaded_save_slot + ".data");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(world);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		menuSystem.setSaving(false);
 	}
 
 	public static void main(String[] args) {

@@ -15,8 +15,8 @@ public class Textures {
 			water_r_t_l, water_r_t, water_r_tr, water_r_t_r, water_r_r;
 
 	// tilesets / sheets
-	static BufferedImage tileSetForest, playerSheet, mushroom, tileSetDesert, tileSetWater, tileSetNatureObjects,
-			tileSetHouse;
+	private static BufferedImage tileSetForest, playerSheet, mushroom, tileSetDesert, tileSetWater, tileSetNatureObjects,
+			tileSetHouse, tileSetCave;
 	public static BufferedImage entity_shadow;
 
 	private static BufferedImage stick_png;
@@ -42,6 +42,7 @@ public class Textures {
 	private static BufferedImage tools_png;
 	public static HashMap<Point, BufferedImage> tools = new HashMap<>();
 
+	public static HashMap<Point, BufferedImage> cave_list = new HashMap<>();
 	public static HashMap<Point, BufferedImage> forest_list = new HashMap<>();
 	public static HashMap<Point, BufferedImage> desert_list = new HashMap<>();
 	public static HashMap<Point, BufferedImage> nature_list = new HashMap<>();
@@ -54,6 +55,7 @@ public class Textures {
 		BufferedImageLoader loader = new BufferedImageLoader();
 
 		tileSetForest = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/1.png");
+		tileSetCave = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/8.png");
 		tileSetDesert = loader.loadImage("assets/main/tile_sheets/desert_tile.png");
 		tileSetWater = loader.loadImage("assets/main/tile_sheets/water_tiles.png");
 		tileSetNatureObjects = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/3.png");
@@ -81,6 +83,7 @@ public class Textures {
 
 		fillListWithSpriteSheet(tileSetForest, 32, 32, forest_list);
 		initWaterAnimations();
+		fillListWithSpriteSheet(tileSetCave, 32, 32, cave_list);
 		fillListWithSpriteSheet(playerSheet, 16, 24, player_list);
 		fillListWithSpriteSheet(tileSetDesert, 16, 16, desert_list);
 		fillListWithSpriteSheet(tileSetNatureObjects, 32, 32, nature_list);
@@ -192,6 +195,7 @@ public class Textures {
 			case house_list -> ret = house_list;
 			case player_list -> ret = player_list;
 			case healthbar_list -> ret = healthbar_list;
+			case cave_list -> ret = cave_list;
 		}
 		return ret;
 	}

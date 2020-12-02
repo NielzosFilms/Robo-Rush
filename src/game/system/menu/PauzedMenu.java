@@ -19,13 +19,14 @@ public class PauzedMenu extends Menu {
         buttons.add(new ButtonMainMenu(0, 200, 64, 32));
         buttons.get(0).alignCenterX(screenWidth);
 
-        buttons.add(new ButtonSettings(0, 125, 64, 32));
+        buttons.add(new ButtonSettings(0, 100, 64, 32));
         buttons.get(1).alignCenterX(screenWidth);
 
         buttons.add(new ButtonResume(0, 50, 64, 32));
         buttons.get(2).alignCenterX(screenWidth);
 
-        buttons.add(new ButtonSave(0, 200, 64, 32));
+        buttons.add(new ButtonSave(0, 150, 64, 32));
+        buttons.get(3).alignCenterX(screenWidth);
     }
 
     public void tickAbs() {}

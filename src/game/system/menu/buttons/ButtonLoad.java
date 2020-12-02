@@ -13,14 +13,22 @@ import game.textures.Textures;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Random;
 
 public class ButtonLoad extends Button {
-	public ButtonLoad(int x, int y, int width, int height) {
+	private static String directory = "saves/";
+	private int slot;
+	private boolean slot_exists = false;
+
+	public ButtonLoad(int x, int y, int width, int height, int slot) {
 		super(x, y, width, height);
 		this.btn_type = BUTTONS.Load;
+		this.slot = slot;
+		this.slot_exists = new File(directory + "save_slot_" + slot + ".data").exists();
 	}
 
 	public void render(Graphics g, Graphics2D g2d) {
@@ -30,44 +38,44 @@ public class ButtonLoad extends Button {
 
 		g.setColor(Color.BLACK);
 		g.setFont(Fonts.default_fonts.get(10));
-		g.drawString("Load World", x, y + height / 2);
+		if(slot_exists) {
+			g.drawString("Load Slot " + slot, x, y + height / 2);
+		} else {
+			g.drawString("Start Slot " + slot, x, y + height / 2);
+		}
 	}
 
 	public void handleClick(MouseEvent e) {
+		if(slot_exists) {
+			loadChunks();
+			World.loaded = true;
+		} else {
+			// TODO be able to inject seed
+			Game.world.generate(new Random().nextLong());
+		}
+		Game.current_loaded_save_slot = slot;
 		Game.game_state = GAMESTATES.Game;
-		loadChunks();
-		World.loaded = true;
 	}
 
 	public void loadChunks() {
-		String directory = "saves/";
-		Logger.print("Load world");
+		Game.menuSystem.setLoading(true);
+		Logger.print("Load world: " + slot);
 		try {
-			FileInputStream fis = new FileInputStream(directory + "test_save.data");
+			FileInputStream fis = new FileInputStream(directory + "save_slot_" + slot + ".data");
 			ObjectInputStream ois = new ObjectInputStream(fis);
+
 			World loaded_world = (World) ois.readObject();
-			//Game.world = loaded_world;
-			//Game.world.setPlayer(loaded_world.getPlayer());
-			//Game.world = new World();
 			Textures textures = Game.textures;
 			KeyInput keyInput = Game.keyInput;
 			MouseInput mouseInput = Game.mouseInput;
 			Game.world = loaded_world;
-			//Game.world.chunks = loaded_world.chunks;
-//			Game.world.setCam(loaded_world.getCam());
-//			Game.world.setHandler(loaded_world.getHandler());
-//			Game.world.setHud(loaded_world.getHud());
-//			Game.world.setSeeds(loaded_world.getSeed(), loaded_world.getTemp_seed(), loaded_world.getMoist_seed());
-			Player loaded_player = loaded_world.getPlayer();
-			//loaded_player.setKeyInput(null);
-			Game.world.setRequirements(loaded_player, textures, keyInput, mouseInput);
-			//Game.handler.removeObject(Game.world.getPlayer());
-			//Game.world.setPlayer(loaded_world.getPlayer());
-			//Game.handler.addObject(Game.world.getPlayer());
+			Game.world.setRequirements(loaded_world.getPlayer(), textures, keyInput, mouseInput);
+
 			ois.close();
 			fis.close();
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		Game.menuSystem.setLoading(false);
 	}
 }
