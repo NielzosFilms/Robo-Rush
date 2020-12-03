@@ -22,6 +22,7 @@ import game.assets.tiles.TileGrass;
 import game.assets.tiles.TileWater;
 import game.assets.objects.Tree;
 import game.assets.structures.Structure;
+import game.textures.Fonts;
 import game.textures.Textures;
 
 public class Chunk implements Serializable {
@@ -96,6 +97,8 @@ public class Chunk implements Serializable {
 	public void renderBorder(Graphics g) {
 		g.setColor(Color.decode("#70deff"));
 		g.drawRect(x * 16, y * 16, 16 * 16, 16 * 16);
+		g.setFont(Fonts.default_fonts.get(5));
+		g.drawString(x + "," + y, x * 16 + 2, y * 16 + 8);
 	}
 
 	public void renderTiles(Graphics g) {
@@ -149,7 +152,7 @@ public class Chunk implements Serializable {
 				int world_y = resized_y + y * 16;
 
 				if (World.getBiome(val, temp_val, moist_val) == BIOME.Forest) {
-					addTile(new TileGrass(world_x, world_y, resized_x + x, resized_y + y, 1, BIOME.Forest, this));
+					addTile(new TileGrass(world_x, world_y, xx, yy, 1, BIOME.Forest, this));
 					int num = r.nextInt(100);
 					if (num == 0) {
 						addEntity(new Tree(world_x, world_y, 1, ID.Tree, BIOME.Forest, player));
@@ -166,7 +169,7 @@ public class Chunk implements Serializable {
 						addEntity(new Pebble(world_x, world_y, 0, ID.Pebble));
 					}
 				} else {
-					addTile(new TileWater(world_x, world_y, resized_x + x, resized_y + y, 1, BIOME.Ocean, this));
+					addTile(new TileWater(world_x, world_y, xx, yy, 1, BIOME.Ocean, this));
 				}
 			}
 		}
@@ -242,5 +245,11 @@ public class Chunk implements Serializable {
 
 	public void addLight(Light light) {
 		lights.add(light);
+	}
+
+	public Chunk getNeighbourChunk(int x_offset, int y_offset) {
+		x_offset *= 16;
+		y_offset *= 16;
+		return this.world.getChunkWithCoordsPoint(new Point(x + x_offset, y + y_offset));
 	}
 }

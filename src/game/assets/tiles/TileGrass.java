@@ -46,7 +46,7 @@ public class TileGrass extends Tile {
     }
 
     public void findAndSetEdgeTexture() {
-        top = TileHelperFunctions.checkSameNeighbourBiome(biome, chunk.getTileMap(), chunk, chunk_x, chunk_y, 0, -1);
+       /* top = TileHelperFunctions.checkSameNeighbourBiome(biome, chunk.getTileMap(), chunk, chunk_x, chunk_y, 0, -1);
         right = TileHelperFunctions.checkSameNeighbourBiome(biome, chunk.getTileMap(), chunk, chunk_x, chunk_y, 1, 0);
         bottom = TileHelperFunctions.checkSameNeighbourBiome(biome, chunk.getTileMap(), chunk, chunk_x, chunk_y, 0, 1);
         left = TileHelperFunctions.checkSameNeighbourBiome(biome, chunk.getTileMap(), chunk, chunk_x, chunk_y, -1, 0);
@@ -58,7 +58,17 @@ public class TileGrass extends Tile {
         bottom_left = TileHelperFunctions.checkSameNeighbourBiome(biome, chunk.getTileMap(), chunk, chunk_x, chunk_y,
                 -1, 1);
         bottom_right = TileHelperFunctions.checkSameNeighbourBiome(biome, chunk.getTileMap(), chunk, chunk_x, chunk_y,
-                1, 1);
+                1, 1);*/
+
+        top = TileHelperFunctions.checkSameNeighbourTile(this, chunk, 0, -1);
+        right = TileHelperFunctions.checkSameNeighbourTile(this, chunk, 1, 0);
+        bottom = TileHelperFunctions.checkSameNeighbourTile(this, chunk, 0, 1);
+        left = TileHelperFunctions.checkSameNeighbourTile(this, chunk, -1, 0);
+
+        top_left = TileHelperFunctions.checkSameNeighbourTile(this, chunk, -1, -1);
+        top_right = TileHelperFunctions.checkSameNeighbourTile(this, chunk, 1, -1);
+        bottom_left = TileHelperFunctions.checkSameNeighbourTile(this, chunk, -1, 1);
+        bottom_right = TileHelperFunctions.checkSameNeighbourTile(this, chunk, 1, 1);
 
         if(enoughConnections()) {
             this.texture = getTextureWithBooleans();

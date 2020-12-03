@@ -33,7 +33,7 @@ public class Game extends Canvas implements Runnable {
 	public static final int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 3.1.0 INFDEV";
+	public static final String VERSION = "ALPHA V 3.2.0 INFDEV";
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEBUG_MODE = true;
@@ -190,8 +190,8 @@ public class Game extends Canvas implements Runnable {
 	public static void saveChunks() {
 		menuSystem.setSaving(true);
 		String directory = "saves/";
-		/*Logger.print("Save world: " + current_loaded_save_slot);
-		try {
+		Logger.print("Save world: " + current_loaded_save_slot);
+		/*try {
 			FileOutputStream fos = new FileOutputStream(directory + "save_slot_" + current_loaded_save_slot + ".data");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(world);
