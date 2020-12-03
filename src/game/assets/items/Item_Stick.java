@@ -10,7 +10,7 @@ public class Item_Stick extends Item {
 
     public Item_Stick(int amount, ITEM_ID itemType) {
         super(amount, itemType);
-        this.tex = new Texture(TEXTURE_LIST.stick, 0, 0);
+        this.tex = new Texture(TEXTURE_LIST.stick, 1, 1);
         this.itemGround = new Item_Ground(0, 0, 1, ID.Item, this);
     }
 
