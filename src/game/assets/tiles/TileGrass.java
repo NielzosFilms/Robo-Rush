@@ -39,6 +39,7 @@ public class TileGrass extends Tile {
 
     public TileGrass(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk) {
         super(x, y, chunk_x, chunk_y, z_index, biome, chunk);
+        this.texture = tex_center;
     }
 
     public void render(Graphics g) {
