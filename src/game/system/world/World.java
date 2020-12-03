@@ -95,7 +95,7 @@ public class World implements Serializable {
 		ps.tick();
 
 		runWaterAnimations();
-		putEntitiesIntoChunks(camX, camY, camW, camH);
+		generateNewChunksOffScreen(camX, camY, camW, camH);
 
 		collision.tick();
 		hitboxSystem.tick();
@@ -106,23 +106,27 @@ public class World implements Serializable {
 
 	}
 
-	private void putEntitiesIntoChunks(int camX, int camY, int camW, int camH) {
+	private void generateNewChunksOffScreen(int camX, int camY, int camW, int camH) {
 		for (int y = camY - 32; y < camY + camH + 16; y++) {
 			for (int x = camX - 32; x < camX + camW + 16; x++) {
 				if (chunks.containsKey(new Point(x, y))) {
 					chunks.get(new Point(x, y)).tick();
 					if (!chunks.containsKey(new Point(x - 16, y))) {
-						chunks.put(new Point(x - 16, y),
+						chunks.put(
+								new Point(x - 16, y),
 								new Chunk(x - 16, y, seed, temp_seed, moist_seed, this, player, textures));
 					} else if (!chunks.containsKey(new Point(x + 16, y))) {
-						chunks.put(new Point(x + 16, y),
+						chunks.put(
+								new Point(x + 16, y),
 								new Chunk(x + 16, y, seed, temp_seed, moist_seed, this, player, textures));
 					}
 					if (!chunks.containsKey(new Point(x, y - 16))) {
-						chunks.put(new Point(x, y - 16),
+						chunks.put(
+								new Point(x, y - 16),
 								new Chunk(x, y - 16, seed, temp_seed, moist_seed, this, player, textures));
 					} else if (!chunks.containsKey(new Point(x, y + 16))) {
-						chunks.put(new Point(x, y + 16),
+						chunks.put(
+								new Point(x, y + 16),
 								new Chunk(x, y + 16, seed, temp_seed, moist_seed, this, player, textures));
 					}
 				}

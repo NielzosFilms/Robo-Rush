@@ -38,7 +38,7 @@ public class Inventory implements Serializable {
 		for(InventorySlot slot : slots) {
 			slot.render(g);
 		}
-		if(Game.DEDUG_MODE) {
+		if(Game.DEBUG_MODE) {
 			g.setColor(Color.magenta);
 			g.drawRect(getInventoryBounds().x, getInventoryBounds().y, getInventoryBounds().width, getInventoryBounds().height);
 		}

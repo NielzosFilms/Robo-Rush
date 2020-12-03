@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.function.Function;
 
 import game.assets.HealthBar;
 import game.assets.entities.Player;
@@ -38,7 +37,7 @@ public class HUD implements Serializable {
 	}
 
 	public void tick() {
-		if(Game.DEDUG_MODE) debugHUD.tick();
+		if(Game.DEBUG_MODE) debugHUD.tick();
 	}
 
 	public void renderCam(Graphics g, Graphics2D g2d) {
@@ -62,7 +61,7 @@ public class HUD implements Serializable {
 				}
 			}
 		}
-		if(Game.DEDUG_MODE) debugHUD.renderCam(g, g2d);
+		if(Game.DEBUG_MODE) debugHUD.renderCam(g, g2d);
 	}
 
 	public void render(Graphics g, Graphics2D g2d) {
@@ -78,7 +77,7 @@ public class HUD implements Serializable {
 		g2d.drawString(name, (Game.WIDTH - fontMetrics.stringWidth(name)),
 				fontMetrics.getHeight() + fontMetrics.getAscent());
 
-		if(Game.DEDUG_MODE) debugHUD.render(g, g2d);
+		if(Game.DEBUG_MODE) debugHUD.render(g, g2d);
 	}
 
 	private int getWorldCoordX(int screen_x) {

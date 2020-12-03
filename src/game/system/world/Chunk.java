@@ -117,6 +117,18 @@ public class Chunk implements Serializable {
 		}
 	}
 
+	public void updateTiles() {
+		// change texture of tile
+		HashMap<Point, Tile> tmp = new HashMap<>(tiles.get(1));
+		Iterator it = tmp.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry) it.next();
+			if(tiles.get(1).containsKey(pair.getKey())) {
+				tiles.get(1).get(pair.getKey()).findAndSetEdgeTexture();
+			}
+		}
+	}
+
 	private void GenerateTiles(World world, Player player) {
 		float[][] osn = world.getOsn(x, y, tile_width, tile_height);
 		float[][] temp_osn = world.getTemperatureOsn(x, y, tile_width, tile_height);
@@ -158,19 +170,7 @@ public class Chunk implements Serializable {
 				}
 			}
 		}
-
-		// change texture of tile
-		Iterator it = tiles.get(1).entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			Tile tile = (Tile) pair.getValue();
-
-			tile.findAndSetEdgeTexture();
-			/*
-			 * int tex_id = tile.getTextureId(this.tiles.get(0), (Point) pair.getKey(),
-			 * tile.tex_id, world, this); tile.setTexture(tex_id);
-			 */
-		}
+		updateTiles();
 	}
 
 	public LinkedList<GameObject> getEntities() {
@@ -221,6 +221,11 @@ public class Chunk implements Serializable {
 			}
 			tiles.get(zIndex).put(new Point(tile.getChunkX(), tile.getChunkY()), tile);
 		}
+	}
+
+	public void removeTile(Tile tile) {
+		int zIndex = tile.getZIndex();
+		tiles.get(zIndex).remove(new Point(tile.getChunkX(), tile.getChunkY()), tile);
 	}
 
 	public void addEntity(GameObject ent) {

@@ -1,13 +1,11 @@
 package game.system.inputs;
 
-import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
-import game.system.inventory.Inventory;
 import game.system.inventory.InventorySystem;
 import game.system.main.*;
 import game.enums.ID;
@@ -120,7 +118,7 @@ public class KeyInput extends KeyAdapter {
 			}
 		}
 
-		if (key == KeyEvent.VK_F4) Game.DEDUG_MODE = !Game.DEDUG_MODE;
+		if (key == KeyEvent.VK_F4) Game.DEBUG_MODE = !Game.DEBUG_MODE;
 	}
 
 	public void tick() {}

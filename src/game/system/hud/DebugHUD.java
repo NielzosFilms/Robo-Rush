@@ -31,7 +31,7 @@ public class DebugHUD implements Serializable {
 		Font font2 = new Font("SansSerif", Font.PLAIN, 4);
 		g2d.setFont(font2);
 		g2d.drawString("FPS: " + Game.current_fps, 1, 10);
-		if (Game.DEDUG_MODE) {
+		if (Game.DEBUG_MODE) {
 			g2d.drawString("X: " + player.getX(), 1, 35);
 			g2d.drawString("Y: " + player.getY(), 1, 40);
 			// g2d.drawString("BIOME: " + player.getCurrentBiome().toString(), 1, 45);

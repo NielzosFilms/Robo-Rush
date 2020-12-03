@@ -6,7 +6,6 @@ import game.system.main.Game;
 import game.system.main.GameObject;
 
 import java.awt.*;
-import java.util.LinkedList;
 
 public class Hitbox extends GameObject {
     private HitboxContainer parent;
@@ -39,7 +38,7 @@ public class Hitbox extends GameObject {
     }
 
     public void render(Graphics g) {
-        if(Game.DEDUG_MODE) {
+        if(Game.DEBUG_MODE) {
             g.setColor(new Color(255, 255, 0, 128));
             g.fillRect(x, y, width, height);
         }

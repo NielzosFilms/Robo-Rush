@@ -11,10 +11,19 @@ import game.enums.BIOME;
 import game.system.world.Chunk;
 
 public class TileGrass extends Tile {
-    private boolean top = true, right = true, bottom = true, left = true;
-    private boolean top_left = true, top_right = true, bottom_left = true, bottom_right = true;
+    private boolean
+            top = true,
+            right = true,
+            bottom = true,
+            left = true;
+    private boolean
+            top_left = true,
+            top_right = true,
+            bottom_left = true,
+            bottom_right = true;
 
-    private Texture tex_top_left = new Texture(TEXTURE_LIST.forest_list, 0, 0),
+    private final Texture
+            tex_top_left = new Texture(TEXTURE_LIST.forest_list, 0, 0),
             tex_top = new Texture(TEXTURE_LIST.forest_list, 1, 0),
             tex_top_right = new Texture(TEXTURE_LIST.forest_list, 2, 0),
             tex_left = new Texture(TEXTURE_LIST.forest_list, 0, 1),
@@ -51,7 +60,22 @@ public class TileGrass extends Tile {
         bottom_right = TileHelperFunctions.checkSameNeighbourBiome(biome, chunk.getTileMap(), chunk, chunk_x, chunk_y,
                 1, 1);
 
-        this.texture = getTextureWithBooleans();
+        if(enoughConnections()) {
+            this.texture = getTextureWithBooleans();
+
+            // Add water tile in background
+            if(this.texture != tex_center) {
+                TileWater water = new TileWater(x, y, chunk_x, chunk_y, 2, biome, chunk);
+                water.setWaterType(top, right, bottom, left, top_left, top_right, bottom_left, bottom_right);
+                chunk.addTile(water);
+                this.texture = tex_center;
+            }
+        } else {
+            TileWater water = new TileWater(x, y, chunk_x, chunk_y, 1, BIOME.Ocean, chunk);
+            chunk.addTile(water);
+            chunk.removeTile(this);
+            chunk.updateTiles();
+        }
     }
 
     public void update() {
@@ -92,6 +116,17 @@ public class TileGrass extends Tile {
         }
 
         return tex_center;
+    }
+
+    private boolean enoughConnections() {
+        if(!top && !right && !bottom && !left) return false;
+        if(top && !right && !bottom && !left) return false;
+        if(!top && right && !bottom && !left) return false;
+        if(!top && !right && bottom && !left) return false;
+        if(!top && !right && !bottom && left) return false;
+        if(!top && right && !bottom && left) return false;
+        if(top && !right && bottom && !left) return false;
+        return true;
     }
 
     public Rectangle getBounds() {

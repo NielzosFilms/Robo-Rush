@@ -105,7 +105,7 @@ public class Handler implements Serializable {
 			}
 		}
 
-		if (Game.DEDUG_MODE) {
+		if (Game.DEBUG_MODE) {
 			for (Chunk chunk : chunks_on_screen) {
 				chunk.renderBorder(g);
 			}
