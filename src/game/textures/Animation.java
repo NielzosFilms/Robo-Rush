@@ -14,6 +14,7 @@ public class Animation implements Serializable {
 	private int count = 0;
 	
 	private boolean mirrorW;
+	private boolean ended = false;
 	
 	private Texture[] images;
 	private Texture currentImg;
@@ -41,6 +42,7 @@ public class Animation implements Serializable {
 		index = 0;
 		count = 0;
 		currentImg = images[0];
+		ended = false;
 	}
 	
 	public void mirrorAnimationW(boolean temp) {
@@ -53,8 +55,10 @@ public class Animation implements Serializable {
 				currentImg = images[i];
 		}
 		count++;
-		if(count >= frames)
+		if(count >= frames){
 			count = 0;
+			ended = true;
+		}
 	}
 	
 	public void drawAnimation(Graphics g, int x, int y) {
@@ -79,6 +83,10 @@ public class Animation implements Serializable {
 			
 		}else
 			g.drawImage(currentImg.getTexure(), x, y, scaleX, scaleY, null);
+	}
+
+	public boolean animationEnded() {
+		return ended;
 	}
 	
 }

@@ -36,7 +36,7 @@ public class HealthBar implements Serializable {
             int health_perc = getHealthPercent();
             int until = (int)((float)(Textures.healthbar_list.size()) / 100 * health_perc);
             for(int i=0; i<until; i++) {
-                g.drawImage(Textures.healthbar_list.get(i), x + i + 1, y + 1, 1, 2, null);
+                g.drawImage(Textures.healthbar_list.get(new Point(i, 0)), x + i + 1, y + 1, 1, 2, null);
             }
         }
     }

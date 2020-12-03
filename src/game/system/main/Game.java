@@ -11,6 +11,7 @@ import game.enums.GAMESTATES;
 import game.enums.ID;
 import game.audioEngine.AudioFiles;
 import game.assets.entities.Player;
+import game.system.menu.elements.LoadingAnimation;
 import game.system.particles.ParticleSystem;
 import game.system.hitbox.HitboxSystem;
 import game.system.hud.HUD;
@@ -59,6 +60,8 @@ public class Game extends Canvas implements Runnable {
 	public static ImageRendering imageRenderer;
 
 	public static World world;
+
+	public static LoadingAnimation loadingAnimation = new LoadingAnimation(32, 32, 32, 32);
 
 	public Game() {
 		r = new Random();
@@ -153,6 +156,7 @@ public class Game extends Canvas implements Runnable {
 		} else if ((game_state == GAMESTATES.Pauzed) || game_state == GAMESTATES.Menu) {
 			menuSystem.tick();
 		}
+		loadingAnimation.tick();
 	}
 
 	private void render() {
@@ -181,6 +185,7 @@ public class Game extends Canvas implements Runnable {
 				menuSystem.render(g, g2d);
 			}
 		}
+		loadingAnimation.render(g);
 
 		g.dispose();
 		g2d.dispose();
@@ -188,7 +193,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public static void saveChunks() {
-		menuSystem.setSaving(true);
+		loadingAnimation.setLoading(true);
 		String directory = "saves/";
 		Logger.print("Save world: " + current_loaded_save_slot);
 		try {
@@ -198,7 +203,7 @@ public class Game extends Canvas implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		menuSystem.setSaving(false);
+		loadingAnimation.setLoading(false);
 	}
 
 	public static void main(String[] args) {

@@ -45,6 +45,7 @@ public class InventorySystem implements Serializable {
 		this.mouseInput = mouseInput;
 		this.world = world;
 		this.player_hotbar = player.hotbar;
+		this.open_inventories.clear();
 		this.open_inventories.add(this.player_hotbar);
 		this.player_inv = player.inventory;
 		this.cam = cam;

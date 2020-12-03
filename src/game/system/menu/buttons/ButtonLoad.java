@@ -58,7 +58,7 @@ public class ButtonLoad extends Button {
 	}
 
 	public void loadChunks() {
-		Game.menuSystem.setLoading(true);
+		Game.loadingAnimation.setLoading(true);
 		Logger.print("Load world: " + slot);
 		try {
 			FileInputStream fis = new FileInputStream(directory + "save_slot_" + slot + ".data");
@@ -76,6 +76,6 @@ public class ButtonLoad extends Button {
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		Game.menuSystem.setLoading(false);
+		Game.loadingAnimation.setLoading(false);
 	}
 }

@@ -17,6 +17,7 @@ import game.system.inventory.InventorySystem;
 import game.system.lighting.Light;
 import game.system.lighting.LightingSystem;
 import game.system.main.*;
+import game.system.menu.elements.LoadingAnimation;
 import game.system.particles.ParticleSystem;
 import game.textures.Textures;
 import org.json.simple.JSONArray;
@@ -103,7 +104,6 @@ public class World implements Serializable {
 		inventorySystem.tick();
 		cam.tick(player);
 		hud.tick();
-
 	}
 
 	private void generateNewChunksOffScreen(int camX, int camY, int camW, int camH) {

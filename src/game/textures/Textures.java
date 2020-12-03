@@ -49,7 +49,8 @@ public class Textures {
 			tileSetWater,
 			tileSetNatureObjects,
 			tileSetHouse,
-			tileSetCave;
+			tileSetCave,
+			loading_png;
 	public static BufferedImage entity_shadow;
 
 	private static BufferedImage stick_png;
@@ -84,6 +85,8 @@ public class Textures {
 
 	public static HashMap<Point, BufferedImage> healthbar_list = new HashMap<>();
 
+	public static HashMap<Point, BufferedImage> loading_list = new HashMap<>();
+
 	public Textures() {
 		BufferedImageLoader loader = new BufferedImageLoader();
 
@@ -111,6 +114,8 @@ public class Textures {
 
 		tools_png = loader.loadImage("assets/items/tools.png");
 
+		loading_png = loader.loadImage("assets/main/loading_animation_shadow.png");
+
 		// height_map = loader.loadImage("assets/main/height_map.png");
 
 
@@ -125,6 +130,7 @@ public class Textures {
 		fillListWithSpriteSheet(stick_png, 16, 16, stick);
 		fillListWithSpriteSheet(stone_png, 16, 16, stone);
 		fillListWithSpriteSheet(tools_png, 16, 16, tools);
+		fillListWithSpriteSheet(loading_png, 16, 16, loading_list);
 
 		// water = new Animation(25, tileSetWaterBlocks.get(0),
 		// tileSetWaterBlocks.get(1));
@@ -229,6 +235,7 @@ public class Textures {
 			case player_list -> ret = player_list;
 			case healthbar_list -> ret = healthbar_list;
 			case cave_list -> ret = cave_list;
+			case loading_list -> ret = loading_list;
 		}
 		return ret;
 	}

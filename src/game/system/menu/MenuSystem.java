@@ -6,6 +6,7 @@ import game.system.main.Game;
 import game.system.menu.buttons.Button;
 import game.system.menu.buttons.ButtonPlay;
 import game.system.menu.buttons.ButtonQuit;
+import game.system.menu.elements.LoadingAnimation;
 import game.textures.Animation;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
@@ -27,19 +28,8 @@ public class MenuSystem {
 	private SettingsMenu settingsMenu;
 	private MenuWorldSelect menuWorldSelect;
 
-	private boolean saving = false;
-	private boolean loading = false;
-	private Animation saving_animation;
-	private Animation loading_animation;
-
 	public MenuSystem() {
 		this.state = MENUSTATES.Main;
-		this.saving_animation = new Animation(10,
-				new Texture(TEXTURE_LIST.cave_list, 11, 9),
-				new Texture(TEXTURE_LIST.cave_list, 12, 9));
-		this.loading_animation = new Animation(10,
-				new Texture(TEXTURE_LIST.cave_list, 10, 9),
-				new Texture(TEXTURE_LIST.cave_list, 9, 9));
 	}
 
 	public void setRequirements(MouseInput mouseInput) {
@@ -61,17 +51,18 @@ public class MenuSystem {
 	public void tick() {
 		Menu active = getActiveMenu();
 		if(active != null) active.tick();
-
-		if(saving) saving_animation.runAnimation();
-		if(loading) loading_animation.runAnimation();
 	}
 
 	public void render(Graphics g, Graphics2D g2d) {
 		Menu active = getActiveMenu();
 		if(active != null) active.render(g, g2d);
-
-		if(saving) saving_animation.drawAnimation(g, 0, 0, 16, 16);
-		if(loading) loading_animation.drawAnimation(g, 0, 0, 16, 16);
+		if(Game.loadingAnimation.isRunning()) {
+			for(int y = 0;y < screenHeight;y+=16) {
+				for(int x = 0;x < screenWidth;x+=16) {
+					g.drawImage(Textures.forest_list.get(new Point(6, 19)), x, y, 16, 16, null);
+				}
+			}
+		}
 	}
 
 	public void mousePressed(MouseEvent e) {
@@ -111,20 +102,4 @@ public class MenuSystem {
 	}
 
 	public MENUSTATES getPreviousState() { return this.previous_state; }
-
-	public void setSaving(boolean saving) {
-		this.saving = saving;
-	}
-
-	public boolean getSaving() {
-		return this.saving;
-	}
-
-	public boolean isLoading() {
-		return loading;
-	}
-
-	public void setLoading(boolean loading) {
-		this.loading = loading;
-	}
 }
