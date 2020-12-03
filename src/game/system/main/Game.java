@@ -33,7 +33,7 @@ public class Game extends Canvas implements Runnable {
 	public static final int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 3.0.0 INFDEV";
+	public static final String VERSION = "ALPHA V 3.0.1 INFDEV";
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEDUG_MODE = true;
@@ -170,17 +170,14 @@ public class Game extends Canvas implements Runnable {
 		 * g2d.transform(scalingTransform);
 		 */
 		g2d.scale(SCALE_WIDTH, SCALE_HEIGHT);
-		g.setColor(Color.decode("#d1e3ff"));
+		g.setColor(new Color(217, 247, 255));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		if (game_state == GAMESTATES.Menu) {
-			//menuSystem.setState(MENUSTATES.Main);
 			menuSystem.render(g, g2d);
 		} else if ((game_state == GAMESTATES.Game || game_state == GAMESTATES.Pauzed) && World.loaded) {
 			world.render(g, g2d);
-
 			if (game_state == GAMESTATES.Pauzed) {
-				//menuSystem.setState(MENUSTATES.Pauzed);
 				menuSystem.render(g, g2d);
 			}
 		}
@@ -205,7 +202,6 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		// System.setProperty("sun.java2d.opengl", "true");
 		Logger.print("Game starting...");
 		canvas = new Game();
 	}
