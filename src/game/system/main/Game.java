@@ -191,13 +191,13 @@ public class Game extends Canvas implements Runnable {
 		menuSystem.setSaving(true);
 		String directory = "saves/";
 		Logger.print("Save world: " + current_loaded_save_slot);
-		/*try {
+		try {
 			FileOutputStream fos = new FileOutputStream(directory + "save_slot_" + current_loaded_save_slot + ".data");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(world);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
+		}
 		menuSystem.setSaving(false);
 	}
 
