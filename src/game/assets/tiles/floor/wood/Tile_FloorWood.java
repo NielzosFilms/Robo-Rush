@@ -1,5 +1,6 @@
-package game.assets.tiles;
+package game.assets.tiles.floor.wood;
 
+import game.assets.tiles.Tile;
 import game.enums.BIOME;
 import game.enums.TEXTURE_LIST;
 import game.enums.TILE_TYPE;

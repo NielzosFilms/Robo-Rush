@@ -36,6 +36,7 @@ public class Crate extends GameObject {
         inv = new Inventory(3, 2);
         //fillInventory();
         inv.setXY(300, 100);
+        inv.setInitXY(300, 100);
 
         healthBar = new HealthBar(x - 4, y - 8, 0, 7);
         this.tex = new Texture(TEXTURE_LIST.house_list, 6, 0);
@@ -104,7 +105,7 @@ public class Crate extends GameObject {
     }
 
     public void interact() {
-        Game.world.getInventorySystem().addOpenInventory(inv);
+        inv.open();
     }
 
     public void destroyed() {

@@ -131,6 +131,16 @@ public class InventorySystem implements Serializable {
 		}
 	}
 
+	public void mouseDragged(MouseEvent e) {
+		for(Inventory inv : open_inventories) {
+			if(inv.isMoveable()) {
+				if(mouseInput.mouseOverLocalRect(inv.getInventoryMoveBounds())) {
+					inv.setXY(mouseInput.mouse_x - inv.getInventoryMoveBounds().width / 2, mouseInput.mouse_y + 4);
+				}
+			}
+		}
+	}
+
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		int new_index = hotbar_selected + e.getWheelRotation();
 		if (new_index > player_hotbar.getSizeX() - 1) {

@@ -7,6 +7,7 @@ import game.assets.objects.crate.Item_Crate;
 import game.assets.items.tools.wood.Tool_WoodenAxe;
 import game.assets.items.tools.wood.Tool_WoodenPickaxe;
 import game.assets.items.tools.wood.Tool_WoodenSword;
+import game.assets.tiles.floor.wood.Item_FloorWood;
 import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
 import game.enums.DIRECTIONS;
@@ -60,8 +61,10 @@ public class Player extends GameObject {
 		this.inventory.addItem(new Item_Rock(InventorySystem.stackSize, ITEM_ID.Rock));
 		this.inventory.addItem(new Item_Stick(InventorySystem.stackSize, ITEM_ID.Stick));
 		this.inventory.addItem(new Item_Crate(InventorySystem.stackSize, ITEM_ID.Crate));
+		this.inventory.addItem(new Item_FloorWood(InventorySystem.stackSize));
 
 		this.hotbar = new Inventory(5, 1);
+		hotbar.setMoveable(false);
 		int hotbar_x = Game.WIDTH / 2 - this.hotbar.getInventoryBounds().width / 2;
 		int hotbar_y = Game.HEIGHT - this.hotbar.getInventoryBounds().height;
 		this.hotbar.setXY(hotbar_x, hotbar_y);
@@ -312,7 +315,7 @@ public class Player extends GameObject {
 	}
 
 	public void interact() {
-		Game.world.getInventorySystem().addOpenInventory(inventory);
+		inventory.open();
 	}
 
 	public void destroyed() {

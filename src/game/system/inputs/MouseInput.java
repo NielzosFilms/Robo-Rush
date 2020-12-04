@@ -77,7 +77,7 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		this.mouse_x = (int) (e.getX() / Game.SCALE_WIDTH);
 		this.mouse_y = (int) (e.getY() / Game.SCALE_HEIGHT);
 		this.dragging = true;
-		// System.out.println("Mouse dragged"+ e.getX()+ " | "+e.getY());
+		inventorySystem.mouseDragged(e);
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {

@@ -103,10 +103,8 @@ public class Chunk implements Serializable {
 
 	public void renderTiles(Graphics g) {
 		for (HashMap<Point, Tile> list : tiles) {
-			Iterator it = list.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry pair = (Map.Entry) it.next();
-				Tile tile = (Tile) pair.getValue();
+			for (Map.Entry<Point, Tile> pointTileEntry : list.entrySet()) {
+				Tile tile = (Tile) pointTileEntry.getValue();
 				tile.render(g);
 			}
 		}
@@ -123,11 +121,9 @@ public class Chunk implements Serializable {
 	public void updateTiles(int tilemap_index) {
 		// change texture of tile
 		HashMap<Point, Tile> tmp = new HashMap<>(tiles.get(tilemap_index));
-		Iterator it = tmp.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			if(tiles.get(tilemap_index).containsKey(pair.getKey())) {
-				tiles.get(tilemap_index).get(pair.getKey()).findAndSetEdgeTexture(tilemap_index);
+		for (Map.Entry<Point, Tile> pointTileEntry : tmp.entrySet()) {
+			if (tmp.containsKey(pointTileEntry.getKey())) {
+				tmp.get(pointTileEntry.getKey()).findAndSetEdgeTexture(tilemap_index);
 			}
 		}
 	}
@@ -135,15 +131,15 @@ public class Chunk implements Serializable {
 	public void updateSameTiles(Tile tile) {
 		int tilemap_index = tile.getZIndex();
 		HashMap<Point, Tile> tmp = new HashMap<>(tiles.get(tilemap_index));
-		Iterator it = tmp.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			if(tiles.get(tilemap_index).containsKey(pair.getKey())) {
-				if(tiles.get(tilemap_index).get(pair.getKey()).getClass() == tile.getClass()) {
-					tiles.get(tilemap_index).get(pair.getKey()).findAndSetEdgeTexture(tilemap_index);
+
+		for (Map.Entry<Point, Tile> pointTileEntry : tmp.entrySet()) {
+			if (tmp.containsKey(pointTileEntry.getKey())) {
+				if (tmp.get(pointTileEntry.getKey()).getClass() == tile.getClass()) {
+					tmp.get(pointTileEntry.getKey()).findAndSetEdgeTexture(tilemap_index);
 				}
 			}
 		}
+		tiles.set(tilemap_index, tmp);
 	}
 
 	private void GenerateTiles(World world, Player player) {
@@ -172,7 +168,7 @@ public class Chunk implements Serializable {
 						addEntity(new Tree(world_x, world_y, 1, ID.Tree, BIOME.Forest, player));
 						int stick = r.nextInt(5);
 						if (stick == 0) {
-							int placement = r.nextInt(1);
+							int placement = r.nextInt(2);
 							if (placement == 0) {
 								addEntity(new Branch(world_x - 16, world_y, 0, ID.Branch));
 							} else {
@@ -193,28 +189,24 @@ public class Chunk implements Serializable {
 	public LinkedList<GameObject> getEntities() {
 		LinkedList<GameObject> tmp = new LinkedList<GameObject>();
 		for (LinkedList<GameObject> list : entities) {
-			for (GameObject obj : list) {
-				tmp.add(obj);
-			}
+			tmp.addAll(list);
 		}
 		return tmp;
 	}
 
 	public LinkedList<Tile> getTiles() {
-		LinkedList<Tile> tmp = new LinkedList<Tile>();
+		LinkedList<Tile> tmp = new LinkedList<>();
+		LinkedList<HashMap<Point, Tile>> tiles = new LinkedList<>(this.tiles);
 		for (HashMap<Point, Tile> list : tiles) {
-			Iterator it = list.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry pair = (Map.Entry) it.next();
-				Tile tile = (Tile) pair.getValue();
-				tmp.add(tile);
+			for(Point key : list.keySet()) {
+				tmp.add(list.get(key));
 			}
 		}
 		return tmp;
 	}
 
 	public HashMap<Point, Tile> getTileMap(int index) {
-		for (int i = 0; i <= index; i++) {
+		for (int i = tiles.size(); i <= index; i++) {
 			tiles.add(new HashMap<Point, Tile>());
 		}
 		return tiles.get(index);
@@ -233,14 +225,10 @@ public class Chunk implements Serializable {
 
 	public void addTile(Tile tile) {
 		int zIndex = tile.getZIndex();
-		if (zIndex < tiles.size()) {
-			tiles.get(zIndex).put(new Point(tile.getChunkX(), tile.getChunkY()), tile);
-		} else {
-			for (int i = 0; i <= zIndex; i++) {
-				tiles.add(new HashMap<Point, Tile>());
-			}
-			tiles.get(zIndex).put(new Point(tile.getChunkX(), tile.getChunkY()), tile);
+		for (int i = tiles.size(); i <= zIndex; i++) {
+			tiles.add(new HashMap<Point, Tile>());
 		}
+		tiles.get(zIndex).put(new Point(tile.getChunkX(), tile.getChunkY()), tile);
 	}
 
 	public void removeTile(Tile tile) {
@@ -248,16 +236,17 @@ public class Chunk implements Serializable {
 		tiles.get(zIndex).remove(new Point(tile.getChunkX(), tile.getChunkY()), tile);
 	}
 
+	public boolean tileExists(Tile tile) {
+		if(tile.getZIndex() >= tiles.size()) return false;
+		return tiles.get(tile.getZIndex()).containsKey(new Point(tile.getChunkX(), tile.getChunkY()));
+	}
+
 	public void addEntity(GameObject ent) {
 		int zIndex = ent.getZIndex();
-		if (zIndex < entities.size()) {
-			entities.get(zIndex).add(ent);
-		} else {
-			for (int i = 0; i <= zIndex; i++) {
-				entities.add(new LinkedList<GameObject>());
-			}
-			entities.get(zIndex).add(ent);
+		for (int i = entities.size(); i <= zIndex; i++) {
+			entities.add(new LinkedList<GameObject>());
 		}
+		entities.get(zIndex).add(ent);
 	}
 
 	public void addLight(Light light) {

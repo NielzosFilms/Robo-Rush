@@ -13,8 +13,10 @@ import java.util.ArrayList;
 public class Inventory implements Serializable {
 	private final int slot_w = InventorySystem.slot_w, slot_h = InventorySystem.slot_h;
 	private int x = 100, y = 100;
+	private int init_x = 100, init_y = 100;
 	private int size_x, size_y;
 	private ArrayList<InventorySlot> slots = new ArrayList<>();
+	private boolean moveable = true;
 
 	public Inventory(int size_x, int size_y) {
 		this.size_x = size_x;
@@ -41,6 +43,10 @@ public class Inventory implements Serializable {
 		if(Game.DEBUG_MODE) {
 			g.setColor(Color.magenta);
 			g.drawRect(getInventoryBounds().x, getInventoryBounds().y, getInventoryBounds().width, getInventoryBounds().height);
+			if(moveable) {
+				g.setColor(Color.green);
+				g.drawRect(getInventoryMoveBounds().x, getInventoryMoveBounds().y, getInventoryMoveBounds().width, getInventoryMoveBounds().height);
+			}
 		}
 	}
 
@@ -99,7 +105,22 @@ public class Inventory implements Serializable {
 	public Rectangle getInventoryBounds() {
 		int width = size_x * slot_w;
 		int height = size_y * slot_h;
+		if(moveable) {
+			return new Rectangle(x, y - 8, width, height + 8);
+		}
 		return new Rectangle(x, y, width, height);
+	}
+
+	public Rectangle getInventoryMoveBounds() {
+		if(moveable) {
+			int width = size_x * slot_w;
+			return new Rectangle(x, y - 8, width, 8);
+		} else return null;
+	}
+
+	public void setInitXY(int x, int y) {
+		this.init_x = x;
+		this.init_y = y;
 	}
 
 	public void setXY(int x, int y) {
@@ -171,5 +192,22 @@ public class Inventory implements Serializable {
 
 	public ArrayList<InventorySlot> getSlots() {
 		return slots;
+	}
+
+	public void setMoveable(boolean moveable) {
+		this.moveable = moveable;
+	}
+
+	public boolean isMoveable() {
+		return moveable;
+	}
+
+	public void open() {
+		this.setXY(init_x, init_y);
+		Game.world.getInventorySystem().addOpenInventory(this);
+	}
+
+	public void close() {
+		Game.world.getInventorySystem().removeOpenInventory(this);
 	}
 }

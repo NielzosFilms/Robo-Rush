@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 import game.assets.tiles.Tile;
-import game.assets.tiles.Tile_FloorWood;
+import game.assets.tiles.floor.wood.Tile_FloorWood;
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
 import game.system.helpers.Helpers;
@@ -58,20 +58,6 @@ public class KeyInput extends KeyAdapter {
 							}
 							case KeyEvent.VK_I -> tempObject.interact();
 							case KeyEvent.VK_U -> this.world.getChunkWithCoordsPoint(this.world.getChunkPointWithCoords(tempObject.getX(), tempObject.getY())).updateTiles(1);
-							case KeyEvent.VK_T -> {
-								int mx = Game.mouseInput.mouse_x;
-								int my = Game.mouseInput.mouse_y;
-								Point mouse_coords = Helpers.getWorldCoords(mx, my, world.getCam());
-								Chunk chunk = world.getChunkWithCoordsPoint(world.getChunkPointWithCoords(mouse_coords.x, mouse_coords.y));
-								if(chunk != null) {
-									Point tile_coords = Helpers.getTileCoords(mouse_coords, 16, 16);
-									int tile_x = tile_coords.x / 16 - chunk.x;
-									int tile_y = tile_coords.y / 16 - chunk.y;
-									Tile tile = new Tile_FloorWood(tile_coords.x, tile_coords.y, tile_x, tile_y, 3, chunk);
-									chunk.addTile(tile);
-									chunk.updateSameTiles(tile);
-								}
-							}
 						}
 						// inventory.pickupItem(handler, world);
 					}
