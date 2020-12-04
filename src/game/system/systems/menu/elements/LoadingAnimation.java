@@ -81,7 +81,7 @@ public class LoadingAnimation {
         if(loading) {
             for(int y=0; y<Game.HEIGHT; y+=16) {
                 for(int x=0; x<Game.WIDTH; x+=16) {
-                    g.drawImage(Textures.forest_list.get(new Point(6, 19)), x, y, 16, 16, null);
+                    g.drawImage(Textures.texture_lists.get(TEXTURE_LIST.forest_list).get(new Point(6, 19)), x, y, 16, 16, null);
                 }
             }
         }

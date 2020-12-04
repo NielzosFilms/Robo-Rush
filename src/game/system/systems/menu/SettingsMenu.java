@@ -1,6 +1,7 @@
 package game.system.systems.menu;
 
 import game.enums.MENUSTATES;
+import game.enums.TEXTURE_LIST;
 import game.system.inputs.MouseInput;
 import game.system.helpers.Settings;
 import game.system.systems.menu.buttons.ButtonBack;
@@ -33,7 +34,7 @@ public class SettingsMenu extends Menu {
 	public void renderBefore(Graphics g, Graphics2D g2d) {
 		for(int y = 0;y < screenHeight;y+=16) {
 			for(int x = 0;x < screenWidth;x+=16) {
-				g.drawImage(Textures.forest_list.get(new Point(6, 19)), x, y, 16, 16, null);
+				g.drawImage(Textures.texture_lists.get(TEXTURE_LIST.forest_list).get(new Point(6, 19)), x, y, 16, 16, null);
 			}
 		}
 	}

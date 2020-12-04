@@ -7,6 +7,7 @@ import java.util.*;
 import game.assets.entities.Player;
 import game.enums.BIOME;
 import game.enums.ID;
+import game.enums.TILE_TYPE;
 import game.system.helpers.Logger;
 import game.system.systems.Collision;
 import game.system.systems.GameObject;
@@ -131,20 +132,9 @@ public class World implements Serializable {
 	}
 
 	private void runWaterAnimations() {
-		textures.water.runAnimation();
-
-		textures.water_r_br.runAnimation();
-		textures.water_r_b_r.runAnimation();
-		textures.water_r_b.runAnimation();
-		textures.water_r_bl.runAnimation();
-		textures.water_r_b_l.runAnimation();
-		textures.water_r_l.runAnimation();
-		textures.water_r_tl.runAnimation();
-		textures.water_r_t_l.runAnimation();
-		textures.water_r_t.runAnimation();
-		textures.water_r_tr.runAnimation();
-		textures.water_r_t_r.runAnimation();
-		textures.water_r_r.runAnimation();
+		for(TILE_TYPE key : Textures.water_red.keySet()) {
+			Textures.water_red.get(key).runAnimation();
+		}
 	}
 
 	public LinkedList<Chunk> getChunksOnScreen() {

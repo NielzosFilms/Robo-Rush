@@ -8,6 +8,7 @@ import java.awt.Point;
 
 import game.assets.tiles.Tile;
 import game.enums.BIOME;
+import game.enums.TILE_TYPE;
 import game.system.main.Game;
 import game.system.world.Chunk;
 import game.system.world.World;
@@ -95,5 +96,95 @@ public class TileHelperFunctions {
             }
         }
         return false;
+    }
+
+    public static TILE_TYPE getTileType4DirTile(Tile tile, Chunk this_chunk, int tilemap_index) {
+        boolean top, right, bottom, left;
+        top = checkSameNeighbourTile(tile, this_chunk, 0, -1, tilemap_index);
+        right = checkSameNeighbourTile(tile, this_chunk, 1, 0, tilemap_index);
+        bottom = checkSameNeighbourTile(tile, this_chunk, 0, 1, tilemap_index);
+        left = checkSameNeighbourTile(tile, this_chunk, -1, 0, tilemap_index);
+        return getTypeFromBooleans4(top, right, bottom, left);
+    }
+
+    public static TILE_TYPE getTileType4DirTileOrBiome(Tile tile, Chunk this_chunk, int tilemap_index) {
+        boolean top, right, bottom, left;
+        top = checkSameNeighbourTileOrBiome(tile, this_chunk, 0, -1, tilemap_index);
+        right = checkSameNeighbourTileOrBiome(tile, this_chunk, 1, 0, tilemap_index);
+        bottom = checkSameNeighbourTileOrBiome(tile, this_chunk, 0, 1, tilemap_index);
+        left = checkSameNeighbourTileOrBiome(tile, this_chunk, -1, 0, tilemap_index);
+        return getTypeFromBooleans4(top, right, bottom, left);
+    }
+
+    public static TILE_TYPE getTileType8DirTile(Tile tile, Chunk this_chunk, int tilemap_index) {
+        boolean top, right, bottom, left;
+        boolean top_left, top_right, bottom_left, bottom_right;
+        top = checkSameNeighbourTile(tile, this_chunk, 0, -1, tilemap_index);
+        right = checkSameNeighbourTile(tile, this_chunk, 1, 0, tilemap_index);
+        bottom = checkSameNeighbourTile(tile, this_chunk, 0, 1, tilemap_index);
+        left = checkSameNeighbourTile(tile, this_chunk, -1, 0, tilemap_index);
+
+        top_left = checkSameNeighbourTile(tile, this_chunk, -1, -1, tilemap_index);
+        top_right = checkSameNeighbourTile(tile, this_chunk, 1, -1, tilemap_index);
+        bottom_left = checkSameNeighbourTile(tile, this_chunk, -1, 1, tilemap_index);
+        bottom_right = checkSameNeighbourTile(tile, this_chunk, 1, 1, tilemap_index);
+        return getTypeFromBooleans8(top, right, bottom, left, top_left, top_right, bottom_left, bottom_right);
+    }
+
+    public static TILE_TYPE getTileType8DirTileOrBiome(Tile tile, Chunk this_chunk, int tilemap_index) {
+        boolean top, right, bottom, left;
+        boolean top_left, top_right, bottom_left, bottom_right;
+        top = checkSameNeighbourTileOrBiome(tile, this_chunk, 0, -1, tilemap_index);
+        right = checkSameNeighbourTileOrBiome(tile, this_chunk, 1, 0, tilemap_index);
+        bottom = checkSameNeighbourTileOrBiome(tile, this_chunk, 0, 1, tilemap_index);
+        left = checkSameNeighbourTileOrBiome(tile, this_chunk, -1, 0, tilemap_index);
+
+        top_left = checkSameNeighbourTileOrBiome(tile, this_chunk, -1, -1, tilemap_index);
+        top_right = checkSameNeighbourTileOrBiome(tile, this_chunk, 1, -1, tilemap_index);
+        bottom_left = checkSameNeighbourTileOrBiome(tile, this_chunk, -1, 1, tilemap_index);
+        bottom_right = checkSameNeighbourTileOrBiome(tile, this_chunk, 1, 1, tilemap_index);
+        return getTypeFromBooleans8(top, right, bottom, left, top_left, top_right, bottom_left, bottom_right);
+    }
+
+    private static TILE_TYPE getTypeFromBooleans8(
+            boolean top, boolean right, boolean bottom, boolean left,
+            boolean top_left, boolean top_right, boolean bottom_left, boolean bottom_right) {
+        if (top && right && bottom && left) {
+            if (!top_left) {
+                return TILE_TYPE.top_left_inverse;
+            } else if (!top_right) {
+                return TILE_TYPE.top_right_inverse;
+            } else if (!bottom_left) {
+                return TILE_TYPE.bottom_left_inverse;
+            } else if (!bottom_right) {
+                return TILE_TYPE.bottom_right_inverse;
+            }
+        }
+        return getTypeFromBooleans4(top, right, bottom, left);
+    }
+
+    private static TILE_TYPE getTypeFromBooleans4(
+            boolean top, boolean right, boolean bottom, boolean left) {
+        if (!top && !right && !bottom && !left) {
+            return TILE_TYPE.center;
+        } else if (!top && !right) {
+            return TILE_TYPE.top_right;
+        } else if (!right && !bottom) {
+            return TILE_TYPE.bottom_right;
+        } else if (!bottom && !left) {
+            return TILE_TYPE.bottom_left;
+        } else if (!left && !top) {
+            return TILE_TYPE.top_left;
+        } else if (!top) {
+            return TILE_TYPE.top;
+        } else if (!right) {
+            return TILE_TYPE.right;
+        } else if (!bottom) {
+            return TILE_TYPE.bottom;
+        } else if (!left) {
+            return TILE_TYPE.left;
+        }
+
+        return TILE_TYPE.center;
     }
 }
