@@ -2,28 +2,24 @@ package game.system.world;
 
 import java.awt.*;
 import java.io.*;
-import java.lang.reflect.Field;
 import java.util.*;
 
 import game.assets.entities.Player;
 import game.enums.BIOME;
 import game.enums.ID;
-import game.system.hitbox.HitboxSystem;
-import game.system.hud.HUD;
+import game.system.helpers.Logger;
+import game.system.systems.Collision;
+import game.system.systems.GameObject;
+import game.system.systems.hitbox.HitboxSystem;
+import game.system.systems.hud.HUD;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
-import game.system.inventory.InventorySlot;
-import game.system.inventory.InventorySystem;
-import game.system.lighting.Light;
-import game.system.lighting.LightingSystem;
+import game.system.systems.inventory.InventorySystem;
+import game.system.systems.lighting.Light;
+import game.system.systems.lighting.LightingSystem;
 import game.system.main.*;
-import game.system.menu.elements.LoadingAnimation;
-import game.system.particles.ParticleSystem;
+import game.system.systems.particles.ParticleSystem;
 import game.textures.Textures;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import static game.system.main.Game.keyInput;
 
 public class World implements Serializable {
 

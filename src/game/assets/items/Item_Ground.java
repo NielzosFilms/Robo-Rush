@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.Random;
 
 import game.system.main.Game;
-import game.system.main.GameObject;
+import game.system.systems.GameObject;
 import game.enums.ID;
 import game.textures.Textures;
 

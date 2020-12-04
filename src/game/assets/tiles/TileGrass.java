@@ -1,12 +1,10 @@
 package game.assets.tiles;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.List;
 
-import game.textures.TEXTURE_LIST;
+import game.enums.TEXTURE_LIST;
+import game.system.helpers.TileHelperFunctions;
 import game.textures.Texture;
-import game.textures.Textures;
 import game.enums.BIOME;
 import game.system.world.Chunk;
 

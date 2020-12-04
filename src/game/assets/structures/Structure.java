@@ -2,11 +2,10 @@ package game.assets.structures;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import game.enums.STRUCTURE_TYPE;
-import game.system.main.GameObject;
+import game.system.systems.GameObject;
 import game.textures.Texture;
 
 public abstract class Structure {

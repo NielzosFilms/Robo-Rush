@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import game.assets.items.Item;
-import game.system.main.GameObject;
+import game.system.systems.GameObject;
 import game.enums.ID;
 
 public class Enemy extends GameObject {

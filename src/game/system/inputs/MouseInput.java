@@ -6,15 +6,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.function.Function;
 
 import game.assets.entities.Player;
-import game.system.hud.HUD;
-import game.system.inventory.InventorySystem;
+import game.system.systems.hud.HUD;
+import game.system.systems.inventory.InventorySystem;
 import game.system.main.*;
-import game.system.menu.MenuSystem;
+import game.system.systems.menu.MenuSystem;
 import game.system.world.World;
 
 public class MouseInput extends MouseAdapter implements MouseMotionListener, MouseWheelListener {

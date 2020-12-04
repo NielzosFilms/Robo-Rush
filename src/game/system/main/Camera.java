@@ -1,5 +1,7 @@
 package game.system.main;
 
+import game.system.systems.GameObject;
+
 import java.io.Serializable;
 
 public class Camera implements Serializable {

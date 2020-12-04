@@ -5,7 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
-import game.system.lighting.LightingSystem;
+import game.system.helpers.Logger;
+import game.system.systems.lighting.LightingSystem;
 
 public class ImageRendering implements Runnable{
 	

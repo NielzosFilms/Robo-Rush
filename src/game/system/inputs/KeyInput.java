@@ -6,10 +6,12 @@ import java.util.LinkedList;
 
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
-import game.system.inventory.InventorySystem;
+import game.system.helpers.Helpers;
+import game.system.systems.GameObject;
+import game.system.systems.inventory.InventorySystem;
 import game.system.main.*;
 import game.enums.ID;
-import game.system.menu.MenuSystem;
+import game.system.systems.menu.MenuSystem;
 import game.system.world.World;
 
 public class KeyInput extends KeyAdapter {

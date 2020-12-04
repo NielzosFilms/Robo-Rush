@@ -1,19 +1,16 @@
 package game.assets.entities;
 
 import game.assets.items.Item;
-import game.audioEngine.AudioFiles;
-import game.audioEngine.AudioPlayer;
+import game.system.audioEngine.AudioFiles;
+import game.system.audioEngine.AudioPlayer;
 import game.enums.ID;
 import game.system.main.Game;
-import game.system.main.GameObject;
-import game.system.main.Settings;
-import game.textures.TEXTURE_LIST;
+import game.system.systems.GameObject;
+import game.system.helpers.Settings;
+import game.enums.TEXTURE_LIST;
 import game.textures.Texture;
-import game.textures.Textures;
 
-import javax.swing.*;
 import java.awt.*;
-import java.io.Serializable;
 
 public class TargetDummy extends GameObject {
     private Texture top_tex;

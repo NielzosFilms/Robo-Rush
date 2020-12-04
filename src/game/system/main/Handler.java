@@ -2,8 +2,9 @@ package game.system.main;
 
 import game.assets.tiles.Tile;
 import game.enums.ID;
-import game.system.lighting.Light;
-import game.system.particles.ParticleSystem;
+import game.system.systems.GameObject;
+import game.system.systems.lighting.Light;
+import game.system.systems.particles.ParticleSystem;
 import game.system.world.Chunk;
 import game.system.world.World;
 

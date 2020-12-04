@@ -1,11 +1,10 @@
 package game.textures;
 
+import game.enums.TEXTURE_LIST;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Textures {
 	public static Animation water;

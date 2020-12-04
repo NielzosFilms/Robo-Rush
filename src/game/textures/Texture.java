@@ -1,5 +1,7 @@
 package game.textures;
 
+import game.enums.TEXTURE_LIST;
+
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 

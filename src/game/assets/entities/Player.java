@@ -1,33 +1,33 @@
 package game.assets.entities;
 
 import java.awt.*;
-import java.security.Key;
 import java.util.Random;
 
-import game.assets.items.Item_Crate;
-import game.assets.items.tools.Tool_WoodenAxe;
-import game.assets.items.tools.Tool_WoodenPickaxe;
-import game.assets.items.tools.Tool_WoodenSword;
-import game.audioEngine.AudioFiles;
-import game.audioEngine.AudioPlayer;
+import game.assets.objects.crate.Item_Crate;
+import game.assets.items.tools.wood.Tool_WoodenAxe;
+import game.assets.items.tools.wood.Tool_WoodenPickaxe;
+import game.assets.items.tools.wood.Tool_WoodenSword;
+import game.system.audioEngine.AudioFiles;
+import game.system.audioEngine.AudioPlayer;
 import game.enums.DIRECTIONS;
-import game.system.hitbox.Hitbox;
-import game.system.hitbox.HitboxContainer;
-import game.system.inventory.Inventory;
+import game.system.helpers.Helpers;
+import game.system.helpers.Logger;
+import game.system.systems.GameObject;
+import game.system.systems.hitbox.Hitbox;
+import game.system.systems.hitbox.HitboxContainer;
+import game.system.systems.inventory.Inventory;
 import game.enums.ITEM_ID;
 import game.assets.items.Item;
-import game.assets.items.Item_Rock;
-import game.assets.items.Item_Stick;
-import game.system.inventory.InventorySystem;
+import game.assets.objects.rock.Item_Rock;
+import game.assets.objects.stick.Item_Stick;
+import game.system.systems.inventory.InventorySystem;
 import game.system.main.*;
 import game.enums.ID;
 import game.system.inputs.KeyInput;
 import game.enums.BIOME;
-import game.system.world.World;
 import game.textures.Animation;
-import game.textures.TEXTURE_LIST;
+import game.enums.TEXTURE_LIST;
 import game.textures.Texture;
-import game.textures.Textures;
 
 public class Player extends GameObject {
 	private static final int ATTACK_DELAY = 15;

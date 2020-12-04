@@ -1,7 +1,7 @@
 package game.assets;
 
 import game.system.main.Game;
-import game.system.main.Helpers;
+import game.system.helpers.Helpers;
 import game.textures.Textures;
 
 import java.awt.*;
