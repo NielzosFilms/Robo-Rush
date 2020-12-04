@@ -27,6 +27,7 @@ import game.system.inputs.KeyInput;
 import game.enums.BIOME;
 import game.textures.Animation;
 import game.enums.TEXTURE_LIST;
+import game.textures.ImageFilters;
 import game.textures.Texture;
 
 public class Player extends GameObject {
@@ -40,6 +41,9 @@ public class Player extends GameObject {
 	private int health, food, water;
 	private int needs_timer = 0;
 	private int attack_timer = 0;
+
+	private boolean attacking = false;
+	private int attacking_item_rot = 0;
 
 	private Animation idle_down, idle_up, idle_left, idle_right;
 	private Animation walk_down, walk_up, walk_left, walk_right;
@@ -127,6 +131,13 @@ public class Player extends GameObject {
 
 	public void tick() {
 		if(attack_timer > 0) attack_timer--;
+		if(attacking) {
+			attacking_item_rot += 5;
+			if(attacking_item_rot > 90) {
+				attacking = false;
+				attacking_item_rot = 0;
+			}
+		}
 
 		updateAnimations();
 
@@ -228,6 +239,7 @@ public class Player extends GameObject {
 	}
 
 	public void render(Graphics g) {
+
 		if (direction == DIRECTIONS.down) {
 			if (velY == 0) {
 				idle_down.drawAnimation(g, x, y);
@@ -254,6 +266,14 @@ public class Player extends GameObject {
 			}
 		} else {
 			idle_down.drawAnimation(g, x, y);
+		}
+
+		if(attacking) {
+			Item holding = Game.world.getInventorySystem().getHotbarSelectedItem();
+			if(holding != null) {
+				ImageFilters.renderImageWithRotationFromCenter(g, holding.getTexture().getTexure(), x + 16, y, 16, 16,
+						attacking_item_rot);
+			}
 		}
 
 		// g.setColor(Color.pink);
@@ -304,13 +324,14 @@ public class Player extends GameObject {
 	}
 
 	public void attack() {
+		attacking = true;
 		//Item holding = Game.inventorySystem.getHotbarSelectedItem();
 		int dmg = getExpectedDamage();
 		AudioPlayer.playSound(AudioFiles.swing, 0.5f, false, 0);
 		// TODO make direction function 8 way instead of 4
 		Point screenCoords = Helpers.getScreenCoords((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), Game.world.getCam());
 		DIRECTIONS direction = Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
-		Logger.print(direction.name());
+		//Logger.print(direction.name());
 		//this.direction = direction;
 
 		switch (direction) {

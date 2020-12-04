@@ -2,6 +2,9 @@ package game.textures;
 
 import game.enums.TEXTURE_LIST;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 

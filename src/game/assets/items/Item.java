@@ -1,9 +1,12 @@
 package game.assets.items;
 
 import game.enums.ITEM_ID;
+import game.textures.ImageFilters;
 import game.textures.Texture;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
@@ -28,7 +31,10 @@ public abstract class Item implements Cloneable, Serializable {
         Font font = new Font("SansSerif", Font.PLAIN, 3);
         g.setFont(font);
         g.setColor(Color.WHITE);
+
         g.drawImage(this.tex.getTexure(), x, y, 16, 16, null);
+        //ImageFilters.renderImageWithRotationFromCenter(g, tex.getTexure(), x, y, 16, 16, -45);
+
         if(stackable) g.drawString("" + this.amount, x, y + 16);
 
         g.drawString(this.itemType.toString(), x, y + 2);
