@@ -120,14 +120,28 @@ public class Chunk implements Serializable {
 		}
 	}
 
-	public void updateTiles() {
+	public void updateTiles(int tilemap_index) {
 		// change texture of tile
-		HashMap<Point, Tile> tmp = new HashMap<>(tiles.get(1));
+		HashMap<Point, Tile> tmp = new HashMap<>(tiles.get(tilemap_index));
 		Iterator it = tmp.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
-			if(tiles.get(1).containsKey(pair.getKey())) {
-				tiles.get(1).get(pair.getKey()).findAndSetEdgeTexture();
+			if(tiles.get(tilemap_index).containsKey(pair.getKey())) {
+				tiles.get(tilemap_index).get(pair.getKey()).findAndSetEdgeTexture(tilemap_index);
+			}
+		}
+	}
+
+	public void updateSameTiles(Tile tile) {
+		int tilemap_index = tile.getZIndex();
+		HashMap<Point, Tile> tmp = new HashMap<>(tiles.get(tilemap_index));
+		Iterator it = tmp.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry) it.next();
+			if(tiles.get(tilemap_index).containsKey(pair.getKey())) {
+				if(tiles.get(tilemap_index).get(pair.getKey()).getClass() == tile.getClass()) {
+					tiles.get(tilemap_index).get(pair.getKey()).findAndSetEdgeTexture(tilemap_index);
+				}
 			}
 		}
 	}
@@ -173,7 +187,7 @@ public class Chunk implements Serializable {
 				}
 			}
 		}
-		updateTiles();
+		updateTiles(1);
 	}
 
 	public LinkedList<GameObject> getEntities() {
@@ -199,8 +213,11 @@ public class Chunk implements Serializable {
 		return tmp;
 	}
 
-	public HashMap<Point, Tile> getTileMap() {
-		return tiles.get(1);
+	public HashMap<Point, Tile> getTileMap(int index) {
+		for (int i = 0; i <= index; i++) {
+			tiles.add(new HashMap<Point, Tile>());
+		}
+		return tiles.get(index);
 	}
 
 	// OLD?

@@ -1,9 +1,12 @@
 package game.system.inputs;
 
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
+import game.assets.tiles.Tile;
+import game.assets.tiles.Tile_FloorWood;
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
 import game.system.helpers.Helpers;
@@ -12,6 +15,7 @@ import game.system.systems.inventory.InventorySystem;
 import game.system.main.*;
 import game.enums.ID;
 import game.system.systems.menu.MenuSystem;
+import game.system.world.Chunk;
 import game.system.world.World;
 
 public class KeyInput extends KeyAdapter {
@@ -53,7 +57,21 @@ public class KeyInput extends KeyAdapter {
 								keysDown[6] = true;
 							}
 							case KeyEvent.VK_I -> tempObject.interact();
-							case KeyEvent.VK_U -> this.world.getChunkWithCoordsPoint(this.world.getChunkPointWithCoords(tempObject.getX(), tempObject.getY())).updateTiles();
+							case KeyEvent.VK_U -> this.world.getChunkWithCoordsPoint(this.world.getChunkPointWithCoords(tempObject.getX(), tempObject.getY())).updateTiles(1);
+							case KeyEvent.VK_T -> {
+								int mx = Game.mouseInput.mouse_x;
+								int my = Game.mouseInput.mouse_y;
+								Point mouse_coords = Helpers.getWorldCoords(mx, my, world.getCam());
+								Chunk chunk = world.getChunkWithCoordsPoint(world.getChunkPointWithCoords(mouse_coords.x, mouse_coords.y));
+								if(chunk != null) {
+									Point tile_coords = Helpers.getTileCoords(mouse_coords, 16, 16);
+									int tile_x = tile_coords.x / 16 - chunk.x;
+									int tile_y = tile_coords.y / 16 - chunk.y;
+									Tile tile = new Tile_FloorWood(tile_coords.x, tile_coords.y, tile_x, tile_y, 3, chunk);
+									chunk.addTile(tile);
+									chunk.updateSameTiles(tile);
+								}
+							}
 						}
 						// inventory.pickupItem(handler, world);
 					}

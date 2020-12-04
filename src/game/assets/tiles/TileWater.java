@@ -63,16 +63,12 @@ public class TileWater extends Tile {
         return Textures.water;
     }
 
-    public void findAndSetEdgeTexture() {
+    public void findAndSetEdgeTexture(int tilemap_index) {
     }
 
-    public void update() {
+    public void update(int tilemap_index) {
 
     }
-
-    public void setTextureWithId() {
-    }
-
     public void setWaterType(boolean top, boolean right, boolean bottom, boolean left, boolean top_left,
             boolean top_right, boolean bottom_left, boolean bottom_right) {
         this.top = top;

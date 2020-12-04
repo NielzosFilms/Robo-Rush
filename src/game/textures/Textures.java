@@ -49,7 +49,8 @@ public class Textures {
 			tileSetNatureObjects,
 			tileSetHouse,
 			tileSetCave,
-			loading_png;
+			loading_png,
+			floorTiles_png;
 	public static BufferedImage entity_shadow;
 
 	private static BufferedImage stick_png;
@@ -81,6 +82,7 @@ public class Textures {
 	public static HashMap<Point, BufferedImage> nature_list = new HashMap<>();
 	public static HashMap<Point, BufferedImage> house_list = new HashMap<>();
 	public static HashMap<Point, BufferedImage> player_list = new HashMap<>();
+	public static HashMap<Point, BufferedImage> floorTiles_list = new HashMap<>();
 
 	public static HashMap<Point, BufferedImage> healthbar_list = new HashMap<>();
 
@@ -95,6 +97,7 @@ public class Textures {
 		tileSetWater = loader.loadImage("assets/main/tile_sheets/water_tiles.png");
 		tileSetNatureObjects = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/3.png");
 		tileSetHouse = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/2.png");
+		floorTiles_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/6.png");
 
 		playerSheet = loader.loadImage("assets/entities/player/player_sheet.png");
 		entity_shadow = loader.loadImage("assets/entities/shadow.png");
@@ -130,6 +133,7 @@ public class Textures {
 		fillListWithSpriteSheet(stone_png, 16, 16, stone);
 		fillListWithSpriteSheet(tools_png, 16, 16, tools);
 		fillListWithSpriteSheet(loading_png, 16, 16, loading_list);
+		fillListWithSpriteSheet(floorTiles_png, 32, 32, floorTiles_list);
 
 		// water = new Animation(25, tileSetWaterBlocks.get(0),
 		// tileSetWaterBlocks.get(1));
@@ -235,6 +239,7 @@ public class Textures {
 			case healthbar_list -> ret = healthbar_list;
 			case cave_list -> ret = cave_list;
 			case loading_list -> ret = loading_list;
+			case floorTiles_list -> ret = floorTiles_list;
 		}
 		return ret;
 	}
