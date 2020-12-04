@@ -9,8 +9,8 @@ import game.textures.Texture;
 
 public class Item_Rock extends Item {
 
-    public Item_Rock(int amount, ITEM_ID itemType) {
-        super(amount, itemType);
+    public Item_Rock(int amount) {
+        super(amount, ITEM_ID.Rock);
         this.tex = new Texture(TEXTURE_LIST.stone, 1, 0);
         this.itemGround = new Item_Ground(0, 0, 1, ID.Item, this);
     }

@@ -8,8 +8,8 @@ import game.enums.TEXTURE_LIST;
 import game.textures.Texture;
 
 public class Tool_WoodenAxe extends Item {
-    public Tool_WoodenAxe(ITEM_ID itemType) {
-        super(1, itemType);
+    public Tool_WoodenAxe() {
+        super(1, ITEM_ID.Wooden_Axe);
         this.tex = new Texture(TEXTURE_LIST.tools, 1, 2);
         this.itemGround = new Item_Ground(0, 0, 1, ID.Item, this);
         this.setStackable(false);

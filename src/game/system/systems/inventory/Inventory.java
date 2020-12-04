@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Random;
 
 public class Inventory implements Serializable {
 	private final int slot_w = InventorySystem.slot_w, slot_h = InventorySystem.slot_h;
@@ -209,5 +211,21 @@ public class Inventory implements Serializable {
 
 	public void close() {
 		Game.world.getInventorySystem().removeOpenInventory(this);
+	}
+
+	public void fillRandom(LinkedList<Item> items) {
+		for(Item item : items) {
+			boolean item_placed = false;
+			while(!item_placed) {
+				if(!this.hasFreeSlot()) break;
+				item_placed = this.addItemAtPos(item, new Random().nextInt(size_x * size_y));
+			}
+		}
+	}
+
+	public void fill(LinkedList<Item> items) {
+		for(Item item : items) {
+			this.addItem(item);
+		}
 	}
 }

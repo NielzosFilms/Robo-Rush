@@ -8,8 +8,8 @@ import game.enums.TEXTURE_LIST;
 import game.textures.Texture;
 
 public class Tool_WoodenPickaxe extends Item {
-    public Tool_WoodenPickaxe(ITEM_ID itemType) {
-        super(1, itemType);
+    public Tool_WoodenPickaxe() {
+        super(1, ITEM_ID.Wooden_Pickaxe);
         this.tex = new Texture(TEXTURE_LIST.tools, 1, 1);
         this.itemGround = new Item_Ground(0, 0, 1, ID.Item, this);
         this.setStackable(false);

@@ -58,9 +58,9 @@ public class Player extends GameObject {
 		this.direction = DIRECTIONS.down;
 
 		this.inventory = new Inventory(5, 5);
-		this.inventory.addItem(new Item_Rock(InventorySystem.stackSize, ITEM_ID.Rock));
-		this.inventory.addItem(new Item_Stick(InventorySystem.stackSize, ITEM_ID.Stick));
-		this.inventory.addItem(new Item_Crate(InventorySystem.stackSize, ITEM_ID.Crate));
+		this.inventory.addItem(new Item_Rock(InventorySystem.stackSize));
+		this.inventory.addItem(new Item_Stick(InventorySystem.stackSize));
+		this.inventory.addItem(new Item_Crate(InventorySystem.stackSize));
 		this.inventory.addItem(new Item_FloorWood(InventorySystem.stackSize));
 
 		this.hotbar = new Inventory(5, 1);
@@ -68,9 +68,9 @@ public class Player extends GameObject {
 		int hotbar_x = Game.WIDTH / 2 - this.hotbar.getInventoryBounds().width / 2;
 		int hotbar_y = Game.HEIGHT - this.hotbar.getInventoryBounds().height;
 		this.hotbar.setXY(hotbar_x, hotbar_y);
-		this.hotbar.addItem(new Tool_WoodenAxe(ITEM_ID.Wooden_Axe));
-		this.hotbar.addItem(new Tool_WoodenPickaxe(ITEM_ID.Wooden_Pickaxe));
-		this.hotbar.addItem(new Tool_WoodenSword(ITEM_ID.Wooden_Sword));
+		this.hotbar.addItem(new Tool_WoodenAxe());
+		this.hotbar.addItem(new Tool_WoodenPickaxe());
+		this.hotbar.addItem(new Tool_WoodenSword());
 
 		// default = 100
 		this.health = 75;

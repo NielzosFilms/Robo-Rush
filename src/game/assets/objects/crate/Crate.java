@@ -1,6 +1,7 @@
 package game.assets.objects.crate;
 
 import java.awt.*;
+import java.util.LinkedList;
 import java.util.Random;
 
 import game.assets.HealthBar;
@@ -34,7 +35,7 @@ public class Crate extends GameObject {
     public Crate(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
         inv = new Inventory(3, 2);
-        //fillInventory();
+        generateLoot();
         inv.setXY(300, 100);
         inv.setInitXY(300, 100);
 
@@ -42,21 +43,16 @@ public class Crate extends GameObject {
         this.tex = new Texture(TEXTURE_LIST.house_list, 6, 0);
     }
 
-    private void fillInventory() {
-        for(int i = 0;i < rand.nextInt(3 * 2);i++) {
-            boolean again = true;
-            Item item;
-            if(rand.nextInt(2) == 0) {
-                item = new Item_Rock(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Rock);
+    private void generateLoot() {
+        LinkedList<Item> items = new LinkedList<>();
+        for(int i=0; i<rand.nextInt(3) + 1; i++) {
+            if(rand.nextInt(2) == 1) {
+                items.add(new Item_Stick(rand.nextInt(5) + 1));
             } else {
-                item = new Item_Stick(rand.nextInt(InventorySystem.stackSize), ITEM_ID.Stick);
+                items.add(new Item_Rock(rand.nextInt(5) + 1));
             }
-            item.setAmount(rand.nextInt(InventorySystem.stackSize));
-            while(again) {
-                again = !inv.addItemAtPos(item, rand.nextInt(3*2));
-            }
-
         }
+        inv.fillRandom(items);
     }
 
     public void tick() {

@@ -12,8 +12,8 @@ import game.textures.Texture;
 import java.awt.*;
 
 public class Item_Crate extends Item {
-	public Item_Crate(int amount, ITEM_ID itemType) {
-		super(amount, itemType);
+	public Item_Crate(int amount) {
+		super(amount, ITEM_ID.Crate);
 		this.setPlaceable(true);
 		this.tex = new Texture(TEXTURE_LIST.house_list, 6, 0);
 		this.itemGround = new Item_Ground(0, 0, 1, ID.Item, this);

@@ -9,8 +9,8 @@ import game.textures.Texture;
 
 public class Item_Stick extends Item {
 
-    public Item_Stick(int amount, ITEM_ID itemType) {
-        super(amount, itemType);
+    public Item_Stick(int amount) {
+        super(amount, ITEM_ID.Stick);
         this.tex = new Texture(TEXTURE_LIST.stick, 1, 1);
         this.itemGround = new Item_Ground(0, 0, 1, ID.Item, this);
     }
