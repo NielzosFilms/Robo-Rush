@@ -3,6 +3,7 @@ package game.assets.tiles;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import game.assets.items.Item;
 import game.enums.TILE_TYPE;
 import game.textures.Animation;
 import game.textures.Textures;
@@ -42,5 +43,7 @@ public class TileWater extends Tile {
     public void setWaterType(TILE_TYPE tileType) {
         this.water_type = tileType;
     }
+
+    public Item getItem() { return null; }
 
 }

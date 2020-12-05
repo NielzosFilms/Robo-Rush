@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
+import game.assets.items.Item;
 import game.enums.BIOME;
 import game.system.world.Chunk;
 import game.textures.Texture;
@@ -110,4 +111,6 @@ public abstract class Tile implements Serializable {
     public abstract void findAndSetEdgeTexture(int tilemap_index);
 
     public abstract void update(int tilemap_index);
+
+    public abstract Item getItem();
 }

@@ -1,5 +1,6 @@
 package game.assets.tiles.floor.wood;
 
+import game.assets.items.Item;
 import game.assets.tiles.Tile;
 import game.enums.BIOME;
 import game.enums.TEXTURE_LIST;
@@ -50,5 +51,9 @@ public class Tile_FloorWood extends Tile {
 
 	public void update(int tilemap_index) {
 		findAndSetEdgeTexture(tilemap_index);
+	}
+
+	public Item getItem() {
+		return new Item_FloorWood(1);
 	}
 }

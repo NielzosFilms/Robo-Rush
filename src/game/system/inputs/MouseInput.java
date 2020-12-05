@@ -25,12 +25,12 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	private Player player;
 
 	public int mouse_x, mouse_y;
-	public boolean dragging;
+	public boolean mouseDown_left = false;
+	public boolean mouseDown_right = false;
 
 	public MouseInput() {
 		this.mouse_x = 0;
 		this.mouse_y = 0;
-		this.dragging = false;
 	}
 
 	public void setRequirements(Game game, World world) {
@@ -49,6 +49,8 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	}
 
 	public void mousePressed(MouseEvent e) {
+		if(e.getButton() == MouseEvent.BUTTON1) mouseDown_left = true;
+		if(e.getButton() == MouseEvent.BUTTON3) mouseDown_right = true;
 		switch(Game.game_state) {
 			case Game -> {
 				hud.mousePressed(e);
@@ -59,6 +61,8 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	}
 
 	public void mouseReleased(MouseEvent e) {
+		if(e.getButton() == MouseEvent.BUTTON1) mouseDown_left = false;
+		if(e.getButton() == MouseEvent.BUTTON3) mouseDown_right = false;
 		switch(Game.game_state) {
 			case Game -> hud.mouseReleased(e);
 			case Menu, Pauzed -> menuSystem.mouseReleased(e);
@@ -68,16 +72,17 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	public void mouseClicked(MouseEvent e) {}
 
 	public void mouseMoved(MouseEvent e) {
+		if(e.getButton() == MouseEvent.BUTTON1) mouseDown_left = false;
+		if(e.getButton() == MouseEvent.BUTTON3) mouseDown_right = false;
 		this.mouse_x = (int) (e.getX() / Game.SCALE_WIDTH);
 		this.mouse_y = (int) (e.getY() / Game.SCALE_HEIGHT);
-		this.dragging = false;
 	}
 
 	public void mouseDragged(MouseEvent e) {
+		if(e.getButton() == MouseEvent.BUTTON1) mouseDown_left = true;
+		if(e.getButton() == MouseEvent.BUTTON3) mouseDown_right = true;
 		this.mouse_x = (int) (e.getX() / Game.SCALE_WIDTH);
 		this.mouse_y = (int) (e.getY() / Game.SCALE_HEIGHT);
-		this.dragging = true;
-		inventorySystem.mouseDragged(e);
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
@@ -117,5 +122,13 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		this.handler = world.getHandler();
 		this.world = world;
 		this.player = world.getPlayer();
+	}
+
+	public boolean leftMouseDown() {
+		return mouseDown_left;
+	}
+
+	public boolean rightMouseDown() {
+		return mouseDown_right;
 	}
 }

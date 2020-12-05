@@ -108,7 +108,7 @@ public class Inventory implements Serializable {
 		int width = size_x * slot_w;
 		int height = size_y * slot_h;
 		if(moveable) {
-			return new Rectangle(x, y - 8, width, height + 8);
+			return new Rectangle(x, y - 12, width, height + 12);
 		}
 		return new Rectangle(x, y, width, height);
 	}
@@ -116,7 +116,7 @@ public class Inventory implements Serializable {
 	public Rectangle getInventoryMoveBounds() {
 		if(moveable) {
 			int width = size_x * slot_w;
-			return new Rectangle(x, y - 8, width, 8);
+			return new Rectangle(x, y - 12, width, 12);
 		} else return null;
 	}
 

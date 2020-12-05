@@ -3,6 +3,7 @@ package game.assets.tiles;
 import java.awt.*;
 import java.util.HashMap;
 
+import game.assets.items.Item;
 import game.enums.TEXTURE_LIST;
 import game.enums.TILE_TYPE;
 import game.system.helpers.TileHelperFunctions;
@@ -82,5 +83,7 @@ public class TileGrass extends Tile {
     public Rectangle getSelectBounds() {
         return null;
     }
+
+    public Item getItem() { return null; }
 
 }

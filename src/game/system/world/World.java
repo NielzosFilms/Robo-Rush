@@ -229,7 +229,7 @@ public class World implements Serializable {
 
 	public static BIOME getBiome(float val, float temp_val, float moist_val) {
 		// biome generation needs refinement
-		if ((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { // forest
+		/*if ((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { // forest
 			if (val < -0.3) {
 				return BIOME.Beach;
 			} else {
@@ -239,6 +239,10 @@ public class World implements Serializable {
 			return BIOME.Desert;
 		} else if (temp_val > 0 && moist_val < 0) { // dirt
 			return BIOME.Dirt;
+		}
+		return BIOME.Ocean;*/
+		if (val > -0.5) {
+			return BIOME.Forest;
 		}
 		return BIOME.Ocean;
 	}

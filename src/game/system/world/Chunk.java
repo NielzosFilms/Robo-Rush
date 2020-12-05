@@ -241,6 +241,11 @@ public class Chunk implements Serializable {
 		return tiles.get(tile.getZIndex()).containsKey(new Point(tile.getChunkX(), tile.getChunkY()));
 	}
 
+	public boolean tileExistsCoords(int index, Point tile_coords) {
+		if(index >= tiles.size()) return false;
+		return tiles.get(index).containsKey(tile_coords);
+	}
+
 	public void addEntity(GameObject ent) {
 		int zIndex = ent.getZIndex();
 		for (int i = entities.size(); i <= zIndex; i++) {

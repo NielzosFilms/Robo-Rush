@@ -3,10 +3,14 @@ package game.system.systems.inventory;
 import game.assets.entities.Player;
 import game.assets.items.Item;
 import game.assets.items.Item_Ground;
+import game.assets.tiles.Tile;
 import game.system.helpers.Helpers;
 import game.system.main.*;
 import game.system.inputs.MouseInput;
 import game.system.systems.GameObject;
+import game.system.systems.particles.Particle_DamageNumber;
+import game.system.systems.particles.Particle_String;
+import game.system.world.Chunk;
 import game.system.world.World;
 
 import java.awt.*;
@@ -55,6 +59,17 @@ public class InventorySystem implements Serializable {
 			Inventory inv = open_inventories.get(i);
 			inv.tick();
 		}
+
+		if(!mouseOverInventory()) {
+			mouseOutside();
+		} else {
+			Inventory inv = getHoveredInventory();
+			if(inv.isMoveable() && mouseInput.leftMouseDown()) {
+				if(mouseInput.mouseOverLocalRect(inv.getInventoryMoveBounds())) {
+					inv.setXY(mouseInput.mouse_x - inv.getInventoryMoveBounds().width / 2, mouseInput.mouse_y + 12 / 2);
+				}
+			}
+		}
 	}
 
 	public void renderCam(Graphics g) {
@@ -101,17 +116,14 @@ public class InventorySystem implements Serializable {
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		Inventory inv_clicked = getHoveredInventory();
-		if(inv_clicked != null) {
-			inv_clicked.mouseClick(e, mouseInput, this);
-		} else {
-			mouseClickedOutside(e);
+		if(mouseOverInventory()) {
+			getHoveredInventory().mouseClick(e, mouseInput, this);
 		}
 	}
 
-	public void mouseClickedOutside(MouseEvent e) {
-		if(holding != null) {
-			if(e.getButton() == MouseEvent.BUTTON1) {
+	public void mouseOutside() {
+		if(mouseInput.leftMouseDown()) {
+			if(isHolding()) {
 				if(holding.placeable()) {
 					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
 					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
@@ -123,19 +135,33 @@ public class InventorySystem implements Serializable {
 						}
 					}
 				}
+			} else {
+				if(Game.world.getPlayer().canAttack()) {
+					Game.world.getPlayer().attack();
+				}
 			}
-		} else {
-			if(Game.world.getPlayer().canAttack()) {
-				Game.world.getPlayer().attack();
-			}
-		}
-	}
-
-	public void mouseDragged(MouseEvent e) {
-		for(Inventory inv : open_inventories) {
-			if(inv.isMoveable()) {
-				if(mouseInput.mouseOverLocalRect(inv.getInventoryMoveBounds())) {
-					inv.setXY(mouseInput.mouse_x - inv.getInventoryMoveBounds().width / 2, mouseInput.mouse_y + 4);
+		} else if(mouseInput.rightMouseDown()) {
+			Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
+			Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
+			Chunk chunk = world.getChunkWithCoordsPoint(world.getChunkPointWithCoords(world_coords.x, world_coords.y));
+			tile_coords.x = tile_coords.x / 16 - chunk.x;
+			tile_coords.y = tile_coords.y / 16 - chunk.y;
+			if(chunk.tileExistsCoords(3, tile_coords)) {
+				Tile tile_found = chunk.getTileMap(3).get(tile_coords);
+				Rectangle tile_bnds = new Rectangle(tile_found.getX(), tile_found.getY(), item_w, item_h);
+				if(Helpers.getDistanceBetweenBounds(world.getPlayer().getBounds(), tile_bnds) < world.getPlayer().REACH) {
+					Item tile_item = tile_found.getItem();
+					if (isHolding() && holding.getClass() == tile_item.getClass() && holding.getAmount() + tile_item.getAmount() <= stackSize) {
+						holding.setAmount(holding.getAmount() + tile_item.getAmount());
+					} else if (player_inv.canAcceptItem(tile_item)) {
+						player_inv.addItem(tile_item);
+					} else {
+						dropItemAtPlayer(tile_item);
+					}
+					chunk.removeTile(tile_found);
+					chunk.updateSameTiles(tile_found);
+				} else {
+					world.getPs().addParticle(new Particle_String(world.getPlayer().getX(), world.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));
 				}
 			}
 		}
@@ -208,6 +234,13 @@ public class InventorySystem implements Serializable {
 	public void dropItem(Item_Ground item) {
 		handler.addObject(item);
 		holding = null;
+	}
+
+	public void dropItemAtPlayer(Item item) {
+		Item_Ground item_g = item.getItemGround();
+		item_g.setX(Game.world.getPlayer().getX());
+		item_g.setY(Game.world.getPlayer().getY());
+		handler.addObject(item_g);
 	}
 
 	public boolean inventoryIsOpen() {
