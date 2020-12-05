@@ -5,6 +5,7 @@ import game.assets.items.Item;
 import game.assets.items.Item_Ground;
 import game.assets.tiles.Tile;
 import game.system.helpers.Helpers;
+import game.system.helpers.Timer;
 import game.system.main.*;
 import game.system.inputs.MouseInput;
 import game.system.systems.GameObject;
@@ -41,6 +42,8 @@ public class InventorySystem implements Serializable {
 	//public static boolean player_inventory_open = true;
 	private Item holding = null;
 
+	private Timer placeTimer = new Timer(10);
+
 	public InventorySystem() {}
 
 	public void setRequirements(Handler handler, MouseInput mouseInput, World world, Player player, Camera cam) {
@@ -55,6 +58,7 @@ public class InventorySystem implements Serializable {
 	}
 
 	public void tick() {
+		placeTimer.tick();
 		for(int i=0; i<open_inventories.size(); i++) {
 			Inventory inv = open_inventories.get(i);
 			inv.tick();
@@ -124,7 +128,8 @@ public class InventorySystem implements Serializable {
 	public void mouseOutside() {
 		if(mouseInput.leftMouseDown()) {
 			if(isHolding()) {
-				if(holding.placeable()) {
+				if(holding.placeable() && placeTimer.timerOver()) {
+					placeTimer.resetTimer();
 					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
 					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
 					Rectangle bnds = new Rectangle(tile_coords.x, tile_coords.y, item_w, item_h);
@@ -133,6 +138,8 @@ public class InventorySystem implements Serializable {
 							holding.setAmount(holding.getAmount() - 1);
 							if (holding.getAmount() <= 0) clearHolding();
 						}
+					} else {
+						world.getPs().addParticle(new Particle_String(world.getPlayer().getX(), world.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));
 					}
 				}
 			} else {
@@ -141,27 +148,30 @@ public class InventorySystem implements Serializable {
 				}
 			}
 		} else if(mouseInput.rightMouseDown()) {
-			Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
-			Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
-			Chunk chunk = world.getChunkWithCoordsPoint(world.getChunkPointWithCoords(world_coords.x, world_coords.y));
-			tile_coords.x = tile_coords.x / 16 - chunk.x;
-			tile_coords.y = tile_coords.y / 16 - chunk.y;
-			if(chunk.tileExistsCoords(3, tile_coords)) {
-				Tile tile_found = chunk.getTileMap(3).get(tile_coords);
-				Rectangle tile_bnds = new Rectangle(tile_found.getX(), tile_found.getY(), item_w, item_h);
-				if(Helpers.getDistanceBetweenBounds(world.getPlayer().getBounds(), tile_bnds) < world.getPlayer().REACH) {
-					Item tile_item = tile_found.getItem();
-					if (isHolding() && holding.getClass() == tile_item.getClass() && holding.getAmount() + tile_item.getAmount() <= stackSize) {
-						holding.setAmount(holding.getAmount() + tile_item.getAmount());
-					} else if (player_inv.canAcceptItem(tile_item)) {
-						player_inv.addItem(tile_item);
+			if(placeTimer.timerOver()) {
+				placeTimer.resetTimer();
+				Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
+				Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
+				Chunk chunk = world.getChunkWithCoordsPoint(world.getChunkPointWithCoords(world_coords.x, world_coords.y));
+				tile_coords.x = tile_coords.x / 16 - chunk.x;
+				tile_coords.y = tile_coords.y / 16 - chunk.y;
+				if (chunk.tileExistsCoords(3, tile_coords)) {
+					Tile tile_found = chunk.getTileMap(3).get(tile_coords);
+					Rectangle tile_bnds = new Rectangle(tile_found.getX(), tile_found.getY(), item_w, item_h);
+					if (Helpers.getDistanceBetweenBounds(world.getPlayer().getBounds(), tile_bnds) < world.getPlayer().REACH) {
+						Item tile_item = tile_found.getItem();
+						if (isHolding() && holding.getClass() == tile_item.getClass() && holding.getAmount() + tile_item.getAmount() <= stackSize) {
+							holding.setAmount(holding.getAmount() + tile_item.getAmount());
+						} else if (player_inv.canAcceptItem(tile_item)) {
+							player_inv.addItem(tile_item);
+						} else {
+							dropItemAtPlayer(tile_item);
+						}
+						chunk.removeTile(tile_found);
+						chunk.updateSameTiles(tile_found);
 					} else {
-						dropItemAtPlayer(tile_item);
+						world.getPs().addParticle(new Particle_String(world.getPlayer().getX(), world.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));
 					}
-					chunk.removeTile(tile_found);
-					chunk.updateSameTiles(tile_found);
-				} else {
-					world.getPs().addParticle(new Particle_String(world.getPlayer().getX(), world.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));
 				}
 			}
 		}
