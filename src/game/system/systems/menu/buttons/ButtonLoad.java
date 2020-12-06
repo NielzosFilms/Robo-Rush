@@ -58,22 +58,24 @@ public class ButtonLoad extends Button {
 
 	public void loadChunks() {
 		Game.loadingAnimation.setLoading(true);
-		Logger.print("Load world: " + slot);
-		try {
-			FileInputStream fis = new FileInputStream(directory + "save_slot_" + slot + ".data");
-			ObjectInputStream ois = new ObjectInputStream(fis);
+		if(!Game.NO_LOAD) {
+			Logger.print("Load world: " + slot);
+			try {
+				FileInputStream fis = new FileInputStream(directory + "save_slot_" + slot + ".data");
+				ObjectInputStream ois = new ObjectInputStream(fis);
 
-			World loaded_world = (World) ois.readObject();
-			Textures textures = Game.textures;
-			KeyInput keyInput = Game.keyInput;
-			MouseInput mouseInput = Game.mouseInput;
-			Game.world = loaded_world;
-			Game.world.setRequirements(loaded_world.getPlayer(), textures, keyInput, mouseInput);
+				World loaded_world = (World) ois.readObject();
+				Textures textures = Game.textures;
+				KeyInput keyInput = Game.keyInput;
+				MouseInput mouseInput = Game.mouseInput;
+				Game.world = loaded_world;
+				Game.world.setRequirements(loaded_world.getPlayer(), textures, keyInput, mouseInput);
 
-			ois.close();
-			fis.close();
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+				ois.close();
+				fis.close();
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		Game.loadingAnimation.setLoading(false);
 	}

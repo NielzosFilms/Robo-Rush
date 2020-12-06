@@ -3,6 +3,7 @@ package game.system.main;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.*;
+import java.util.Arrays;
 import java.util.Random;
 
 import game.enums.GAMESTATES;
@@ -30,7 +31,8 @@ public class Game extends Canvas implements Runnable {
 	public static final String VERSION = "ALPHA V 3.11.0 INFDEV";
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
-	public static boolean DEBUG_MODE = true;
+	public static boolean DEBUG_MODE = false;
+	public static boolean NO_SAVE = false, NO_LOAD = false;
 
 	public static int current_loaded_save_slot;
 
@@ -187,19 +189,25 @@ public class Game extends Canvas implements Runnable {
 
 	public static void saveChunks() {
 		loadingAnimation.setLoading(true);
-		String directory = "saves/";
-		Logger.print("Save world: " + current_loaded_save_slot);
-		try {
-			FileOutputStream fos = new FileOutputStream(directory + "save_slot_" + current_loaded_save_slot + ".data");
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(world);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(!NO_SAVE) {
+			String directory = "saves/";
+			Logger.print("Save world: " + current_loaded_save_slot);
+			try {
+				FileOutputStream fos = new FileOutputStream(directory + "save_slot_" + current_loaded_save_slot + ".data");
+				ObjectOutputStream oos = new ObjectOutputStream(fos);
+				oos.writeObject(world);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		loadingAnimation.setLoading(false);
 	}
 
 	public static void main(String[] args) {
+		if(args.length >= 1) if(args[0].equals("debug")) DEBUG_MODE = true;
+		if(args.length >= 2) if(args[1].equals("no-save")) NO_SAVE = true;
+		if(args.length >= 3) if(args[1].equals("no-load")) NO_LOAD = true;
+		Logger.print("Arguments: " + Arrays.toString(args));
 		Logger.print("Game starting...");
 		canvas = new Game();
 	}

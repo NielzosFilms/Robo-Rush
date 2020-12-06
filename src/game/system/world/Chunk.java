@@ -29,10 +29,10 @@ public class Chunk implements Serializable {
 
 	private static Random r = new Random();
 
-	public LinkedList<LinkedList<GameObject>> entities = new LinkedList<LinkedList<GameObject>>();
-	public LinkedList<Light> lights = new LinkedList<Light>();
-	public LinkedList<HashMap<Point, Tile>> tiles = new LinkedList<HashMap<Point, Tile>>();
-	public LinkedList<HashMap<Point, Structure>> structures = new LinkedList<HashMap<Point, Structure>>();
+	public LinkedList<LinkedList<GameObject>> entities = new LinkedList<>();
+	public LinkedList<Light> lights = new LinkedList<>();
+	public LinkedList<HashMap<Point, Tile>> tiles = new LinkedList<>();
+	public HashMap<Point, Structure> structures = new HashMap<>();
 
 	public static int tile_width = 16, tile_height = 16;
 	public int x, y;
@@ -40,10 +40,8 @@ public class Chunk implements Serializable {
 	private Long temp_seed;
 	private Long moist_seed;
 	private World world;
-	private transient Textures textures;
 
-	public Chunk(int x, int y, Long seed, Long temp_seed, Long moist_seed, World world, Player player,
-			Textures textures) {
+	public Chunk(int x, int y, Long seed, Long temp_seed, Long moist_seed, World world, Player player) {
 		this.tiles.add(new HashMap<Point, Tile>());
 		this.entities.add(new LinkedList<GameObject>());
 		this.x = x;
@@ -52,7 +50,6 @@ public class Chunk implements Serializable {
 		this.temp_seed = temp_seed;
 		this.moist_seed = moist_seed;
 		this.world = world;
-		this.textures = textures;
 		// entities.add(new Enemy((x+8)*16, (y+8)*16, ID.Enemy));
 		// generate chunk tiles 16x16 then add to world
 		GenerateTiles(world, player);
@@ -143,9 +140,9 @@ public class Chunk implements Serializable {
 	}
 
 	private void GenerateTiles(World world, Player player) {
-		float[][] osn = world.getOsn(x, y, tile_width, tile_height);
-		float[][] temp_osn = world.getTemperatureOsn(x, y, tile_width, tile_height);
-		float[][] moist_osn = world.getMoistureOsn(x, y, tile_width, tile_height);
+		float[][] osn = world.getGeneration().getHeightOsn(x, y, tile_width, tile_height);
+		float[][] temp_osn = world.getGeneration().getTemperatureOsn(x, y, tile_width, tile_height);
+		float[][] moist_osn = world.getGeneration().getMoistureOsn(x, y, tile_width, tile_height);
 
 		// create simple tiles
 		for (int yy = 0; yy < osn.length; yy++) {
@@ -161,26 +158,8 @@ public class Chunk implements Serializable {
 				int resized_y = yy * 16;
 				int world_y = resized_y + y * 16;
 
-				if (World.getBiome(val, temp_val, moist_val) == BIOME.Forest) {
-					addTile(new TileGrass(world_x, world_y, xx, yy, 1, BIOME.Forest, this));
-					int num = r.nextInt(100);
-					if (num == 0) {
-						addEntity(new Tree(world_x, world_y, 1, ID.Tree, BIOME.Forest, player));
-						int stick = r.nextInt(5);
-						if (stick == 0) {
-							int placement = r.nextInt(2);
-							if (placement == 0) {
-								addEntity(new Branch(world_x - 16, world_y, 0, ID.Branch));
-							} else {
-								addEntity(new Branch(world_x + 16, world_y, 0, ID.Branch));
-							}
-						}
-					} else if (num == 1) {
-						addEntity(new Pebble(world_x, world_y, 0, ID.Pebble));
-					}
-				} else {
-					addTile(new TileWater(world_x, world_y, xx, yy, 1, BIOME.Ocean, this));
-				}
+				Tile tile = world.getGeneratedTile(xx, yy, val, temp_val, moist_val, this, world_x, world_y);
+				addTile(tile);
 			}
 		}
 		updateTiles(1);

@@ -1,5 +1,6 @@
 package game.textures;
 
+import game.enums.BIOME;
 import game.enums.TEXTURE_LIST;
 import game.enums.TILE_TYPE;
 
@@ -12,6 +13,7 @@ public class Textures {
 
 	public static HashMap<TILE_TYPE, Animation> water_gray = new HashMap<>();
 	public static HashMap<TILE_TYPE, Animation> water_red = new HashMap<>();
+	public static final int water_speed = 25;
 
 
 	// tilesets / sheets
@@ -29,7 +31,8 @@ public class Textures {
 			stick_png,
 			stone_png,
 			healthbar_content_img,
-			tools_png;
+			tools_png,
+			waterfall_png;
 
 	// other standalone tiles
 	public static BufferedImage
@@ -75,6 +78,8 @@ public class Textures {
 
 		tools_png = loader.loadImage("assets/items/tools.png");
 
+		waterfall_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/5.png");
+
 		loading_png = loader.loadImage("assets/main/loading_animation_shadow.png");
 	}
 
@@ -91,6 +96,7 @@ public class Textures {
 		fillListWithSpriteSheet(tools_png, 16, 16, texture_lists.get(TEXTURE_LIST.tools));
 		fillListWithSpriteSheet(loading_png, 16, 16, texture_lists.get(TEXTURE_LIST.loading_list));
 		fillListWithSpriteSheet(floorTiles_png, 32, 32, texture_lists.get(TEXTURE_LIST.floorTiles_list));
+		fillListWithSpriteSheet(waterfall_png, 32, 32, texture_lists.get(TEXTURE_LIST.waterfall_list));
 	}
 
 	private static void fillListWithSpriteSheet(BufferedImage sheet, int width, int height, HashMap<Point, BufferedImage> list) {
@@ -103,7 +109,7 @@ public class Textures {
 	}
 
 	private void initWaterAnimations() {
-		int speed = 25;
+		int speed = water_speed;
 
 		water_red.put(TILE_TYPE.center, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 11, 4),

@@ -10,5 +10,5 @@ public enum ID {
 
 	House, Crate,
 
-	Pebble, Branch;
+	Pebble, Branch, Waterfall;
 }

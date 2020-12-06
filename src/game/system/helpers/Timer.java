@@ -1,6 +1,8 @@
 package game.system.helpers;
 
-public class Timer {
+import java.io.Serializable;
+
+public class Timer implements Serializable {
     private final int delay;
     private int timer;
 

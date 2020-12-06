@@ -48,7 +48,7 @@ public class TileHelperFunctions {
                 }
             } else {
                 // Checks neighbour chunk coords with generated biome value to same tile biome
-                float[] arr = Game.world.getHeightMapValuePoint(this_chunk.x + x + offset_x, this_chunk.y + y + offset_y);
+                float[] arr = Game.world.getGeneration().getHeightMapValuePoint(this_chunk.x + x + offset_x, this_chunk.y + y + offset_y);
                 return tile.getBiome() == getBiomeFromHeightMap(arr);
             }
         }

@@ -5,6 +5,11 @@ import java.io.*;
 import java.util.*;
 
 import game.assets.entities.Player;
+import game.assets.structures.Structure;
+import game.assets.structures.waterfall.Waterfall;
+import game.assets.tiles.Tile;
+import game.assets.tiles.TileGrass;
+import game.assets.tiles.TileWater;
 import game.enums.BIOME;
 import game.enums.ID;
 import game.enums.TILE_TYPE;
@@ -20,6 +25,7 @@ import game.system.systems.lighting.Light;
 import game.system.systems.lighting.LightingSystem;
 import game.system.main.*;
 import game.system.systems.particles.ParticleSystem;
+import game.textures.Texture;
 import game.textures.Textures;
 
 public class World implements Serializable {
@@ -32,7 +38,7 @@ public class World implements Serializable {
 	private Random r;
 	private transient KeyInput keyInput;
 
-	private static OpenSimplexNoise noise;
+	private transient Generation generation;
 
 	private Handler handler;
 	private Camera cam;
@@ -44,6 +50,8 @@ public class World implements Serializable {
 	private InventorySystem inventorySystem;
 	private static LightingSystem lightingSystem;
 	private static ParticleSystem ps;
+
+	private Structure active_structure;
 
 	public World() {
 		handler = new Handler();
@@ -106,25 +114,25 @@ public class World implements Serializable {
 	private void generateNewChunksOffScreen(int camX, int camY, int camW, int camH) {
 		for (int y = camY - 32; y < camY + camH + 16; y++) {
 			for (int x = camX - 32; x < camX + camW + 16; x++) {
-				if (chunks.containsKey(new Point(x, y))) {
-					chunks.get(new Point(x, y)).tick();
-					if (!chunks.containsKey(new Point(x - 16, y))) {
-						chunks.put(
+				if (getActiveChunks().containsKey(new Point(x, y))) {
+					getActiveChunks().get(new Point(x, y)).tick();
+					if (!getActiveChunks().containsKey(new Point(x - 16, y))) {
+						getActiveChunks().put(
 								new Point(x - 16, y),
-								new Chunk(x - 16, y, seed, temp_seed, moist_seed, this, player, textures));
-					} else if (!chunks.containsKey(new Point(x + 16, y))) {
-						chunks.put(
+								new Chunk(x - 16, y, seed, temp_seed, moist_seed, this, player));
+					} else if (!getActiveChunks().containsKey(new Point(x + 16, y))) {
+						getActiveChunks().put(
 								new Point(x + 16, y),
-								new Chunk(x + 16, y, seed, temp_seed, moist_seed, this, player, textures));
+								new Chunk(x + 16, y, seed, temp_seed, moist_seed, this, player));
 					}
-					if (!chunks.containsKey(new Point(x, y - 16))) {
-						chunks.put(
+					if (!getActiveChunks().containsKey(new Point(x, y - 16))) {
+						getActiveChunks().put(
 								new Point(x, y - 16),
-								new Chunk(x, y - 16, seed, temp_seed, moist_seed, this, player, textures));
-					} else if (!chunks.containsKey(new Point(x, y + 16))) {
-						chunks.put(
+								new Chunk(x, y - 16, seed, temp_seed, moist_seed, this, player));
+					} else if (!getActiveChunks().containsKey(new Point(x, y + 16))) {
+						getActiveChunks().put(
 								new Point(x, y + 16),
-								new Chunk(x, y + 16, seed, temp_seed, moist_seed, this, player, textures));
+								new Chunk(x, y + 16, seed, temp_seed, moist_seed, this, player));
 					}
 				}
 			}
@@ -147,13 +155,20 @@ public class World implements Serializable {
 
 		for (int y = camY - 32; y < camY + camH + 16; y++) {
 			for (int x = camX - 32; x < camX + camW + 16; x++) {
-				if (chunks.containsKey(new Point(x, y))) {
-					Chunk chunk = chunks.get(new Point(x, y));
+				if (getActiveChunks().containsKey(new Point(x, y))) {
+					Chunk chunk = getActiveChunks().get(new Point(x, y));
 					tmp_chunks.add(chunk);
 				}
 			}
 		}
 		return tmp_chunks;
+	}
+
+	public HashMap<Point, Chunk> getActiveChunks() {
+		if(structureActive()) {
+			return active_structure.getChunks();
+		}
+		return chunks;
 	}
 
 	public void render(Graphics g, Graphics2D g2d) {
@@ -165,7 +180,7 @@ public class World implements Serializable {
 
 		// ongeveer 30-35 ms
 		Long start = System.currentTimeMillis();
-		// lightingSystem.render(g);
+		//lightingSystem.render(g);
 		Long finish = System.currentTimeMillis();
 		// System.out.println("Light System Render Time: " + (finish - start));
 
@@ -210,11 +225,11 @@ public class World implements Serializable {
 
 	public Chunk getChunkWithCoords(int x, int y) {
 		Point chunk_point = new Point(x, y);
-		return chunks.get(chunk_point);
+		return getActiveChunks().get(chunk_point);
 	}
 
 	public Chunk getChunkWithCoordsPoint(Point coords) {
-		return chunks.get(coords);
+		return getActiveChunks().get(coords);
 	}
 
 	public Point getChunkPointWithCoords(int x, int y) {
@@ -250,58 +265,8 @@ public class World implements Serializable {
 	public BIOME getBiomeWithCoords(int x, int y) {
 		x /= 16;
 		y /= 16;
-		float[] arr = getHeightMapValuePoint(x, y);
+		float[] arr = generation.getHeightMapValuePoint(x, y);
 		return getBiome(arr[0], arr[1], arr[2]);
-	}
-
-	public float[] getHeightMapValuePoint(int x, int y) {
-		// x = x/16/16;
-		// y = y/16/16;
-		float[][] osn = generateOctavedSimplexNoise(x, y, 1, 1, 3, 0.4f, 0.05f, seed);
-		float[][] temp_osn = generateOctavedSimplexNoise(x, y, 1, 1, 3, 0.4f, 0.02f, temp_seed); // scale 0.01f ?
-		float[][] moist_osn = generateOctavedSimplexNoise(x, y, 1, 1, 3, 0.4f, 0.02f, moist_seed);
-		float[] arr = { osn[0][0], temp_osn[0][0], moist_osn[0][0] };
-		return arr;
-	}
-
-	public float[][] generateOctavedSimplexNoise(int xx, int yy, int width, int height, int octaves,
-			float roughness, float scale, Long seed) {
-		float[][] totalNoise = new float[width][height];
-		float layerFrequency = scale;
-		float layerWeight = 1;
-		float weightSum = 0;
-		// Long seed = r.nextLong();
-		// Long seed = 3695317381661324390L;
-		noise = new OpenSimplexNoise(seed);
-
-		for (int octave = 0; octave < octaves; octave++) {
-			// Calculate single layer/octave of simplex noise, then add it to total noise
-			for (int x = 0; x < width; x++) {
-				for (int y = 0; y < height; y++) {
-					totalNoise[x][y] += (float) noise.eval((x + xx) * layerFrequency, (y + yy) * layerFrequency)
-							* layerWeight;
-				}
-			}
-
-			// Increase variables with each incrementing octave
-			layerFrequency *= 2;
-			weightSum += layerWeight;
-			layerWeight *= roughness;
-
-		}
-		return totalNoise;
-	}
-
-	public float[][] getOsn(int x, int y, int w, int h) {
-		return generateOctavedSimplexNoise(x, y, w, h, 3, 0.4f, 0.05f, seed);
-	}
-
-	public float[][] getTemperatureOsn(int x, int y, int w, int h) {
-		return generateOctavedSimplexNoise(x, y, 16, 16, 3, 0.4f, 0.02f, temp_seed);
-	}
-
-	public float[][] getMoistureOsn(int x, int y, int w, int h) {
-		return generateOctavedSimplexNoise(x, y, 16, 16, 3, 0.4f, 0.02f, moist_seed);
 	}
 
 	public void generate(Long seed) {
@@ -309,6 +274,8 @@ public class World implements Serializable {
 		this.seed = seed;
 		this.temp_seed = r.nextLong();
 		this.moist_seed = r.nextLong();
+		generation = new Generation(seed, temp_seed, moist_seed);
+		generation.setHeight_scale(0.05f);
 		loaded = false;
 		chunks.clear();
 		setRequirements(new Player(0, 0, 2, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
@@ -316,8 +283,21 @@ public class World implements Serializable {
 		Logger.print("[seed]: " + this.seed);
 
 		Point chunk_point = getChunkPointWithCoords(player.getX(), player.getY());
-		chunks.put(chunk_point, new Chunk(chunk_point.x, chunk_point.y, seed, temp_seed, moist_seed, this, player, textures));
+		chunks.put(chunk_point, new Chunk(chunk_point.x, chunk_point.y, seed, temp_seed, moist_seed, this, player));
+		handler.addObject(new Waterfall(0, 0, 1));
 		loaded = true;
+	}
+
+	public Tile getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y) {
+		if(!structureActive()) {
+			if (getBiome(height, temp, moist) == BIOME.Forest) {
+				return new TileGrass(world_x, world_y, x, y, 1, BIOME.Forest, chunk);
+			} else {
+				return new TileWater(world_x, world_y, x, y, 1, BIOME.Ocean, chunk);
+			}
+		} else {
+			return active_structure.getGeneratedTile(x, y, height, temp, moist, chunk, world_x, world_y);
+		}
 	}
 
 	public Player getPlayer() {
@@ -409,5 +389,18 @@ public class World implements Serializable {
 
 	public void setPs(ParticleSystem ps) {
 		this.ps = ps;
+	}
+
+	public Generation getGeneration() {
+		return this.generation;
+	}
+
+	public boolean structureActive() {
+		return active_structure != null;
+	}
+
+	public void setActiveStructure(Structure structure) {
+		this.active_structure = structure;
+		structure.generate(this, player);
 	}
 }

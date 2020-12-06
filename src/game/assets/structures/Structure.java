@@ -1,77 +1,37 @@
 package game.assets.structures;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-
-import game.enums.STRUCTURE_TYPE;
+import game.assets.entities.Player;
+import game.assets.tiles.Tile;
+import game.system.main.Game;
 import game.system.systems.GameObject;
-import game.textures.Texture;
+import game.system.world.Chunk;
+import game.system.world.Generation;
+import game.system.world.World;
+
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Random;
 
 public abstract class Structure {
+    private HashMap<Point, Chunk> chunks = new HashMap<>();
+    private GameObject world_object;
+    private Long seed;
+    private Generation generation;
 
-    protected ArrayList<Texture> imageLayers = new ArrayList<>();
-    protected ArrayList<GameObject> objects = new ArrayList<>();
-    protected int x, y;
-    protected int width = 16, height = 16;
-    protected STRUCTURE_TYPE structureType;
-    protected GameObject worldStructure;
-
-    public Structure(int x, int y, STRUCTURE_TYPE structureType) {
-        this.x = x;
-        this.y = y;
-        this.structureType = structureType;
+    public Structure(Long seed, GameObject world_object) {
+        this.seed = seed;
+        this.generation = new Generation(seed);
+        this.world_object = world_object;
     }
 
-    public abstract void tick();
-
-    public abstract void render(Graphics g);
-
-    public abstract ArrayList<Rectangle> getBounds();
-
-    public abstract ArrayList<Rectangle> getSelectBounds();
-
-    public void setWorldStructure(GameObject obj) {
-        this.worldStructure = obj;
+    public void generate(World world, Player player) {
+        chunks.put(new Point(0, 0), new Chunk(0, 0, seed, generation.getTemp_seed(), generation.getMoist_seed(),
+                world, player));
     }
 
-    public GameObject getWorldStructure() {
-        return this.worldStructure;
-    }
+    public abstract Tile getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y);
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
-    public STRUCTURE_TYPE getStructureType() {
-        return this.structureType;
-    }
-
-    public void addImageLayer(Texture tex) {
-        this.imageLayers.add(tex);
-    }
-
-    public ArrayList<Texture> getImageLayers() {
-        return this.imageLayers;
-    }
-
-    public void addObject(GameObject obj) {
-        this.objects.add(obj);
-    }
-
-    public ArrayList<GameObject> getObjects() {
-        return this.objects;
+    public HashMap<Point, Chunk> getChunks() {
+        return this.chunks;
     }
 }

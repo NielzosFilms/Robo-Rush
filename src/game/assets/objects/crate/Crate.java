@@ -133,5 +133,4 @@ public class Crate extends GameObject {
     public void addItemToInv(Item item) {
         this.inv.addItem(item);
     }
-
 }
