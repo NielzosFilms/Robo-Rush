@@ -30,7 +30,7 @@ public abstract class Tile implements Serializable {
         this.chunk = chunk;
     }
 
-    // public abstract void tick();
+    public abstract void tick();
 
     public abstract void render(Graphics g);
 

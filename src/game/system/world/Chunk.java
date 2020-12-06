@@ -1,8 +1,6 @@
 package game.system.world;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -89,9 +87,18 @@ public class Chunk implements Serializable {
 				}
 			}
 		}
+		for(HashMap<Point, Tile> list : tiles) {
+			for(Point key : list.keySet()) {
+				list.get(key).tick();
+			}
+		}
 	}
 
 	public void renderBorder(Graphics g) {
+		g.setColor(new Color(232, 57, 57));
+		for(Rectangle tile_bounds : getAllTileBounds()) {
+			g.drawRect(tile_bounds.x, tile_bounds.y, tile_bounds.width, tile_bounds.height);
+		}
 		g.setColor(Color.decode("#70deff"));
 		g.drawRect(x * 16, y * 16, 16 * 16, 16 * 16);
 		g.setFont(Fonts.default_fonts.get(5));
@@ -241,5 +248,16 @@ public class Chunk implements Serializable {
 		x_offset *= 16;
 		y_offset *= 16;
 		return this.world.getChunkWithCoordsPoint(new Point(x + x_offset, y + y_offset));
+	}
+
+	public LinkedList<Rectangle> getAllTileBounds() {
+		LinkedList<Rectangle> bounds = new LinkedList<>();
+		for(HashMap<Point, Tile> list : tiles) {
+			for(Point key : list.keySet()) {
+				Tile tile = list.get(key);
+				if(tile.getBounds() != null) bounds.add(tile.getBounds());
+			}
+		}
+		return bounds;
 	}
 }

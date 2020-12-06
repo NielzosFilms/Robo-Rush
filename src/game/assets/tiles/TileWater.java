@@ -18,6 +18,10 @@ public class TileWater extends Tile {
         water_type = TILE_TYPE.center;
     }
 
+    public void tick() {
+
+    }
+
     public void render(Graphics g) {
         getWaterAnimation().drawAnimation(g, x, y, this.tileSize, this.tileSize);
     }

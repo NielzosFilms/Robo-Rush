@@ -81,7 +81,7 @@ public class Handler implements Serializable {
 				if (zIndex < tiles.size()) {
 					tiles.get(zIndex).add(tmp_tile);
 				} else {
-					for (int i = 0; i <= zIndex; i++) {
+					for (int i = tiles.size(); i <= zIndex; i++) {
 						tiles.add(new LinkedList<Tile>());
 					}
 					tiles.get(zIndex).add(tmp_tile);
@@ -89,20 +89,28 @@ public class Handler implements Serializable {
 			}
 
 			for (GameObject obj : chunk.getEntities()) {
+				for(int i=entities.size(); i<=obj.getZIndex(); i++) {
+					entities.add(new LinkedList<GameObject>());
+				}
 				entities.get(obj.getZIndex()).add(obj);
 			}
 
 		}
 
 		// RENDER
-		for (LinkedList<Tile> list : tiles) {
-			for (Tile tile : list) {
-				tile.render(g);
+		int highest_size = tiles.size();
+		if(entities.size() > tiles.size()) highest_size = entities.size();
+
+		for(int i=0; i<highest_size; i++) {
+			if(i < tiles.size()) {
+				for(Tile tile : tiles.get(i)) {
+					tile.render(g);
+				}
 			}
-		}
-		for (LinkedList<GameObject> list : entities) {
-			for (GameObject obj : list) {
-				obj.render(g);
+			if(i < entities.size()) {
+				for(GameObject entity : entities.get(i)) {
+					entity.render(g);
+				}
 			}
 		}
 
@@ -120,7 +128,7 @@ public class Handler implements Serializable {
 
 	public void addObject(GameObject object) {
 		int z_index = object.getZIndex();
-		while (z_index >= this.object_entities.size()) {// add new layers if it doesnt exist
+		for(int i=object_entities.size(); i<=z_index; i++) {
 			this.object_entities.add(new LinkedList<GameObject>());
 		}
 

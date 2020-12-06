@@ -17,6 +17,7 @@ public abstract class Structure {
     private GameObject world_object;
     private Long seed;
     private Generation generation;
+    private boolean infinite = false;
 
     public Structure(Long seed, GameObject world_object) {
         this.seed = seed;
@@ -33,5 +34,13 @@ public abstract class Structure {
 
     public HashMap<Point, Chunk> getChunks() {
         return this.chunks;
+    }
+
+    public boolean isInfinite() {
+        return infinite;
+    }
+
+    public void setInfinite(boolean infinite) {
+        this.infinite = infinite;
     }
 }

@@ -32,6 +32,10 @@ public class Tile_FloorWood extends Tile {
 		//chunk.updateSameTiles(this);
 	}
 
+	public void tick() {
+
+	}
+
 	public void render(Graphics g) {
 		g.drawImage(texture.getTexure(), x, y, 16, 16, null);
 	}

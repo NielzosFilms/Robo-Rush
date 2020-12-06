@@ -10,6 +10,7 @@ import game.assets.structures.waterfall.Waterfall;
 import game.assets.tiles.Tile;
 import game.assets.tiles.TileGrass;
 import game.assets.tiles.TileWater;
+import game.assets.tiles.Tile_Wall;
 import game.enums.BIOME;
 import game.enums.ID;
 import game.enums.TILE_TYPE;
@@ -101,7 +102,13 @@ public class World implements Serializable {
 		ps.tick();
 
 		runWaterAnimations();
-		generateNewChunksOffScreen(camX, camY, camW, camH);
+		if(structureActive()) {
+			if(active_structure.isInfinite()) {
+				generateNewChunksOffScreen(camX, camY, camW, camH);
+			}
+		} else {
+			generateNewChunksOffScreen(camX, camY, camW, camH);
+		}
 
 		collision.tick();
 		hitboxSystem.tick();
@@ -278,13 +285,14 @@ public class World implements Serializable {
 		generation.setHeight_scale(0.05f);
 		loaded = false;
 		chunks.clear();
-		setRequirements(new Player(0, 0, 2, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
+		setRequirements(new Player(0, 0, 20, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
 
 		Logger.print("[seed]: " + this.seed);
 
 		Point chunk_point = getChunkPointWithCoords(player.getX(), player.getY());
 		chunks.put(chunk_point, new Chunk(chunk_point.x, chunk_point.y, seed, temp_seed, moist_seed, this, player));
-		handler.addObject(new Waterfall(0, 0, 1));
+		handler.addObject(new Waterfall(0, 0, 10));
+		chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
 		loaded = true;
 	}
 

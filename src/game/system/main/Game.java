@@ -28,7 +28,7 @@ public class Game extends Canvas implements Runnable {
 	public static final int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 3.12.0 INFDEV";
+	public static final String VERSION = "ALPHA V 3.13.0 INFDEV";
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEBUG_MODE = false;
@@ -169,7 +169,8 @@ public class Game extends Canvas implements Runnable {
 		 * g2d.transform(scalingTransform);
 		 */
 		g2d.scale(SCALE_WIDTH, SCALE_HEIGHT);
-		g.setColor(new Color(217, 247, 255));
+		//g.setColor(new Color(217, 247, 255));
+		g.setColor(new Color(14, 14, 20));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		if (game_state == GAMESTATES.Menu) {

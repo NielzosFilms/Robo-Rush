@@ -75,7 +75,7 @@ public class Waterfall extends GameObject {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x, y, 3 * 16, 3 * 16);
+        return new Rectangle(x, y+16, 3 * 16, 2 * 16);
     }
 
     public Rectangle getSelectBounds() {

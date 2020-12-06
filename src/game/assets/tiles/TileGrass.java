@@ -34,6 +34,10 @@ public class TileGrass extends Tile {
         this.texture = textures.get(TILE_TYPE.center);
     }
 
+    public void tick() {
+
+    }
+
     public void render(Graphics g) {
         g.drawImage(this.texture.getTexure(), x, y, this.tileSize, this.tileSize, null);
     }
