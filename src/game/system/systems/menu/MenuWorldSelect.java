@@ -1,7 +1,7 @@
 package game.system.systems.menu;
 
 import game.enums.MENUSTATES;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.system.inputs.MouseInput;
 import game.system.systems.menu.buttons.ButtonBack;
 import game.system.systems.menu.buttons.ButtonLoad;

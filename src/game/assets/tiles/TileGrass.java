@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.HashMap;
 
 import game.assets.items.Item;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.enums.TILE_TYPE;
 import game.system.helpers.TileHelperFunctions;
 import game.textures.Texture;

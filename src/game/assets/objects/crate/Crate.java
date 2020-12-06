@@ -11,15 +11,13 @@ import game.assets.objects.rock.Item_Rock;
 import game.assets.objects.stick.Item_Stick;
 import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
-import game.enums.ITEM_ID;
 import game.system.systems.inventory.Inventory;
 import game.system.systems.inventory.InventorySlot;
-import game.system.systems.inventory.InventorySystem;
 import game.system.main.Game;
 import game.system.systems.GameObject;
 import game.enums.ID;
 import game.system.helpers.Settings;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 public class Crate extends GameObject {

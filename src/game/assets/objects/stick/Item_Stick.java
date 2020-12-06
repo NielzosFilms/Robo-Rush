@@ -4,7 +4,7 @@ import game.assets.items.Item;
 import game.assets.items.Item_Ground;
 import game.enums.ITEM_ID;
 import game.enums.ID;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 public class Item_Stick extends Item {

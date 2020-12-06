@@ -152,6 +152,7 @@ public class Chunk implements Serializable {
 		float[][] moist_osn = world.getGeneration().getMoistureOsn(x, y, tile_width, tile_height);
 
 		// create simple tiles
+		int tilemap_index = 1;
 		for (int yy = 0; yy < osn.length; yy++) {
 			for (int xx = 0; xx < osn[yy].length; xx++) {
 				float val = osn[xx][yy];
@@ -167,9 +168,10 @@ public class Chunk implements Serializable {
 
 				Tile tile = world.getGeneratedTile(xx, yy, val, temp_val, moist_val, this, world_x, world_y);
 				addTile(tile);
+				tilemap_index = tile.getZIndex();
 			}
 		}
-		updateTiles(1);
+		updateTiles(tilemap_index);
 	}
 
 	public LinkedList<GameObject> getEntities() {

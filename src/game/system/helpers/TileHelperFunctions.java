@@ -22,7 +22,7 @@ public class TileHelperFunctions {
         if (chunk_tiles.containsKey(new Point(x + offset_x, y + offset_y))) {
             // Checks same chunk tiles to same tileclass
             Tile temp_tile = (Tile) chunk_tiles.get(new Point(x + offset_x, y + offset_y));
-            return tile.getClass() == temp_tile.getClass();
+            if(tile.getClass() == temp_tile.getClass()) return true;
         } else {
             Chunk neighbour = null;
             int tmp_x = x + offset_x;
@@ -44,7 +44,7 @@ public class TileHelperFunctions {
                 // Checks neighbour chunk tiles to same tileclass
                 if(neighbour.getTileMap(tilemap_index).containsKey(new Point(tmp_x, tmp_y))) {
                     Tile temp_tile = (Tile) neighbour.getTileMap(tilemap_index).get(new Point(tmp_x, tmp_y));
-                    return tile.getClass() == temp_tile.getClass();
+                    if(tile.getClass() == temp_tile.getClass()) return true;
                 }
             } else {
                 // Checks neighbour chunk coords with generated biome value to same tile biome
@@ -69,7 +69,7 @@ public class TileHelperFunctions {
         if (chunk_tiles.containsKey(new Point(x + offset_x, y + offset_y))) {
             // Checks same chunk tiles to same tileclass
             Tile temp_tile = (Tile) chunk_tiles.get(new Point(x + offset_x, y + offset_y));
-            return tile.getClass() == temp_tile.getClass();
+            if(tile.getClass() == temp_tile.getClass()) return true;
         } else {
             Chunk neighbour = null;
             int tmp_x = x + offset_x;
@@ -91,7 +91,7 @@ public class TileHelperFunctions {
                 // Checks neighbour chunk tiles to same tileclass
                 if(neighbour.getTileMap(tilemap_index).containsKey(new Point(tmp_x, tmp_y))) {
                     Tile temp_tile = (Tile) neighbour.getTileMap(tilemap_index).get(new Point(tmp_x, tmp_y));
-                    return tile.getClass() == temp_tile.getClass();
+                    if(tile.getClass() == temp_tile.getClass()) return true;
                 }
             }
         }

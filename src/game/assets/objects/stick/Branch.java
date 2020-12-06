@@ -4,12 +4,11 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
-import game.enums.ITEM_ID;
 import game.assets.items.Item;
 import game.system.main.Game;
 import game.system.systems.GameObject;
 import game.enums.ID;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 public class Branch extends GameObject {

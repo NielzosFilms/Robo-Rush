@@ -2,7 +2,7 @@ package game.assets.items;
 
 import game.enums.ITEM_ID;
 import game.enums.ID;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 public class Item_NULL extends Item {

@@ -9,7 +9,7 @@ import game.assets.entities.Player;
 import game.assets.items.Item;
 import game.system.systems.GameObject;
 import game.enums.ID;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import game.enums.BIOME;
 

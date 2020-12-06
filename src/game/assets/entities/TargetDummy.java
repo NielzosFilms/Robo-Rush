@@ -7,7 +7,7 @@ import game.enums.ID;
 import game.system.main.Game;
 import game.system.systems.GameObject;
 import game.system.helpers.Settings;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 import java.awt.*;

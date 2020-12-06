@@ -2,7 +2,7 @@ package game.system.systems.menu.elements;
 
 import game.system.main.Game;
 import game.textures.Animation;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import game.textures.Textures;
 

@@ -2,8 +2,7 @@ package game.assets.tiles.floor.wood;
 
 import game.assets.items.Item;
 import game.assets.tiles.Tile;
-import game.enums.BIOME;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.enums.TILE_TYPE;
 import game.system.helpers.TileHelperFunctions;
 import game.system.world.Chunk;
@@ -29,6 +28,7 @@ public class Tile_FloorWood extends Tile {
 		textures.put(TILE_TYPE.bottom_left, new Texture(TEXTURE_LIST.floorTiles_list, 0, 2));
 		textures.put(TILE_TYPE.bottom_right, new Texture(TEXTURE_LIST.floorTiles_list, 2, 2));
 
+		texture = textures.get(TILE_TYPE.center);
 		//chunk.updateSameTiles(this);
 	}
 

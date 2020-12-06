@@ -1,4 +1,4 @@
-package game.enums;
+package game.textures;
 
 public enum TEXTURE_LIST {
 	stick, stone, tools,
@@ -7,6 +7,8 @@ public enum TEXTURE_LIST {
 	player_list, healthbar_list, cave_list, floorTiles_list,
 
 	waterfall_list,
+
+	walls_list,
 
 	loading_list,
 }

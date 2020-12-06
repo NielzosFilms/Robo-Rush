@@ -1,9 +1,8 @@
 package game.assets.structures.waterfall;
 
 import game.assets.items.Item;
-import game.assets.structures.Structure;
 import game.enums.ID;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.system.helpers.Logger;
 import game.system.main.Game;
 import game.system.systems.GameObject;
@@ -13,7 +12,6 @@ import game.textures.Textures;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class Waterfall extends GameObject {
     private HashMap<Point, Texture> tiles = new HashMap<>();

@@ -2,11 +2,10 @@ package game.assets.objects.crate;
 
 import game.assets.items.Item;
 import game.assets.items.Item_Ground;
-import game.assets.objects.crate.Crate;
 import game.enums.ID;
 import game.enums.ITEM_ID;
 import game.system.main.Game;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 import java.awt.*;

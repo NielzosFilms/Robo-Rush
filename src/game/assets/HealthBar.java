@@ -1,6 +1,6 @@
 package game.assets;
 
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.system.main.Game;
 import game.system.helpers.Helpers;
 import game.textures.Textures;

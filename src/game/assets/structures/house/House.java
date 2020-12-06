@@ -9,7 +9,7 @@ import game.enums.GAMESTATES;
 import game.system.main.Game;
 import game.system.systems.GameObject;
 import game.enums.ID;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 public class House extends GameObject {

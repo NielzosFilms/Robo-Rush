@@ -5,7 +5,7 @@ import game.assets.items.Item_Ground;
 import game.assets.tiles.Tile;
 import game.enums.ID;
 import game.enums.ITEM_ID;
-import game.enums.TEXTURE_LIST;
+import game.textures.TEXTURE_LIST;
 import game.system.helpers.Helpers;
 import game.system.main.Game;
 import game.system.systems.inventory.InventorySystem;

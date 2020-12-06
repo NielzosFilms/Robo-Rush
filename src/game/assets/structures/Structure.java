@@ -26,6 +26,7 @@ public abstract class Structure {
     }
 
     public void generate(World world, Player player) {
+        System.out.println("Structure::generate");
         chunks.put(new Point(0, 0), new Chunk(0, 0, seed, generation.getTemp_seed(), generation.getMoist_seed(),
                 world, player));
     }
