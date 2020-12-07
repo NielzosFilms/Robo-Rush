@@ -31,7 +31,8 @@ public class Textures {
 			healthbar_content_img,
 			tools_png,
 			waterfall_png,
-			walls_png;
+			walls_png,
+			cave_png;
 
 	// other standalone tiles
 	public static BufferedImage
@@ -79,6 +80,7 @@ public class Textures {
 
 		waterfall_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/5.png");
 		walls_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/4.png");
+		cave_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/8.png");
 
 		loading_png = loader.loadImage("assets/main/loading_animation_shadow.png");
 	}
@@ -98,6 +100,7 @@ public class Textures {
 		fillListWithSpriteSheet(floorTiles_png, 32, 32, texture_lists.get(TEXTURE_LIST.floorTiles_list));
 		fillListWithSpriteSheet(waterfall_png, 32, 32, texture_lists.get(TEXTURE_LIST.waterfall_list));
 		fillListWithSpriteSheet(walls_png, 32, 32, texture_lists.get(TEXTURE_LIST.walls_list));
+		fillListWithSpriteSheet(cave_png, 32, 32, texture_lists.get(TEXTURE_LIST.cave_list));
 	}
 
 	private static void fillListWithSpriteSheet(BufferedImage sheet, int width, int height, HashMap<Point, BufferedImage> list) {
