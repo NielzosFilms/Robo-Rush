@@ -108,9 +108,9 @@ public abstract class Tile implements Serializable {
 
     public abstract Rectangle getSelectBounds();
 
-    public abstract void findAndSetEdgeTexture(int tilemap_index);
+    public abstract void findAndSetEdgeTexture();
 
-    public abstract void update(int tilemap_index);
+    public abstract void update();
 
     public abstract Item getItem();
 }

@@ -2,6 +2,7 @@ package game.assets.structures.waterfall;
 
 import game.assets.items.Item;
 import game.enums.ID;
+import game.system.world.biome_groups.BiomeGroup_Cave;
 import game.textures.TEXTURE_LIST;
 import game.system.helpers.Logger;
 import game.system.main.Game;
@@ -41,7 +42,7 @@ public class Waterfall extends GameObject {
             }
         }
 
-        structure = new Structure_Waterfall(Game.world.getSeed(), this);
+        structure = new Structure_Waterfall(Game.world.getSeed(), this, new BiomeGroup_Cave());
     }
 
     public void tick() {

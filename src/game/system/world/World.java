@@ -26,6 +26,7 @@ import game.system.systems.lighting.Light;
 import game.system.systems.lighting.LightingSystem;
 import game.system.main.*;
 import game.system.systems.particles.ParticleSystem;
+import game.system.world.biome_groups.BiomeGroup_World;
 import game.textures.Texture;
 import game.textures.Textures;
 
@@ -102,14 +103,7 @@ public class World implements Serializable {
 		ps.tick();
 
 		runWaterAnimations();
-		if(structureActive()) {
-			if(active_structure.isInfinite()) {
-				generateNewChunksOffScreen(camX, camY, camW, camH);
-			}
-		} else {
-			generateNewChunksOffScreen(camX, camY, camW, camH);
-		}
-
+		generateNewChunksOffScreen(camX, camY, camW, camH);
 		collision.tick();
 		hitboxSystem.tick();
 
@@ -119,30 +113,34 @@ public class World implements Serializable {
 	}
 
 	private void generateNewChunksOffScreen(int camX, int camY, int camW, int camH) {
-		for (int y = camY - 32; y < camY + camH + 16; y++) {
-			for (int x = camX - 32; x < camX + camW + 16; x++) {
-				if (getActiveChunks().containsKey(new Point(x, y))) {
-					getActiveChunks().get(new Point(x, y)).tick();
-					if (!getActiveChunks().containsKey(new Point(x - 16, y))) {
-						getActiveChunks().put(
-								new Point(x - 16, y),
-								new Chunk(x - 16, y, seed, temp_seed, moist_seed, this, player));
-					} else if (!getActiveChunks().containsKey(new Point(x + 16, y))) {
-						getActiveChunks().put(
-								new Point(x + 16, y),
-								new Chunk(x + 16, y, seed, temp_seed, moist_seed, this, player));
-					}
-					if (!getActiveChunks().containsKey(new Point(x, y - 16))) {
-						getActiveChunks().put(
-								new Point(x, y - 16),
-								new Chunk(x, y - 16, seed, temp_seed, moist_seed, this, player));
-					} else if (!getActiveChunks().containsKey(new Point(x, y + 16))) {
-						getActiveChunks().put(
-								new Point(x, y + 16),
-								new Chunk(x, y + 16, seed, temp_seed, moist_seed, this, player));
+		if(!structureActive()) {
+			for (int y = camY - 32; y < camY + camH + 16; y++) {
+				for (int x = camX - 32; x < camX + camW + 16; x++) {
+					if (getActiveChunks().containsKey(new Point(x, y))) {
+						getActiveChunks().get(new Point(x, y)).tick();
+						if (!getActiveChunks().containsKey(new Point(x - 16, y))) {
+							getActiveChunks().put(
+									new Point(x - 16, y),
+									new Chunk(x - 16, y, this));
+						} else if (!getActiveChunks().containsKey(new Point(x + 16, y))) {
+							getActiveChunks().put(
+									new Point(x + 16, y),
+									new Chunk(x + 16, y, this));
+						}
+						if (!getActiveChunks().containsKey(new Point(x, y - 16))) {
+							getActiveChunks().put(
+									new Point(x, y - 16),
+									new Chunk(x, y - 16, this));
+						} else if (!getActiveChunks().containsKey(new Point(x, y + 16))) {
+							getActiveChunks().put(
+									new Point(x, y + 16),
+									new Chunk(x, y + 16, this));
+						}
 					}
 				}
 			}
+		} else {
+			active_structure.generateNewChunksOffScreen(camX, camY, camW, camH, this);
 		}
 	}
 
@@ -249,39 +247,12 @@ public class World implements Serializable {
 		return new Point(x, y);
 	}
 
-	public static BIOME getBiome(float val, float temp_val, float moist_val) {
-		// biome generation needs refinement
-		/*if ((temp_val > -0.5 && temp_val < 0.5) && (moist_val > 0.5)) { // forest
-			if (val < -0.3) {
-				return BIOME.Beach;
-			} else {
-				return BIOME.Forest;
-			}
-		} else if (temp_val < 0 && moist_val < 0) { // desert
-			return BIOME.Desert;
-		} else if (temp_val > 0 && moist_val < 0) { // dirt
-			return BIOME.Dirt;
-		}
-		return BIOME.Ocean;*/
-		if (val > -0.5) {
-			return BIOME.Forest;
-		}
-		return BIOME.Ocean;
-	}
-
-	public BIOME getBiomeWithCoords(int x, int y) {
-		x /= 16;
-		y /= 16;
-		float[] arr = generation.getHeightMapValuePoint(x, y);
-		return getBiome(arr[0], arr[1], arr[2]);
-	}
-
 	public void generate(Long seed) {
 		this.r = new Random(seed);
 		this.seed = seed;
 		this.temp_seed = r.nextLong();
 		this.moist_seed = r.nextLong();
-		generation = new Generation(seed, temp_seed, moist_seed);
+		generation = new Generation(seed, temp_seed, moist_seed, new BiomeGroup_World());
 		generation.setHeight_scale(0.05f);
 		loaded = false;
 		chunks.clear();
@@ -290,7 +261,7 @@ public class World implements Serializable {
 		Logger.print("[seed]: " + this.seed);
 
 		Point chunk_point = getChunkPointWithCoords(player.getX(), player.getY());
-		chunks.put(chunk_point, new Chunk(chunk_point.x, chunk_point.y, seed, temp_seed, moist_seed, this, player));
+		chunks.put(chunk_point, new Chunk(chunk_point.x, chunk_point.y, this));
 		handler.addObject(new Waterfall(0, 0, 10));
 		chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
 		loaded = true;
@@ -298,7 +269,7 @@ public class World implements Serializable {
 
 	public Tile getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y) {
 		if(!structureActive()) {
-			if (getBiome(height, temp, moist) == BIOME.Forest) {
+			if (generation.getBiome(height, temp, moist) == BIOME.Forest) {
 				return new TileGrass(world_x, world_y, x, y, 1, BIOME.Forest, chunk);
 			} else {
 				return new TileWater(world_x, world_y, x, y, 1, BIOME.Ocean, chunk);
@@ -400,7 +371,11 @@ public class World implements Serializable {
 	}
 
 	public Generation getGeneration() {
-		return this.generation;
+		if(!structureActive()) {
+			return this.generation;
+		} else {
+			return this.active_structure.getGeneration();
+		}
 	}
 
 	public boolean structureActive() {

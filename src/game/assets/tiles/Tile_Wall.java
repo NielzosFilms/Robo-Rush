@@ -42,13 +42,13 @@ public class Tile_Wall extends Tile {
         return null;
     }
 
-    public void findAndSetEdgeTexture(int tilemap_index) {
+    public void findAndSetEdgeTexture() {
         type = TileHelperFunctions.getTileType8DirTile(this, chunk, z_index);
         texture = textures.get(type);
     }
 
-    public void update(int tilemap_index) {
-        findAndSetEdgeTexture(tilemap_index);
+    public void update() {
+        findAndSetEdgeTexture();
     }
 
     public Item getItem() {

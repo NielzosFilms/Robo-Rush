@@ -57,7 +57,7 @@ public class KeyInput extends KeyAdapter {
 								keysDown[6] = true;
 							}
 							case KeyEvent.VK_I -> tempObject.interact();
-							case KeyEvent.VK_U -> this.world.getChunkWithCoordsPoint(this.world.getChunkPointWithCoords(tempObject.getX(), tempObject.getY())).updateTiles(1);
+							case KeyEvent.VK_U -> this.world.getChunkWithCoordsPoint(this.world.getChunkPointWithCoords(tempObject.getX(), tempObject.getY())).updateTiles();
 						}
 						// inventory.pickupItem(handler, world);
 					}

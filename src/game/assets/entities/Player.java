@@ -305,7 +305,7 @@ public class Player extends GameObject {
 	}
 
 	public BIOME getCurrentBiome() {
-		return Game.world.getBiomeWithCoords(x, y);
+		return Game.world.getGeneration().getBiomeWithCoords(x, y);
 	}
 
 	public Item getItem() {

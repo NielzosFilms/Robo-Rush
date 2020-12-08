@@ -60,7 +60,7 @@ public class TileHelperFunctions {
         float temp_osn = point[1];
         float moist_osn = point[2];
 
-        return World.getBiome(osn, temp_osn, moist_osn);
+        return Game.world.getGeneration().getBiome(osn, temp_osn, moist_osn);
     }
 
     public static boolean checkSameNeighbourTile(Tile tile, Chunk this_chunk, int offset_x, int offset_y, int tilemap_index) {
@@ -165,25 +165,40 @@ public class TileHelperFunctions {
 
     private static TILE_TYPE getTypeFromBooleans4(
             boolean top, boolean right, boolean bottom, boolean left) {
-        if (!top && !right && !bottom && !left) {
+        if (top && right && bottom && left) {
             return TILE_TYPE.center;
-        } else if (!top && !right) {
-            return TILE_TYPE.top_right;
-        } else if (!right && !bottom) {
-            return TILE_TYPE.bottom_right;
-        } else if (!bottom && !left) {
-            return TILE_TYPE.bottom_left;
-        } else if (!left && !top) {
-            return TILE_TYPE.top_left;
-        } else if (!top) {
+        } else if (left && right) {
+            if(top) {
+                return TILE_TYPE.bottom;
+            } else if(bottom) {
+                return TILE_TYPE.top;
+            }
             return TILE_TYPE.top;
-        } else if (!right) {
-            return TILE_TYPE.right;
-        } else if (!bottom) {
+        } else if (top && bottom) {
+            if(left) {
+                return TILE_TYPE.right;
+            } else if(right) {
+                return TILE_TYPE.left;
+            }
+            return TILE_TYPE.left;
+        } else if (bottom && left) {
+            return TILE_TYPE.top_right;
+        } else if (top && left) {
+            return TILE_TYPE.bottom_right;
+        } else if (right && top) {
+            return TILE_TYPE.bottom_left;
+        } else if (right && bottom) {
+            return TILE_TYPE.top_left;
+        } else if(top) {
             return TILE_TYPE.bottom;
-        } else if (!left) {
+        } else if(bottom) {
+            return TILE_TYPE.top;
+        } else if(left) {
+            return TILE_TYPE.right;
+        } else if(right) {
             return TILE_TYPE.left;
         }
+        // TODO no difference between left and right side
 
         return TILE_TYPE.center;
     }

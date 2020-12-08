@@ -7,31 +7,34 @@ import game.system.systems.GameObject;
 import game.system.world.Chunk;
 import game.system.world.Generation;
 import game.system.world.World;
+import game.system.world.biome_groups.BiomeGroup;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Random;
 
 public abstract class Structure {
-    private HashMap<Point, Chunk> chunks = new HashMap<>();
-    private GameObject world_object;
-    private Long seed;
-    private Generation generation;
-    private boolean infinite = false;
+    protected HashMap<Point, Chunk> chunks = new HashMap<>();
+    protected GameObject world_object;
+    protected Long seed;
+    protected Generation generation;
+    protected boolean infinite = false;
 
-    public Structure(Long seed, GameObject world_object) {
+    public Structure(Long seed, GameObject world_object, BiomeGroup biomeGroup) {
         this.seed = seed;
-        this.generation = new Generation(seed);
+        this.generation = new Generation(seed, biomeGroup);
         this.world_object = world_object;
     }
 
     public void generate(World world, Player player) {
         System.out.println("Structure::generate");
-        chunks.put(new Point(0, 0), new Chunk(0, 0, seed, generation.getTemp_seed(), generation.getMoist_seed(),
-                world, player));
+        chunks.put(new Point(0, 0), new Chunk(0, 0,
+                world));
     }
 
     public abstract Tile getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y);
+
+    public abstract void generateNewChunksOffScreen(int camX, int camY, int camW, int camH, World world);
 
     public HashMap<Point, Chunk> getChunks() {
         return this.chunks;
@@ -43,5 +46,9 @@ public abstract class Structure {
 
     public void setInfinite(boolean infinite) {
         this.infinite = infinite;
+    }
+
+    public Generation getGeneration() {
+        return this.generation;
     }
 }

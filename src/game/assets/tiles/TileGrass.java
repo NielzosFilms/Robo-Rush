@@ -42,8 +42,8 @@ public class TileGrass extends Tile {
         g.drawImage(this.texture.getTexure(), x, y, this.tileSize, this.tileSize, null);
     }
 
-    public void findAndSetEdgeTexture(int tilemap_index) {
-        TILE_TYPE tileType = TileHelperFunctions.getTileType8DirTileOrBiome(this, chunk, tilemap_index);
+    public void findAndSetEdgeTexture() {
+        TILE_TYPE tileType = TileHelperFunctions.getTileType8DirTileOrBiome(this, chunk, z_index);
 
         if(enoughConnections()) {
             this.texture = textures.get(tileType);
@@ -59,12 +59,12 @@ public class TileGrass extends Tile {
             TileWater water = new TileWater(x, y, chunk_x, chunk_y, 1, BIOME.Ocean, chunk);
             chunk.addTile(water);
             chunk.removeTile(this);
-            chunk.updateTiles(1);
+            chunk.updateTiles();
         }
     }
 
-    public void update(int tilemap_index) {
-        findAndSetEdgeTexture(tilemap_index);
+    public void update() {
+        findAndSetEdgeTexture();
     }
 
 

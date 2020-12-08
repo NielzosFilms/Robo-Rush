@@ -38,10 +38,10 @@ public class TileWater extends Tile {
         return Textures.water_red.get(water_type);
     }
 
-    public void findAndSetEdgeTexture(int tilemap_index) {
+    public void findAndSetEdgeTexture() {
     }
 
-    public void update(int tilemap_index) {
+    public void update() {
 
     }
     public void setWaterType(TILE_TYPE tileType) {

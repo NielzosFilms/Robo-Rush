@@ -1,8 +1,12 @@
 package game.system.world;
 
+import game.enums.BIOME;
+import game.system.world.biome_groups.BiomeGroup;
+
 import java.util.Random;
 
 public class Generation {
+    private BiomeGroup biomeGroup;
     private Long
             seed,
             temp_seed,
@@ -24,17 +28,19 @@ public class Generation {
             mois_scale = 0.02f;
 
 
-    public Generation(Long seed) {
+    public Generation(Long seed, BiomeGroup biomeGroup) {
         this.seed = seed;
         Random r = new Random(seed);
         temp_seed = r.nextLong();
         moist_seed = r.nextLong();
+        this.biomeGroup = biomeGroup;
     }
 
-    public Generation(Long seed, Long temp_seed, Long moist_seed) {
+    public Generation(Long seed, Long temp_seed, Long moist_seed, BiomeGroup biomeGroup) {
         this.seed = seed;
         this.temp_seed = temp_seed;
         this.moist_seed = moist_seed;
+        this.biomeGroup = biomeGroup;
     }
 
     public float[] getHeightMapValuePoint(int x, int y) {
@@ -83,6 +89,17 @@ public class Generation {
         }
         return totalNoise;
     }
+
+    public BIOME getBiome(float height, float temp, float moist) {
+        return biomeGroup.getBiome(height, temp, moist);
+    }
+
+    public BIOME getBiomeWithCoords(int x, int y) {
+		x /= 16;
+		y /= 16;
+		float[] arr = getHeightMapValuePoint(x, y);
+		return biomeGroup.getBiome(arr[0], arr[1], arr[2]);
+	}
 
     public Long getSeed() {
         return seed;

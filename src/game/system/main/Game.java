@@ -25,14 +25,14 @@ public class Game extends Canvas implements Runnable {
 	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
 	public static final float RATIO = (float) NEW_WIDTH / NEW_HEIGHT;
-	public static final int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
+	public static int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 3.15.0 INFDEV";
+	public static final String VERSION = "ALPHA V 3.20.0 INFDEV";
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEBUG_MODE = false;
-	public static boolean NO_SAVE = false, NO_LOAD = false;
+	public static boolean NO_SAVE = false, NO_LOAD = false, WINDOWED = false;
 
 	public static int current_loaded_save_slot;
 
@@ -205,9 +205,15 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		if(args.length >= 1) if(args[0].equals("debug")) DEBUG_MODE = true;
-		if(args.length >= 2) if(args[1].equals("no-save")) NO_SAVE = true;
-		if(args.length >= 3) if(args[1].equals("no-load")) NO_LOAD = true;
+		for(String arg : args) {
+			if(arg.equals("debug")) DEBUG_MODE = true;
+			if(arg.equals("no-save")) NO_SAVE = true;
+			if(arg.equals("no-load")) NO_LOAD = true;
+			if(arg.equals("windowed")) {
+				WINDOWED = true;
+				HEIGHT -= 20;
+			}
+		}
 		Logger.print("Arguments: " + Arrays.toString(args));
 		Logger.print("Game starting...");
 		canvas = new Game();

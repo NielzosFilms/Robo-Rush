@@ -48,13 +48,13 @@ public class Tile_FloorWood extends Tile {
 		return null;
 	}
 
-	public void findAndSetEdgeTexture(int tilemap_index) {
-		TILE_TYPE tileType = TileHelperFunctions.getTileType4DirTile(this, chunk, tilemap_index);
+	public void findAndSetEdgeTexture() {
+		TILE_TYPE tileType = TileHelperFunctions.getTileType4DirTile(this, chunk, z_index);
 		this.texture = textures.get(tileType);
 	}
 
-	public void update(int tilemap_index) {
-		findAndSetEdgeTexture(tilemap_index);
+	public void update() {
+		findAndSetEdgeTexture();
 	}
 
 	public Item getItem() {
