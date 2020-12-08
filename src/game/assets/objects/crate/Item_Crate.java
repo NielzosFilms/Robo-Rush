@@ -15,12 +15,12 @@ public class Item_Crate extends Item {
 		super(amount, ITEM_ID.Crate);
 		this.setPlaceable(true);
 		this.tex = new Texture(TEXTURE_LIST.house_list, 6, 0);
-		this.itemGround = new Item_Ground(0, 0, 1, ID.Item, this);
+		this.itemGround = new Item_Ground(0, 0, 10, ID.Item, this);
 	}
 
 	public boolean place(int x, int y) {
-		if(!Game.world.getHandler().objectExistsAtCoords(new Point(x, y), 1)) {
-			Game.world.getHandler().addObject(new Crate(x, y, 1, ID.Crate));
+		if(!Game.world.getHandler().objectExistsAtCoords(new Point(x, y))) {
+			Game.world.getHandler().addObject(new Crate(x, y, 10, ID.Crate));
 			return true;
 		}
 //		Game.handler.addObject(new Crate(x, y, 1, ID.Crate));

@@ -262,7 +262,7 @@ public class Handler implements Serializable {
 		item.destroyed();
 	}
 
-	public boolean objectExistsAtCoords(Point coords, int z_index) {
+	public boolean objectExistsAtCoords(Point coords) {
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
 
 		for(LinkedList<GameObject> list : object_entities) {

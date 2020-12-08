@@ -32,7 +32,8 @@ public class Textures {
 			tools_png,
 			waterfall_png,
 			walls_png,
-			cave_png;
+			cave_png,
+			attack_slice_png;
 
 	// other standalone tiles
 	public static BufferedImage
@@ -81,6 +82,7 @@ public class Textures {
 		waterfall_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/5.png");
 		walls_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/4.png");
 		cave_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/8.png");
+		attack_slice_png = loader.loadImage("assets/entities/player/attack_slice.png");
 
 		loading_png = loader.loadImage("assets/main/loading_animation_shadow.png");
 	}
@@ -101,6 +103,7 @@ public class Textures {
 		fillListWithSpriteSheet(waterfall_png, 32, 32, texture_lists.get(TEXTURE_LIST.waterfall_list));
 		fillListWithSpriteSheet(walls_png, 32, 32, texture_lists.get(TEXTURE_LIST.walls_list));
 		fillListWithSpriteSheet(cave_png, 32, 32, texture_lists.get(TEXTURE_LIST.cave_list));
+		fillListWithSpriteSheet(attack_slice_png, 64, 64, texture_lists.get(TEXTURE_LIST.attack_slice_list));
 	}
 
 	private static void fillListWithSpriteSheet(BufferedImage sheet, int width, int height, HashMap<Point, BufferedImage> list) {

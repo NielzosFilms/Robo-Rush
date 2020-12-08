@@ -50,6 +50,7 @@ public class ButtonLoad extends Button {
 			World.loaded = true;
 		} else {
 			// TODO be able to inject seed
+			Game.world.setActiveStructure(null);
 			Game.world.generate(new Random().nextLong());
 		}
 		Game.current_loaded_save_slot = slot;

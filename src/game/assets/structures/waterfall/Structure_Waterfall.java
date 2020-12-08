@@ -17,7 +17,7 @@ import java.util.HashMap;
 public class Structure_Waterfall extends Structure {
     public Structure_Waterfall(Long seed, GameObject world_object, BiomeGroup biomeGroup) {
         super(seed, world_object, biomeGroup);
-        generation.setHeight_scale(0.1f);
+        generation.setHeight_scale(0.05f);
     }
 
     public Tile getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y) {

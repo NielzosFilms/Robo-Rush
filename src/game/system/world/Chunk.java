@@ -10,6 +10,7 @@ import java.util.Random;
 
 import game.assets.entities.Player;
 import game.enums.BIOME;
+import game.system.helpers.Logger;
 import game.system.systems.lighting.Light;
 import game.system.systems.GameObject;
 import game.enums.ID;
@@ -55,25 +56,25 @@ public class Chunk implements Serializable {
 				if (entity.getX() > (this.x + 16) * 16) {
 					Chunk chunk = this.world.getChunkWithCoords(this.x + 16, this.y);
 					if(chunk == null) continue;
-					chunk.entities.get(0).add(entity);
+					addEntity(entity);
 					list.remove(i);
 					return;
 				} else if (entity.getX() < (this.x) * 16) {
 					Chunk chunk = this.world.getChunkWithCoords(this.x - 16, this.y);
 					if(chunk == null) continue;
-					chunk.entities.get(0).add(entity);
+					addEntity(entity);
 					list.remove(i);
 					return;
 				} else if (entity.getY() > (this.y + 16) * 16) {
 					Chunk chunk = this.world.getChunkWithCoords(this.x, this.y + 16);
 					if(chunk == null) continue;
-					chunk.entities.get(0).add(entity);
+					addEntity(entity);
 					list.remove(i);
 					return;
 				} else if (entity.getY() < (this.y - 16) * 16) {
 					Chunk chunk = this.world.getChunkWithCoords(this.x, this.y - 16);
 					if(chunk == null) continue;
-					chunk.entities.get(0).add(entity);
+					addEntity(entity);
 					list.remove(i);
 					return;
 				} else {
@@ -229,6 +230,7 @@ public class Chunk implements Serializable {
 	}
 
 	public void addEntity(GameObject ent) {
+		Logger.print(ent.getId() + " added to zindex: " + ent.getZIndex());
 		int zIndex = ent.getZIndex();
 		for (int i = entities.size(); i <= zIndex; i++) {
 			entities.add(new LinkedList<GameObject>());

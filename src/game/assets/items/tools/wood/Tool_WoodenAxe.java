@@ -11,7 +11,7 @@ public class Tool_WoodenAxe extends Item {
     public Tool_WoodenAxe() {
         super(1, ITEM_ID.Wooden_Axe);
         this.tex = new Texture(TEXTURE_LIST.tools, 1, 2);
-        this.itemGround = new Item_Ground(0, 0, 1, ID.Item, this);
+        this.itemGround = new Item_Ground(0, 0, 10, ID.Item, this);
         this.setStackable(false);
         this.setDamage(4);
         this.setAttack_speed((int)(60 * 1.5f));

@@ -26,7 +26,7 @@ public abstract class Structure {
         this.world_object = world_object;
     }
 
-    public void generate(World world, Player player) {
+    public void generate(World world) {
         System.out.println("Structure::generate");
         chunks.put(new Point(0, 0), new Chunk(0, 0,
                 world));

@@ -47,6 +47,8 @@ public class Player extends GameObject {
 	private Animation idle_down, idle_up, idle_left, idle_right;
 	private Animation walk_down, walk_up, walk_left, walk_right;
 
+	private Animation attack_slice;
+
 	public Inventory inventory;
 	public Inventory hotbar;
 
@@ -128,15 +130,28 @@ public class Player extends GameObject {
 				new Texture(TEXTURE_LIST.player_list, 3, 3),
 				new Texture(TEXTURE_LIST.player_list, 4, 3),
 				new Texture(TEXTURE_LIST.player_list, 5, 3));
+
+		attack_slice = new Animation(1,
+				new Texture(TEXTURE_LIST.attack_slice_list, 1, 0),
+				new Texture(TEXTURE_LIST.attack_slice_list, 2, 0),
+				new Texture(TEXTURE_LIST.attack_slice_list, 0, 1),
+				new Texture(TEXTURE_LIST.attack_slice_list, 1, 1),
+				new Texture(TEXTURE_LIST.attack_slice_list, 2, 1),
+				new Texture(TEXTURE_LIST.attack_slice_list, 0, 2),
+				new Texture(TEXTURE_LIST.attack_slice_list, 1, 2),
+				new Texture(TEXTURE_LIST.attack_slice_list, 2, 2)
+				);
 	}
 
 	public void tick() {
 		if(attack_timer > 0) attack_timer--;
 		if(attacking) {
+			attack_slice.runAnimation();
 			attacking_item_rot += 5;
 			if(attacking_item_rot > 90) {
 				attacking = false;
 				attacking_item_rot = 0;
+				attack_slice.resetAnimation();
 			}
 		}
 
@@ -270,9 +285,10 @@ public class Player extends GameObject {
 		}
 
 		if(attacking) {
+			attack_slice.drawAnimation(g, x, y, 64, 64);
 			Item holding = Game.world.getInventorySystem().getHotbarSelectedItem();
 			if(holding != null) {
-				ImageFilters.renderImageWithRotationFromCenter(g, holding.getTexture().getTexure(), x + 16, y, 16, 16,
+				ImageFilters.renderImageWithRotationFromCenter(g, holding.getTexture().getTexure(), x + 16, y, 64, 64,
 						attacking_item_rot);
 			}
 		}

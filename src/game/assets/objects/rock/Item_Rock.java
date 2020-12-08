@@ -12,7 +12,7 @@ public class Item_Rock extends Item {
     public Item_Rock(int amount) {
         super(amount, ITEM_ID.Rock);
         this.tex = new Texture(TEXTURE_LIST.stone, 1, 0);
-        this.itemGround = new Item_Ground(0, 0, 1, ID.Item, this);
+        this.itemGround = new Item_Ground(0, 0, 10, ID.Item, this);
     }
 
     @Override

@@ -202,7 +202,7 @@ public class World implements Serializable {
 		int y = entity.getY();
 		Chunk crsp_chunk = getChunkWithCoordsPoint(getChunkPointWithCoords(x, y));
 		if (crsp_chunk != null) { // adds enemy to a chunk to be unloaded
-			//Logger.print(String.valueOf(entity.getId()));
+			Logger.print(String.valueOf(entity.getId()));
 			crsp_chunk.addEntity(entity);
 			return true;
 		}
@@ -384,6 +384,6 @@ public class World implements Serializable {
 
 	public void setActiveStructure(Structure structure) {
 		this.active_structure = structure;
-		structure.generate(this, player);
+		if(structure != null) structure.generate(this);
 	}
 }

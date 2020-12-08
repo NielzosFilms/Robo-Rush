@@ -10,7 +10,7 @@ public class Item_NULL extends Item {
     public Item_NULL(int amount, ITEM_ID itemType) {
         super(amount, itemType);
         this.tex = new Texture(TEXTURE_LIST.house_list, 0, 0);
-        this.itemGround = new Item_Ground(0, 0, 1, ID.NULL, this);
+        this.itemGround = new Item_Ground(0, 0, 10, ID.NULL, this);
     }
 
     @Override
