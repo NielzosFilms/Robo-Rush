@@ -85,6 +85,20 @@ public class Animation implements Serializable {
 			g.drawImage(currentImg.getTexure(), x, y, scaleX, scaleY, null);
 	}
 
+	public void drawAnimationRotated(Graphics g, int x, int y, int scaleX, int scaleY, int anchX, int anchY, int rotation) {
+		if(mirrorW) {
+			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+			tx.translate(-currentImg.getTexure().getWidth(null), 0);
+			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+			BufferedImage temp = op.filter(currentImg.getTexure(), null);
+			//g.drawImage(temp, x, y, scaleX, scaleY, null);
+			ImageFilters.renderImageWithRotation(g, temp, x, y, scaleX, scaleY, anchX, anchY, rotation);
+		}else {
+			//g.drawImage(currentImg.getTexure(), x, y, scaleX, scaleY, null);
+			ImageFilters.renderImageWithRotation(g, currentImg.getTexure(), x, y, scaleX, scaleY, anchX, anchY, rotation);
+		}
+	}
+
 	public boolean animationEnded() {
 		return ended;
 	}

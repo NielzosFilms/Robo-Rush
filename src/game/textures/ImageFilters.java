@@ -10,18 +10,24 @@ public class ImageFilters {
 											   int width, int height,
 											   int anchX, int anchY, int rot_deg) {
 		Graphics2D g2d = (Graphics2D) g;
-		double rotationRequired = Math.toRadians(rot_deg);
-		AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, anchX, anchY);
-		AffineTransformOp op = new AffineTransformOp(tx, null);
-		g2d.drawImage(op.filter(img, null), x, y, width, height, null);
+		AffineTransform backup = g2d.getTransform();
+		AffineTransform rotation_transform = new AffineTransform(backup);
+		rotation_transform.rotate(Math.toRadians(rot_deg), anchX, anchY);
+		g2d.setTransform(rotation_transform);
+		g2d.drawImage(img, x, y, width, height, null);
+
+		g2d.setTransform(backup);
 	}
 
 	public static void renderImageWithRotationFromCenter(Graphics g, BufferedImage img, int x, int y,
 											   int width, int height, int rot_deg) {
 		Graphics2D g2d = (Graphics2D) g;
-		double rotationRequired = Math.toRadians(rot_deg);
-		AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, img.getWidth() / 2, img.getHeight() / 2);
-		AffineTransformOp op = new AffineTransformOp(tx, null);
-		g2d.drawImage(op.filter(img, null), x, y, width, height, null);
+		AffineTransform backup = g2d.getTransform();
+		AffineTransform rotation_transform = new AffineTransform(backup);
+		rotation_transform.rotate(Math.toRadians(rot_deg), x + width/2, y + height/2);
+		g2d.setTransform(rotation_transform);
+		g2d.drawImage(img, x, y, width, height, null);
+
+		g2d.setTransform(backup);
 	}
 }

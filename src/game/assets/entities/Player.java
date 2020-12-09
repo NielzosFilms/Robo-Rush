@@ -12,6 +12,8 @@ import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
 import game.enums.DIRECTIONS;
 import game.system.helpers.Helpers;
+import game.system.helpers.Logger;
+import game.system.helpers.Timer;
 import game.system.systems.GameObject;
 import game.system.systems.hitbox.Hitbox;
 import game.system.systems.hitbox.HitboxContainer;
@@ -37,9 +39,11 @@ public class Player extends GameObject {
 	private transient KeyInput keyInput;
 
 	private DIRECTIONS direction;
+	private DIRECTIONS attack_dir;
 	private int health, food, water;
-	private int needs_timer = 0;
-	private int attack_timer = 0;
+
+	private Timer attack_timer = new Timer(ATTACK_DELAY);
+	private Timer needs_timer = new Timer(60);
 
 	private boolean attacking = false;
 	private int attacking_item_rot = 0;
@@ -132,8 +136,7 @@ public class Player extends GameObject {
 				new Texture(TEXTURE_LIST.player_list, 5, 3));
 
 		attack_slice = new Animation(1,
-				new Texture(TEXTURE_LIST.attack_slice_list, 1, 0),
-				new Texture(TEXTURE_LIST.attack_slice_list, 2, 0),
+				//new Texture(TEXTURE_LIST.attack_slice_list, 2, 0),
 				new Texture(TEXTURE_LIST.attack_slice_list, 0, 1),
 				new Texture(TEXTURE_LIST.attack_slice_list, 1, 1),
 				new Texture(TEXTURE_LIST.attack_slice_list, 2, 1),
@@ -144,11 +147,12 @@ public class Player extends GameObject {
 	}
 
 	public void tick() {
-		if(attack_timer > 0) attack_timer--;
+		attack_timer.tick();
+
 		if(attacking) {
 			attack_slice.runAnimation();
-			attacking_item_rot += 5;
-			if(attacking_item_rot > 90) {
+			attacking_item_rot -= 10;
+			if(attack_slice.animationEnded()) {
 				attacking = false;
 				attacking_item_rot = 0;
 				attack_slice.resetAnimation();
@@ -210,9 +214,9 @@ public class Player extends GameObject {
 		// x = Game.clamp(x, -13, 800-50);
 
 		// y = Game.clamp(y, 0, Game.HEIGHT);
-		needs_timer++;
-		if (needs_timer >= 60) {
-			needs_timer = 0;
+		needs_timer.tick();
+		if (needs_timer.timerOver()) {
+			needs_timer.resetTimer();
 			this.health = r.nextInt(100) + 1;
 			this.food = r.nextInt(100) + 1;
 			this.water = r.nextInt(100) + 1;
@@ -255,6 +259,9 @@ public class Player extends GameObject {
 	}
 
 	public void render(Graphics g) {
+		if(attacking) {
+			drawAttack(g);
+		}
 
 		if (direction == DIRECTIONS.down) {
 			if (velY == 0) {
@@ -284,20 +291,29 @@ public class Player extends GameObject {
 			idle_down.drawAnimation(g, x, y);
 		}
 
-		if(attacking) {
-			attack_slice.drawAnimation(g, x, y, 64, 64);
-			Item holding = Game.world.getInventorySystem().getHotbarSelectedItem();
-			if(holding != null) {
-				ImageFilters.renderImageWithRotationFromCenter(g, holding.getTexture().getTexure(), x + 16, y, 64, 64,
-						attacking_item_rot);
-			}
+
+		if(Game.DEBUG_MODE) {
+			g.setColor(Color.pink);
+			g.drawRect(getBounds().x, getBounds().y, getBounds().width,
+					getBounds().height);
 		}
+	}
 
-		// g.setColor(Color.pink);
-		// g.drawRect(getBounds().x, getBounds().y, getBounds().width,
-		// getBounds().height);
-
-		// if(Game.showHitboxes) g.drawRect(x+19, y+6, 13, 30);
+	private void drawAttack(Graphics g) {
+		int cenX = (int) getBounds().getCenterX();
+		int cenY = (int) getBounds().getCenterY();
+		Item holding = Game.world.getInventorySystem().getHotbarSelectedItem();
+		if(holding != null) {
+			int direction_rotation = 0;
+			switch(attack_dir) {
+				case up -> direction_rotation = -90;
+				case down ->  direction_rotation = 90;
+				case left -> direction_rotation = 180;
+			}
+			attack_slice.drawAnimationRotated(g, cenX-24, cenY-40, 64, 64, cenX, cenY, direction_rotation);
+			ImageFilters.renderImageWithRotation(g, holding.getTexture().getTexure(), cenX + 4, cenY - 20, 16, 16,
+					cenX, cenY, direction_rotation + 90 + 45 + attacking_item_rot );
+		}
 	}
 
 	public Rectangle getBounds() {
@@ -347,11 +363,11 @@ public class Player extends GameObject {
 		AudioPlayer.playSound(AudioFiles.swing, 0.5f, false, 0);
 		// TODO make direction function 8 way instead of 4
 		Point screenCoords = Helpers.getScreenCoords((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), Game.world.getCam());
-		DIRECTIONS direction = Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
+		attack_dir = Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
 		//Logger.print(direction.name());
 		//this.direction = direction;
 
-		switch (direction) {
+		switch (attack_dir) {
 			case up -> {
 				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
 						new Hitbox(x-8, y-16, 32, 16, 0, 5, dmg),
@@ -376,26 +392,20 @@ public class Player extends GameObject {
 	}
 
 	public boolean canAttack() {
-		return attack_timer == 0;
+		return attack_timer.timerOver();
 	}
 
 	public int getExpectedDamage() {
-		// Get hotbar selected item
-		// Calculate damage output
 		int damage_output = DEFAULT_ATTACK_DAMAGE;
 		int attack_delay = ATTACK_DELAY;
-//		if(Game.inventorySystem.isHolding()) {
-//			Item holding = Game.inventorySystem.getHolding();
-//			damage_output += holding.getDamage();
-//		}
 		Item holding = Game.world.getInventorySystem().getHotbarSelectedItem();
 		if(holding != null) {
 			damage_output += holding.getDamage();
 			attack_delay += holding.getAttack_speed();
 		}
 
-		attack_timer = attack_delay;
-		//Logger.print("new attack_delay: " + attack_delay);
+		attack_timer.setDelay(attack_delay);
+		attack_timer.resetTimer();
 		return damage_output;
 	}
 
