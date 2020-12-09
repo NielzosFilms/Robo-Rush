@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 import game.assets.items.Item;
 import game.enums.BIOME;
+import game.enums.TILE_TYPE;
 import game.system.world.Chunk;
 import game.textures.Texture;
 
@@ -17,6 +18,7 @@ public abstract class Tile implements Serializable {
     protected Chunk chunk;
     protected int z_index;
     protected int tileSize = 16;
+    protected TILE_TYPE tile_type;
 
     protected Texture texture;
 
@@ -113,4 +115,8 @@ public abstract class Tile implements Serializable {
     public abstract void update();
 
     public abstract Item getItem();
+
+    public TILE_TYPE getTile_type() {
+        return this.tile_type;
+    }
 }

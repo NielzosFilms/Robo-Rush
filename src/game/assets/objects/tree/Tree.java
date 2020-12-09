@@ -7,6 +7,7 @@ import java.util.Random;
 
 import game.assets.entities.Player;
 import game.assets.items.Item;
+import game.system.main.Game;
 import game.system.systems.GameObject;
 import game.enums.ID;
 import game.textures.TEXTURE_LIST;
@@ -22,10 +23,10 @@ public class Tree extends GameObject {
 
 	private Random r = new Random();
 
-	public Tree(int x, int y, int z_index, ID id, BIOME biome, Player player) {
+	public Tree(int x, int y, int z_index, ID id, BIOME biome) {
 		super(x, y, z_index, id);
 		this.biome = biome;
-		this.player = player;
+		this.player = Game.world.getPlayer();
 
 		tex_rows = new ArrayList<ArrayList<Texture>>();
 		int tree_type = r.nextInt(2);

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
+import java.util.Random;
 
 import game.assets.tiles.Tile;
 import game.assets.tiles.floor.wood.Tile_FloorWood;
@@ -75,6 +76,12 @@ public class KeyInput extends KeyAdapter {
 						}
 					}
 				}
+			}
+			if(key == KeyEvent.VK_N) {
+				if(world.structureActive()) {
+					world.getGeneration().setNewSeed(world.getNextSeed());
+					world.getActive_structure().generate(world);
+				}else world.generate(new Random().nextLong());
 			}
 			inventorySystem.keyPressed(e);
 		} else {

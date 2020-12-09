@@ -17,42 +17,19 @@ public class TileHelperFunctions {
     private static Random r = new Random();
 
     public static boolean checkSameNeighbourTileOrBiome(Tile tile, Chunk this_chunk, int offset_x, int offset_y, int tilemap_index) {
-        int x = tile.getChunkX(), y = tile.getChunkY();
-        HashMap<Point, Tile> chunk_tiles = this_chunk.getTileMap(tilemap_index);
-        if (chunk_tiles.containsKey(new Point(x + offset_x, y + offset_y))) {
-            // Checks same chunk tiles to same tileclass
-            Tile temp_tile = (Tile) chunk_tiles.get(new Point(x + offset_x, y + offset_y));
-            if(tile.getClass() == temp_tile.getClass()) return true;
+        if(checkSameNeighbourTile(tile, this_chunk, offset_x, offset_y, tilemap_index)) {
+            return true;
         } else {
-            Chunk neighbour = null;
-            int tmp_x = x + offset_x;
-            int tmp_y = y + offset_y;
-
-            if(tmp_x < 0 && tmp_y < 0 || tmp_x > 15 && tmp_y > 15 ||
-                tmp_x < 0 && tmp_y > 15 || tmp_x > 15 && tmp_y < 0) {
-                neighbour = this_chunk.getNeighbourChunk(offset_x, offset_y);
-            } else if(tmp_x < 0 || tmp_x > 15) {
-                neighbour = this_chunk.getNeighbourChunk(offset_x, 0);
-            } else if(tmp_y < 0 || tmp_y > 15) {
-                neighbour = this_chunk.getNeighbourChunk(0, offset_y);
-            }
-            if(tmp_x < 0) tmp_x = 15;
-            if(tmp_x > 15) tmp_x = 0;
-            if(tmp_y < 0) tmp_y = 15;
-            if(tmp_y > 15) tmp_y = 0;
-            if(neighbour != null) {
-                // Checks neighbour chunk tiles to same tileclass
-                if(neighbour.getTileMap(tilemap_index).containsKey(new Point(tmp_x, tmp_y))) {
-                    Tile temp_tile = (Tile) neighbour.getTileMap(tilemap_index).get(new Point(tmp_x, tmp_y));
-                    if(tile.getClass() == temp_tile.getClass()) return true;
-                }
-            } else {
-                // Checks neighbour chunk coords with generated biome value to same tile biome
-                float[] arr = Game.world.getGeneration().getHeightMapValuePoint(this_chunk.x + x + offset_x, this_chunk.y + y + offset_y);
-                return tile.getBiome() == getBiomeFromHeightMap(arr);
-            }
+            // Checks neighbour chunk coords with generated biome value to same tile biome
+            int x = tile.getChunkX(), y = tile.getChunkY();
+            float[] arr = Game.world.getGeneration().getHeightMapValuePoint(this_chunk.x + x + offset_x, this_chunk.y + y + offset_y);
+            return tile.getBiome() == getBiomeFromHeightMap(arr);
         }
-        return false;
+    }
+
+    public static boolean checkSameNeighbourBiome(Tile tile, BIOME biome, int offset_x, int offset_y) {
+        BIOME biome_found = Game.world.getGeneration().getBiomeWithCoords(tile.getX() + offset_x*16, tile.getY() + offset_y*16);
+        return biome == biome_found;
     }
 
     public static BIOME getBiomeFromHeightMap(float[] point) {
@@ -64,12 +41,18 @@ public class TileHelperFunctions {
     }
 
     public static boolean checkSameNeighbourTile(Tile tile, Chunk this_chunk, int offset_x, int offset_y, int tilemap_index) {
+        Tile neighbourTile = getNeighbourTile(tile, this_chunk, offset_x, offset_y, tilemap_index);
+        if(neighbourTile != null) {
+            return neighbourTile.getClass() == tile.getClass();
+        }
+        return false;
+    }
+
+    public static Tile getNeighbourTile(Tile tile, Chunk this_chunk, int offset_x, int offset_y, int tilemap_index) {
         int x = tile.getChunkX(), y = tile.getChunkY();
         HashMap<Point, Tile> chunk_tiles = this_chunk.getTileMap(tilemap_index);
         if (chunk_tiles.containsKey(new Point(x + offset_x, y + offset_y))) {
-            // Checks same chunk tiles to same tileclass
-            Tile temp_tile = (Tile) chunk_tiles.get(new Point(x + offset_x, y + offset_y));
-            if(tile.getClass() == temp_tile.getClass()) return true;
+            return (Tile) chunk_tiles.get(new Point(x + offset_x, y + offset_y));
         } else {
             Chunk neighbour = null;
             int tmp_x = x + offset_x;
@@ -88,14 +71,12 @@ public class TileHelperFunctions {
             if(tmp_y < 0) tmp_y = 15;
             if(tmp_y > 15) tmp_y = 0;
             if(neighbour != null) {
-                // Checks neighbour chunk tiles to same tileclass
                 if(neighbour.getTileMap(tilemap_index).containsKey(new Point(tmp_x, tmp_y))) {
-                    Tile temp_tile = (Tile) neighbour.getTileMap(tilemap_index).get(new Point(tmp_x, tmp_y));
-                    if(tile.getClass() == temp_tile.getClass()) return true;
+                    return (Tile) neighbour.getTileMap(tilemap_index).get(new Point(tmp_x, tmp_y));
                 }
             }
         }
-        return false;
+        return null;
     }
 
     public static TILE_TYPE getTileType4DirTile(Tile tile, Chunk this_chunk, int tilemap_index) {
@@ -146,24 +127,34 @@ public class TileHelperFunctions {
         return getTypeFromBooleans8(top, right, bottom, left, top_left, top_right, bottom_left, bottom_right);
     }
 
-    private static TILE_TYPE getTypeFromBooleans8(
+    public static TILE_TYPE getTypeFromBooleans8(
             boolean top, boolean right, boolean bottom, boolean left,
             boolean top_left, boolean top_right, boolean bottom_left, boolean bottom_right) {
-        if (top && right && bottom && left) {
-            if (!top_left) {
+        if ((top && right && bottom && left) || (!top && !right && !bottom && !left)) {
+            if (top_left && (!top_right && !bottom_left && !bottom_right)) {
                 return TILE_TYPE.top_left_inverse;
-            } else if (!top_right) {
+            } else if (top_right && (!top_left && !bottom_left && !bottom_right)) {
                 return TILE_TYPE.top_right_inverse;
-            } else if (!bottom_left) {
+            } else if (bottom_left && (!top_right && !top_left && !bottom_right)) {
                 return TILE_TYPE.bottom_left_inverse;
-            } else if (!bottom_right) {
+            } else if (bottom_right && (!top_right && !bottom_left && !top_left)) {
+                return TILE_TYPE.bottom_right_inverse;
+            }
+
+            if (!top_left && (top_right && bottom_left && bottom_right)) {
+                return TILE_TYPE.top_left_inverse;
+            } else if (!top_right && (top_left && bottom_left && bottom_right)) {
+                return TILE_TYPE.top_right_inverse;
+            } else if (!bottom_left && (top_right && top_left && bottom_right)) {
+                return TILE_TYPE.bottom_left_inverse;
+            } else if (!bottom_right && (top_right && bottom_left && top_left)) {
                 return TILE_TYPE.bottom_right_inverse;
             }
         }
         return getTypeFromBooleans4(top, right, bottom, left);
     }
 
-    private static TILE_TYPE getTypeFromBooleans4(
+    public static TILE_TYPE getTypeFromBooleans4(
             boolean top, boolean right, boolean bottom, boolean left) {
         if (top && right && bottom && left) {
             return TILE_TYPE.center;

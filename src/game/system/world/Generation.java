@@ -109,6 +109,13 @@ public class Generation {
         this.seed = seed;
     }
 
+    public void setNewSeed(Long seed) {
+        this.seed = seed;
+        Random r = new Random(seed);
+        temp_seed = r.nextLong();
+        moist_seed = r.nextLong();
+    }
+
     public Long getTemp_seed() {
         return temp_seed;
     }

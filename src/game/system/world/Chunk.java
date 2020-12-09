@@ -46,6 +46,7 @@ public class Chunk implements Serializable {
 		// entities.add(new Enemy((x+8)*16, (y+8)*16, ID.Enemy));
 		// generate chunk tiles 16x16 then add to world
 		GenerateTiles(world);
+		updateTiles();
 	}
 
 	public void tick() {
@@ -148,7 +149,6 @@ public class Chunk implements Serializable {
 		float[][] moist_osn = world.getGeneration().getMoistureOsn(x, y, tile_width, tile_height);
 
 		// create simple tiles
-		int tilemap_index = 1;
 		for (int yy = 0; yy < osn.length; yy++) {
 			for (int xx = 0; xx < osn[yy].length; xx++) {
 				float val = osn[xx][yy];
@@ -162,11 +162,13 @@ public class Chunk implements Serializable {
 				int resized_y = yy * 16;
 				int world_y = resized_y + y * 16;
 
-				Tile tile = world.getGeneratedTile(xx, yy, val, temp_val, moist_val, this, world_x, world_y);
-				addTile(tile);
+				LinkedList<Tile> tiles = world.getGeneratedTile(xx, yy, val, temp_val, moist_val, this, world_x, world_y);
+				for(Tile tile : tiles) {
+					addTile(tile);
+				}
 			}
 		}
-		updateTiles();
+		//updateTiles();
 	}
 
 	public LinkedList<GameObject> getEntities() {

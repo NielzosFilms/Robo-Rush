@@ -2,8 +2,12 @@ package game.assets.tiles;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Random;
 
 import game.assets.items.Item;
+import game.assets.objects.rock.Pebble;
+import game.assets.objects.tree.Tree;
+import game.enums.ID;
 import game.textures.TEXTURE_LIST;
 import game.enums.TILE_TYPE;
 import game.system.helpers.TileHelperFunctions;
@@ -43,15 +47,14 @@ public class TileGrass extends Tile {
     }
 
     public void findAndSetEdgeTexture() {
-        TILE_TYPE tileType = TileHelperFunctions.getTileType8DirTileOrBiome(this, chunk, z_index);
-
-        if(enoughConnections()) {
-            this.texture = textures.get(tileType);
+        tile_type = TileHelperFunctions.getTileType8DirTileOrBiome(this, chunk, z_index);
+        if(getConnections() >= 2) {
+            this.texture = textures.get(tile_type);
 
             // Add water tile in background
             if(this.texture != textures.get(TILE_TYPE.center)) {
                 TileWater water = new TileWater(x, y, chunk_x, chunk_y, 2, biome, chunk);
-                water.setWaterType(tileType);
+                water.setWaterType(tile_type);
                 chunk.addTile(water);
                 this.texture = textures.get(TILE_TYPE.center);
             }
@@ -59,7 +62,10 @@ public class TileGrass extends Tile {
             TileWater water = new TileWater(x, y, chunk_x, chunk_y, 1, BIOME.Ocean, chunk);
             chunk.addTile(water);
             chunk.removeTile(this);
-            chunk.updateTiles();
+            //chunk.updateTiles();
+        }
+        if(tile_type == TILE_TYPE.center) {
+            placeEntityOnTile();
         }
     }
 
@@ -67,17 +73,28 @@ public class TileGrass extends Tile {
         findAndSetEdgeTexture();
     }
 
+    private int getConnections() {
+        int ret = 0;
+        if(TileHelperFunctions.checkSameNeighbourTileOrBiome(this, chunk, 0, -1, z_index)) ret++;
+        if(TileHelperFunctions.checkSameNeighbourTileOrBiome(this, chunk, 1, -1, z_index)) ret++;
+        if(TileHelperFunctions.checkSameNeighbourTileOrBiome(this, chunk, 1, 0, z_index)) ret++;
+        if(TileHelperFunctions.checkSameNeighbourTileOrBiome(this, chunk, 1, 1, z_index)) ret++;
+        if(TileHelperFunctions.checkSameNeighbourTileOrBiome(this, chunk, 0, 1, z_index)) ret++;
+        if(TileHelperFunctions.checkSameNeighbourTileOrBiome(this, chunk, -1, 1, z_index)) ret++;
+        if(TileHelperFunctions.checkSameNeighbourTileOrBiome(this, chunk, -1, 0, z_index)) ret++;
+        if(TileHelperFunctions.checkSameNeighbourTileOrBiome(this, chunk, -1, -1, z_index)) ret++;
+        return ret;
+    }
 
-    // TODO make this is tile helper functions?
-    private boolean enoughConnections() {
-        /*if(!top && !right && !bottom && !left) return false;
-        if(top && !right && !bottom && !left) return false;
-        if(!top && right && !bottom && !left) return false;
-        if(!top && !right && bottom && !left) return false;
-        if(!top && !right && !bottom && left) return false;
-        if(!top && right && !bottom && left) return false;
-        if(top && !right && bottom && !left) return false;*/
-        return true;
+    private void placeEntityOnTile() {
+        Random r = new Random();
+        if(r.nextInt(101) == 0) {
+            if(r.nextInt(2) == 0) {
+                chunk.addEntity(new Tree(x, y, 10, ID.Tree, biome));
+            } else {
+                chunk.addEntity(new Pebble(x, y, 10, ID.Pebble));
+            }
+        }
     }
 
     public Rectangle getBounds() {

@@ -11,6 +11,7 @@ import game.system.world.biome_groups.BiomeGroup;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Random;
 
 public abstract class Structure {
@@ -27,12 +28,13 @@ public abstract class Structure {
     }
 
     public void generate(World world) {
-        System.out.println("Structure::generate");
+        chunks.clear();
         chunks.put(new Point(0, 0), new Chunk(0, 0,
                 world));
+        chunks.get(new Point(0, 0)).updateTiles();
     }
 
-    public abstract Tile getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y);
+    public abstract LinkedList<Tile> getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y);
 
     public abstract void generateNewChunksOffScreen(int camX, int camY, int camW, int camH, World world);
 

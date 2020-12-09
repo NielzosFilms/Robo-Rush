@@ -122,19 +122,23 @@ public class World implements Serializable {
 							getActiveChunks().put(
 									new Point(x - 16, y),
 									new Chunk(x - 16, y, this));
+							getActiveChunks().get(new Point(x - 16, y)).updateTiles();
 						} else if (!getActiveChunks().containsKey(new Point(x + 16, y))) {
 							getActiveChunks().put(
 									new Point(x + 16, y),
 									new Chunk(x + 16, y, this));
+							getActiveChunks().get(new Point(x + 16, y)).updateTiles();
 						}
 						if (!getActiveChunks().containsKey(new Point(x, y - 16))) {
 							getActiveChunks().put(
 									new Point(x, y - 16),
 									new Chunk(x, y - 16, this));
+							getActiveChunks().get(new Point(x, y - 16)).updateTiles();
 						} else if (!getActiveChunks().containsKey(new Point(x, y + 16))) {
 							getActiveChunks().put(
 									new Point(x, y + 16),
 									new Chunk(x, y + 16, this));
+							getActiveChunks().get(new Point(x, y + 16)).updateTiles();
 						}
 					}
 				}
@@ -267,16 +271,18 @@ public class World implements Serializable {
 		loaded = true;
 	}
 
-	public Tile getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y) {
+	public LinkedList<Tile> getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y) {
+		LinkedList<Tile> ret = new LinkedList<>();
 		if(!structureActive()) {
 			if (generation.getBiome(height, temp, moist) == BIOME.Forest) {
-				return new TileGrass(world_x, world_y, x, y, 1, BIOME.Forest, chunk);
+				ret.add(new TileGrass(world_x, world_y, x, y, 1, BIOME.Forest, chunk));
 			} else {
-				return new TileWater(world_x, world_y, x, y, 1, BIOME.Ocean, chunk);
+				ret.add(new TileWater(world_x, world_y, x, y, 1, BIOME.Ocean, chunk));
 			}
 		} else {
 			return active_structure.getGeneratedTile(x, y, height, temp, moist, chunk, world_x, world_y);
 		}
+		return ret;
 	}
 
 	public Player getPlayer() {
@@ -385,5 +391,13 @@ public class World implements Serializable {
 	public void setActiveStructure(Structure structure) {
 		this.active_structure = structure;
 		if(structure != null) structure.generate(this);
+	}
+
+	public Long getNextSeed() {
+		return r.nextLong();
+	}
+
+	public Structure getActive_structure() {
+		return active_structure;
 	}
 }
