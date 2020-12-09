@@ -163,7 +163,7 @@ public class Player extends GameObject {
 
 		int walk_speed = 2;
 		if (keyInput.keysDown[5]) {
-			walk_speed = 10;
+			walk_speed = 3;
 		}
 
 		if (keyInput.keysDown[2] && !keyInput.keysDown[3]) {
