@@ -31,6 +31,7 @@ public class Chunk implements Serializable {
 	public LinkedList<LinkedList<GameObject>> entities = new LinkedList<>();
 	public LinkedList<Light> lights = new LinkedList<>();
 	public LinkedList<HashMap<Point, Tile>> tiles = new LinkedList<>();
+	public LinkedList<Rectangle> extra_bounds = new LinkedList<>();
 	public HashMap<Point, Structure> structures = new HashMap<>();
 
 	public static int tile_width = 16, tile_height = 16;
@@ -259,5 +260,13 @@ public class Chunk implements Serializable {
 			}
 		}
 		return bounds;
+	}
+
+	public LinkedList<Rectangle> getExtraBounds() {
+		return this.extra_bounds;
+	}
+
+	public void addExtraBound(Rectangle rect) {
+		this.extra_bounds.add(rect);
 	}
 }

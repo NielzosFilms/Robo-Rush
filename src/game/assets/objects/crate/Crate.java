@@ -11,6 +11,8 @@ import game.assets.objects.rock.Item_Rock;
 import game.assets.objects.stick.Item_Stick;
 import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
+import game.system.helpers.LevelLoaderHelpers;
+import game.system.helpers.Logger;
 import game.system.systems.inventory.Inventory;
 import game.system.systems.inventory.InventorySlot;
 import game.system.main.Game;
@@ -19,6 +21,7 @@ import game.enums.ID;
 import game.system.helpers.Settings;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
+import org.json.simple.JSONObject;
 
 public class Crate extends GameObject {
     private final int REGEN_DELAY_AFTER_HIT = 60*10;
@@ -34,6 +37,24 @@ public class Crate extends GameObject {
     public Crate(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
         inv = new Inventory(3, 2);
+        generateLoot();
+        inv.setXY(300, 100);
+        inv.setInitXY(300, 100);
+
+        healthBar = new HealthBar(x - 4, y - 8, 0, 7);
+        this.tex = new Texture(TEXTURE_LIST.house_list, 6, 0);
+    }
+
+    public Crate(JSONObject json, int z_index) {
+        super(
+                LevelLoaderHelpers.getIntProp(json, "x"),
+                LevelLoaderHelpers.getIntProp(json, "y"),
+                z_index,
+                ID.Crate);
+
+        inv = new Inventory(
+                Integer.parseInt(LevelLoaderHelpers.getCustomProp(json, "inv_x")),
+                Integer.parseInt(LevelLoaderHelpers.getCustomProp(json, "inv_y")));
         generateLoot();
         inv.setXY(300, 100);
         inv.setInitXY(300, 100);

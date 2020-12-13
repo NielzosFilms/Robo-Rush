@@ -200,7 +200,25 @@ public class Textures {
 	// static getter from image list
 
 	public static BufferedImage getTexture(Texture texture) {
-		return texture_lists.get(texture.getTexture_list()).get(new Point(texture.getX(), texture.getY()));
+		if(texture.coordsTouched()) {
+			return texture_lists.get(texture.getTexture_list()).get(new Point(texture.getX(), texture.getY()));
+		} else {
+			float highestX = getHighestXY(texture.getTexture_list()).x;
+			float tex_index = texture.getIndex();
+			int y = (int)Math.floor(tex_index / highestX);
+			int x = (int) (tex_index - (y * highestX));
+			return texture_lists.get(texture.getTexture_list()).get(new Point(x, y));
+		}
+	}
+
+	private static Point getHighestXY(TEXTURE_LIST texture_list) {
+		int x = 0;
+		int y = 0;
+		for(Point point : texture_lists.get(texture_list).keySet()) {
+			if(point.x > x) x = point.x;
+			if(point.y > y) y = point.y;
+		}
+		return new Point(x, y);
 	}
 
 }
