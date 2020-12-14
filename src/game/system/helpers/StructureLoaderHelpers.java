@@ -3,7 +3,7 @@ package game.system.helpers;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-public class LevelLoaderHelpers {
+public class StructureLoaderHelpers {
 
     public static String getFullClassname(JSONObject object) {
         String ret = "";

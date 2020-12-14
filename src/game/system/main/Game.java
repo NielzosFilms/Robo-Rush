@@ -15,9 +15,9 @@ import game.system.systems.menu.elements.LoadingAnimation;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
 import game.system.systems.menu.MenuSystem;
+import game.system.world.JsonStructureLoader;
 import game.textures.Fonts;
 import game.textures.Textures;
-import game.system.world.LevelLoader;
 import game.system.world.World;
 
 public class Game extends Canvas implements Runnable {
@@ -28,7 +28,7 @@ public class Game extends Canvas implements Runnable {
 	public static int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 3.28.0 INFDEV";
+	public static final String VERSION = "ALPHA V 3.30.0 INFDEV";
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEBUG_MODE = false;
@@ -48,7 +48,6 @@ public class Game extends Canvas implements Runnable {
 	private Random r;
 	public static KeyInput keyInput;
 	public static MouseInput mouseInput;
-	public static LevelLoader ll;
 
 	public static MenuSystem menuSystem;
 
@@ -217,8 +216,6 @@ public class Game extends Canvas implements Runnable {
 		Logger.print("Arguments: " + Arrays.toString(args));
 		Logger.print("Game starting...");
 		canvas = new Game();
-
-		new LevelLoader("assets/structures/test_map_1.json");
 	}
 
 }

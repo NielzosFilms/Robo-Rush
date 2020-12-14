@@ -52,7 +52,7 @@ public class Chunk implements Serializable {
 
 	public void tick() {
 		// move entity from chunk to chunk
-		for (LinkedList<GameObject> list : entities) {
+		for (LinkedList<GameObject> list : new LinkedList<>(entities)) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject entity = list.get(i);
 				if (entity.getX() > (this.x + 16) * 16) {
@@ -84,7 +84,7 @@ public class Chunk implements Serializable {
 				}
 			}
 		}
-		for(HashMap<Point, Tile> list : tiles) {
+		for(HashMap<Point, Tile> list : new LinkedList<>(tiles)) {
 			for(Point key : list.keySet()) {
 				list.get(key).tick();
 			}
@@ -95,6 +95,9 @@ public class Chunk implements Serializable {
 		g.setColor(new Color(232, 57, 57));
 		for(Rectangle tile_bounds : getAllTileBounds()) {
 			g.drawRect(tile_bounds.x, tile_bounds.y, tile_bounds.width, tile_bounds.height);
+		}
+		for(Rectangle bounds : extra_bounds) {
+			g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
 		}
 		g.setColor(Color.decode("#70deff"));
 		g.drawRect(x * 16, y * 16, 16 * 16, 16 * 16);
@@ -233,7 +236,7 @@ public class Chunk implements Serializable {
 	}
 
 	public void addEntity(GameObject ent) {
-		Logger.print(ent.getId() + " added to zindex: " + ent.getZIndex());
+		//Logger.print(ent.getId() + " added to zindex: " + ent.getZIndex());
 		int zIndex = ent.getZIndex();
 		for (int i = entities.size(); i <= zIndex; i++) {
 			entities.add(new LinkedList<GameObject>());
@@ -259,6 +262,7 @@ public class Chunk implements Serializable {
 				if(tile.getBounds() != null) bounds.add(tile.getBounds());
 			}
 		}
+		bounds.addAll(extra_bounds);
 		return bounds;
 	}
 

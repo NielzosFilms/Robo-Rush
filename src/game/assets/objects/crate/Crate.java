@@ -11,8 +11,8 @@ import game.assets.objects.rock.Item_Rock;
 import game.assets.objects.stick.Item_Stick;
 import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
-import game.system.helpers.LevelLoaderHelpers;
 import game.system.helpers.Logger;
+import game.system.helpers.StructureLoaderHelpers;
 import game.system.systems.inventory.Inventory;
 import game.system.systems.inventory.InventorySlot;
 import game.system.main.Game;
@@ -45,16 +45,16 @@ public class Crate extends GameObject {
         this.tex = new Texture(TEXTURE_LIST.house_list, 6, 0);
     }
 
-    public Crate(JSONObject json, int z_index) {
+    public Crate(JSONObject json, Integer z_index, Integer division) {
         super(
-                LevelLoaderHelpers.getIntProp(json, "x"),
-                LevelLoaderHelpers.getIntProp(json, "y"),
+                StructureLoaderHelpers.getIntProp(json, "x") / division,
+                StructureLoaderHelpers.getIntProp(json, "y") / division,
                 z_index,
                 ID.Crate);
 
         inv = new Inventory(
-                Integer.parseInt(LevelLoaderHelpers.getCustomProp(json, "inv_x")),
-                Integer.parseInt(LevelLoaderHelpers.getCustomProp(json, "inv_y")));
+                Integer.parseInt(StructureLoaderHelpers.getCustomProp(json, "inv_x")),
+                Integer.parseInt(StructureLoaderHelpers.getCustomProp(json, "inv_y")));
         generateLoot();
         inv.setXY(300, 100);
         inv.setInitXY(300, 100);

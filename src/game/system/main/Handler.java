@@ -168,6 +168,7 @@ public class Handler implements Serializable {
 					objs.add(tempObject);
 				}
 			}
+
 		}
 
 		return objs;
@@ -254,11 +255,7 @@ public class Handler implements Serializable {
 		for (LinkedList<GameObject> list : object_entities) {
 			list.remove(item);
 		}
-
-		// chunks
-		for (Chunk chunk : chunks_on_screen) {
-			world.getChunkWithCoords(chunk.x, chunk.y).removeEntity(item);
-		}
+		world.getChunkWithCoordsPoint(world.getChunkPointWithCoords(item.getX(), item.getY())).removeEntity(item);
 		item.destroyed();
 	}
 

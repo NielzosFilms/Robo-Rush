@@ -27,12 +27,7 @@ public abstract class Structure {
         this.world_object = world_object;
     }
 
-    public void generate(World world) {
-        chunks.clear();
-        chunks.put(new Point(0, 0), new Chunk(0, 0,
-                world));
-        chunks.get(new Point(0, 0)).updateTiles();
-    }
+    public abstract void generate(World world);
 
     public abstract LinkedList<Tile> getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y);
 

@@ -104,6 +104,7 @@ public class World implements Serializable {
 
 		runWaterAnimations();
 		generateNewChunksOffScreen(camX, camY, camW, camH);
+		tickChunksOnScreen(camX, camY, camW, camH);
 		collision.tick();
 		hitboxSystem.tick();
 
@@ -117,7 +118,6 @@ public class World implements Serializable {
 			for (int y = camY - 32; y < camY + camH + 16; y++) {
 				for (int x = camX - 32; x < camX + camW + 16; x++) {
 					if (getActiveChunks().containsKey(new Point(x, y))) {
-						getActiveChunks().get(new Point(x, y)).tick();
 						if (!getActiveChunks().containsKey(new Point(x - 16, y))) {
 							getActiveChunks().put(
 									new Point(x - 16, y),
@@ -145,6 +145,17 @@ public class World implements Serializable {
 			}
 		} else {
 			active_structure.generateNewChunksOffScreen(camX, camY, camW, camH, this);
+		}
+	}
+
+	private void tickChunksOnScreen(int camX, int camY, int camW, int camH) {
+		HashMap<Point, Chunk> chunks = getActiveChunks();
+		for (int y = camY - 32; y < camY + camH + 16; y++) {
+			for (int x = camX - 32; x < camX + camW + 16; x++) {
+				if (chunks.containsKey(new Point(x, y))) {
+					chunks.get(new Point(x, y)).tick();
+				}
+			}
 		}
 	}
 

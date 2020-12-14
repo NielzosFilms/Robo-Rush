@@ -10,6 +10,7 @@ import game.enums.BIOME;
 import game.system.main.Game;
 import game.system.systems.GameObject;
 import game.system.world.Chunk;
+import game.system.world.JsonStructureLoader;
 import game.system.world.World;
 import game.system.world.biome_groups.BiomeGroup;
 
@@ -19,9 +20,10 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class Structure_Waterfall extends Structure {
+    JsonStructureLoader loader;
     public Structure_Waterfall(Long seed, GameObject world_object, BiomeGroup biomeGroup) {
         super(seed, world_object, biomeGroup);
-        generation.setHeight_scale(0.05f);
+        /*generation.setHeight_scale(0.05f);
         generation.setTemp_scale(0.05f);
         boolean good_seed = false;
 
@@ -38,13 +40,30 @@ public class Structure_Waterfall extends Structure {
                 }
             }
             generation.setNewSeed(Game.world.getNextSeed());
+        }*/
+    }
+
+    public void generate(World world) {
+        chunks.clear();
+        Chunk chunk = new Chunk(0, 0, world);
+        loader = new JsonStructureLoader("assets/structures/test_map_1.json");
+        for(Tile tile : loader.getStatic_tiles()) {
+            chunk.addTile(tile);
         }
+        for(GameObject entity : loader.getObjects()) {
+            chunk.addEntity(entity);
+        }
+        for(Rectangle bounds : loader.getBounds()) {
+            chunk.addExtraBound(bounds);
+        }
+        //chunks.get(new Point(0, 0)).updateTiles();
+        chunks.put(new Point(0, 0), chunk);
     }
 
     public LinkedList<Tile> getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y) {
             //return new Tile_CaveWall(world_x, world_y, x, y, 2, chunk);
         LinkedList<Tile> ret = new LinkedList<>();
-        if(generation.getBiomeWithCoords(world_x, world_y) == BIOME.Cave_floor) {
+        /*if(generation.getBiomeWithCoords(world_x, world_y) == BIOME.Cave_floor) {
             ret.add(new Tile_Floor_Cave(world_x, world_y, x, y, 1, BIOME.Cave_floor, chunk));
             if(generation.getBiomeWithCoords(world_x, world_y-16) != BIOME.Cave_floor)
                 ret.add(new Tile_CaveWall(world_x, world_y-16, x, y-1, 2, BIOME.Cave_wall, chunk));
@@ -63,12 +82,12 @@ public class Structure_Waterfall extends Structure {
                 ret.add(new Tile_CaveWall(world_x-16, world_y+16, x-1, y+1, 2, BIOME.Cave_wall, chunk));
             if(generation.getBiomeWithCoords(world_x-16, world_y-16) != BIOME.Cave_floor)
                 ret.add(new Tile_CaveWall(world_x-16, world_y-16, x-1, y-1, 2, BIOME.Cave_wall, chunk));
-        }
+        }*/
         return ret;
     }
 
     public void generateNewChunksOffScreen(int camX, int camY, int camW, int camH, World world) {
-        for (int y = camY - 32; y < camY + camH + 16; y++) {
+        /*for (int y = camY - 32; y < camY + camH + 16; y++) {
             for (int x = camX - 32; x < camX + camW + 16; x++) {
                 if (world.getActiveChunks().containsKey(new Point(x, y))) {
                     Chunk chunk = world.getActiveChunks().get(new Point(x, y));
@@ -122,6 +141,6 @@ public class Structure_Waterfall extends Structure {
                     }
                 }
             }
-        }
+        }*/
     }
 }

@@ -218,7 +218,7 @@ public class Textures {
 			if(point.x > x) x = point.x;
 			if(point.y > y) y = point.y;
 		}
-		return new Point(x, y);
+		return new Point(x + 1, y + 1);
 	}
 
 }
