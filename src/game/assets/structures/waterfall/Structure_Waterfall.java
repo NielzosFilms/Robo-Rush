@@ -20,7 +20,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class Structure_Waterfall extends Structure {
-    JsonStructureLoader loader;
+    private transient JsonStructureLoader loader;
     public Structure_Waterfall(Long seed, GameObject world_object, BiomeGroup biomeGroup) {
         super(seed, world_object, biomeGroup);
         /*generation.setHeight_scale(0.05f);

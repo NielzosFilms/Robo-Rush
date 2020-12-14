@@ -15,6 +15,7 @@ import org.json.simple.parser.ParseException;
 import java.awt.*;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
