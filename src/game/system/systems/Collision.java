@@ -24,17 +24,26 @@ public class Collision {
 
 	public void tick() {
 		LinkedList<GameObject> objects_w_bounds = handler.getBoundsObjects();
-		for (GameObject temp : objects_w_bounds) {
-			checkBoundWithPlayer(temp.getBounds());
-		}
+		LinkedList<Rectangle> all_bounds = new LinkedList<>();
 		for(Chunk chunk : world.getChunksOnScreen()) {
-			for(Rectangle bounds : chunk.getAllTileBounds()) {
-				checkBoundWithPlayer(bounds);
+			all_bounds.addAll(chunk.getAllTileBounds());
+		}
+		for(GameObject entity : objects_w_bounds) {
+			all_bounds.add(entity.getBounds());
+		}
+
+		for (Rectangle bounds : all_bounds) {
+			checkBoundWithPlayer(bounds);
+		}
+		for(GameObject entity : objects_w_bounds) {
+			for(Rectangle bounds : all_bounds) {
+				checkCollisionForGameObject(bounds, entity);
 			}
 		}
 	}
 
 	private void checkBoundWithPlayer(Rectangle bounds) {
+		if(bounds == player.getBounds()) return;
 		if (bounds.intersects(player.getBounds())) {
 			int player_x = player.getBounds().x;
 			int player_y = player.getBounds().y;
@@ -59,6 +68,37 @@ public class Collision {
 				player.setX(obj_x - player.getBounds().width - player_x_diff);
 			} else if (player_cenX > obj_cenX && player_x > obj_rightX - 4) {
 				player.setX(obj_x + bounds.width - player_x_diff);
+			}
+		}
+	}
+
+	private void checkCollisionForGameObject(Rectangle bounds, GameObject entity) {
+		//TODO wierd stuff happens when moving entities touch
+		if(bounds == entity.getBounds()) return;
+		if (bounds.intersects(entity.getBounds())) {
+			int player_x = entity.getBounds().x;
+			int player_y = entity.getBounds().y;
+			int player_x_diff = entity.getBounds().x - entity.getX();
+			int player_y_diff = entity.getBounds().y - entity.getY();
+			int player_cenX = player_x + (entity.getBounds().width / 2);
+			int player_cenY = player_y + (entity.getBounds().height / 2);
+			int player_bottomY = player_y + entity.getBounds().height;
+			int player_rightX = player_x + entity.getBounds().width;
+			int obj_x = bounds.x;
+			int obj_y = bounds.y;
+			int obj_cenX = obj_x + (bounds.width / 2);
+			int obj_cenY = obj_y + (bounds.height / 2);
+			int obj_bottomY = obj_y + bounds.height;
+			int obj_rightX = obj_x + bounds.width;
+
+			if (player_cenY < obj_cenY && player_bottomY < obj_y + 4) {
+				entity.setY(obj_y - entity.getBounds().height - player_y_diff);
+			} else if (player_cenY > obj_cenY && player_y > obj_bottomY - 4) {
+				entity.setY(obj_y + bounds.height - player_y_diff);
+			} else if (player_cenX < obj_cenX && player_rightX < obj_x + 4) {
+				entity.setX(obj_x - entity.getBounds().width - player_x_diff);
+			} else if (player_cenX > obj_cenX && player_x > obj_rightX - 4) {
+				entity.setX(obj_x + bounds.width - player_x_diff);
 			}
 		}
 	}

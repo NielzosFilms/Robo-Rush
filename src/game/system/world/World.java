@@ -217,7 +217,6 @@ public class World implements Serializable {
 		int y = entity.getY();
 		Chunk crsp_chunk = getChunkWithCoordsPoint(getChunkPointWithCoords(x, y));
 		if (crsp_chunk != null) { // adds enemy to a chunk to be unloaded
-			Logger.print(String.valueOf(entity.getId()));
 			crsp_chunk.addEntity(entity);
 			return true;
 		}

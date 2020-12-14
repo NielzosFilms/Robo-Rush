@@ -44,6 +44,7 @@ public class Structure_Waterfall extends Structure {
     }
 
     public void generate(World world) {
+        // TODO add to corresponding chunks now its only 1 chunk
         chunks.clear();
         Chunk chunk = new Chunk(0, 0, world);
         loader = new JsonStructureLoader("assets/structures/test_map_1.json");
