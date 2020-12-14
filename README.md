@@ -24,7 +24,7 @@ Game Version: `ALPHA V 2.21.0 INFDEV`<br>
 
 ### Current Version
 - `ALPHA`
-- [Exact Version](./src/game/system/main/Game.java#L40)
+- [Exact Version](./src/game/system/main/Game.java#L31)
 
 ------------------------------------------------------------------------
 
