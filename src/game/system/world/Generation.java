@@ -3,9 +3,10 @@ package game.system.world;
 import game.enums.BIOME;
 import game.system.world.biome_groups.BiomeGroup;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Generation {
+public class Generation implements Serializable {
     private BiomeGroup biomeGroup;
     private Long
             seed,

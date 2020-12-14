@@ -10,11 +10,12 @@ import game.system.world.World;
 import game.system.world.biome_groups.BiomeGroup;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 
-public abstract class Structure {
+public abstract class Structure implements Serializable {
     protected HashMap<Point, Chunk> chunks = new HashMap<>();
     protected GameObject world_object;
     protected Long seed;
