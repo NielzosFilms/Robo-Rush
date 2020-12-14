@@ -90,6 +90,7 @@ public class Crate extends GameObject {
                 regen_timer = REGEN_DELAY;
             }
         }
+        healthBar.setXY(x - 4, y - 8);
         healthBar.tick();
         if(healthBar.dead()) Game.world.getHandler().findAndRemoveObject(this);
 

@@ -67,4 +67,9 @@ public class HealthBar implements Serializable {
     public boolean showing() {
         return hide_timer > 0;
     }
+
+    public void setXY(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 }

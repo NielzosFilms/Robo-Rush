@@ -37,7 +37,8 @@ public class Collision {
 		}
 		for(GameObject entity : objects_w_bounds) {
 			for(Rectangle bounds : all_bounds) {
-				checkCollisionForGameObject(bounds, entity);
+				// TODO only do this for objects that can/will move
+				//checkCollisionForGameObject(bounds, entity);
 			}
 		}
 	}
