@@ -186,7 +186,9 @@ public class World implements Serializable {
 
 	public HashMap<Point, Chunk> getActiveChunks() {
 		if(structureActive()) {
-			return active_structure.getChunks();
+			if(active_structure.isGenerated()) {
+				return active_structure.getChunks();
+			}
 		}
 		return chunks;
 	}
@@ -400,7 +402,19 @@ public class World implements Serializable {
 
 	public void setActiveStructure(Structure structure) {
 		this.active_structure = structure;
-		if(structure != null) structure.generate(this);
+		if(structure != null) {
+			if(!structure.isGenerated()) {
+				structure.generate(this);
+			}
+			structure.entered(this);
+			updatePlayerPosition(structure.getPlayerSpawn().x, structure.getPlayerSpawn().y);
+		}
+	}
+
+	private void updatePlayerPosition(int x, int y) {
+		player.setX(x);
+		player.setY(y);
+		cam.setCoordsWithPlayerCoords(x, y);
 	}
 
 	public Long getNextSeed() {

@@ -11,6 +11,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.io.FileReader;
@@ -33,6 +34,8 @@ public class JsonStructureLoader {
     private LinkedList<Tile> static_tiles = new LinkedList<>();
     private LinkedList<GameObject> objects = new LinkedList<>();
     private LinkedList<Rectangle> bounds = new LinkedList<>();
+    private Rectangle player_spawn;
+    private GameObject exit_object;
 
     public JsonStructureLoader(String filepath) {
         try {
@@ -103,7 +106,9 @@ public class JsonStructureLoader {
             JSONObject object = (JSONObject) o;
 
             if(object.get("type").toString().equals("bounds")) {
-                addBounds(object);
+                this.bounds.add(getRectangle(object));
+            } else if(object.get("type").toString().equals("player_spawn")) {
+                player_spawn = getRectangle(object);
             } else {
                 try {
                     Class<?> clazz = Class.forName(StructureLoaderHelpers.getFullClassname(object));
@@ -120,12 +125,12 @@ public class JsonStructureLoader {
         }
     }
 
-    private void addBounds(JSONObject bounds) {
+    private Rectangle getRectangle(JSONObject bounds) {
         int x = Integer.parseInt(bounds.get("x").toString()) / division;
         int y = Integer.parseInt(bounds.get("y").toString()) / division;
         int width = Integer.parseInt(bounds.get("width").toString()) / division;
         int height = Integer.parseInt(bounds.get("height").toString()) / division;
-        this.bounds.add(new Rectangle(x, y, width, height));
+        return new Rectangle(x, y, width, height);
     }
 
     private TEXTURE_LIST getTextureList(int index) {
@@ -154,5 +159,13 @@ public class JsonStructureLoader {
 
     public LinkedList<Rectangle> getBounds() {
         return bounds;
+    }
+
+    public Rectangle getPlayerSpawn() {
+        return player_spawn;
+    }
+
+    public GameObject getExitObject() {
+        return exit_object;
     }
 }

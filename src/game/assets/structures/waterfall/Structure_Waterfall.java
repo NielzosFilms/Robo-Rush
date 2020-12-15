@@ -48,17 +48,22 @@ public class Structure_Waterfall extends Structure {
         chunks.clear();
         Chunk chunk = new Chunk(0, 0, world);
         loader = new JsonStructureLoader("assets/structures/test_map_1.json");
-        for(Tile tile : loader.getStatic_tiles()) {
+        for (Tile tile : loader.getStatic_tiles()) {
             chunk.addTile(tile);
         }
-        for(GameObject entity : loader.getObjects()) {
+        for (GameObject entity : loader.getObjects()) {
             chunk.addEntity(entity);
         }
-        for(Rectangle bounds : loader.getBounds()) {
+        for (Rectangle bounds : loader.getBounds()) {
             chunk.addExtraBound(bounds);
         }
+        player_spawn = loader.getPlayerSpawn();
         //chunks.get(new Point(0, 0)).updateTiles();
         chunks.put(new Point(0, 0), chunk);
+        generated = true;
+    }
+
+    public void entered(World world) {
     }
 
     public LinkedList<Tile> getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y) {

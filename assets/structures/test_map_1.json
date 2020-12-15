@@ -266,7 +266,18 @@
                  "width":32,
                  "x":32,
                  "y":364
-                }],
+                },
+                {
+                  "height":32,
+                   "id":20,
+                   "name":"",
+                   "rotation":0,
+                   "type":"player_spawn",
+                   "visible":true,
+                   "width":32,
+                   "x":256,
+                   "y":256
+                 }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,

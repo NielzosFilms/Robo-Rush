@@ -42,5 +42,10 @@ public class Camera implements Serializable {
 	public float getY() {
 		return y;
 	}
+
+	public void setCoordsWithPlayerCoords(int x, int y) {
+		this.x = -x + Game.WIDTH/2-16;
+		this.y = -y + Game.HEIGHT/2-16;
+	}
 	
 }

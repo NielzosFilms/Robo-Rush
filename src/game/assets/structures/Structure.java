@@ -21,6 +21,8 @@ public abstract class Structure implements Serializable {
     protected Long seed;
     protected Generation generation;
     protected boolean infinite = false;
+    protected boolean generated = false;
+    protected Rectangle player_spawn;
 
     public Structure(Long seed, GameObject world_object, BiomeGroup biomeGroup) {
         this.seed = seed;
@@ -29,6 +31,8 @@ public abstract class Structure implements Serializable {
     }
 
     public abstract void generate(World world);
+
+    public abstract void entered(World world);
 
     public abstract LinkedList<Tile> getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y);
 
@@ -48,5 +52,17 @@ public abstract class Structure implements Serializable {
 
     public Generation getGeneration() {
         return this.generation;
+    }
+
+    public boolean isGenerated() {
+        return generated;
+    }
+
+    public Rectangle getPlayerSpawn() {
+        return player_spawn;
+    }
+
+    public void setPlayerSpawn(Rectangle player_spawn) {
+        this.player_spawn = player_spawn;
     }
 }
