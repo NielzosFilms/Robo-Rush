@@ -20,7 +20,6 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class Structure_Waterfall extends Structure {
-    private transient JsonStructureLoader loader;
     public Structure_Waterfall(Long seed, GameObject world_object, BiomeGroup biomeGroup) {
         super(seed, world_object, biomeGroup);
         /*generation.setHeight_scale(0.05f);
@@ -44,20 +43,10 @@ public class Structure_Waterfall extends Structure {
     }
 
     public void generate(World world) {
-        chunks.clear();
-        chunks.put(new Point(0, 0), new Chunk(0, 0, world));
-        loader = new JsonStructureLoader("assets/structures/test_map_1.json");
-        for (Tile tile : loader.getStatic_tiles()) {
-            chunks.get(getContainingChunk(tile.getX(), tile.getY(), world)).addTile(tile);
-        }
-        for (GameObject entity : loader.getObjects()) {
-            chunks.get(getContainingChunk(entity.getX(), entity.getY(), world)).addEntity(entity);
-        }
-        for (Rectangle bounds : loader.getBounds()) {
-            chunks.get(getContainingChunk(bounds.x, bounds.y, world)).addExtraBound(bounds);
-        }
+        generated = false;
+        JsonStructureLoader loader = new JsonStructureLoader("assets/structures/test_map_1.json");
+        chunks = loader.getChunks(world);
         player_spawn = loader.getPlayerSpawn();
-        //chunks.get(new Point(0, 0)).updateTiles();
         generated = true;
     }
 
@@ -146,13 +135,5 @@ public class Structure_Waterfall extends Structure {
                 }
             }
         }*/
-    }
-
-    public Point getContainingChunk(int x, int y, World world) {
-        Point chunkPoint = world.getChunkPointWithCoords(x, y);
-        if (!chunks.containsKey(chunkPoint)) {
-            chunks.put(chunkPoint, new Chunk(chunkPoint.x, chunkPoint.y, world));
-        }
-        return chunkPoint;
     }
 }

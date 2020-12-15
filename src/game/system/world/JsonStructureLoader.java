@@ -24,6 +24,7 @@ import java.util.LinkedList;
 
 public class JsonStructureLoader {
     JSONParser parser = new JSONParser();
+    private HashMap<Point, Chunk> chunks = new HashMap<>();
 
     private final int TO_TILE_SIZE = 16;
     private int tileSize = 16;
@@ -145,6 +146,29 @@ public class JsonStructureLoader {
             if(index >= firstgid) ret = firstgid;
         }
         return ret-1;
+    }
+
+    public HashMap<Point, Chunk> getChunks(World world) {
+        Point origin = world.getChunkPointWithCoords(player_spawn.x, player_spawn.y);
+        chunks.put(origin, new Chunk(origin.x, origin.y, world));
+        for (Tile tile : static_tiles) {
+            chunks.get(getContainingChunk(tile.getX(), tile.getY(), world)).addTile(tile);
+        }
+        for (GameObject entity : objects) {
+            chunks.get(getContainingChunk(entity.getX(), entity.getY(), world)).addEntity(entity);
+        }
+        for (Rectangle bounds : bounds) {
+            chunks.get(getContainingChunk(bounds.x, bounds.y, world)).addExtraBound(bounds);
+        }
+        return chunks;
+    }
+
+    public Point getContainingChunk(int x, int y, World world) {
+        Point chunkPoint = world.getChunkPointWithCoords(x, y);
+        if (!chunks.containsKey(chunkPoint)) {
+            chunks.put(chunkPoint, new Chunk(chunkPoint.x, chunkPoint.y, world));
+        }
+        return chunkPoint;
     }
 
     public LinkedList<Tile> getStatic_tiles() {
