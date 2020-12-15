@@ -267,9 +267,9 @@
                  "x":32,
                  "y":364
                 },
-                {
+                  {
                   "height":32,
-                   "id":20,
+                   "id":21,
                    "name":"",
                    "rotation":0,
                    "type":"player_spawn",

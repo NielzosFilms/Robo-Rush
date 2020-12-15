@@ -44,22 +44,20 @@ public class Structure_Waterfall extends Structure {
     }
 
     public void generate(World world) {
-        // TODO add to corresponding chunks now its only 1 chunk
         chunks.clear();
-        Chunk chunk = new Chunk(0, 0, world);
+        chunks.put(new Point(0, 0), new Chunk(0, 0, world));
         loader = new JsonStructureLoader("assets/structures/test_map_1.json");
         for (Tile tile : loader.getStatic_tiles()) {
-            chunk.addTile(tile);
+            chunks.get(getContainingChunk(tile.getX(), tile.getY(), world)).addTile(tile);
         }
         for (GameObject entity : loader.getObjects()) {
-            chunk.addEntity(entity);
+            chunks.get(getContainingChunk(entity.getX(), entity.getY(), world)).addEntity(entity);
         }
         for (Rectangle bounds : loader.getBounds()) {
-            chunk.addExtraBound(bounds);
+            chunks.get(getContainingChunk(bounds.x, bounds.y, world)).addExtraBound(bounds);
         }
         player_spawn = loader.getPlayerSpawn();
         //chunks.get(new Point(0, 0)).updateTiles();
-        chunks.put(new Point(0, 0), chunk);
         generated = true;
     }
 
@@ -148,5 +146,13 @@ public class Structure_Waterfall extends Structure {
                 }
             }
         }*/
+    }
+
+    public Point getContainingChunk(int x, int y, World world) {
+        Point chunkPoint = world.getChunkPointWithCoords(x, y);
+        if (!chunks.containsKey(chunkPoint)) {
+            chunks.put(chunkPoint, new Chunk(chunkPoint.x, chunkPoint.y, world));
+        }
+        return chunkPoint;
     }
 }

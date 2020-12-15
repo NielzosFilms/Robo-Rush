@@ -47,8 +47,6 @@ public class JsonStructureLoader {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-        System.out.println(objects);
-        System.out.println(bounds);
     }
 
     private void decodeTextureLists(JSONArray tilesets) {

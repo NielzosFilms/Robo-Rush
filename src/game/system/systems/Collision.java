@@ -37,7 +37,7 @@ public class Collision {
 		}
 		for(GameObject entity : objects_w_bounds) {
 			for(Rectangle bounds : all_bounds) {
-				// TODO only do this for objects that can/will move
+				// only do this for objects that can/will move
 				//checkCollisionForGameObject(bounds, entity);
 			}
 		}
@@ -74,7 +74,7 @@ public class Collision {
 	}
 
 	private void checkCollisionForGameObject(Rectangle bounds, GameObject entity) {
-		//TODO wierd stuff happens when moving entities touch
+		//wierd stuff happens when moving entities touch
 		if(bounds == entity.getBounds()) return;
 		if (bounds.intersects(entity.getBounds())) {
 			int player_x = entity.getBounds().x;
