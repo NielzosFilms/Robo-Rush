@@ -1,6 +1,7 @@
 package game.textures;
 
 import game.enums.TILE_TYPE;
+import game.system.helpers.Logger;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

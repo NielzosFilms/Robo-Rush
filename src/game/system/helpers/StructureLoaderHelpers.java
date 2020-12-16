@@ -27,6 +27,19 @@ public class StructureLoaderHelpers {
         return null;
     }
 
+    public static boolean hasCustomProp(JSONObject object, String propname) {
+        if(object.containsKey("properties")) {
+            for(Object o : (JSONArray)object.get("properties")) {
+                JSONObject prop = (JSONObject) o;
+                if(prop.get("name").toString().equals(propname)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
     public static int getIntProp(JSONObject object, String propname) {
         return Integer.parseInt(object.get(propname).toString());
     }

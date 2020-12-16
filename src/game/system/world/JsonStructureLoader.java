@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -62,34 +64,39 @@ public class JsonStructureLoader {
                 e.printStackTrace();
             }
         }
+        Logger.print(texture_list_indexes.toString());
     }
 
     private void decodeLayers(JSONArray layers) {
+        int layer_index = 0;
         for(Object o : layers) {
             JSONObject layer = (JSONObject) o;
             if((Boolean)layer.get("visible")) {
                 if(layer.get("type").toString().equals("tilelayer")) {
-                    decodeTileLayer(layer);
+                    decodeTileLayer(layer, layer_index);
                 } else if(layer.get("type").toString().equals("objectgroup")) {
-                    decodeObjectLayer(layer);
+                    decodeObjectLayer(layer, layer_index);
                 }
             }
+            layer_index++;
         }
     }
 
-    private void decodeTileLayer(JSONObject layer) {
+    private void decodeTileLayer(JSONObject layer, int layer_index) {
         int width_tiles = StructureLoaderHelpers.getIntProp(layer, "width");
         int height_tiles = StructureLoaderHelpers.getIntProp(layer, "height");
         int layer_x = StructureLoaderHelpers.getIntProp(layer, "x");
         int layer_y = StructureLoaderHelpers.getIntProp(layer, "y");
-        int layer_id = StructureLoaderHelpers.getIntProp(layer, "id");
+        if(StructureLoaderHelpers.hasCustomProp(layer, "z_index")) {
+            layer_index = Integer.parseInt(StructureLoaderHelpers.getCustomProp(layer, "z_index"));
+        }
 
         int x = 0;
         int y = 0;
         for(Object o : (JSONArray)layer.get("data")) {
             int tex_index = Integer.parseInt(o.toString());
             if(tex_index > 0) {
-                static_tiles.add(new Tile_Static(layer_x + x * TO_TILE_SIZE, layer_y + y * TO_TILE_SIZE, x, y, layer_id, null,
+                static_tiles.add(new Tile_Static(layer_x + x * TO_TILE_SIZE, layer_y + y * TO_TILE_SIZE, x, y, layer_index, null,
                         new Texture(getTextureList(tex_index), tex_index-1 - getTextureListGid(tex_index))));
             }
             x++;
@@ -100,19 +107,24 @@ public class JsonStructureLoader {
         }
     }
 
-    private void decodeObjectLayer(JSONObject layer) {
+    private void decodeObjectLayer(JSONObject layer, int layer_index) {
         for(Object o : (JSONArray)layer.get("objects")) {
             JSONObject object = (JSONObject) o;
+            if(StructureLoaderHelpers.hasCustomProp(layer, "z_index")) {
+                layer_index = Integer.parseInt(StructureLoaderHelpers.getCustomProp(layer, "z_index"));
+            }
 
             if(object.get("type").toString().equals("bounds")) {
                 this.bounds.add(getRectangle(object));
             } else if(object.get("type").toString().equals("player_spawn")) {
                 player_spawn = getRectangle(object);
+            } else if(object.get("type").toString().equals("StructureExit")){
+                // TODO make this object
             } else {
                 try {
                     Class<?> clazz = Class.forName(StructureLoaderHelpers.getFullClassname(object));
                     Constructor<?> ctor = clazz.getConstructor(JSONObject.class, Integer.class, Integer.class);
-                    objects.add((GameObject) ctor.newInstance(object, StructureLoaderHelpers.getIntProp(layer, "id"), division));
+                    objects.add((GameObject) ctor.newInstance(object, layer_index, division));
                 } catch (ClassNotFoundException | NoSuchMethodException e) {
                     Logger.print("Class not found: " + object.get("type").toString());
                     e.printStackTrace();
@@ -134,7 +146,7 @@ public class JsonStructureLoader {
 
     private TEXTURE_LIST getTextureList(int index) {
         TEXTURE_LIST ret = null;
-        for(int firstgid : texture_list_indexes.keySet()) {
+        for(int firstgid : getGidsOrdered()) {
             if(index >= firstgid) ret = texture_list_indexes.get(firstgid);
         }
         return ret;
@@ -142,10 +154,17 @@ public class JsonStructureLoader {
 
     private int getTextureListGid(int index) {
         int ret = 1;
-        for(int firstgid : texture_list_indexes.keySet()) {
+        for(int firstgid : getGidsOrdered()) {
             if(index >= firstgid) ret = firstgid;
         }
         return ret-1;
+    }
+
+    private LinkedList<Integer> getGidsOrdered() {
+        LinkedList<Integer> gids = new LinkedList<>(texture_list_indexes.keySet());
+        Comparator<Integer> order = Integer::compare;
+        gids.sort(order);
+        return gids;
     }
 
     public HashMap<Point, Chunk> getChunks(World world) {
