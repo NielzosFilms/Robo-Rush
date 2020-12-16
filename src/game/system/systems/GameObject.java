@@ -7,7 +7,10 @@ import java.io.Serializable;
 
 import game.assets.items.Item;
 import game.enums.ID;
+import game.system.helpers.StructureLoaderHelpers;
+import game.system.world.JsonStructureLoader;
 import game.textures.Texture;
+import org.json.simple.JSONObject;
 
 public abstract class GameObject implements Serializable {
 
@@ -24,6 +27,10 @@ public abstract class GameObject implements Serializable {
 		this.y = y;
 		this.id = id;
 		this.z_index = z_index;
+	}
+
+	public GameObject(JSONObject json, int z_index, int division, JsonStructureLoader loader) {
+
 	}
 
 	public abstract void tick();
@@ -97,5 +104,4 @@ public abstract class GameObject implements Serializable {
 	public abstract void destroyed();
 
 	public abstract void hit(int damage);
-
 }

@@ -47,8 +47,9 @@ public class Structure_Waterfall extends Structure {
 
     public void generate(World world) {
         generated = false;
-        JsonStructureLoader loader = new JsonStructureLoader("assets/structures/test_map_2.json");
-        chunks = loader.getChunks(world);
+        JsonStructureLoader loader = new JsonStructureLoader("assets/structures/puzzle_1.json");
+        //chunks = loader.getChunks(world);
+        loader.addAllToChunk(chunks, world);
         player_spawn = loader.getPlayerSpawn();
         generated = true;
     }

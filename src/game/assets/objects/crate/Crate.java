@@ -20,6 +20,7 @@ import game.system.main.Game;
 import game.system.systems.GameObject;
 import game.enums.ID;
 import game.system.helpers.Settings;
+import game.system.world.JsonStructureLoader;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import org.json.simple.JSONObject;
@@ -45,7 +46,7 @@ public class Crate extends GameObject {
         this.tex = new Texture(TEXTURE_LIST.house_list, 6, 0);
     }
 
-    public Crate(JSONObject json, Integer z_index, Integer division) {
+    public Crate(JSONObject json, int z_index, int division, JsonStructureLoader loader) {
         super(
                 StructureLoaderHelpers.getIntProp(json, "x") / division,
                 StructureLoaderHelpers.getIntProp(json, "y") / division,

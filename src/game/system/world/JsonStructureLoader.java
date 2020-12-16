@@ -1,5 +1,7 @@
 package game.system.world;
 
+import com.sun.jdi.InterfaceType;
+import game.assets.objects.puzzle_objects.PuzzleObject;
 import game.assets.tiles.Tile;
 import game.assets.tiles.Tile_Static;
 import game.system.helpers.StructureLoaderHelpers;
@@ -23,6 +25,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class JsonStructureLoader {
     JSONParser parser = new JSONParser();
@@ -45,10 +48,16 @@ public class JsonStructureLoader {
             JSONObject map = (JSONObject) parser.parse(new FileReader(filepath));
             tileSize = Integer.parseInt(map.get("tilewidth").toString());
             division = tileSize / TO_TILE_SIZE;
+            if((boolean)map.get("infinite")) {
+                throw new Exception("Loader does not support infinite tilemaps...");
+            }
             decodeTextureLists((JSONArray)map.get("tilesets"));
             decodeLayers((JSONArray) map.get("layers"));
+            setLinkages();
         } catch (IOException | ParseException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            Logger.printError(e.getMessage());
         }
     }
 
@@ -60,7 +69,7 @@ public class JsonStructureLoader {
             try {
                 texture_list_indexes.put(firstgid, TEXTURE_LIST.valueOf(list_name));
             } catch (Exception e) {
-                Logger.print("Tileset prop: 'list_name' not found, Tileset 'list_name': " + list_name);
+                Logger.printError("Tileset prop: 'list_name' not found, Tileset 'list_name': " + list_name);
                 e.printStackTrace();
             }
         }
@@ -79,6 +88,25 @@ public class JsonStructureLoader {
             }
             layer_index++;
         }
+    }
+
+    private void setLinkages() {
+        for(GameObject obj : objects) {
+            if(obj instanceof PuzzleObject) {
+                if(((PuzzleObject) obj).hasConnection()) {
+                    ((PuzzleObject) obj).setConnectedObject(getPuzzleObjectWithId(((PuzzleObject) obj).getConnectedObject_id()));
+                }
+            }
+        }
+    }
+
+    private GameObject getPuzzleObjectWithId(int id) {
+        for(GameObject obj : objects) {
+            if(obj instanceof PuzzleObject) {
+                if(((PuzzleObject) obj).getConnection_id() == id) return obj;
+            }
+        }
+        return null;
     }
 
     private void decodeTileLayer(JSONObject layer, int layer_index) {
@@ -120,13 +148,13 @@ public class JsonStructureLoader {
             } else {
                 try {
                     Class<?> clazz = Class.forName(StructureLoaderHelpers.getFullClassname(object));
-                    Constructor<?> ctor = clazz.getConstructor(JSONObject.class, Integer.class, Integer.class);
-                    objects.add((GameObject) ctor.newInstance(object, layer_index, division));
+                    Constructor<?> ctor = clazz.getConstructor(JSONObject.class, int.class, int.class, JsonStructureLoader.class);
+                    objects.add((GameObject) ctor.newInstance(object, layer_index, division, this));
                 } catch (ClassNotFoundException | NoSuchMethodException e) {
-                    Logger.print("Class not found: " + object.get("type").toString());
+                    Logger.printError("Class not found: " + object.get("type").toString());
                     e.printStackTrace();
                 } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                    Logger.print("Class constructor not found: " + object.get("type").toString());
+                    Logger.printError("Class constructor not found: " + object.get("type").toString());
                     e.printStackTrace();
                 }
             }
@@ -177,6 +205,27 @@ public class JsonStructureLoader {
             chunks.get(getContainingChunk(bounds.x, bounds.y, world)).addExtraBound(bounds);
         }
         return chunks;
+    }
+
+    public void addAllToChunk(HashMap<Point, Chunk> chunks, World world) {
+        getContainingChunk(player_spawn.x, player_spawn.y, world);
+        for (Tile tile : static_tiles) {
+            chunks.get(getContainingChunkWithChunks(tile.getX(), tile.getY(), world, chunks)).addTile(tile);
+        }
+        for (GameObject entity : objects) {
+            chunks.get(getContainingChunkWithChunks(entity.getX(), entity.getY(), world, chunks)).addEntity(entity);
+        }
+        for (Rectangle bounds : bounds) {
+            chunks.get(getContainingChunkWithChunks(bounds.x, bounds.y, world, chunks)).addExtraBound(bounds);
+        }
+    }
+
+    public Point getContainingChunkWithChunks(int x, int y, World world, HashMap<Point, Chunk> chunks) {
+        Point chunkPoint = world.getChunkPointWithCoords(x, y);
+        if (!chunks.containsKey(chunkPoint)) {
+            chunks.put(chunkPoint, new Chunk(chunkPoint.x, chunkPoint.y, world));
+        }
+        return chunkPoint;
     }
 
     public Point getContainingChunk(int x, int y, World world) {

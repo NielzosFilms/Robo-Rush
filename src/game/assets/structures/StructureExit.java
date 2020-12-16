@@ -6,6 +6,7 @@ import game.system.helpers.Logger;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.main.Game;
 import game.system.systems.GameObject;
+import game.system.world.JsonStructureLoader;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
@@ -15,7 +16,7 @@ public class StructureExit extends GameObject {
         super(x, y, z_index, id);
     }
 
-    public StructureExit(JSONObject json, Integer z_index, Integer division) {
+    public StructureExit(JSONObject json, int z_index, int division, JsonStructureLoader loader) {
         super(
                 StructureLoaderHelpers.getIntProp(json, "x") / division,
                 StructureLoaderHelpers.getIntProp(json, "y") / division,
