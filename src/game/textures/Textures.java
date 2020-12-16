@@ -42,7 +42,8 @@ public class Textures {
 			placeholder,
 			light,
 			default_btn,
-			healthbar;
+			healthbar,
+			skeleton;
 
 	public Textures() {
 		for(TEXTURE_LIST list_name : TEXTURE_LIST.values()) {
@@ -86,6 +87,8 @@ public class Textures {
 		attack_slice_png = loader.loadImage("assets/entities/player/attack_slice.png");
 
 		loading_png = loader.loadImage("assets/main/loading_animation_shadow.png");
+
+		skeleton = loader.loadImage("assets/entities/skeleton/skeleton.png");
 	}
 
 	private static void fillLists() {

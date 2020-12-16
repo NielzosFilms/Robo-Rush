@@ -642,6 +642,23 @@
                  "width":32,
                  "x":416,
                  "y":96
+                }, 
+                {
+                 "height":32,
+                 "id":46,
+                 "name":"Skeleton",
+                 "properties":[
+                        {
+                         "name":"package",
+                         "type":"string",
+                         "value":"game.assets.entities.enemies"
+                        }],
+                 "rotation":0,
+                 "type":"Skeleton",
+                 "visible":true,
+                 "width":32,
+                 "x":320,
+                 "y":96
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -650,7 +667,7 @@
          "y":0
         }],
  "nextlayerid":10,
- "nextobjectid":46,
+ "nextobjectid":48,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.3",

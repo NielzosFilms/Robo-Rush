@@ -1,4 +1,4 @@
-package game.assets.entities;
+package game.assets.entities.enemies;
 
 import java.awt.Color;
 import java.awt.Graphics;
