@@ -64,7 +64,6 @@ public class JsonStructureLoader {
                 e.printStackTrace();
             }
         }
-        Logger.print(texture_list_indexes.toString());
     }
 
     private void decodeLayers(JSONArray layers) {
@@ -118,8 +117,6 @@ public class JsonStructureLoader {
                 this.bounds.add(getRectangle(object));
             } else if(object.get("type").toString().equals("player_spawn")) {
                 player_spawn = getRectangle(object);
-            } else if(object.get("type").toString().equals("StructureExit")){
-                // TODO make this object
             } else {
                 try {
                     Class<?> clazz = Class.forName(StructureLoaderHelpers.getFullClassname(object));

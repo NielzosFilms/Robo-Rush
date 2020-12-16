@@ -310,7 +310,7 @@ public class Player extends GameObject {
 				case down ->  direction_rotation = 90;
 				case left -> direction_rotation = 180;
 			}
-			attack_slice.drawAnimationRotated(g, cenX-24, cenY-40, 64, 64, cenX, cenY, direction_rotation);
+			//attack_slice.drawAnimationRotated(g, cenX-24, cenY-40, 64, 64, cenX, cenY, direction_rotation);
 			ImageFilters.renderImageWithRotation(g, holding.getTexture().getTexure(), cenX + 4, cenY - 20, 16, 16,
 					cenX, cenY, direction_rotation + 90 + 45 + attacking_item_rot );
 		}

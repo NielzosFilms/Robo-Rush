@@ -23,6 +23,7 @@ public abstract class Structure implements Serializable {
     protected boolean infinite = false;
     protected boolean generated = false;
     protected Rectangle player_spawn;
+    protected Point player_entry_coords;
 
     public Structure(Long seed, GameObject world_object, BiomeGroup biomeGroup) {
         this.seed = seed;
@@ -64,5 +65,13 @@ public abstract class Structure implements Serializable {
 
     public void setPlayerSpawn(Rectangle player_spawn) {
         this.player_spawn = player_spawn;
+    }
+
+    public Point getPlayer_entry_coords() {
+        return player_entry_coords;
+    }
+
+    public void setPlayer_entry_coords(Point player_entry_coords) {
+        this.player_entry_coords = player_entry_coords;
     }
 }

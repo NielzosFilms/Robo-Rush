@@ -34,6 +34,7 @@ public class World implements Serializable {
 
 	public Long seed, temp_seed, moist_seed;
 	public HashMap<Point, Chunk> chunks = new HashMap<Point, Chunk>();
+	public LinkedList<Structure> structure_history = new LinkedList<>();
 	public static boolean loaded = false;
 	private Player player;
 	private transient Textures textures;
@@ -407,7 +408,24 @@ public class World implements Serializable {
 				structure.generate(this);
 			}
 			structure.entered(this);
+			structure.setPlayer_entry_coords(new Point(player.getX(), player.getY()));
+			structure_history.add(structure);
 			updatePlayerPosition(structure.getPlayerSpawn().x, structure.getPlayerSpawn().y);
+		}
+	}
+
+	public void gotoLastEnteredStructure() {
+		if(structure_history.size() == 0) return;
+		if(structure_history.size() == 1) {
+			Structure inside = structure_history.get(0);
+			updatePlayerPosition(inside.getPlayer_entry_coords().x, inside.getPlayer_entry_coords().y);
+			structure_history.clear();
+			active_structure = null;
+		} else {
+			Structure inside = structure_history.getLast();
+			updatePlayerPosition(inside.getPlayer_entry_coords().x, inside.getPlayer_entry_coords().y);
+			structure_history.removeLast();
+			active_structure = structure_history.getLast();
 		}
 	}
 

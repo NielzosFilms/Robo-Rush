@@ -7,6 +7,7 @@ import game.assets.tiles.Tile_Wall;
 import game.assets.tiles.floor.cave.Tile_Floor_Cave;
 import game.assets.tiles.floor.wood.Tile_FloorWood;
 import game.enums.BIOME;
+import game.system.helpers.Logger;
 import game.system.main.Game;
 import game.system.systems.GameObject;
 import game.system.world.Chunk;
