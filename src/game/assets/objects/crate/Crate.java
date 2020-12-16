@@ -9,6 +9,7 @@ import game.assets.items.*;
 import game.assets.items.tools.wood.Tool_WoodenAxe;
 import game.assets.objects.rock.Item_Rock;
 import game.assets.objects.stick.Item_Stick;
+import game.enums.LOOT_TABLES;
 import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
 import game.system.helpers.Logger;
@@ -37,7 +38,6 @@ public class Crate extends GameObject {
     public Crate(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
         inv = new Inventory(3, 2);
-        generateLoot();
         inv.setXY(300, 100);
         inv.setInitXY(300, 100);
 
@@ -55,28 +55,19 @@ public class Crate extends GameObject {
         inv = new Inventory(
                 Integer.parseInt(StructureLoaderHelpers.getCustomProp(json, "inv_x")),
                 Integer.parseInt(StructureLoaderHelpers.getCustomProp(json, "inv_y")));
-        generateLoot();
+        String loot_table = StructureLoaderHelpers.getCustomProp(json, "loot_table");
+        if(loot_table != null && !loot_table.equals("")) {
+            try {
+                inv.fillRandom(LOOT_TABLES.valueOf(loot_table).getGeneratedItems());
+            } catch(Exception e) {
+                Logger.printError("Loot table: [" + loot_table + "] not found, at: [" + x * division + "," + y* division + "]");
+            }
+        }
         inv.setXY(300, 100);
         inv.setInitXY(300, 100);
 
         healthBar = new HealthBar(x - 4, y - 8, 0, 7);
         this.tex = new Texture(TEXTURE_LIST.house_list, 6, 0);
-    }
-
-    private void generateLoot() {
-        LinkedList<Item> items = new LinkedList<>();
-        for(int i=0; i<rand.nextInt(3) + 1; i++) {
-            if(rand.nextInt(100) < 1) {
-                items.add(new Tool_WoodenAxe());
-            } else {
-                if(rand.nextInt(2) == 1) {
-                    items.add(new Item_Stick(rand.nextInt(5) + 1));
-                } else {
-                    items.add(new Item_Rock(rand.nextInt(5) + 1));
-                }
-            }
-        }
-        inv.fillRandom(items);
     }
 
     public void tick() {

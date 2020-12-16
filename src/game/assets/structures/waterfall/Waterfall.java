@@ -86,7 +86,6 @@ public class Waterfall extends GameObject {
     }
 
     public void interact() {
-        Logger.print("Waterfall::interact");
         Game.world.setActiveStructure(structure);
     }
 

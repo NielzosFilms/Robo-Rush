@@ -60,7 +60,6 @@ public class ButtonLoad extends Button {
 	public void loadChunks() {
 		Game.loadingAnimation.setLoading(true);
 		if(!Game.NO_LOAD) {
-			Logger.print("Load world: " + slot);
 			try {
 				FileInputStream fis = new FileInputStream(directory + "save_slot_" + slot + ".data");
 				ObjectInputStream ois = new ObjectInputStream(fis);
