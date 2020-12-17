@@ -46,6 +46,10 @@ public class HealthBar implements Serializable {
         return health <= min;
     }
 
+    public void kill() {
+        Game.world.getHud().removeHealthBar(this);
+    }
+
     public void subtractHealth(int amount) {
         hide_timer = HIDE_DELAY;
         health = health - amount;
