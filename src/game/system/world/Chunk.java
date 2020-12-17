@@ -42,7 +42,8 @@ public class Chunk implements Serializable {
 
 	public void tick() {
 		// move entity from chunk to chunk
-		for (LinkedList<GameObject> list : entities) {
+		for (int j = 0; j < entities.size(); j++) {
+			LinkedList<GameObject> list = entities.get(j);
 			for (int i = 0; i < list.size(); i++) {
 				GameObject entity = list.get(i);
 				if (entity.getX() > (this.x + 16) * 16) {
