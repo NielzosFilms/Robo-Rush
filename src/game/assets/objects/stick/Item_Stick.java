@@ -1,6 +1,6 @@
 package game.assets.objects.stick;
 
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.assets.items.Item_Ground;
 import game.enums.ITEM_ID;
 import game.enums.ID;
@@ -13,11 +13,6 @@ public class Item_Stick extends Item {
         super(amount, ITEM_ID.Stick);
         this.tex = new Texture(TEXTURE_LIST.stick, 1, 1);
         this.itemGround = new Item_Ground(0, 0, 10, ID.Item, this);
-    }
-
-    @Override
-    public boolean place(int x, int y) {
-        return false;
     }
 
 }

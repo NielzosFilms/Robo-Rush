@@ -1,7 +1,8 @@
 package game.assets.tiles.floor.wood;
 
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.assets.items.Item_Ground;
+import game.assets.items.item.Placeable;
 import game.assets.tiles.Tile;
 import game.enums.ID;
 import game.enums.ITEM_ID;
@@ -14,14 +15,14 @@ import game.textures.Texture;
 
 import java.awt.*;
 
-public class Item_FloorWood extends Item {
+public class Item_FloorWood extends Item implements Placeable {
     public Item_FloorWood(int amount) {
         super(amount, ITEM_ID.Tile_FloorWood);
-        this.placeable = true;
         this.tex = new Texture(TEXTURE_LIST.floorTiles_list, 1, 1);
         this.itemGround = new Item_Ground(0, 0, 1, ID.Item, this);
     }
 
+    @Override
     public boolean place(int x, int y) {
         Chunk chunk = Game.world.getChunkWithCoordsPoint(Game.world.getChunkPointWithCoords(x, y));
         if(chunk != null) {

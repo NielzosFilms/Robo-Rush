@@ -1,6 +1,5 @@
 package game.assets.entities.enemies;
 
-import game.assets.items.Item;
 import game.enums.ID;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.systems.gameObject.GameObject;
@@ -8,7 +7,6 @@ import game.system.world.JsonStructureLoader;
 import game.textures.Animation;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
-import game.textures.Textures;
 import org.json.simple.JSONObject;
 
 import java.awt.*;

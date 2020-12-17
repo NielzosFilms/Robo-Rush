@@ -2,9 +2,7 @@ package game.system.systems.particles;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 
-import game.assets.items.Item;
 import game.system.main.Game;
 import game.system.systems.gameObject.GameObject;
 import game.enums.ID;

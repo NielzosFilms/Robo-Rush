@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import game.assets.entities.Player;
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.system.main.Game;
 import game.system.systems.gameObject.Collision;
 import game.system.systems.gameObject.GameObject;

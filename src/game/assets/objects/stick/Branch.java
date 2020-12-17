@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.system.main.Game;
 import game.system.systems.gameObject.GameObject;
 import game.enums.ID;

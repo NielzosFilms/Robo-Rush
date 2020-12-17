@@ -1,6 +1,5 @@
 package game.assets.structures;
 
-import game.assets.items.Item;
 import game.enums.ID;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.main.Game;

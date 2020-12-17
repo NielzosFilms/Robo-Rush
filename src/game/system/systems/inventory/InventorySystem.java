@@ -1,8 +1,9 @@
 package game.system.systems.inventory;
 
 import game.assets.entities.Player;
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.assets.items.Item_Ground;
+import game.assets.items.item.Placeable;
 import game.assets.tiles.Tile;
 import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
@@ -78,7 +79,7 @@ public class InventorySystem implements Serializable {
 
 	public void renderCam(Graphics g) {
 		if(isHolding()) {
-			if(holding.placeable()) {
+			if(holding instanceof Placeable) {
 				if(!mouseOverInventory()) {
 					Graphics2D g2d = (Graphics2D) g;
 					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
@@ -109,7 +110,7 @@ public class InventorySystem implements Serializable {
 			}
 		}
 		if(isHolding()) {
-			if(!holding.placeable()) {
+			if(!(holding instanceof Placeable)) {
 				holding.render(g, mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2);
 			} else {
 				if(mouseOverInventory()) {
@@ -128,13 +129,13 @@ public class InventorySystem implements Serializable {
 	public void mouseOutside() {
 		if(mouseInput.leftMouseDown()) {
 			if(isHolding()) {
-				if(holding.placeable() && placeTimer.timerOver()) {
+				if(holding instanceof Placeable && placeTimer.timerOver()) {
 					placeTimer.resetTimer();
 					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
 					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
 					Rectangle bnds = new Rectangle(tile_coords.x, tile_coords.y, item_w, item_h);
 					if(Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), bnds) < Game.world.getPlayer().REACH) {
-						if (holding.place(tile_coords.x, tile_coords.y)) {
+						if (((Placeable) holding).place(tile_coords.x, tile_coords.y)) {
 							holding.setAmount(holding.getAmount() - 1);
 							if (holding.getAmount() <= 0) clearHolding();
 						}

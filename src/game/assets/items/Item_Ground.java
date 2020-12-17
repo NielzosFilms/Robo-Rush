@@ -3,8 +3,8 @@ package game.assets.items;
 import java.awt.*;
 import java.util.Random;
 
+import game.assets.items.item.Item;
 import game.system.main.Game;
-import game.system.systems.gameObject.Collision;
 import game.system.systems.gameObject.GameObject;
 import game.enums.ID;
 import game.system.systems.gameObject.HasItem;
@@ -15,7 +15,7 @@ public class Item_Ground extends GameObject implements Interactable, HasItem {
 
 	private Random r = new Random();
 
-	private Item inventoryItem;
+	private game.assets.items.item.Item inventoryItem;
 
 	private int x_diff, y_diff, timer;
 	private int lifeTimer = (60 * 60) * 5; // 5 mins till destroyed
@@ -23,7 +23,7 @@ public class Item_Ground extends GameObject implements Interactable, HasItem {
 
 	private double buffer_x, buffer_y;
 
-	public Item_Ground(int x, int y, int z_index, ID id, Item inventoryItem) {
+	public Item_Ground(int x, int y, int z_index, ID id, game.assets.items.item.Item inventoryItem) {
 		super(x, y, z_index, id);
 		this.inventoryItem = inventoryItem;
 		velY = (r.nextDouble() * 3) - 2;

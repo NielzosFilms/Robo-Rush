@@ -1,6 +1,5 @@
 package game.assets.objects.puzzle_objects;
 
-import game.assets.items.Item;
 import game.enums.ID;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.systems.gameObject.Collision;

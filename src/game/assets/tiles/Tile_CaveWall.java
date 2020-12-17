@@ -1,6 +1,6 @@
 package game.assets.tiles;
 
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.assets.tiles.floor.cave.Tile_Floor_Cave;
 import game.enums.BIOME;
 import game.enums.TILE_TYPE;

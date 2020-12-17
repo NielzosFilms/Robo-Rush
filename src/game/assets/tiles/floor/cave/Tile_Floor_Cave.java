@@ -1,6 +1,6 @@
 package game.assets.tiles.floor.cave;
 
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.assets.tiles.Tile;
 import game.enums.BIOME;
 import game.system.world.Chunk;

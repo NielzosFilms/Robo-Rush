@@ -1,6 +1,5 @@
 package game.system.systems.particles;
 
-import game.assets.items.Item;
 import game.enums.ID;
 import game.system.main.Game;
 import game.system.systems.gameObject.GameObject;

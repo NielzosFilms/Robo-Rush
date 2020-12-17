@@ -1,6 +1,6 @@
 package game.system.systems.inventory;
 
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.assets.items.Item_Ground;
 import game.system.inputs.MouseInput;
 import game.system.main.Game;

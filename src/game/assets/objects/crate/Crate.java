@@ -5,6 +5,7 @@ import java.util.Random;
 
 import game.assets.HealthBar;
 import game.assets.items.*;
+import game.assets.items.item.Item;
 import game.enums.DIRECTIONS;
 import game.enums.LOOT_TABLES;
 import game.system.audioEngine.AudioFiles;
@@ -119,7 +120,7 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
         Game.world.getInventorySystem().removeOpenInventory(inv);
         for(InventorySlot slot : inv.getSlots()) {
             if(slot.hasItem()) {
-                Item inv_item = slot.getItem();
+                game.assets.items.item.Item inv_item = slot.getItem();
                 Item_Ground gnd_item = inv_item.getItemGround();
                 gnd_item.setX(x);
                 gnd_item.setY(y);

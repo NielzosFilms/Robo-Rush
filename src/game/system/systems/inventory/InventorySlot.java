@@ -1,6 +1,6 @@
 package game.system.systems.inventory;
 
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.system.main.Game;
 
 import java.awt.*;

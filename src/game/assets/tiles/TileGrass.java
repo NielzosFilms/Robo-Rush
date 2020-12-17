@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Random;
 
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.assets.objects.rock.Pebble;
 import game.assets.objects.tree.Tree;
 import game.enums.ID;

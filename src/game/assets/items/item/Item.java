@@ -1,5 +1,6 @@
-package game.assets.items;
+package game.assets.items.item;
 
+import game.assets.items.Item_Ground;
 import game.enums.ITEM_ID;
 import game.textures.ImageFilters;
 import game.textures.Texture;
@@ -15,10 +16,7 @@ public abstract class Item implements Cloneable, Serializable {
     protected ITEM_ID itemType;
     protected Texture tex;
     protected Item_Ground itemGround;
-    protected int durability = 100;
     protected int damage = 0;
-    protected int attack_speed = 0;
-    protected boolean placeable = false;
     protected boolean stackable = true;
 
     public Item(int amount, ITEM_ID itemType) {
@@ -76,57 +74,11 @@ public abstract class Item implements Cloneable, Serializable {
         this.itemGround = itemGround;
     }
 
-    public boolean isPlaceable() {
-        return placeable;
-    }
-
-    public void setPlaceable(boolean placeable) {
-        this.placeable = placeable;
-    }
-
-    public boolean placeable() {
-        return this.placeable;
-    }
-
-    public abstract boolean place(int x, int y);
-
-    public int getDurability() {
-        return durability;
-    }
-
-    public void setDurability(int durability) {
-        this.durability = durability;
-    }
-
-    public void subDurability(int durability) {
-        this.durability -= durability;
-    }
-
-    public void addDurability(int durability) {
-        this.durability += durability;
-    }
-
-    public int getDamage() {
-        return damage;
-    }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
     public boolean isStackable() {
         return stackable;
     }
 
     public void setStackable(boolean stackable) {
         this.stackable = stackable;
-    }
-
-    public int getAttack_speed() {
-        return attack_speed;
-    }
-
-    public void setAttack_speed(int attack_speed) {
-        this.attack_speed = attack_speed;
     }
 }

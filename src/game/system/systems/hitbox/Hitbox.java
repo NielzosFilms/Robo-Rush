@@ -1,6 +1,6 @@
 package game.system.systems.hitbox;
 
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.enums.ID;
 import game.system.main.Game;
 import game.system.systems.gameObject.GameObject;

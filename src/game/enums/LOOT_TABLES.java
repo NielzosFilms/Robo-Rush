@@ -1,6 +1,6 @@
 package game.enums;
 
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.assets.items.tools.wood.Tool_WoodenAxe;
 import game.assets.objects.rock.Item_Rock;
 import game.assets.objects.stick.Item_Stick;

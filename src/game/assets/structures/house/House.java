@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import game.assets.items.Item;
 import game.enums.GAMESTATES;
 import game.system.main.Game;
 import game.system.systems.gameObject.Collision;

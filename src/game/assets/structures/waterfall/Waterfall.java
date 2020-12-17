@@ -1,6 +1,5 @@
 package game.assets.structures.waterfall;
 
-import game.assets.items.Item;
 import game.enums.ID;
 import game.system.systems.gameObject.Collision;
 import game.system.systems.gameObject.Interactable;

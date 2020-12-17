@@ -1,7 +1,6 @@
 package game.assets.tiles;
 
-import game.assets.items.Item;
-import game.enums.BIOME;
+import game.assets.items.item.Item;
 import game.system.world.Chunk;
 import game.textures.Texture;
 

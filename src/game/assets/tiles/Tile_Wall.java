@@ -1,11 +1,9 @@
 package game.assets.tiles;
 
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.enums.TILE_TYPE;
 import game.system.helpers.TileHelperFunctions;
-import game.system.systems.menu.Text;
 import game.textures.TEXTURE_LIST;
-import game.system.main.Game;
 import game.system.world.Chunk;
 import game.textures.Texture;
 

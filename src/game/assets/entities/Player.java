@@ -3,6 +3,7 @@ package game.assets.entities;
 import java.awt.*;
 import java.util.Random;
 
+import game.assets.items.item.CanAttack;
 import game.assets.objects.crate.Item_Crate;
 import game.assets.items.tools.wood.Tool_WoodenAxe;
 import game.assets.items.tools.wood.Tool_WoodenPickaxe;
@@ -19,7 +20,7 @@ import game.system.systems.gameObject.Interactable;
 import game.system.systems.hitbox.Hitbox;
 import game.system.systems.hitbox.HitboxContainer;
 import game.system.systems.inventory.Inventory;
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.assets.objects.rock.Item_Rock;
 import game.assets.objects.stick.Item_Stick;
 import game.system.systems.inventory.InventorySystem;
@@ -162,9 +163,9 @@ public class Player extends GameObject implements Collision, Interactable {
 
 		updateAnimations();
 
-		int walk_speed = 2;
+		int walk_speed = 1;
 		if (keyInput.keysDown[5]) {
-			walk_speed = 3;
+			walk_speed = 2;
 		}
 
 		if (keyInput.keysDown[2] && !keyInput.keysDown[3]) {
@@ -305,15 +306,17 @@ public class Player extends GameObject implements Collision, Interactable {
 		int cenY = (int) getBounds().getCenterY();
 		Item holding = Game.world.getInventorySystem().getHotbarSelectedItem();
 		if(holding != null) {
-			int direction_rotation = 0;
-			switch(attack_dir) {
-				case up -> direction_rotation = -90;
-				case down ->  direction_rotation = 90;
-				case left -> direction_rotation = 180;
+			if(holding instanceof CanAttack) {
+				int direction_rotation = 0;
+				switch(attack_dir) {
+					case up -> direction_rotation = -90;
+					case down ->  direction_rotation = 90;
+					case left -> direction_rotation = 180;
+				}
+				//attack_slice.drawAnimationRotated(g, cenX-24, cenY-40, 64, 64, cenX, cenY, direction_rotation);
+				ImageFilters.renderImageWithRotation(g, holding.getTexture().getTexure(), cenX + 4, cenY - 20, 16, 16,
+						cenX, cenY, direction_rotation + 90 + 45 + attacking_item_rot );
 			}
-			//attack_slice.drawAnimationRotated(g, cenX-24, cenY-40, 64, 64, cenX, cenY, direction_rotation);
-			ImageFilters.renderImageWithRotation(g, holding.getTexture().getTexure(), cenX + 4, cenY - 20, 16, 16,
-					cenX, cenY, direction_rotation + 90 + 45 + attacking_item_rot );
 		}
 	}
 
@@ -389,10 +392,11 @@ public class Player extends GameObject implements Collision, Interactable {
 		int attack_delay = ATTACK_DELAY;
 		Item holding = Game.world.getInventorySystem().getHotbarSelectedItem();
 		if(holding != null) {
-			damage_output += holding.getDamage();
-			attack_delay += holding.getAttack_speed();
+			if(holding instanceof CanAttack) {
+				damage_output += ((CanAttack) holding).getDamage();
+				attack_delay += ((CanAttack) holding).getAttack_speed();
+			}
 		}
-
 		attack_timer.setDelay(attack_delay);
 		attack_timer.resetTimer();
 		return damage_output;

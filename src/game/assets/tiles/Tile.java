@@ -2,10 +2,9 @@ package game.assets.tiles;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.enums.BIOME;
 import game.enums.TILE_TYPE;
 import game.system.world.Chunk;

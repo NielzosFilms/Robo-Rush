@@ -1,13 +1,9 @@
 package game.system.systems.gameObject;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
-import game.assets.items.Item;
 import game.enums.ID;
-import game.system.helpers.StructureLoaderHelpers;
 import game.system.world.JsonStructureLoader;
 import game.textures.Texture;
 import org.json.simple.JSONObject;

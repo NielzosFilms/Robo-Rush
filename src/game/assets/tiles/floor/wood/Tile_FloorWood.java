@@ -1,6 +1,6 @@
 package game.assets.tiles.floor.wood;
 
-import game.assets.items.Item;
+import game.assets.items.item.Item;
 import game.assets.tiles.Tile;
 import game.textures.TEXTURE_LIST;
 import game.enums.TILE_TYPE;
