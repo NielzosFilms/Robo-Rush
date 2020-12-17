@@ -34,7 +34,8 @@ public class Textures {
 			waterfall_png,
 			walls_png,
 			cave_png,
-			attack_slice_png;
+			attack_slice_png,
+			skeleton_png;
 
 	// other standalone tiles
 	public static BufferedImage
@@ -42,8 +43,7 @@ public class Textures {
 			placeholder,
 			light,
 			default_btn,
-			healthbar,
-			skeleton;
+			healthbar;
 
 	public Textures() {
 		for(TEXTURE_LIST list_name : TEXTURE_LIST.values()) {
@@ -88,7 +88,7 @@ public class Textures {
 
 		loading_png = loader.loadImage("assets/main/loading_animation_shadow.png");
 
-		skeleton = loader.loadImage("assets/entities/skeleton/skeleton.png");
+		skeleton_png = loader.loadImage("assets/entities/skeleton/skeleton.png");
 	}
 
 	private static void fillLists() {
@@ -108,6 +108,7 @@ public class Textures {
 		fillListWithSpriteSheet(walls_png, 32, 32, texture_lists.get(TEXTURE_LIST.walls_list));
 		fillListWithSpriteSheet(cave_png, 32, 32, texture_lists.get(TEXTURE_LIST.cave_list));
 		fillListWithSpriteSheet(attack_slice_png, 64, 64, texture_lists.get(TEXTURE_LIST.attack_slice_list));
+		fillListWithSpriteSheet(skeleton_png, 32, 48, texture_lists.get(TEXTURE_LIST.skeleton_list));
 	}
 
 	private static void fillListWithSpriteSheet(BufferedImage sheet, int width, int height, HashMap<Point, BufferedImage> list) {
