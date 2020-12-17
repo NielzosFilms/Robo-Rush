@@ -13,6 +13,7 @@ import game.system.world.JsonStructureLoader;
 import game.textures.Animation;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
+import game.textures.Textures;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
@@ -50,6 +51,7 @@ public class Skeleton extends GameObject implements Collision, Hitable {
     }
 
     public void render(Graphics g) {
+        g.drawImage(Textures.entity_shadow, x + ((getBounds().width / 2) - 8), y + getBounds().height - 8, 16, 16, null);
         idle.drawAnimation(g, x, y);
         //healthBar.render(g);
         if(Game.DEBUG_MODE) {
