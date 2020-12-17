@@ -2,16 +2,16 @@ package game.assets.structures;
 
 import game.assets.items.Item;
 import game.enums.ID;
-import game.system.helpers.Logger;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.Interactable;
 import game.system.world.JsonStructureLoader;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
 
-public class StructureExit extends GameObject {
+public class StructureExit extends GameObject implements Interactable {
     public StructureExit(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
     }
@@ -37,27 +37,11 @@ public class StructureExit extends GameObject {
         g.drawRect(r.x, r.y, r.width, r.height);
     }
 
-    public Rectangle getBounds() {
-        return null;
-    }
-
     public Rectangle getSelectBounds() {
         return new Rectangle(x, y, width, height);
     }
 
-    public Item getItem() {
-        return null;
-    }
-
     public void interact() {
         Game.world.gotoLastEnteredStructure();
-    }
-
-    public void destroyed() {
-
-    }
-
-    public void hit(int damage) {
-
     }
 }

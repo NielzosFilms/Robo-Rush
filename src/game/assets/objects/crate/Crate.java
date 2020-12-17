@@ -1,23 +1,19 @@
 package game.assets.objects.crate;
 
 import java.awt.*;
-import java.util.LinkedList;
 import java.util.Random;
 
 import game.assets.HealthBar;
 import game.assets.items.*;
-import game.assets.items.tools.wood.Tool_WoodenAxe;
-import game.assets.objects.rock.Item_Rock;
-import game.assets.objects.stick.Item_Stick;
 import game.enums.LOOT_TABLES;
 import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
 import game.system.helpers.Logger;
 import game.system.helpers.StructureLoaderHelpers;
+import game.system.systems.gameObject.*;
 import game.system.systems.inventory.Inventory;
 import game.system.systems.inventory.InventorySlot;
 import game.system.main.Game;
-import game.system.systems.GameObject;
 import game.enums.ID;
 import game.system.helpers.Settings;
 import game.system.world.JsonStructureLoader;
@@ -25,7 +21,7 @@ import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import org.json.simple.JSONObject;
 
-public class Crate extends GameObject {
+public class Crate extends GameObject implements Collision, Interactable, Hitable, Destroyable {
     private final int REGEN_DELAY_AFTER_HIT = 60*10;
     private final int REGEN_DELAY = 30;
     private final int REGEN_AMOUNT = 1;
@@ -111,10 +107,6 @@ public class Crate extends GameObject {
     public Rectangle getSelectBounds() {
         return new Rectangle(x, y, width, height);
         
-    }
-
-    public Item getItem() {
-        return null;
     }
 
     public void interact() {

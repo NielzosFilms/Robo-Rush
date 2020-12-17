@@ -1,4 +1,4 @@
-package game.system.systems;
+package game.system.systems.gameObject;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -92,16 +92,4 @@ public abstract class GameObject implements Serializable {
 	public void setTexture(Texture tex) {
 		this.tex = tex;
 	}
-
-	public abstract Rectangle getBounds();
-
-	public abstract Rectangle getSelectBounds();
-
-	public abstract Item getItem();
-
-	public abstract void interact();
-
-	public abstract void destroyed();
-
-	public abstract void hit(int damage);
 }

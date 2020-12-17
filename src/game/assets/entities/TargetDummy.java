@@ -5,14 +5,16 @@ import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
 import game.enums.ID;
 import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.GameObject;
 import game.system.helpers.Settings;
+import game.system.systems.gameObject.Hitable;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 import java.awt.*;
 
-public class TargetDummy extends GameObject {
+public class TargetDummy extends GameObject implements Collision, Hitable {
     private Texture top_tex;
     private Texture bot_tex;
     public TargetDummy(int x, int y, int z_index, ID id) {
@@ -39,22 +41,6 @@ public class TargetDummy extends GameObject {
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
-    }
-
-    public Rectangle getSelectBounds() {
-        return new Rectangle(x, y, width, height);
-    }
-
-    public Item getItem() {
-        return null;
-    }
-
-    public void interact() {
-
-    }
-
-    public void destroyed() {
-
     }
 
     public void hit(int damage) {

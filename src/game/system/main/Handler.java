@@ -2,7 +2,10 @@ package game.system.main;
 
 import game.assets.tiles.Tile;
 import game.enums.ID;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Destroyable;
+import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.Interactable;
 import game.system.systems.lighting.Light;
 import game.system.systems.particles.ParticleSystem;
 import game.system.world.Chunk;
@@ -156,16 +159,20 @@ public class Handler implements Serializable {
 		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
-				if (tempObject.getBounds() != null) {
-					objs.add(tempObject);
+				if(tempObject instanceof Collision) {
+					if(((Collision) tempObject).getBounds() != null) {
+						objs.add(tempObject);
+					}
 				}
 			}
 		}
 
 		for (Chunk chunk : chunks_on_screen) {
 			for (GameObject tempObject : chunk.getEntities()) {
-				if (tempObject.getBounds() != null) {
-					objs.add(tempObject);
+				if (tempObject instanceof Collision) {
+					if(((Collision) tempObject).getBounds() != null) {
+						objs.add(tempObject);
+					}
 				}
 			}
 
@@ -182,8 +189,10 @@ public class Handler implements Serializable {
 		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
-				if (tempObject.getSelectBounds() != null) {
-					objs.add(tempObject);
+				if (tempObject instanceof Interactable) {
+					if(((Interactable) tempObject).getSelectBounds() != null) {
+						objs.add(tempObject);
+					}
 				}
 			}
 		}
@@ -191,8 +200,10 @@ public class Handler implements Serializable {
 		// chunks
 		for (Chunk chunk : chunks_on_screen) {
 			for (GameObject tempObject : chunk.getEntities()) {
-				if (tempObject.getSelectBounds() != null) {
-					objs.add(tempObject);
+				if (tempObject instanceof Interactable) {
+					if(((Interactable) tempObject).getSelectBounds() != null) {
+						objs.add(tempObject);
+					}
 				}
 			}
 		}
@@ -256,7 +267,10 @@ public class Handler implements Serializable {
 			list.remove(item);
 		}
 		world.getChunkWithCoordsPoint(world.getChunkPointWithCoords(item.getX(), item.getY())).removeEntity(item);
-		item.destroyed();
+
+		if(item instanceof Destroyable) {
+			((Destroyable) item).destroyed();
+		}
 	}
 
 	public boolean objectExistsAtCoords(Point coords) {
@@ -264,8 +278,8 @@ public class Handler implements Serializable {
 
 		for(LinkedList<GameObject> list : object_entities) {
 			for(GameObject obj : list) {
-				if(obj.getBounds() != null) {
-					if(obj.getBounds().contains(coords) || obj.getX() == coords.x && obj.getY() == coords.y) {
+				if(obj instanceof Collision) {
+					if(((Collision) obj).getBounds().contains(coords) || obj.getX() == coords.x && obj.getY() == coords.y) {
 						return true;
 					}
 				} else {
@@ -285,8 +299,8 @@ public class Handler implements Serializable {
 
 		for(Chunk chunk : chunks_on_screen) {
 			for(GameObject obj : chunk.getEntities()) {
-				if(obj.getBounds() != null) {
-					if(obj.getBounds().contains(coords) || obj.getX() == coords.x && obj.getY() == coords.y) {
+				if(obj instanceof Collision) {
+					if(((Collision) obj).getBounds().contains(coords) || obj.getX() == coords.x && obj.getY() == coords.y) {
 						return true;
 					}
 				} else {

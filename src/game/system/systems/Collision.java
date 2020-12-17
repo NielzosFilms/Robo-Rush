@@ -4,7 +4,9 @@ import java.awt.*;
 import java.util.LinkedList;
 
 import game.assets.entities.Player;
+import game.system.helpers.Logger;
 import game.system.main.Handler;
+import game.system.systems.gameObject.GameObject;
 import game.system.world.Chunk;
 import game.system.world.World;
 
@@ -29,7 +31,7 @@ public class Collision {
 			all_bounds.addAll(chunk.getAllTileBounds());
 		}
 		for(GameObject entity : objects_w_bounds) {
-			all_bounds.add(entity.getBounds());
+			all_bounds.add(((game.system.systems.gameObject.Collision)entity).getBounds());
 		}
 
 		for (Rectangle bounds : all_bounds) {
@@ -75,16 +77,17 @@ public class Collision {
 
 	private void checkCollisionForGameObject(Rectangle bounds, GameObject entity) {
 		//wierd stuff happens when moving entities touch
-		if(bounds == entity.getBounds()) return;
-		if (bounds.intersects(entity.getBounds())) {
-			int player_x = entity.getBounds().x;
-			int player_y = entity.getBounds().y;
-			int player_x_diff = entity.getBounds().x - entity.getX();
-			int player_y_diff = entity.getBounds().y - entity.getY();
-			int player_cenX = player_x + (entity.getBounds().width / 2);
-			int player_cenY = player_y + (entity.getBounds().height / 2);
-			int player_bottomY = player_y + entity.getBounds().height;
-			int player_rightX = player_x + entity.getBounds().width;
+		Rectangle entity_bounds = ((game.system.systems.gameObject.Collision) entity).getBounds();
+		if(bounds == entity_bounds) return;
+		if (bounds.intersects(entity_bounds)) {
+			int player_x = entity_bounds.x;
+			int player_y = entity_bounds.y;
+			int player_x_diff = entity_bounds.x - entity.getX();
+			int player_y_diff = entity_bounds.y - entity.getY();
+			int player_cenX = player_x + (entity_bounds.width / 2);
+			int player_cenY = player_y + (entity_bounds.height / 2);
+			int player_bottomY = player_y + entity_bounds.height;
+			int player_rightX = player_x + entity_bounds.width;
 			int obj_x = bounds.x;
 			int obj_y = bounds.y;
 			int obj_cenX = obj_x + (bounds.width / 2);
@@ -93,11 +96,11 @@ public class Collision {
 			int obj_rightX = obj_x + bounds.width;
 
 			if (player_cenY < obj_cenY && player_bottomY < obj_y + 4) {
-				entity.setY(obj_y - entity.getBounds().height - player_y_diff);
+				entity.setY(obj_y - entity_bounds.height - player_y_diff);
 			} else if (player_cenY > obj_cenY && player_y > obj_bottomY - 4) {
 				entity.setY(obj_y + bounds.height - player_y_diff);
 			} else if (player_cenX < obj_cenX && player_rightX < obj_x + 4) {
-				entity.setX(obj_x - entity.getBounds().width - player_x_diff);
+				entity.setX(obj_x - entity_bounds.width - player_x_diff);
 			} else if (player_cenX > obj_cenX && player_x > obj_rightX - 4) {
 				entity.setX(obj_x + bounds.width - player_x_diff);
 			}

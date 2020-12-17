@@ -1,8 +1,10 @@
 package game.system.systems.hitbox;
 
+import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Hitable;
 import game.system.systems.particles.Particle_DamageNumber;
 import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 import game.system.main.Handler;
 
 import java.awt.*;
@@ -29,10 +31,12 @@ public class HitboxSystem {
                 if(hitboxContainers.get(i).canHitObject(object)) {
                     for(Hitbox hitbox : hitboxContainers.get(i).getHitboxes()) {
                         if(hitbox.active()) {
-                            if(object.getBounds().intersects(hitbox.getBounds())) {
-                                object.hit(hitbox.getDamage());
-                                Game.world.getPs().addParticle(new Particle_DamageNumber(object.getX(), object.getY(), 0f, -0.3f, 40, hitbox.getDamage()));
-                                hitboxContainers.get(i).addHitObject(object);
+                            if(object instanceof Hitable && object instanceof Collision) {
+                                if(((Collision) object).getBounds().intersects(hitbox.getBounds())) {
+                                    ((Hitable) object).hit(hitbox.getDamage());
+                                    Game.world.getPs().addParticle(new Particle_DamageNumber(object.getX(), object.getY(), 0f, -0.3f, 40, hitbox.getDamage()));
+                                    hitboxContainers.get(i).addHitObject(object);
+                                }
                             }
                         }
                     }

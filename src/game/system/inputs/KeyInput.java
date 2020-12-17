@@ -1,22 +1,19 @@
 package game.system.inputs;
 
-import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.Random;
 
-import game.assets.tiles.Tile;
-import game.assets.tiles.floor.wood.Tile_FloorWood;
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
 import game.system.helpers.Helpers;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.Interactable;
 import game.system.systems.inventory.InventorySystem;
 import game.system.main.*;
 import game.enums.ID;
 import game.system.systems.menu.MenuSystem;
-import game.system.world.Chunk;
 import game.system.world.World;
 
 public class KeyInput extends KeyAdapter {
@@ -57,7 +54,7 @@ public class KeyInput extends KeyAdapter {
 							case KeyEvent.VK_CONTROL -> {
 								keysDown[6] = true;
 							}
-							case KeyEvent.VK_I -> tempObject.interact();
+							case KeyEvent.VK_I -> ((Interactable)tempObject).interact();
 							case KeyEvent.VK_U -> this.world.getChunkWithCoordsPoint(this.world.getChunkPointWithCoords(tempObject.getX(), tempObject.getY())).updateTiles();
 						}
 						// inventory.pickupItem(handler, world);
@@ -68,11 +65,14 @@ public class KeyInput extends KeyAdapter {
 			if (key == KeyEvent.VK_E) {
 				LinkedList<GameObject> objs = handler.getSelectableObjects();
 				for (GameObject obj : objs) {
-					if (Game.mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
-							obj.getSelectBounds().width, obj.getSelectBounds().height)) {
-						if (Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), obj.getSelectBounds()) < Game.world.getPlayer().REACH) {
-							obj.interact();
-							return;
+					if(obj instanceof Interactable) {
+						Interactable object = (Interactable) obj;
+						if (Game.mouseInput.mouseOverWorldVar(object.getSelectBounds().x, object.getSelectBounds().y,
+								object.getSelectBounds().width, object.getSelectBounds().height)) {
+							if (Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), object.getSelectBounds()) < Game.world.getPlayer().REACH) {
+								object.interact();
+								return;
+							}
 						}
 					}
 				}

@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 
 import game.assets.items.Item;
 import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 import game.enums.ID;
 
 public class Particle extends GameObject {
@@ -44,32 +44,6 @@ public class Particle extends GameObject {
 	public void render(Graphics g) {
 		g.setColor(new Color(255, 0, 0, alpha));
 		g.fillRect(x, y, 16, 16);
-	}
-
-	public Rectangle getBounds() {
-		return null;
-	}
-
-	public Rectangle getSelectBounds() {
-		return null;
-	}
-
-	public Item getItem() {
-		return null;
-	}
-
-	public void interact() {
-
-	}
-
-	@Override
-	public void destroyed() {
-
-	}
-
-	@Override
-	public void hit(int damage) {
-
 	}
 
 }

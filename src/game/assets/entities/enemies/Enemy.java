@@ -4,11 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import game.assets.items.Item;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.GameObject;
 import game.enums.ID;
 
-public class Enemy extends GameObject {
+public class Enemy extends GameObject implements Collision {
 
 	public Enemy(int x, int y, int z_index, ID id) {
 		super(x, y, z_index, id);
@@ -29,24 +29,6 @@ public class Enemy extends GameObject {
 
 	public Rectangle getSelectBounds() {
 		return new Rectangle(x, y, 16, 16);
-	}
-
-	public Item getItem() {
-		return null;
-	}
-
-	public void interact() {
-
-	}
-
-	@Override
-	public void destroyed() {
-
-	}
-
-	@Override
-	public void hit(int damage) {
-
 	}
 
 }

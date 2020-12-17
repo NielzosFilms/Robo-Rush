@@ -11,7 +11,8 @@ import game.assets.entities.Player;
 import game.system.helpers.Helpers;
 import game.system.main.*;
 import game.system.inputs.MouseInput;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.Interactable;
 import game.system.world.World;
 
 public class HUD implements Serializable {
@@ -49,15 +50,15 @@ public class HUD implements Serializable {
 
 		LinkedList<GameObject> objs = handler.getSelectableObjects();
 		for (GameObject obj : objs) {
-			if (obj.getSelectBounds() != null) {
-				if (mouseInput.mouseOverWorldVar(obj.getSelectBounds().x, obj.getSelectBounds().y,
-						obj.getSelectBounds().width, obj.getSelectBounds().height)) {
+			if (((Interactable)obj).getSelectBounds() != null) {
+				if (mouseInput.mouseOverWorldVar(((Interactable)obj).getSelectBounds().x, ((Interactable)obj).getSelectBounds().y,
+						((Interactable)obj).getSelectBounds().width, ((Interactable)obj).getSelectBounds().height)) {
 
-					if (Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), obj.getSelectBounds()) < Game.world.getPlayer().REACH) {
+					if (Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), ((Interactable)obj).getSelectBounds()) < Game.world.getPlayer().REACH) {
 						// TODO nicer selectboxes
 						g.setColor(new Color(255, 255, 255, 127));
-						g.drawRect(obj.getSelectBounds().x, obj.getSelectBounds().y, obj.getSelectBounds().width,
-								obj.getSelectBounds().height);
+						g.drawRect(((Interactable)obj).getSelectBounds().x, ((Interactable)obj).getSelectBounds().y, ((Interactable)obj).getSelectBounds().width,
+								((Interactable)obj).getSelectBounds().height);
 					}
 
 				}

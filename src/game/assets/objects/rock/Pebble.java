@@ -7,12 +7,13 @@ import java.util.Random;
 import game.assets.items.Item;
 import game.assets.items.Item_Ground;
 import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 import game.enums.ID;
+import game.system.systems.gameObject.Interactable;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
-public class Pebble extends GameObject {
+public class Pebble extends GameObject implements Interactable {
 
     private Random r = new Random();
 
@@ -31,10 +32,6 @@ public class Pebble extends GameObject {
         g.drawImage(tex.getTexure(), x, y, this.width, this.height, null);
     }
 
-    public Rectangle getBounds() {
-        return null;
-    }
-
     public Rectangle getSelectBounds() {
         return new Rectangle(x, y, this.width, this.height);
     }
@@ -51,11 +48,6 @@ public class Pebble extends GameObject {
 
     public void destroyed() {
         //Game.handler.addObject(1, new ItemGround(x, y, 1, ID.Item, new ItemRock(5, ITEM_ID.Rock)));
-    }
-
-    @Override
-    public void hit(int damage) {
-
     }
 
 }

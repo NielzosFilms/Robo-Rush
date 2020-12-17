@@ -8,13 +8,16 @@ import java.util.Random;
 import game.assets.entities.Player;
 import game.assets.items.Item;
 import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.GameObject;
 import game.enums.ID;
+import game.system.systems.gameObject.HasItem;
+import game.system.systems.gameObject.Interactable;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import game.enums.BIOME;
 
-public class Tree extends GameObject {
+public class Tree extends GameObject implements Collision, Interactable, HasItem {
 
 	private ArrayList<ArrayList<Texture>> tex_rows;
 
@@ -93,15 +96,6 @@ public class Tree extends GameObject {
 
 		this.tex_rows.add(row_2);
 		this.tex_rows.add(row_1);
-	}
-
-	public void destroyed() {
-
-	}
-
-	@Override
-	public void hit(int damage) {
-
 	}
 
 }

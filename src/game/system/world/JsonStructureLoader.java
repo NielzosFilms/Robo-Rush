@@ -1,31 +1,27 @@
 package game.system.world;
 
-import com.sun.jdi.InterfaceType;
-import game.assets.objects.puzzle_objects.PuzzleObject;
+import game.assets.objects.puzzle_objects.PuzzleReciever;
+import game.assets.objects.puzzle_objects.PuzzleTrigger;
 import game.assets.tiles.Tile;
 import game.assets.tiles.Tile_Static;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.helpers.Logger;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 public class JsonStructureLoader {
     JSONParser parser = new JSONParser();
@@ -92,18 +88,20 @@ public class JsonStructureLoader {
 
     private void setLinkages() {
         for(GameObject obj : objects) {
-            if(obj instanceof PuzzleObject) {
-                if(((PuzzleObject) obj).hasConnection()) {
-                    ((PuzzleObject) obj).setConnectedObject(getPuzzleObjectWithId(((PuzzleObject) obj).getConnectedObject_id()));
+            if(obj instanceof PuzzleTrigger) {
+                PuzzleReciever reciever = getRevieverWithId(((PuzzleTrigger) obj).getRecieverId());
+                if(reciever != null) {
+                    ((PuzzleTrigger) obj).setReciever(reciever);
                 }
             }
         }
     }
-
-    private GameObject getPuzzleObjectWithId(int id) {
+    private PuzzleReciever getRevieverWithId(int id) {
         for(GameObject obj : objects) {
-            if(obj instanceof PuzzleObject) {
-                if(((PuzzleObject) obj).getConnection_id() == id) return obj;
+            if(obj instanceof PuzzleReciever) {
+                if(((PuzzleReciever) obj).getRevieverId() == id) {
+                    return (PuzzleReciever) obj;
+                }
             }
         }
         return null;

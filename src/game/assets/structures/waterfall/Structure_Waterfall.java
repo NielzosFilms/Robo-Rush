@@ -2,25 +2,13 @@ package game.assets.structures.waterfall;
 
 import game.assets.structures.Structure;
 import game.assets.tiles.Tile;
-import game.assets.tiles.Tile_CaveWall;
-import game.assets.tiles.Tile_Wall;
-import game.assets.tiles.floor.cave.Tile_Floor_Cave;
-import game.assets.tiles.floor.wood.Tile_FloorWood;
-import game.enums.BIOME;
-import game.system.audioEngine.AudioClip;
-import game.system.audioEngine.AudioPlayer;
-import game.system.helpers.Logger;
-import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 import game.system.world.Chunk;
 import game.system.world.JsonStructureLoader;
 import game.system.world.World;
 import game.system.world.biome_groups.BiomeGroup;
 
-import java.awt.*;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Random;
 
 public class Structure_Waterfall extends Structure {
     public Structure_Waterfall(Long seed, GameObject world_object, BiomeGroup biomeGroup) {

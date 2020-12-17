@@ -4,11 +4,13 @@ import java.awt.*;
 import java.util.Random;
 
 import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 import game.enums.ID;
+import game.system.systems.gameObject.HasItem;
+import game.system.systems.gameObject.Interactable;
 import game.textures.Textures;
 
-public class Item_Ground extends GameObject {
+public class Item_Ground extends GameObject implements Interactable, HasItem {
 
 	private Random r = new Random();
 
@@ -67,16 +69,8 @@ public class Item_Ground extends GameObject {
 		g.drawImage(inventoryItem.getTexture().getTexure(), x + x_diff, y + y_diff, 16, 16, null);
 	}
 
-	public Rectangle getBounds() {
-		return null;
-	}
-
 	public Rectangle getSelectBounds() {
 		return new Rectangle(x, y, 16, 16);
-	}
-
-	public Item getInventoryItem() {
-		return this.inventoryItem;
 	}
 
 	public Item getItem() {
@@ -85,16 +79,6 @@ public class Item_Ground extends GameObject {
 
 	public void interact() {
 		Game.world.getInventorySystem().pickupItemToPlayerInv(this);
-	}
-
-	@Override
-	public void destroyed() {
-
-	}
-
-	@Override
-	public void hit(int damage) {
-
 	}
 
 	public void setX(int x) {

@@ -3,7 +3,7 @@ package game.system.systems.particles;
 import game.assets.items.Item;
 import game.enums.ID;
 import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 import game.textures.Fonts;
 
 import java.awt.*;
@@ -45,31 +45,5 @@ public class Particle_DamageNumber extends GameObject {
         g.setColor(new Color(255, 255, 255, alpha));
         g.setFont(Fonts.default_fonts.get(5));
         g.drawString("" + damage_amount, x, y);
-    }
-
-    public Rectangle getBounds() {
-        return null;
-    }
-
-    public Rectangle getSelectBounds() {
-        return null;
-    }
-
-    public Item getItem() {
-        return null;
-    }
-
-    public void interact() {
-
-    }
-
-    @Override
-    public void destroyed() {
-
-    }
-
-    @Override
-    public void hit(int damage) {
-
     }
 }

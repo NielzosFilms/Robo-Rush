@@ -16,7 +16,7 @@ import game.enums.ID;
 import game.enums.TILE_TYPE;
 import game.system.helpers.Logger;
 import game.system.systems.Collision;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 import game.system.systems.hitbox.HitboxSystem;
 import game.system.systems.hud.HUD;
 import game.system.inputs.KeyInput;
@@ -27,7 +27,6 @@ import game.system.systems.lighting.LightingSystem;
 import game.system.main.*;
 import game.system.systems.particles.ParticleSystem;
 import game.system.world.biome_groups.BiomeGroup_World;
-import game.textures.Texture;
 import game.textures.Textures;
 
 public class World implements Serializable {

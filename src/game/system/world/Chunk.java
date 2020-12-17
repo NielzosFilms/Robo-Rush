@@ -3,26 +3,15 @@ package game.system.world;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
 
-import game.assets.entities.Player;
-import game.enums.BIOME;
-import game.system.helpers.Logger;
 import game.system.systems.lighting.Light;
-import game.system.systems.GameObject;
-import game.enums.ID;
-import game.assets.objects.stick.Branch;
-import game.assets.objects.rock.Pebble;
+import game.system.systems.gameObject.GameObject;
 import game.assets.tiles.Tile;
-import game.assets.tiles.TileGrass;
-import game.assets.tiles.TileWater;
-import game.assets.objects.tree.Tree;
 import game.assets.structures.Structure;
 import game.textures.Fonts;
-import game.textures.Textures;
 
 public class Chunk implements Serializable {
 

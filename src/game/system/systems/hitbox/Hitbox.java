@@ -3,7 +3,7 @@ package game.system.systems.hitbox;
 import game.assets.items.Item;
 import game.enums.ID;
 import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 
 import java.awt.*;
 

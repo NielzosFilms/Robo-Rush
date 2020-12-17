@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import game.assets.items.Item;
 import game.enums.GAMESTATES;
 import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.GameObject;
 import game.enums.ID;
+import game.system.systems.gameObject.Interactable;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
-public class House extends GameObject {
+public class House extends GameObject implements Collision, Interactable {
 
     private ArrayList<ArrayList<Texture>> tex_rows = new ArrayList<ArrayList<Texture>>();
 
@@ -74,22 +76,8 @@ public class House extends GameObject {
         return new Rectangle(x + 16, y + 32, 32, 16);
     }
 
-    public Item getItem() {
-        return null;
-    }
-
     public void interact() {
         Game.game_state = GAMESTATES.Menu;
-    }
-
-    @Override
-    public void destroyed() {
-
-    }
-
-    @Override
-    public void hit(int damage) {
-
     }
 
 }

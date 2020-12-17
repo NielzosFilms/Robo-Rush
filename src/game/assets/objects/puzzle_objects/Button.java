@@ -2,18 +2,17 @@ package game.assets.objects.puzzle_objects;
 
 import game.assets.items.Item;
 import game.enums.ID;
-import game.system.helpers.Logger;
 import game.system.helpers.StructureLoaderHelpers;
-import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.Interactable;
 import game.system.world.JsonStructureLoader;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
 
-public class Button extends GameObject implements PuzzleObject {
-    private GameObject connectedObject;
-    private int connectedObject_id;
+public class Button extends GameObject implements PuzzleTrigger, Interactable {
+    private PuzzleReciever reciever;
+    private int reciever_id;
     public Button(int x, int y, int z_index) {
         super(x, y, z_index, ID.Button);
     }
@@ -26,7 +25,7 @@ public class Button extends GameObject implements PuzzleObject {
         width = StructureLoaderHelpers.getIntProp(json, "width") / division;
         height = StructureLoaderHelpers.getIntProp(json, "height") / division;
 
-        connectedObject_id = Integer.parseInt(StructureLoaderHelpers.getCustomProp(json, "connected_object"));
+        reciever_id = Integer.parseInt(StructureLoaderHelpers.getCustomProp(json, "connected_object"));
     }
 
     public void tick() {
@@ -37,51 +36,28 @@ public class Button extends GameObject implements PuzzleObject {
 
     }
 
-    public Rectangle getBounds() {
-        return null;
-    }
-
     public Rectangle getSelectBounds() {
         return new Rectangle(x, y, width, height);
     }
 
-    public Item getItem() {
-        return null;
-    }
-
     public void interact() {
-        if(connectedObject != null) connectedObject.interact();
+        //if(connectedObject != null) connectedObject.interact();
+        triggered();
     }
 
-    public void destroyed() {
-
+    public void setReciever(PuzzleReciever object) {
+        reciever = object;
     }
 
-    public void hit(int damage) {
-
+    public PuzzleReciever getReciever() {
+        return reciever;
     }
 
-    public void setConnectedObject(GameObject object) {
-        connectedObject = object;
+    public int getRecieverId() {
+        return reciever_id;
     }
 
-    public GameObject getConnectedObject() {
-        return null;
-    }
-
-    public int getConnectedObject_id() {
-        return connectedObject_id;
-    }
-
-    public int getConnection_id() {
-        return 0;
-    }
-
-    public void getConnectedObject(GameObject object) {
-
-    }
-
-    public boolean hasConnection() {
-        return true;
+    public void triggered() {
+        reciever.triggered();
     }
 }

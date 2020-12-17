@@ -3,7 +3,7 @@ package game.assets.entities.enemies;
 import game.assets.items.Item;
 import game.enums.ID;
 import game.system.helpers.StructureLoaderHelpers;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 import game.system.world.JsonStructureLoader;
 import game.textures.Textures;
 import org.json.simple.JSONObject;
@@ -29,29 +29,5 @@ public class Skeleton extends GameObject {
 
     public void render(Graphics g) {
         g.drawImage(Textures.skeleton, x, y, null);
-    }
-
-    public Rectangle getBounds() {
-        return null;
-    }
-
-    public Rectangle getSelectBounds() {
-        return null;
-    }
-
-    public Item getItem() {
-        return null;
-    }
-
-    public void interact() {
-
-    }
-
-    public void destroyed() {
-
-    }
-
-    public void hit(int damage) {
-
     }
 }

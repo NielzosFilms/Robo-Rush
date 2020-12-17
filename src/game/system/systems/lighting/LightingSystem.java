@@ -13,8 +13,10 @@ import java.util.LinkedList;
 
 import game.system.main.Camera;
 import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.GameObject;
 import game.system.main.Handler;
+import game.system.systems.gameObject.Interactable;
 import game.system.world.World;
 
 public class LightingSystem {
@@ -108,7 +110,7 @@ public class LightingSystem {
 		Line2D ray_bottom_left_corner = new Line2D.Float(light_x, light_y, light_x-light_half_width, light_y+light_half_width);
 		
 		for(GameObject obj : objects) {
-			if(obj.getBounds().inside(light_x, light_y)) {
+			if(((Collision)obj).getBounds().inside(light_x, light_y)) {
 				break;
 			}
 			
@@ -118,14 +120,14 @@ public class LightingSystem {
 			Point frame_bottom_right = new Point(light_x+light_half_width, light_y+light_half_width);
 			Point light = new Point(light_x, light_y);
 			
-			Point center = new Point(obj.getBounds().x+(obj.getBounds().width/2), obj.getBounds().y+(obj.getBounds().height/2));
+			Point center = new Point(((Collision)obj).getBounds().x+(((Collision)obj).getBounds().width/2), ((Collision)obj).getBounds().y+(((Collision)obj).getBounds().height/2));
 			if(!checkInBounds(center.x, center.y, origin.x, origin.y, light_half_width*2, light_half_width*2)) {
 				continue;
 			}
-			Point top_left = new Point(obj.getBounds().x, obj.getBounds().y);
-			Point top_right = new Point(obj.getBounds().x+obj.getBounds().width, obj.getBounds().y);
-			Point bottom_right = new Point(obj.getBounds().x+obj.getBounds().width, obj.getBounds().y+obj.getBounds().height);
-			Point bottom_left = new Point(obj.getBounds().x, obj.getBounds().y+obj.getBounds().height);
+			Point top_left = new Point(((Collision)obj).getBounds().x, ((Collision)obj).getBounds().y);
+			Point top_right = new Point(((Collision)obj).getBounds().x+((Collision)obj).getBounds().width, ((Collision)obj).getBounds().y);
+			Point bottom_right = new Point(((Collision)obj).getBounds().x+((Collision)obj).getBounds().width, ((Collision)obj).getBounds().y+((Collision)obj).getBounds().height);
+			Point bottom_left = new Point(((Collision)obj).getBounds().x, ((Collision)obj).getBounds().y+((Collision)obj).getBounds().height);
 			
 			Line2D.Float ray_top_left = new Line2D.Float(light_x, light_y, top_left.x, top_left.y);
 			

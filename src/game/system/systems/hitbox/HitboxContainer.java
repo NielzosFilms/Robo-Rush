@@ -1,7 +1,7 @@
 package game.system.systems.hitbox;
 
 import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 
 import java.awt.*;
 import java.util.LinkedList;

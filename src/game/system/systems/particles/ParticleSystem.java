@@ -1,6 +1,6 @@
 package game.system.systems.particles;
 
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 
 import java.awt.*;
 import java.util.LinkedList;

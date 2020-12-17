@@ -5,10 +5,11 @@ import java.awt.Rectangle;
 import java.util.Random;
 
 import game.assets.items.Item;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 import game.enums.ID;
+import game.system.systems.gameObject.Interactable;
 
-public class Mushroom extends GameObject {
+public class Mushroom extends GameObject implements Interactable {
 	private Random r;
 
 	public Mushroom(int x, int y, int z_index, ID id) {
@@ -41,29 +42,11 @@ public class Mushroom extends GameObject {
 		//g.drawImage(this.tex, x, y, this.width, this.height, null);
 	}
 
-	public Rectangle getBounds() {
-		return null;
-	}
-
 	public Rectangle getSelectBounds() {
 		return new Rectangle(x + 4, y, 12, 16);
 	}
 
-	public Item getItem() {
-		return null;
-	}
-
 	public void interact() {
-
-	}
-
-	@Override
-	public void destroyed() {
-
-	}
-
-	@Override
-	public void hit(int damage) {
 
 	}
 

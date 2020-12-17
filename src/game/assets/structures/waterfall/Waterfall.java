@@ -2,11 +2,12 @@ package game.assets.structures.waterfall;
 
 import game.assets.items.Item;
 import game.enums.ID;
+import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Interactable;
 import game.system.world.biome_groups.BiomeGroup_Cave;
 import game.textures.TEXTURE_LIST;
-import game.system.helpers.Logger;
 import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 import game.textures.Animation;
 import game.textures.Texture;
 import game.textures.Textures;
@@ -14,7 +15,7 @@ import game.textures.Textures;
 import java.awt.*;
 import java.util.HashMap;
 
-public class Waterfall extends GameObject {
+public class Waterfall extends GameObject implements Collision, Interactable {
     private HashMap<Point, Texture> tiles = new HashMap<>();
     private HashMap<Point, Animation> water_tiles = new HashMap<>();
     private Structure_Waterfall structure;
@@ -81,19 +82,7 @@ public class Waterfall extends GameObject {
         return new Rectangle(x + 16, y + 16, 16, 32);
     }
 
-    public Item getItem() {
-        return null;
-    }
-
     public void interact() {
         Game.world.setActiveStructure(structure);
-    }
-
-    public void destroyed() {
-
-    }
-
-    public void hit(int damage) {
-
     }
 }

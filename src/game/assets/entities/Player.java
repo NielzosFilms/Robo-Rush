@@ -12,9 +12,10 @@ import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
 import game.enums.DIRECTIONS;
 import game.system.helpers.Helpers;
-import game.system.helpers.Logger;
 import game.system.helpers.Timer;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.Interactable;
 import game.system.systems.hitbox.Hitbox;
 import game.system.systems.hitbox.HitboxContainer;
 import game.system.systems.inventory.Inventory;
@@ -31,7 +32,7 @@ import game.textures.TEXTURE_LIST;
 import game.textures.ImageFilters;
 import game.textures.Texture;
 
-public class Player extends GameObject {
+public class Player extends GameObject implements Collision, Interactable {
 	private static final int ATTACK_DELAY = 15;
 	private static final int DEFAULT_ATTACK_DAMAGE = 1;
 	public final int REACH = 50;
@@ -340,20 +341,8 @@ public class Player extends GameObject {
 		return Game.world.getGeneration().getBiomeWithCoords(x, y);
 	}
 
-	public Item getItem() {
-		return null;
-	}
-
 	public void interact() {
 		inventory.open();
-	}
-
-	public void destroyed() {
-
-	}
-
-	public void hit(int damage) {
-
 	}
 
 	public void attack() {

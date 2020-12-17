@@ -1,9 +1,7 @@
 package game.assets.structures;
 
-import game.assets.entities.Player;
 import game.assets.tiles.Tile;
-import game.system.main.Game;
-import game.system.systems.GameObject;
+import game.system.systems.gameObject.GameObject;
 import game.system.world.Chunk;
 import game.system.world.Generation;
 import game.system.world.World;
@@ -13,7 +11,6 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Random;
 
 public abstract class Structure implements Serializable {
     protected HashMap<Point, Chunk> chunks = new HashMap<>();

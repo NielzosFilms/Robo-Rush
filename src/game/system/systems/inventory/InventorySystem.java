@@ -8,8 +8,8 @@ import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
 import game.system.main.*;
 import game.system.inputs.MouseInput;
-import game.system.systems.GameObject;
-import game.system.systems.particles.Particle_DamageNumber;
+import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.HasItem;
 import game.system.systems.particles.Particle_String;
 import game.system.world.Chunk;
 import game.system.world.World;
@@ -232,11 +232,13 @@ public class InventorySystem implements Serializable {
 	}
 
 	public void pickupItemToPlayerInv(GameObject obj) {
-		Item item = obj.getItem();
-		if (item != null) {
-			if (player_inv.canAcceptItem(item)) {
-				player_inv.addItem(item);
-				handler.findAndRemoveObject(obj);
+		if(obj instanceof HasItem) {
+			Item item = ((HasItem) obj).getItem();
+			if (item != null) {
+				if (player_inv.canAcceptItem(item)) {
+					player_inv.addItem(item);
+					handler.findAndRemoveObject(obj);
+				}
 			}
 		}
 	}
