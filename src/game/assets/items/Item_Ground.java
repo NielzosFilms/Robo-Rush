@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.Random;
 
 import game.system.main.Game;
+import game.system.systems.gameObject.Collision;
 import game.system.systems.gameObject.GameObject;
 import game.enums.ID;
 import game.system.systems.gameObject.HasItem;
@@ -90,5 +91,4 @@ public class Item_Ground extends GameObject implements Interactable, HasItem {
 		this.y = y;
 		buffer_y = y;
 	}
-
 }

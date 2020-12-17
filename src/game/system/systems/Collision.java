@@ -47,7 +47,8 @@ public class Collision {
 
 		for(GameObject entity : objects_w_bounds) {
 			for (Rectangle bounds : all_bounds) {
-				checkCollisionForGameObject(bounds, entity);
+				// wierd stuff happens
+				//checkCollisionForGameObject(bounds, entity);
 			}
 		}
 
