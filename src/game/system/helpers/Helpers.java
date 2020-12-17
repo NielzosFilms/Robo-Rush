@@ -5,6 +5,7 @@ import game.system.main.Camera;
 import game.system.systems.inventory.InventorySystem;
 
 import java.awt.*;
+import java.io.File;
 
 public class Helpers {
 
@@ -85,6 +86,13 @@ public class Helpers {
             } else {
                 return DIRECTIONS.down;
             }
+        }
+    }
+
+    public static void createDirIfNotExisting(String directory) {
+        File dir = new File(directory);
+        if (!dir.exists()) {
+            dir.mkdir();
         }
     }
 }

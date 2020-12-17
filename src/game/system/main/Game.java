@@ -10,6 +10,7 @@ import game.enums.GAMESTATES;
 import game.enums.ID;
 import game.system.audioEngine.AudioFiles;
 import game.assets.entities.Player;
+import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
 import game.system.systems.menu.elements.LoadingAnimation;
 import game.system.inputs.KeyInput;
@@ -28,11 +29,12 @@ public class Game extends Canvas implements Runnable {
 	public static int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 3.38.0 INFDEV";
+	public static final String VERSION = "ALPHA V 3.39.0 INFDEV";
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEBUG_MODE = false;
 	public static boolean NO_SAVE = false, NO_LOAD = false, WINDOWED = false;
+	public static boolean DEV_MODE = false;
 
 	public static int current_loaded_save_slot;
 
@@ -190,9 +192,10 @@ public class Game extends Canvas implements Runnable {
 	public static void saveChunks() {
 		loadingAnimation.setLoading(true);
 		if(!NO_SAVE) {
-			String directory = "saves/";
+			String directory = "saves";
+			Helpers.createDirIfNotExisting(directory);
 			try {
-				FileOutputStream fos = new FileOutputStream(directory + "save_slot_" + current_loaded_save_slot + ".data");
+				FileOutputStream fos = new FileOutputStream(directory + "/save_slot_" + current_loaded_save_slot + ".data");
 				ObjectOutputStream oos = new ObjectOutputStream(fos);
 				oos.writeObject(world);
 			} catch (IOException e) {
@@ -211,7 +214,9 @@ public class Game extends Canvas implements Runnable {
 				WINDOWED = true;
 				HEIGHT -= 20;
 			}
+			if(arg.equals("dev")) DEV_MODE = true;
 		}
+		Logger.clearLogs();
 		Logger.print("Arguments: " + Arrays.toString(args));
 		Logger.print("Game starting...");
 		canvas = new Game();

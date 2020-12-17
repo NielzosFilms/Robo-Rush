@@ -4,6 +4,7 @@ out/
 .settings/
 META-INF/
 saves/
+logs/
 .classpath
 .project
 *.iml
