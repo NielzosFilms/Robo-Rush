@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
 
+import game.system.helpers.Logger;
 import game.system.systems.lighting.Light;
 import game.system.systems.gameObject.GameObject;
 import game.assets.tiles.Tile;
@@ -41,33 +42,29 @@ public class Chunk implements Serializable {
 
 	public void tick() {
 		// move entity from chunk to chunk
-		for (LinkedList<GameObject> list : new LinkedList<>(entities)) {
+		for (LinkedList<GameObject> list : entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject entity = list.get(i);
 				if (entity.getX() > (this.x + 16) * 16) {
 					Chunk chunk = this.world.getChunkWithCoords(this.x + 16, this.y);
 					if(chunk == null) continue;
-					addEntity(entity);
-					list.remove(i);
-					return;
+					chunk.addEntity(entity);
+					list.remove(entity);
 				} else if (entity.getX() < (this.x) * 16) {
 					Chunk chunk = this.world.getChunkWithCoords(this.x - 16, this.y);
 					if(chunk == null) continue;
-					addEntity(entity);
-					list.remove(i);
-					return;
+					chunk.addEntity(entity);
+					list.remove(entity);
 				} else if (entity.getY() > (this.y + 16) * 16) {
 					Chunk chunk = this.world.getChunkWithCoords(this.x, this.y + 16);
 					if(chunk == null) continue;
-					addEntity(entity);
-					list.remove(i);
-					return;
+					chunk.addEntity(entity);
+					list.remove(entity);
 				} else if (entity.getY() < (this.y - 16) * 16) {
 					Chunk chunk = this.world.getChunkWithCoords(this.x, this.y - 16);
 					if(chunk == null) continue;
-					addEntity(entity);
-					list.remove(i);
-					return;
+					chunk.addEntity(entity);
+					list.remove(entity);
 				} else {
 					entity.tick();
 				}

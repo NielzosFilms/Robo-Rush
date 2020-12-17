@@ -5,6 +5,7 @@ import java.util.Random;
 
 import game.assets.HealthBar;
 import game.assets.items.*;
+import game.enums.DIRECTIONS;
 import game.enums.LOOT_TABLES;
 import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
@@ -21,7 +22,7 @@ import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import org.json.simple.JSONObject;
 
-public class Crate extends GameObject implements Collision, Interactable, Hitable, Destroyable {
+public class Crate extends GameObject implements Collision, Pushable, Interactable, Hitable, Destroyable {
     private final int REGEN_DELAY_AFTER_HIT = 60*10;
     private final int REGEN_DELAY = 30;
     private final int REGEN_AMOUNT = 1;
@@ -136,5 +137,14 @@ public class Crate extends GameObject implements Collision, Interactable, Hitabl
 
     public void addItemToInv(Item item) {
         this.inv.addItem(item);
+    }
+
+    public void push(DIRECTIONS direction) {
+        switch(direction) {
+            case up -> y -= 1;
+            case down -> y += 1;
+            case left -> x -= 1;
+            case right -> x+= 1;
+        }
     }
 }

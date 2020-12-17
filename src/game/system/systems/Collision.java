@@ -4,9 +4,11 @@ import java.awt.*;
 import java.util.LinkedList;
 
 import game.assets.entities.Player;
+import game.enums.DIRECTIONS;
 import game.system.helpers.Logger;
 import game.system.main.Handler;
 import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.Pushable;
 import game.system.world.Chunk;
 import game.system.world.World;
 
@@ -31,18 +33,28 @@ public class Collision {
 			all_bounds.addAll(chunk.getAllTileBounds());
 		}
 		for(GameObject entity : objects_w_bounds) {
+			//if(entity instanceof Pushable) continue;
 			all_bounds.add(((game.system.systems.gameObject.Collision)entity).getBounds());
+		}
+
+		for(GameObject entity : objects_w_bounds) {
+			if(entity instanceof Pushable) {
+				if(player.getBounds().intersects(((game.system.systems.gameObject.Collision)entity).getBounds())) {
+					//((Pushable) entity).push(DIRECTIONS.down);
+				}
+			}
+		}
+
+		for(GameObject entity : objects_w_bounds) {
+			for (Rectangle bounds : all_bounds) {
+				checkCollisionForGameObject(bounds, entity);
+			}
 		}
 
 		for (Rectangle bounds : all_bounds) {
 			checkBoundWithPlayer(bounds);
 		}
-		for(GameObject entity : objects_w_bounds) {
-			for(Rectangle bounds : all_bounds) {
-				// only do this for objects that can/will move
-				//checkCollisionForGameObject(bounds, entity);
-			}
-		}
+
 	}
 
 	private void checkBoundWithPlayer(Rectangle bounds) {
