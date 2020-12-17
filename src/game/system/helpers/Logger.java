@@ -17,19 +17,19 @@ public class Logger {
     private static String logs_dir = "logs";
     private static String log_filename = "combined";
     public static void print(String msg) {
-        outputMessage(getStartAddition("INFO") + msg);
+        outputMessage("INFO", msg);
     }
 
     public static void printError(String msg) {
-        outputMessage(getStartAddition("ERROR") + msg);
+        outputMessage("ERROR", msg);
     }
 
     public static void printWarning(String msg) {
-        outputMessage(getStartAddition("WARNING") + msg);
+        outputMessage("WARNING", msg);
     }
 
     public static void printStackStrace() {
-        outputMessage(getStartAddition("STACK_TRACE"));
+        outputMessage("STACK_TRACE", "");
     }
 
     private static String getStartAddition(String type) {
@@ -39,11 +39,14 @@ public class Logger {
         String out = "[" + dtf.format(now) + "]";
         out += "[" + type + "]";
         out += "[" + stackTraceElements[3] + "]";
-        return out + " >> ";
+        return out;
     }
 
-    private static void outputMessage(String line) {
-        System.out.println(line);
+    private static void outputMessage(String type, String line) {
+        if(!line.equals("")) {
+            line = " >> " + line;
+        }
+        System.out.println(getStartAddition(type) + line);
         if (!Game.DEV_MODE) {
             Helpers.createDirIfNotExisting(logs_dir);
 
@@ -53,7 +56,7 @@ public class Logger {
             File log_file = new File(logs_dir + "/" + log_filename + ".log");
             try {
                 FileWriter writer = new FileWriter(log_file, true);
-                writer.write(line + "\n");
+                writer.write(getStartAddition(type) + line + "\n");
                 writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
