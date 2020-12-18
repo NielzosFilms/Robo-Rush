@@ -3,7 +3,7 @@ package game.assets.tiles.floor.wood;
 import game.assets.items.item.Item;
 import game.assets.items.Item_Ground;
 import game.assets.items.item.Placeable;
-import game.assets.tiles.Tile;
+import game.assets.tiles.tile.Tile;
 import game.enums.ID;
 import game.enums.ITEM_ID;
 import game.textures.TEXTURE_LIST;

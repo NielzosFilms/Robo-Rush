@@ -29,7 +29,7 @@ public class Game extends Canvas implements Runnable {
 	public static int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 3.43.0 INFDEV";
+	public static final String VERSION = "ALPHA V 3.44.0 INFDEV";
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEBUG_MODE = false;
@@ -46,21 +46,16 @@ public class Game extends Canvas implements Runnable {
 	public static Textures textures;
 	public static AudioFiles audioFiles;
 	public static Fonts fonts;
-
-	private Random r;
 	public static KeyInput keyInput;
 	public static MouseInput mouseInput;
 
 	public static MenuSystem menuSystem;
-
-	public static ImageRendering imageRenderer;
 
 	public static World world;
 
 	public static LoadingAnimation loadingAnimation = new LoadingAnimation(32, 32, 32, 32);
 
 	public Game() {
-		r = new Random();
 
 		keyInput = new KeyInput();
 		mouseInput = new MouseInput();

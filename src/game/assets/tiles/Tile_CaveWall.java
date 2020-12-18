@@ -2,10 +2,13 @@ package game.assets.tiles;
 
 import game.assets.items.item.Item;
 import game.assets.tiles.floor.cave.Tile_Floor_Cave;
+import game.assets.tiles.tile.EdgeTextures;
+import game.assets.tiles.tile.Tile;
 import game.enums.BIOME;
 import game.enums.TILE_TYPE;
 import game.system.helpers.TileHelperFunctions;
 import game.system.main.Game;
+import game.system.systems.gameObject.Collision;
 import game.system.world.Chunk;
 import game.textures.Fonts;
 import game.textures.TEXTURE_LIST;
@@ -15,7 +18,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Tile_CaveWall extends Tile {
+public class Tile_CaveWall extends Tile implements EdgeTextures, Collision {
     private HashMap<TILE_TYPE, Texture> textures = new HashMap<>();
     private LinkedList<TILE_TYPE> types_to_add_bg = new LinkedList<>();
 
@@ -63,10 +66,6 @@ public class Tile_CaveWall extends Tile {
         return new Rectangle(x, y, tileSize, tileSize);
     }
 
-    public Rectangle getSelectBounds() {
-        return null;
-    }
-
     public void findAndSetEdgeTexture() {
         boolean top = TileHelperFunctions.checkSameNeighbourBiome(this, BIOME.Cave_floor, 0, -1);
         boolean right = TileHelperFunctions.checkSameNeighbourBiome(this, BIOME.Cave_floor, 1, 0);
@@ -101,9 +100,5 @@ public class Tile_CaveWall extends Tile {
 
     public void update() {
 
-    }
-
-    public Item getItem() {
-        return null;
     }
 }

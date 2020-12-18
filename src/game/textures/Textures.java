@@ -35,7 +35,8 @@ public class Textures {
 			walls_png,
 			cave_png,
 			attack_slice_png,
-			skeleton_png;
+			skeleton_png,
+			grass_plateau_png;
 
 	// other standalone tiles
 	public static BufferedImage
@@ -57,6 +58,7 @@ public class Textures {
 	private static void initImages() {
 		BufferedImageLoader loader = new BufferedImageLoader();
 		tileSetForest = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/1.png");
+		grass_plateau_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/7.png");
 		tileSetCave = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/8.png");
 		tileSetDesert = loader.loadImage("assets/main/tile_sheets/desert_tile.png");
 		tileSetWater = loader.loadImage("assets/main/tile_sheets/water_tiles.png");
@@ -93,6 +95,7 @@ public class Textures {
 
 	private static void fillLists() {
 		fillListWithSpriteSheet(tileSetForest, 32, 32, texture_lists.get(TEXTURE_LIST.forest_list));
+		fillListWithSpriteSheet(grass_plateau_png, 32, 32, texture_lists.get(TEXTURE_LIST.grass_plateau));
 		fillListWithSpriteSheet(tileSetCave, 32, 32, texture_lists.get(TEXTURE_LIST.cave_list));
 		fillListWithSpriteSheet(playerSheet, 16, 24, texture_lists.get(TEXTURE_LIST.player_list));
 		fillListWithSpriteSheet(tileSetDesert, 16, 16, texture_lists.get(TEXTURE_LIST.desert_list));

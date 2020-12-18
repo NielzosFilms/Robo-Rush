@@ -1,4 +1,4 @@
-package game.assets.tiles;
+package game.assets.tiles.tile;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -105,17 +105,12 @@ public abstract class Tile implements Serializable {
         this.tileSize = tileSize;
     }
 
-    public abstract Rectangle getBounds();
-
-    public abstract Rectangle getSelectBounds();
-
-    public abstract void findAndSetEdgeTexture();
-
     public abstract void update();
-
-    public abstract Item getItem();
 
     public TILE_TYPE getTile_type() {
         return this.tile_type;
+    }
+    public void setTile_type(TILE_TYPE type) {
+        this.tile_type = type;
     }
 }

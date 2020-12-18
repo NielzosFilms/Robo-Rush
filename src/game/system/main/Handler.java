@@ -1,6 +1,6 @@
 package game.system.main;
 
-import game.assets.tiles.Tile;
+import game.assets.tiles.tile.Tile;
 import game.enums.ID;
 import game.system.systems.gameObject.Collision;
 import game.system.systems.gameObject.Destroyable;

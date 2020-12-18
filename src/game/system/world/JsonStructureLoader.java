@@ -2,7 +2,7 @@ package game.system.world;
 
 import game.assets.objects.puzzle_objects.PuzzleReciever;
 import game.assets.objects.puzzle_objects.PuzzleTrigger;
-import game.assets.tiles.Tile;
+import game.assets.tiles.tile.Tile;
 import game.assets.tiles.Tile_Static;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.helpers.Logger;

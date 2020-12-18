@@ -1,17 +1,14 @@
 package game.system.helpers;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import java.awt.Point;
 
-import game.assets.tiles.Tile;
+import game.assets.tiles.tile.Tile;
 import game.enums.BIOME;
 import game.enums.TILE_TYPE;
 import game.system.main.Game;
 import game.system.world.Chunk;
-import game.system.world.World;
 
 public class TileHelperFunctions {
     private static Random r = new Random();

@@ -1,7 +1,7 @@
 package game.assets.structures.waterfall;
 
 import game.assets.structures.Structure;
-import game.assets.tiles.Tile;
+import game.assets.tiles.tile.Tile;
 import game.system.systems.gameObject.GameObject;
 import game.system.world.Chunk;
 import game.system.world.JsonStructureLoader;

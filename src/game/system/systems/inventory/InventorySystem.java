@@ -4,7 +4,7 @@ import game.assets.entities.Player;
 import game.assets.items.item.Item;
 import game.assets.items.Item_Ground;
 import game.assets.items.item.Placeable;
-import game.assets.tiles.Tile;
+import game.assets.tiles.tile.Tile;
 import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
 import game.system.main.*;
@@ -160,16 +160,18 @@ public class InventorySystem implements Serializable {
 					Tile tile_found = chunk.getTileMap(3).get(tile_coords);
 					Rectangle tile_bnds = new Rectangle(tile_found.getX(), tile_found.getY(), item_w, item_h);
 					if (Helpers.getDistanceBetweenBounds(world.getPlayer().getBounds(), tile_bnds) < world.getPlayer().REACH) {
-						Item tile_item = tile_found.getItem();
-						if (isHolding() && holding.getClass() == tile_item.getClass() && holding.getAmount() + tile_item.getAmount() <= stackSize) {
-							holding.setAmount(holding.getAmount() + tile_item.getAmount());
-						} else if (player_inv.canAcceptItem(tile_item)) {
-							player_inv.addItem(tile_item);
-						} else {
-							dropItemAtPlayer(tile_item);
+						if(tile_found instanceof HasItem) {
+							Item tile_item = ((HasItem) tile_found).getItem();
+							if (isHolding() && holding.getClass() == tile_item.getClass() && holding.getAmount() + tile_item.getAmount() <= stackSize) {
+								holding.setAmount(holding.getAmount() + tile_item.getAmount());
+							} else if (player_inv.canAcceptItem(tile_item)) {
+								player_inv.addItem(tile_item);
+							} else {
+								dropItemAtPlayer(tile_item);
+							}
+							chunk.removeTile(tile_found);
+							chunk.updateSameTiles(tile_found);
 						}
-						chunk.removeTile(tile_found);
-						chunk.updateSameTiles(tile_found);
 					} else {
 						world.getPs().addParticle(new Particle_String(world.getPlayer().getX(), world.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));
 					}

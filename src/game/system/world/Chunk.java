@@ -7,10 +7,11 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
 
-import game.system.helpers.Logger;
+import game.assets.tiles.tile.EdgeTextures;
+import game.system.systems.gameObject.Collision;
 import game.system.systems.lighting.Light;
 import game.system.systems.gameObject.GameObject;
-import game.assets.tiles.Tile;
+import game.assets.tiles.tile.Tile;
 import game.assets.structures.Structure;
 import game.textures.Fonts;
 
@@ -47,22 +48,22 @@ public class Chunk implements Serializable {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject entity = list.get(i);
 				if (entity.getX() > (this.x + 16) * 16) {
-					Chunk chunk = this.world.getChunkWithCoords(this.x + 16, this.y);
+					Chunk chunk = getNeighbourChunk(1, 0);
 					if(chunk == null) continue;
 					chunk.addEntity(entity);
 					list.remove(entity);
 				} else if (entity.getX() < (this.x) * 16) {
-					Chunk chunk = this.world.getChunkWithCoords(this.x - 16, this.y);
+					Chunk chunk = getNeighbourChunk(-1, 0);
 					if(chunk == null) continue;
 					chunk.addEntity(entity);
 					list.remove(entity);
 				} else if (entity.getY() > (this.y + 16) * 16) {
-					Chunk chunk = this.world.getChunkWithCoords(this.x, this.y + 16);
+					Chunk chunk = getNeighbourChunk(0, 1);
 					if(chunk == null) continue;
 					chunk.addEntity(entity);
 					list.remove(entity);
 				} else if (entity.getY() < (this.y - 16) * 16) {
-					Chunk chunk = this.world.getChunkWithCoords(this.x, this.y - 16);
+					Chunk chunk = getNeighbourChunk(0, -1);
 					if(chunk == null) continue;
 					chunk.addEntity(entity);
 					list.remove(entity);
@@ -114,7 +115,10 @@ public class Chunk implements Serializable {
 		for(HashMap<Point, Tile> map : new LinkedList<>(tiles)) {
 			for (Map.Entry<Point, Tile> pointTileEntry : map.entrySet()) {
 				if (map.containsKey(pointTileEntry.getKey())) {
-					map.get(pointTileEntry.getKey()).findAndSetEdgeTexture();
+					Tile tile = map.get(pointTileEntry.getKey());
+					if(tile instanceof EdgeTextures) {
+						((EdgeTextures) tile).findAndSetEdgeTexture();
+					}
 				}
 			}
 		}
@@ -127,7 +131,10 @@ public class Chunk implements Serializable {
 		for (Map.Entry<Point, Tile> pointTileEntry : tmp.entrySet()) {
 			if (tmp.containsKey(pointTileEntry.getKey())) {
 				if (tmp.get(pointTileEntry.getKey()).getClass() == tile.getClass()) {
-					tmp.get(pointTileEntry.getKey()).findAndSetEdgeTexture();
+					Tile tile_2 = tmp.get(pointTileEntry.getKey());
+					if(tile_2 instanceof EdgeTextures) {
+						((EdgeTextures) tile_2).findAndSetEdgeTexture();
+					}
 				}
 			}
 		}
@@ -246,7 +253,10 @@ public class Chunk implements Serializable {
 		for(HashMap<Point, Tile> list : tiles) {
 			for(Point key : list.keySet()) {
 				Tile tile = list.get(key);
-				if(tile.getBounds() != null) bounds.add(tile.getBounds());
+				if(tile instanceof Collision) {
+					Rectangle rect = ((Collision) tile).getBounds();
+					if(rect != null) bounds.add(rect);
+				}
 			}
 		}
 		bounds.addAll(extra_bounds);

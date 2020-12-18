@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import game.assets.items.item.Item;
+import game.assets.tiles.tile.Tile;
 import game.enums.TILE_TYPE;
 import game.textures.Animation;
 import game.textures.Textures;
@@ -26,19 +27,8 @@ public class TileWater extends Tile {
         getWaterAnimation().drawAnimation(g, x, y, this.tileSize, this.tileSize);
     }
 
-    public Rectangle getBounds() {
-        return null;
-    }
-
-    public Rectangle getSelectBounds() {
-        return null;
-    }
-
     private Animation getWaterAnimation() {
         return Textures.water_red.get(water_type);
-    }
-
-    public void findAndSetEdgeTexture() {
     }
 
     public void update() {
@@ -47,7 +37,5 @@ public class TileWater extends Tile {
     public void setWaterType(TILE_TYPE tileType) {
         this.water_type = tileType;
     }
-
-    public Item getItem() { return null; }
 
 }

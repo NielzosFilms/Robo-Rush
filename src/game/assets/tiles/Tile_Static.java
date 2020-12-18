@@ -1,6 +1,7 @@
 package game.assets.tiles;
 
 import game.assets.items.item.Item;
+import game.assets.tiles.tile.Tile;
 import game.system.world.Chunk;
 import game.textures.Texture;
 
@@ -20,23 +21,7 @@ public class Tile_Static extends Tile {
         g.drawImage(texture.getTexure(), x, y, tileSize, tileSize, null);
     }
 
-    public Rectangle getBounds() {
-        return null;
-    }
-
-    public Rectangle getSelectBounds() {
-        return null;
-    }
-
-    public void findAndSetEdgeTexture() {
-
-    }
-
     public void update() {
 
-    }
-
-    public Item getItem() {
-        return null;
     }
 }

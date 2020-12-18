@@ -1,9 +1,17 @@
 package game.enums;
 
 public enum BIOME {
-    //world
-    Forest, Ocean, Desert, Beach, Dirt,
+    NULL,
 
-    Cave_wall, Cave_floor,
+    Forest, Forest_Plateau,
+    Ocean,
+    Desert,
+    Beach,
+    Dirt,
+    Tundra,
+    Polar,
+
+    Cave_wall,
+    Cave_floor,
 
 }

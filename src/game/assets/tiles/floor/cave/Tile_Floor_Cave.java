@@ -1,7 +1,7 @@
 package game.assets.tiles.floor.cave;
 
 import game.assets.items.item.Item;
-import game.assets.tiles.Tile;
+import game.assets.tiles.tile.Tile;
 import game.enums.BIOME;
 import game.system.world.Chunk;
 import game.textures.TEXTURE_LIST;
@@ -23,23 +23,7 @@ public class Tile_Floor_Cave extends Tile {
 		g.drawImage(texture.getTexure(), x, y, 16, 16, null);
 	}
 
-	public Rectangle getBounds() {
-		return null;
-	}
-
-	public Rectangle getSelectBounds() {
-		return null;
-	}
-
-	public void findAndSetEdgeTexture() {
-
-	}
-
 	public void update() {
 
-	}
-
-	public Item getItem() {
-		return null;
 	}
 }

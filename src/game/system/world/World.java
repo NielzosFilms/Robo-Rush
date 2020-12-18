@@ -7,10 +7,8 @@ import java.util.*;
 import game.assets.entities.Player;
 import game.assets.structures.Structure;
 import game.assets.structures.waterfall.Waterfall;
-import game.assets.tiles.Tile;
-import game.assets.tiles.TileGrass;
-import game.assets.tiles.TileWater;
-import game.assets.tiles.Tile_Wall;
+import game.assets.tiles.*;
+import game.assets.tiles.tile.Tile;
 import game.enums.BIOME;
 import game.enums.ID;
 import game.enums.TILE_TYPE;
@@ -264,6 +262,7 @@ public class World implements Serializable {
 	}
 
 	public void generate(Long seed) {
+		seed = 2339562076907567344L;
 		this.r = new Random(seed);
 		this.seed = seed;
 		this.temp_seed = r.nextLong();
@@ -272,7 +271,7 @@ public class World implements Serializable {
 		generation.setHeight_scale(0.05f);
 		loaded = false;
 		chunks.clear();
-		setRequirements(new Player(0, 0, 20, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
+		setRequirements(new Player(-200, 4500, 20, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
 
 		Logger.print("[seed]: " + this.seed);
 
@@ -286,10 +285,14 @@ public class World implements Serializable {
 	public LinkedList<Tile> getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y) {
 		LinkedList<Tile> ret = new LinkedList<>();
 		if(!structureActive()) {
-			if (generation.getBiome(height, temp, moist) == BIOME.Forest) {
-				ret.add(new TileGrass(world_x, world_y, x, y, 1, BIOME.Forest, chunk));
-			} else {
-				ret.add(new TileWater(world_x, world_y, x, y, 1, BIOME.Ocean, chunk));
+			BIOME biome = generation.getBiome(height, temp, moist);
+			switch(biome) {
+				case Forest -> ret.add(new TileGrass(world_x, world_y, x, y, 1, biome, chunk));
+				case Forest_Plateau -> ret.add(new Tile_Grass_Plateau(world_x, world_y, x, y, 1, biome, chunk));
+				case Desert -> ret.add(new Tile_Sand(world_x, world_y, x, y, 1, biome, chunk));
+				case Polar -> ret.add(new Tile_Snow(world_x, world_y, x, y, 1, biome, chunk));
+				case Tundra -> ret.add(new Tile_Dirt(world_x, world_y, x, y, 1, biome, chunk));
+				case Ocean -> ret.add(new TileWater(world_x, world_y, x, y, 1, biome, chunk));
 			}
 		} else {
 			return active_structure.getGeneratedTile(x, y, height, temp, moist, chunk, world_x, world_y);

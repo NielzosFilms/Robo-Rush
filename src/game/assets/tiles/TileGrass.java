@@ -7,6 +7,8 @@ import java.util.Random;
 import game.assets.items.item.Item;
 import game.assets.objects.rock.Pebble;
 import game.assets.objects.tree.Tree;
+import game.assets.tiles.tile.EdgeTextures;
+import game.assets.tiles.tile.Tile;
 import game.enums.ID;
 import game.textures.TEXTURE_LIST;
 import game.enums.TILE_TYPE;
@@ -15,7 +17,7 @@ import game.textures.Texture;
 import game.enums.BIOME;
 import game.system.world.Chunk;
 
-public class TileGrass extends Tile {
+public class TileGrass extends Tile implements EdgeTextures {
     private HashMap<TILE_TYPE, Texture> textures = new HashMap<>();
 
     public TileGrass(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk) {
@@ -53,9 +55,9 @@ public class TileGrass extends Tile {
 
             // Add water tile in background
             if(this.texture != textures.get(TILE_TYPE.center)) {
-                TileWater water = new TileWater(x, y, chunk_x, chunk_y, 2, biome, chunk);
+                /*TileWater water = new TileWater(x, y, chunk_x, chunk_y, 2, biome, chunk);
                 water.setWaterType(tile_type);
-                chunk.addTile(water);
+                chunk.addTile(water);*/
                 this.texture = textures.get(TILE_TYPE.center);
             }
         } else {
@@ -96,15 +98,4 @@ public class TileGrass extends Tile {
             }
         }
     }
-
-    public Rectangle getBounds() {
-        return null;
-    }
-
-    public Rectangle getSelectBounds() {
-        return null;
-    }
-
-    public Item getItem() { return null; }
-
 }

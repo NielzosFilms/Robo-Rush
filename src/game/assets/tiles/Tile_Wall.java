@@ -1,8 +1,10 @@
 package game.assets.tiles;
 
 import game.assets.items.item.Item;
+import game.assets.tiles.tile.Tile;
 import game.enums.TILE_TYPE;
 import game.system.helpers.TileHelperFunctions;
+import game.system.systems.gameObject.Collision;
 import game.textures.TEXTURE_LIST;
 import game.system.world.Chunk;
 import game.textures.Texture;
@@ -10,7 +12,7 @@ import game.textures.Texture;
 import java.awt.*;
 import java.util.HashMap;
 
-public class Tile_Wall extends Tile {
+public class Tile_Wall extends Tile implements Collision {
     private HashMap<TILE_TYPE, Texture> textures = new HashMap<>();
     private TILE_TYPE type;
 
@@ -36,20 +38,7 @@ public class Tile_Wall extends Tile {
         return new Rectangle(x, y, tileSize, tileSize);
     }
 
-    public Rectangle getSelectBounds() {
-        return null;
-    }
-
-    public void findAndSetEdgeTexture() {
-        type = TileHelperFunctions.getTileType8DirTile(this, chunk, z_index);
-        texture = textures.get(type);
-    }
-
     public void update() {
-        findAndSetEdgeTexture();
-    }
 
-    public Item getItem() {
-        return null;
     }
 }
