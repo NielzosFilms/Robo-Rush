@@ -277,8 +277,12 @@ public class World implements Serializable {
 		Point chunk_point = getChunkPointWithCoords(player.getX(), player.getY());
 		Chunk chunk = new Chunk(chunk_point.x, chunk_point.y, this);
 
-		// add tiles to test
+		chunk.addTile(new TileGrass(32, 32, 2, 2, 1, BIOME.Forest, chunk));
+		chunk.addTile(new TileGrass(32, 48, 2, 3, 1, BIOME.Forest, chunk));
+		chunk.addTile(new TileGrass(48, 48, 3, 3, 1, BIOME.Forest, chunk));
+		chunk.addTile(new TileGrass(48, 32, 3, 2, 1, BIOME.Forest, chunk));
 
+		//chunk.updateTiles();
 		chunks.put(chunk_point, chunk);
 		//handler.addObject(new Waterfall(0, 0, 10));
 		//chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
