@@ -262,7 +262,6 @@ public class World implements Serializable {
 	}
 
 	public void generate(Long seed) {
-		seed = 2339562076907567344L;
 		this.r = new Random(seed);
 		this.seed = seed;
 		this.temp_seed = r.nextLong();
@@ -271,7 +270,7 @@ public class World implements Serializable {
 		generation.setHeight_scale(0.05f);
 		loaded = false;
 		chunks.clear();
-		setRequirements(new Player(-200, 4500, 20, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
+		setRequirements(new Player(0, 0, 20, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
 
 		Logger.print("[seed]: " + this.seed);
 
