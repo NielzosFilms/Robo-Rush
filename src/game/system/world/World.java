@@ -101,7 +101,7 @@ public class World implements Serializable {
 		ps.tick();
 
 		runWaterAnimations();
-		generateNewChunksOffScreen(camX, camY, camW, camH);
+		//generateNewChunksOffScreen(camX, camY, camW, camH);
 		tickChunksOnScreen(camX, camY, camW, camH);
 		collision.tick();
 		hitboxSystem.tick();
@@ -266,8 +266,8 @@ public class World implements Serializable {
 		this.seed = seed;
 		this.temp_seed = r.nextLong();
 		this.moist_seed = r.nextLong();
-		generation = new Generation(seed, temp_seed, moist_seed, new BiomeGroup_World());
-		generation.setHeight_scale(0.05f);
+		//generation = new Generation(seed, temp_seed, moist_seed, new BiomeGroup_World());
+		//generation.setHeight_scale(0.05f);
 		loaded = false;
 		chunks.clear();
 		setRequirements(new Player(0, 0, 20, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
@@ -275,9 +275,13 @@ public class World implements Serializable {
 		Logger.print("[seed]: " + this.seed);
 
 		Point chunk_point = getChunkPointWithCoords(player.getX(), player.getY());
-		chunks.put(chunk_point, new Chunk(chunk_point.x, chunk_point.y, this));
-		handler.addObject(new Waterfall(0, 0, 10));
-		chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
+		Chunk chunk = new Chunk(chunk_point.x, chunk_point.y, this);
+
+		// add tiles to test
+
+		chunks.put(chunk_point, chunk);
+		//handler.addObject(new Waterfall(0, 0, 10));
+		//chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
 		loaded = true;
 	}
 
