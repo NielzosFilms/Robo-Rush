@@ -49,7 +49,6 @@ public class Tile_Grass_Transition extends Tile implements UpdateAble {
 
     @Override
     public void update() {
-        Logger.printStackStrace();
         int type = TransitionHelpers.getTransition(this, chunk, z_index);
 
         if(textures.containsKey(type)) {
