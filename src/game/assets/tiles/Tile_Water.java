@@ -11,10 +11,10 @@ import game.textures.Textures;
 import game.enums.BIOME;
 import game.system.world.Chunk;
 
-public class TileWater extends Tile {
+public class Tile_Water extends Tile {
     private TILE_TYPE water_type;
 
-    public TileWater(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk) {
+    public Tile_Water(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk) {
         super(x, y, chunk_x, chunk_y, z_index, biome, chunk);
         water_type = TILE_TYPE.center;
     }

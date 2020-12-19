@@ -6,8 +6,10 @@ import java.util.*;
 
 import game.assets.entities.Player;
 import game.assets.structures.Structure;
-import game.assets.structures.waterfall.Waterfall;
 import game.assets.tiles.*;
+import game.assets.tiles.grass.Tile_Grass;
+import game.assets.tiles.grass.Tile_Grass_Plateau;
+import game.assets.tiles.grass.Tile_Grass_Transition;
 import game.assets.tiles.tile.Tile;
 import game.enums.BIOME;
 import game.enums.ID;
@@ -24,7 +26,6 @@ import game.system.systems.lighting.Light;
 import game.system.systems.lighting.LightingSystem;
 import game.system.main.*;
 import game.system.systems.particles.ParticleSystem;
-import game.system.world.biome_groups.BiomeGroup_World;
 import game.textures.Textures;
 
 public class World implements Serializable {
@@ -101,7 +102,7 @@ public class World implements Serializable {
 		ps.tick();
 
 		runWaterAnimations();
-		generateNewChunksOffScreen(camX, camY, camW, camH);
+		//generateNewChunksOffScreen(camX, camY, camW, camH);
 		tickChunksOnScreen(camX, camY, camW, camH);
 		collision.tick();
 		hitboxSystem.tick();
@@ -120,23 +121,23 @@ public class World implements Serializable {
 							getActiveChunks().put(
 									new Point(x - 16, y),
 									new Chunk(x - 16, y, this));
-							getActiveChunks().get(new Point(x - 16, y)).updateTiles();
+							getActiveChunks().get(new Point(x - 16, y)).update();
 						} else if (!getActiveChunks().containsKey(new Point(x + 16, y))) {
 							getActiveChunks().put(
 									new Point(x + 16, y),
 									new Chunk(x + 16, y, this));
-							getActiveChunks().get(new Point(x + 16, y)).updateTiles();
+							getActiveChunks().get(new Point(x + 16, y)).update();
 						}
 						if (!getActiveChunks().containsKey(new Point(x, y - 16))) {
 							getActiveChunks().put(
 									new Point(x, y - 16),
 									new Chunk(x, y - 16, this));
-							getActiveChunks().get(new Point(x, y - 16)).updateTiles();
+							getActiveChunks().get(new Point(x, y - 16)).update();
 						} else if (!getActiveChunks().containsKey(new Point(x, y + 16))) {
 							getActiveChunks().put(
 									new Point(x, y + 16),
 									new Chunk(x, y + 16, this));
-							getActiveChunks().get(new Point(x, y + 16)).updateTiles();
+							getActiveChunks().get(new Point(x, y + 16)).update();
 						}
 					}
 				}
@@ -266,8 +267,8 @@ public class World implements Serializable {
 		this.seed = seed;
 		this.temp_seed = r.nextLong();
 		this.moist_seed = r.nextLong();
-		generation = new Generation(seed, temp_seed, moist_seed, new BiomeGroup_World());
-		generation.setHeight_scale(0.05f);
+		//generation = new Generation(seed, temp_seed, moist_seed, new BiomeGroup_World());
+		//generation.setHeight_scale(0.05f);
 		loaded = false;
 		chunks.clear();
 		setRequirements(new Player(0, 0, 20, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
@@ -275,9 +276,33 @@ public class World implements Serializable {
 		Logger.print("[seed]: " + this.seed);
 
 		Point chunk_point = getChunkPointWithCoords(player.getX(), player.getY());
-		chunks.put(chunk_point, new Chunk(chunk_point.x, chunk_point.y, this));
-		handler.addObject(new Waterfall(0, 0, 10));
-		chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
+		Chunk chunk = new Chunk(chunk_point.x, chunk_point.y, this);
+
+		chunk.addTile(new Tile_Grass(32, 32, 2, 2, 1, BIOME.Forest, chunk));
+		chunk.addTile(new Tile_Grass(32, 48, 2, 3, 1, BIOME.Forest, chunk));
+		chunk.addTile(new Tile_Grass(48, 48, 3, 3, 1, BIOME.Forest, chunk));
+		chunk.addTile(new Tile_Grass(48, 32, 3, 2, 1, BIOME.Forest, chunk));
+
+		chunk.addTile(new Tile_Grass_Transition(16, 16, 1, 1, 1, BIOME.Forest, chunk));
+		chunk.addTile(new Tile_Grass_Transition(32, 16, 2, 1, 1, BIOME.Forest, chunk));
+		chunk.addTile(new Tile_Grass_Transition(16*3, 16, 3, 1, 1, BIOME.Forest, chunk));
+		chunk.addTile(new Tile_Grass_Transition(16*4, 16, 4, 1, 1, BIOME.Forest, chunk));
+
+		chunk.addTile(new Tile_Grass_Transition(16, 16*4, 1, 4, 1, BIOME.Forest, chunk));
+		chunk.addTile(new Tile_Grass_Transition(32, 16*4, 2, 4, 1, BIOME.Forest, chunk));
+		chunk.addTile(new Tile_Grass_Transition(16*3, 16*4, 3, 4, 1, BIOME.Forest, chunk));
+		chunk.addTile(new Tile_Grass_Transition(16*4, 16*4, 4, 4, 1, BIOME.Forest, chunk));
+
+		chunk.addTile(new Tile_Grass_Transition(16, 16*2, 1, 2, 1, BIOME.Forest, chunk));
+		chunk.addTile(new Tile_Grass_Transition(16, 16*3, 1, 3, 1, BIOME.Forest, chunk));
+
+		chunk.addTile(new Tile_Grass_Transition(16*4, 16*2, 4, 2, 1, BIOME.Forest, chunk));
+		chunk.addTile(new Tile_Grass_Transition(16*4, 16*3, 4, 3, 1, BIOME.Forest, chunk));
+
+		//chunk.updateTiles();
+		chunks.put(chunk_point, chunk);
+		//handler.addObject(new Waterfall(0, 0, 10));
+		//chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
 		loaded = true;
 	}
 
@@ -286,12 +311,12 @@ public class World implements Serializable {
 		if(!structureActive()) {
 			BIOME biome = generation.getBiome(height, temp, moist);
 			switch(biome) {
-				case Forest -> ret.add(new TileGrass(world_x, world_y, x, y, 1, biome, chunk));
+				case Forest -> ret.add(new Tile_Grass(world_x, world_y, x, y, 1, biome, chunk));
 				case Forest_Plateau -> ret.add(new Tile_Grass_Plateau(world_x, world_y, x, y, 1, biome, chunk));
 				case Desert -> ret.add(new Tile_Sand(world_x, world_y, x, y, 1, biome, chunk));
 				case Polar -> ret.add(new Tile_Snow(world_x, world_y, x, y, 1, biome, chunk));
 				case Tundra -> ret.add(new Tile_Dirt(world_x, world_y, x, y, 1, biome, chunk));
-				case Ocean -> ret.add(new TileWater(world_x, world_y, x, y, 1, biome, chunk));
+				case Ocean -> ret.add(new Tile_Water(world_x, world_y, x, y, 1, biome, chunk));
 			}
 		} else {
 			return active_structure.getGeneratedTile(x, y, height, temp, moist, chunk, world_x, world_y);

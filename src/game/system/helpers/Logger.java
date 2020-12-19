@@ -38,7 +38,7 @@ public class Logger {
         LocalDateTime now = LocalDateTime.now();
         String out = "[" + dtf.format(now) + "]";
         out += "[" + type + "]";
-        out += "[" + stackTraceElements[3] + "]";
+        out += "[" + stackTraceElements[4] + "]";
         return out;
     }
 

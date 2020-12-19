@@ -170,7 +170,7 @@ public class InventorySystem implements Serializable {
 								dropItemAtPlayer(tile_item);
 							}
 							chunk.removeTile(tile_found);
-							chunk.updateSameTiles(tile_found);
+							chunk.update();
 						}
 					} else {
 						world.getPs().addParticle(new Particle_String(world.getPlayer().getX(), world.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));

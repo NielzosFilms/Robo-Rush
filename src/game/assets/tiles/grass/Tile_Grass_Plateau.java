@@ -1,6 +1,4 @@
-package game.assets.tiles;
-
-import game.assets.tiles.tile.EdgeTextures;
+package game.assets.tiles.grass;
 import game.assets.tiles.tile.Tile;
 import game.enums.BIOME;
 import game.enums.TILE_TYPE;
@@ -13,7 +11,7 @@ import game.textures.Texture;
 import java.awt.*;
 import java.util.HashMap;
 
-public class Tile_Grass_Plateau extends Tile implements EdgeTextures, Collision {
+public class Tile_Grass_Plateau extends Tile implements Collision {
 	private HashMap<TILE_TYPE, Texture> textures = new HashMap<>();
 	public Tile_Grass_Plateau(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk) {
 		super(x, y, chunk_x, chunk_y, z_index, biome, chunk);
@@ -32,19 +30,6 @@ public class Tile_Grass_Plateau extends Tile implements EdgeTextures, Collision 
 	}
 
 	@Override
-	public void findAndSetEdgeTexture() {
-		this.tile_type = TileHelperFunctions.getTileType4DirTileOrBiome(this, chunk, z_index);
-		if(textures.containsKey(tile_type)) {
-			texture = textures.get(tile_type);
-			/*if(tile_type == TILE_TYPE.bottom || tile_type == TILE_TYPE.bottom_left || tile_type == TILE_TYPE.bottom_right) {
-				Tile_Grass_Plateau tile_grass_plateau = new Tile_Grass_Plateau(x, y + tileSize, chunk_x, chunk_y+1, z_index+1, biome, chunk);
-				tile_grass_plateau.setTexture(new Texture(TEXTURE_LIST.grass_plateau, 1, 5));
-				chunk.addTile(tile_grass_plateau);
-			}*/
-		}
-	}
-
-	@Override
 	public void tick() {
 
 	}
@@ -55,15 +40,7 @@ public class Tile_Grass_Plateau extends Tile implements EdgeTextures, Collision 
 	}
 
 	@Override
-	public void update() {
-
-	}
-
-	@Override
 	public Rectangle getBounds() {
-		if(tile_type == TILE_TYPE.center || tile_type == TILE_TYPE.top) {
-			return null;
-		}
 		return new Rectangle(x, y, tileSize, tileSize);
 	}
 }
