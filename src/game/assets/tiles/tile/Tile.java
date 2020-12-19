@@ -17,7 +17,6 @@ public abstract class Tile implements Serializable {
     protected Chunk chunk;
     protected int z_index;
     protected int tileSize = 16;
-    protected TILE_TYPE tile_type;
 
     protected Texture texture;
 
@@ -103,14 +102,5 @@ public abstract class Tile implements Serializable {
 
     public void setTileSize(int tileSize) {
         this.tileSize = tileSize;
-    }
-
-    public abstract void update();
-
-    public TILE_TYPE getTile_type() {
-        return this.tile_type;
-    }
-    public void setTile_type(TILE_TYPE type) {
-        this.tile_type = type;
     }
 }

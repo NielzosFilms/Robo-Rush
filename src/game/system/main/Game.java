@@ -215,6 +215,12 @@ public class Game extends Canvas implements Runnable {
 		Logger.print("Arguments: " + Arrays.toString(args));
 		Logger.print("Game starting...");
 		canvas = new Game();
+
+		/*int abyte = 0b00000000;
+
+		abyte |= 1 << 1;
+		abyte &= ~(1 << 1);
+		System.out.println(abyte);*/
 	}
 
 }

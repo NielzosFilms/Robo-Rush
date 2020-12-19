@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
 
-import game.assets.tiles.tile.EdgeTextures;
+import game.assets.tiles.tile.UpdateAble;
 import game.system.systems.gameObject.Collision;
 import game.system.systems.lighting.Light;
 import game.system.systems.gameObject.GameObject;
@@ -39,7 +39,7 @@ public class Chunk implements Serializable {
 		// generate chunk tiles 16x16 then add to world
 
 		//GenerateTiles(world);
-		updateTiles();
+		update();
 	}
 
 	public void tick() {
@@ -111,21 +111,21 @@ public class Chunk implements Serializable {
 		}
 	}
 
-	public void updateTiles() {
+	public void update() {
 		// change texture of tile
 		for(HashMap<Point, Tile> map : new LinkedList<>(tiles)) {
 			for (Map.Entry<Point, Tile> pointTileEntry : map.entrySet()) {
 				if (map.containsKey(pointTileEntry.getKey())) {
 					Tile tile = map.get(pointTileEntry.getKey());
-					if(tile instanceof EdgeTextures) {
-						((EdgeTextures) tile).findAndSetEdgeTexture();
+					if(tile instanceof UpdateAble) {
+						((UpdateAble) tile).update();
 					}
 				}
 			}
 		}
 	}
 
-	public void updateSameTiles(Tile tile) {
+	/*public void updateSameTiles(Tile tile) {
 		int tilemap_index = tile.getZIndex();
 		HashMap<Point, Tile> tmp = new HashMap<>(tiles.get(tilemap_index));
 
@@ -133,14 +133,14 @@ public class Chunk implements Serializable {
 			if (tmp.containsKey(pointTileEntry.getKey())) {
 				if (tmp.get(pointTileEntry.getKey()).getClass() == tile.getClass()) {
 					Tile tile_2 = tmp.get(pointTileEntry.getKey());
-					if(tile_2 instanceof EdgeTextures) {
-						((EdgeTextures) tile_2).findAndSetEdgeTexture();
+					if(tile_2 instanceof Transition) {
+						((Transition) tile_2).findAndSetEdgeTexture();
 					}
 				}
 			}
 		}
 		tiles.set(tilemap_index, tmp);
-	}
+	}*/
 
 	private void GenerateTiles(World world) {
 		float[][] osn = world.getGeneration().getHeightOsn(x, y, tile_width, tile_height);

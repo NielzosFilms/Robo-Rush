@@ -1,7 +1,6 @@
 package game.assets.tiles.floor.wood;
 
 import game.assets.items.item.Item;
-import game.assets.tiles.tile.EdgeTextures;
 import game.assets.tiles.tile.Tile;
 import game.system.systems.gameObject.HasItem;
 import game.textures.TEXTURE_LIST;
@@ -13,7 +12,7 @@ import game.textures.Texture;
 import java.awt.*;
 import java.util.HashMap;
 
-public class Tile_FloorWood extends Tile implements EdgeTextures, HasItem {
+public class Tile_FloorWood extends Tile implements HasItem {
 	private HashMap<TILE_TYPE, Texture> textures = new HashMap<>();
 
 	public Tile_FloorWood(int x, int y, int chunk_x, int chunk_y, int z_index, Chunk chunk) {
@@ -43,8 +42,8 @@ public class Tile_FloorWood extends Tile implements EdgeTextures, HasItem {
 	}
 
 	public void findAndSetEdgeTexture() {
-		TILE_TYPE tileType = TileHelperFunctions.getTileType4DirTile(this, chunk, z_index);
-		this.texture = textures.get(tileType);
+		//TILE_TYPE tileType = TileHelperFunctions.getTileType4DirTile(this, chunk, z_index);
+		//this.texture = textures.get(tileType);
 	}
 
 	public void update() {

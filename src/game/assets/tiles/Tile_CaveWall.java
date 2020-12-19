@@ -1,8 +1,6 @@
 package game.assets.tiles;
 
-import game.assets.items.item.Item;
 import game.assets.tiles.floor.cave.Tile_Floor_Cave;
-import game.assets.tiles.tile.EdgeTextures;
 import game.assets.tiles.tile.Tile;
 import game.enums.BIOME;
 import game.enums.TILE_TYPE;
@@ -18,7 +16,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Tile_CaveWall extends Tile implements EdgeTextures, Collision {
+public class Tile_CaveWall extends Tile implements Collision {
     private HashMap<TILE_TYPE, Texture> textures = new HashMap<>();
     private LinkedList<TILE_TYPE> types_to_add_bg = new LinkedList<>();
 
@@ -55,18 +53,18 @@ public class Tile_CaveWall extends Tile implements EdgeTextures, Collision {
 
     public void render(Graphics g) {
         g.drawImage(texture.getTexure(), x, y, tileSize, tileSize, null);
-        if(tile_type != null && Game.DEBUG_MODE) {
+        /*if(tile_type != null && Game.DEBUG_MODE) {
             g.setColor(Color.WHITE);
             g.setFont(Fonts.default_fonts.get(2));
             g.drawString(tile_type.name(), x, y+8);
-        }
+        }*/
     }
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, tileSize, tileSize);
     }
 
-    public void findAndSetEdgeTexture() {
+    /*public void findAndSetEdgeTexture() {
         boolean top = TileHelperFunctions.checkSameNeighbourBiome(this, BIOME.Cave_floor, 0, -1);
         boolean right = TileHelperFunctions.checkSameNeighbourBiome(this, BIOME.Cave_floor, 1, 0);
         boolean bot = TileHelperFunctions.checkSameNeighbourBiome(this, BIOME.Cave_floor, 0, 1);
@@ -96,7 +94,7 @@ public class Tile_CaveWall extends Tile implements EdgeTextures, Collision {
                 chunk.addTile(new Tile_Floor_Cave(x, y, chunk_x, chunk_y, 1, BIOME.Cave_wall, chunk));
             }
         }
-    }
+    }*/
 
     public void update() {
 

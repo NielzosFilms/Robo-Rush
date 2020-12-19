@@ -32,7 +32,7 @@ public class Item_FloorWood extends Item implements Placeable {
             Tile tile = new Tile_FloorWood(tile_coords.x, tile_coords.y, tile_x, tile_y, 3, chunk);
             if(!chunk.tileExists(tile)) {
                 chunk.addTile(tile);
-                chunk.updateSameTiles(tile);
+                chunk.update();
                 return true;
             }
         }
