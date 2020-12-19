@@ -274,7 +274,6 @@ public class World implements Serializable {
 	}
 
 	public void generate(Long seed) {
-		seed = 5678866136396568034L;
 		this.r = new Random(seed);
 		this.seed = seed;
 		this.temp_seed = r.nextLong();
