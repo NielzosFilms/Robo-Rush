@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
 
+import game.assets.tiles.tile.Transition;
 import game.assets.tiles.tile.UpdateAble;
 import game.system.systems.gameObject.Collision;
 import game.system.systems.lighting.Light;
@@ -39,7 +40,8 @@ public class Chunk implements Serializable {
 		// generate chunk tiles 16x16 then add to world
 
 		GenerateTiles(world);
-		update();
+		/*createTransitions();
+		update();*/
 	}
 
 	public void tick() {
@@ -111,12 +113,27 @@ public class Chunk implements Serializable {
 		}
 	}
 
+	public void createTransitions() {
+		for(int i=0; i<tiles.size(); i++) {
+			HashMap<Point, Tile> map = new HashMap<>(tiles.get(i));
+			for(Point key : map.keySet()) {
+				if (map.containsKey(key)) {
+					Tile tile = map.get(key);
+					if(tile instanceof Transition) {
+						((Transition) tile).createTransitionTiles();
+					}
+				}
+			}
+		}
+	}
+
 	public void update() {
 		// change texture of tile
-		for(HashMap<Point, Tile> map : new LinkedList<>(tiles)) {
-			for (Map.Entry<Point, Tile> pointTileEntry : map.entrySet()) {
-				if (map.containsKey(pointTileEntry.getKey())) {
-					Tile tile = map.get(pointTileEntry.getKey());
+		for(int i=0; i<tiles.size(); i++) {
+			HashMap<Point, Tile> map = new HashMap<>(tiles.get(i));
+			for(Point key : map.keySet()) {
+				if (map.containsKey(key)) {
+					Tile tile = map.get(key);
 					if(tile instanceof UpdateAble) {
 						((UpdateAble) tile).update();
 					}
@@ -167,7 +184,6 @@ public class Chunk implements Serializable {
 				}
 			}
 		}
-		//updateTiles();
 	}
 
 	public LinkedList<GameObject> getEntities() {

@@ -16,6 +16,7 @@ import game.enums.BIOME;
 import game.enums.ID;
 import game.enums.TILE_TYPE;
 import game.system.helpers.Logger;
+import game.system.helpers.Offsets;
 import game.system.systems.Collision;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.hitbox.HitboxSystem;
@@ -119,33 +120,34 @@ public class World implements Serializable {
 			for (int y = camY - 32; y < camY + camH + 16; y++) {
 				for (int x = camX - 32; x < camX + camW + 16; x++) {
 					if (getActiveChunks().containsKey(new Point(x, y))) {
-						if (!getActiveChunks().containsKey(new Point(x - 16, y))) {
-							getActiveChunks().put(
-									new Point(x - 16, y),
-									new Chunk(x - 16, y, this));
-							getActiveChunks().get(new Point(x - 16, y)).update();
-						} else if (!getActiveChunks().containsKey(new Point(x + 16, y))) {
-							getActiveChunks().put(
-									new Point(x + 16, y),
-									new Chunk(x + 16, y, this));
-							getActiveChunks().get(new Point(x + 16, y)).update();
-						}
-						if (!getActiveChunks().containsKey(new Point(x, y - 16))) {
-							getActiveChunks().put(
-									new Point(x, y - 16),
-									new Chunk(x, y - 16, this));
-							getActiveChunks().get(new Point(x, y - 16)).update();
-						} else if (!getActiveChunks().containsKey(new Point(x, y + 16))) {
-							getActiveChunks().put(
-									new Point(x, y + 16),
-									new Chunk(x, y + 16, this));
-							getActiveChunks().get(new Point(x, y + 16)).update();
+						for(Point offset : Offsets.all_offsets) {
+							if (!getActiveChunks().containsKey(new Point(x + offset.x * 16, y + offset.y * 16))) {
+								getActiveChunks().put(
+										new Point(x + offset.x * 16, y + offset.y * 16),
+										new Chunk(x + offset.x * 16, y + offset.y * 16, this));
+								updateChunk(x + offset.x * 16, y + offset.y * 16);
+							}
 						}
 					}
 				}
 			}
 		} else {
 			active_structure.generateNewChunksOffScreen(camX, camY, camW, camH, this);
+		}
+	}
+
+	private void updateChunk(int x, int y) {
+		// TODO fix update order, tiles created after initial chunk don't get transitions
+		if(getActiveChunks().containsKey(new Point(x, y))) {
+			getActiveChunks().get(new Point(x, y)).createTransitions();
+			getActiveChunks().get(new Point(x, y)).update();
+			for(Point offset : Offsets.all_offsets) {
+				Point offset_point = new Point(x + offset.x * 16, y + offset.y * 16);
+				if(getActiveChunks().containsKey(offset_point)) {
+					getActiveChunks().get(offset_point).update();
+				}
+			}
+
 		}
 	}
 
@@ -279,7 +281,6 @@ public class World implements Serializable {
 
 		Point chunk_point = getChunkPointWithCoords(player.getX(), player.getY());
 		Chunk chunk = new Chunk(chunk_point.x, chunk_point.y, this);
-		chunk.update();
 		chunks.put(chunk_point, chunk);
 		handler.addObject(new Waterfall(0, 0, 10));
 		//chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
@@ -292,11 +293,11 @@ public class World implements Serializable {
 			BIOME biome = generation.getBiome(height, temp, moist);
 			switch(biome) {
 				case Forest -> ret.add(new Tile_Grass(world_x, world_y, x, y, 1, biome, chunk));
-				case Forest_Plateau -> ret.add(new Tile_Grass_Plateau(world_x, world_y, x, y, 1, biome, chunk));
-				case Desert -> ret.add(new Tile_Sand(world_x, world_y, x, y, 1, biome, chunk));
-				case Polar -> ret.add(new Tile_Snow(world_x, world_y, x, y, 1, biome, chunk));
-				case Tundra -> ret.add(new Tile_Dirt(world_x, world_y, x, y, 1, biome, chunk));
-				case Ocean -> ret.add(new Tile_Water(world_x, world_y, x, y, 1, biome, chunk));
+				case Forest_Plateau -> ret.add(new Tile_Grass_Plateau(world_x, world_y, x, y, 3, biome, chunk));
+				case Desert -> ret.add(new Tile_Sand(world_x, world_y, x, y, 2, biome, chunk));
+				case Polar -> ret.add(new Tile_Snow(world_x, world_y, x, y, 4, biome, chunk));
+				case Tundra -> ret.add(new Tile_Dirt(world_x, world_y, x, y, 5, biome, chunk));
+				default -> ret.add(new Tile_Water(world_x, world_y, x, y, 0, biome, chunk));
 			}
 		} else {
 			return active_structure.getGeneratedTile(x, y, height, temp, moist, chunk, world_x, world_y);

@@ -21,24 +21,31 @@ public class TileHelperFunctions {
             int tmp_x = x + offset_x;
             int tmp_y = y + offset_y;
 
-            if(tmp_x < 0 && tmp_y < 0 || tmp_x > 15 && tmp_y > 15 ||
-                    tmp_x < 0 && tmp_y > 15 || tmp_x > 15 && tmp_y < 0) {
+            Point oldTileCoords = new Point(tmp_x, tmp_y);
+            Point newTileCoords = getTileChunkCoords(tmp_x, tmp_y);
+
+            if(oldTileCoords.x != newTileCoords.x && oldTileCoords.y != newTileCoords.y) {
                 neighbour = this_chunk.getNeighbourChunk(offset_x, offset_y);
-            } else if(tmp_x < 0 || tmp_x > 15) {
+            } else if(oldTileCoords.x != newTileCoords.x) {
                 neighbour = this_chunk.getNeighbourChunk(offset_x, 0);
-            } else if(tmp_y < 0 || tmp_y > 15) {
+            } else if(oldTileCoords.y != newTileCoords.y) {
                 neighbour = this_chunk.getNeighbourChunk(0, offset_y);
             }
-            if(tmp_x < 0) tmp_x = 15;
-            if(tmp_x > 15) tmp_x = 0;
-            if(tmp_y < 0) tmp_y = 15;
-            if(tmp_y > 15) tmp_y = 0;
+
             if(neighbour != null) {
-                if(neighbour.getTileMap(tilemap_index).containsKey(new Point(tmp_x, tmp_y))) {
-                    return (Tile) neighbour.getTileMap(tilemap_index).get(new Point(tmp_x, tmp_y));
+                if(neighbour.getTileMap(tilemap_index).containsKey(newTileCoords)) {
+                    return (Tile) neighbour.getTileMap(tilemap_index).get(newTileCoords);
                 }
             }
         }
         return null;
+    }
+
+    public static Point getTileChunkCoords(int x, int y) {
+        if(x < 0) x += 16;
+        if(x > 15) x -= 16;
+        if(y < 0) y += 16;
+        if(y > 15) y -= 16;
+        return new Point(x, y);
     }
 }

@@ -7,14 +7,14 @@ import game.system.world.Chunk;
 import java.awt.*;
 
 public class TransitionHelpers {
-    private static Point[] edge_offsets = new Point[]{
+    public static Point[] edge_offsets = new Point[]{
             new Point(0, -1),
             new Point(1, 0),
             new Point(0, 1),
             new Point(-1, 0),
     };
 
-    private static Point[] corner_offset = new Point[]{
+    public static Point[] corner_offset = new Point[]{
             new Point(1, -1),
             new Point(1, 1),
             new Point(-1, 1),
@@ -34,7 +34,7 @@ public class TransitionHelpers {
             if(offset_tile == null) {
                 retByte = unsetBit(retByte, i + byte_offset);
             } else if(offset_tile.getClass() == Tile_Grass.class) {
-                Logger.print("classes matched");
+                //Logger.print("classes matched");
                 retByte = setBit(retByte, i + byte_offset);
             }
         }
