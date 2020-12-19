@@ -34,7 +34,7 @@ public class TransitionHelpers {
             if(offset_tile == null) {
                 retByte = unsetBit(retByte, i + byte_offset);
             } else if(offset_tile.getClass() == Tile_Grass.class) {
-                System.out.println("classes matched");
+                Logger.print("classes matched");
                 retByte = setBit(retByte, i + byte_offset);
             }
         }

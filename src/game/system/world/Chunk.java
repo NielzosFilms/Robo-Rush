@@ -38,7 +38,7 @@ public class Chunk implements Serializable {
 		// entities.add(new Enemy((x+8)*16, (y+8)*16, ID.Enemy));
 		// generate chunk tiles 16x16 then add to world
 
-		//GenerateTiles(world);
+		GenerateTiles(world);
 		update();
 	}
 
