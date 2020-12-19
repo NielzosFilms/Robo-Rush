@@ -2,6 +2,9 @@ package game.system.systems.menu.buttons;
 
 import game.enums.BUTTONS;
 import game.enums.MENUSTATES;
+import game.system.audioEngine.AudioClip;
+import game.system.audioEngine.AudioFiles;
+import game.system.audioEngine.AudioPlayer;
 import game.system.main.Game;
 import game.textures.Fonts;
 import game.textures.Textures;
@@ -29,6 +32,7 @@ public class ButtonBack extends Button {
 	}
 
 	public void handleClick(MouseEvent e) {
+		AudioPlayer.playSound(AudioFiles.menu_back, 0.7f, false, 0);
 		Game.menuSystem.setState(Game.menuSystem.getPreviousState());
 	}
 }

@@ -35,7 +35,7 @@ import game.textures.Texture;
 
 public class Player extends GameObject implements Collision, Interactable {
 	private static final int ATTACK_DELAY = 15;
-	private static final int DEFAULT_ATTACK_DAMAGE = 999;
+	private static final int DEFAULT_ATTACK_DAMAGE = 1;
 	public final int REACH = 50;
 	Random r = new Random();
 	private transient KeyInput keyInput;

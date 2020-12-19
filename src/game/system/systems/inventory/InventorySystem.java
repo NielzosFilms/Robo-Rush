@@ -5,6 +5,8 @@ import game.assets.items.item.Item;
 import game.assets.items.Item_Ground;
 import game.assets.items.item.Placeable;
 import game.assets.tiles.tile.Tile;
+import game.system.audioEngine.AudioFiles;
+import game.system.audioEngine.AudioPlayer;
 import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
 import game.system.main.*;
@@ -122,6 +124,8 @@ public class InventorySystem implements Serializable {
 
 	public void mouseClicked(MouseEvent e) {
 		if(mouseOverInventory()) {
+			if(e.getButton() == MouseEvent.BUTTON1) AudioPlayer.playSound(AudioFiles.inv_select_2, 0.7f, false, 0);
+			if(e.getButton() == MouseEvent.BUTTON3) AudioPlayer.playSound(AudioFiles.inv_select_3, 0.7f, false, 0);
 			getHoveredInventory().mouseClick(e, mouseInput, this);
 		}
 	}
@@ -181,6 +185,7 @@ public class InventorySystem implements Serializable {
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
+		AudioPlayer.playSound(AudioFiles.inv_select_1, 0.7f, false, 0);
 		int new_index = hotbar_selected + e.getWheelRotation();
 		if (new_index > player_hotbar.getSizeX() - 1) {
 			new_index = 0;
@@ -241,6 +246,7 @@ public class InventorySystem implements Serializable {
 				if (player_inv.canAcceptItem(item)) {
 					player_inv.addItem(item);
 					handler.findAndRemoveObject(obj);
+					AudioPlayer.playSound(AudioFiles.inv_pickup_item, 0.7f, false, 0);
 				}
 			}
 		}

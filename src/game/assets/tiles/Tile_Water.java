@@ -12,11 +12,11 @@ import game.enums.BIOME;
 import game.system.world.Chunk;
 
 public class Tile_Water extends Tile {
-    private TILE_TYPE water_type;
+    private int water_type;
 
     public Tile_Water(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk) {
         super(x, y, chunk_x, chunk_y, z_index, biome, chunk);
-        water_type = TILE_TYPE.center;
+        water_type = 0b00000000;
     }
 
     public void tick() {
@@ -33,9 +33,6 @@ public class Tile_Water extends Tile {
 
     public void update() {
 
-    }
-    public void setWaterType(TILE_TYPE tileType) {
-        this.water_type = tileType;
     }
 
 }

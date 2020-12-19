@@ -2,6 +2,8 @@ package game.system.systems.menu.buttons;
 
 import game.enums.BUTTONS;
 import game.enums.GAMESTATES;
+import game.system.audioEngine.AudioFiles;
+import game.system.audioEngine.AudioPlayer;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
 import game.system.main.Game;
@@ -45,6 +47,7 @@ public class ButtonLoad extends Button {
 	}
 
 	public void handleClick(MouseEvent e) {
+		AudioPlayer.playSound(AudioFiles.menu_forward, 0.7f, false, 0);
 		if(slot_exists) {
 			loadChunks();
 			World.loaded = true;

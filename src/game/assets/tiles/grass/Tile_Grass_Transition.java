@@ -6,19 +6,22 @@ import game.enums.BIOME;
 import game.system.helpers.Logger;
 import game.system.helpers.TransitionHelpers;
 import game.system.world.Chunk;
+import game.textures.Animation;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
+import game.textures.Textures;
 
 import java.awt.*;
 import java.util.HashMap;
 
 public class Tile_Grass_Transition extends Tile implements UpdateAble {
-    private HashMap<Integer, Texture> textures = new HashMap<>();
+    //private HashMap<Integer, Texture> textures = new HashMap<>();
+    private Animation animation;
 
     public Tile_Grass_Transition(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk) {
         super(x, y, chunk_x, chunk_y, z_index, biome, chunk);
 
-        textures.put(0b00000000, new Texture(TEXTURE_LIST.forest_list, 1, 1));
+        /*textures.put(0b00000000, new Texture(TEXTURE_LIST.forest_list, 1, 1));
 
         textures.put(0b00001000, new Texture(TEXTURE_LIST.forest_list, 2, 1));
         textures.put(0b00000001, new Texture(TEXTURE_LIST.forest_list, 1, 2));
@@ -32,9 +35,9 @@ public class Tile_Grass_Transition extends Tile implements UpdateAble {
         textures.put(0b00010000, new Texture(TEXTURE_LIST.forest_list, 0, 2));
         textures.put(0b00100000, new Texture(TEXTURE_LIST.forest_list, 0, 0));
         textures.put(0b01000000, new Texture(TEXTURE_LIST.forest_list, 2, 0));
-        textures.put(0b10000000, new Texture(TEXTURE_LIST.forest_list, 2, 2));
+        textures.put(0b10000000, new Texture(TEXTURE_LIST.forest_list, 2, 2));*/
 
-        texture = new Texture(TEXTURE_LIST.forest_list, 1, 10);
+        texture = new Texture(TEXTURE_LIST.forest_list, 1, 1);
     }
 
     @Override
@@ -45,14 +48,17 @@ public class Tile_Grass_Transition extends Tile implements UpdateAble {
     @Override
     public void render(Graphics g) {
         g.drawImage(texture.getTexure(), x, y, 16, 16, null);
+        if(animation != null) {
+            animation.drawAnimation(g, x, y, 16, 16);
+        }
     }
 
     @Override
     public void update() {
         int type = TransitionHelpers.getTransition(this, chunk, z_index);
 
-        if(textures.containsKey(type)) {
-            texture = textures.get(type);
+        if(Textures.water_red.containsKey(type)) {
+            animation = Textures.water_red.get(type);
         }
     }
 }

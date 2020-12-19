@@ -2,6 +2,8 @@ package game.system.systems.menu.buttons;
 
 import game.enums.BUTTONS;
 import game.enums.MENUSTATES;
+import game.system.audioEngine.AudioFiles;
+import game.system.audioEngine.AudioPlayer;
 import game.system.main.Game;
 import game.textures.Fonts;
 import game.textures.Textures;
@@ -26,6 +28,7 @@ public class ButtonSettings extends Button {
 	}
 
 	public void handleClick(MouseEvent e) {
+		AudioPlayer.playSound(AudioFiles.menu_forward, 0.7f, false, 0);
 		Game.menuSystem.setState(MENUSTATES.Settings);
 	}
 }

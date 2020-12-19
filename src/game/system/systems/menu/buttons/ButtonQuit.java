@@ -1,6 +1,8 @@
 package game.system.systems.menu.buttons;
 
 import game.enums.BUTTONS;
+import game.system.audioEngine.AudioFiles;
+import game.system.audioEngine.AudioPlayer;
 import game.system.helpers.Logger;
 import game.textures.Fonts;
 import game.textures.Textures;
@@ -23,6 +25,7 @@ public class ButtonQuit extends Button {
         g.drawString("Quit", x, y + height / 2);
     }
     public void handleClick(MouseEvent e) {
+        AudioPlayer.playSound(AudioFiles.menu_back, 0.7f, false, 0);
         Logger.print("(╯°□°）╯︵ ┻━┻");
         System.exit(1);
     }

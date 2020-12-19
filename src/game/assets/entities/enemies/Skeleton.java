@@ -19,11 +19,20 @@ import org.json.simple.JSONObject;
 import java.awt.*;
 
 public class Skeleton extends GameObject implements Collision, Hitable {
-    private Animation idle = new Animation(20,
+    private Animation idle = new Animation(8,
             new Texture(TEXTURE_LIST.skeleton_list, 0, 0),
             new Texture(TEXTURE_LIST.skeleton_list, 1, 0),
+            new Texture(TEXTURE_LIST.skeleton_list, 2, 0),
+            new Texture(TEXTURE_LIST.skeleton_list, 3, 0),
+
             new Texture(TEXTURE_LIST.skeleton_list, 0, 1),
-            new Texture(TEXTURE_LIST.skeleton_list, 1, 0)
+            new Texture(TEXTURE_LIST.skeleton_list, 1, 1),
+            new Texture(TEXTURE_LIST.skeleton_list, 2, 1),
+            new Texture(TEXTURE_LIST.skeleton_list, 3, 1),
+
+            new Texture(TEXTURE_LIST.skeleton_list, 0, 2),
+            new Texture(TEXTURE_LIST.skeleton_list, 1, 2),
+            new Texture(TEXTURE_LIST.skeleton_list, 2, 2)
             );
 
     private HealthBar healthBar = new HealthBar(0, 0, 0, 50);

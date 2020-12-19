@@ -1,8 +1,10 @@
 package game.assets.tiles.grass;
 import game.assets.tiles.tile.Tile;
+import game.assets.tiles.tile.Transition;
 import game.enums.BIOME;
 import game.enums.TILE_TYPE;
 import game.system.helpers.TileHelperFunctions;
+import game.system.helpers.TransitionHelpers;
 import game.system.systems.gameObject.Collision;
 import game.system.world.Chunk;
 import game.textures.TEXTURE_LIST;
@@ -11,7 +13,7 @@ import game.textures.Texture;
 import java.awt.*;
 import java.util.HashMap;
 
-public class Tile_Grass_Plateau extends Tile implements Collision {
+public class Tile_Grass_Plateau extends Tile implements Transition {
 	private HashMap<TILE_TYPE, Texture> textures = new HashMap<>();
 	public Tile_Grass_Plateau(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk) {
 		super(x, y, chunk_x, chunk_y, z_index, biome, chunk);
@@ -40,7 +42,7 @@ public class Tile_Grass_Plateau extends Tile implements Collision {
 	}
 
 	@Override
-	public Rectangle getBounds() {
-		return new Rectangle(x, y, tileSize, tileSize);
+	public void createTransitionTiles() {
+		TransitionHelpers.createTransitionTiles(this, chunk, Tile_Grass_Plateau_Transition.class);
 	}
 }

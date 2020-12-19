@@ -9,11 +9,12 @@ import game.assets.items.Item_Ground;
 import game.system.main.Game;
 import game.system.systems.gameObject.GameObject;
 import game.enums.ID;
+import game.system.systems.gameObject.HasItem;
 import game.system.systems.gameObject.Interactable;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
-public class Pebble extends GameObject implements Interactable {
+public class Pebble extends GameObject implements Interactable, HasItem {
 
     private Random r = new Random();
 
@@ -41,13 +42,8 @@ public class Pebble extends GameObject implements Interactable {
     }
 
     public void interact() {
-        Game.world.getHandler().addObject(new Item_Ground(x, y, 1, ID.Item, new Item_Rock(1)));
-        Game.world.getHandler().findAndRemoveObject(this);
+        Game.world.getInventorySystem().pickupItemToPlayerInv(this);
         //Game.inventorySystem.pickupItemToPlayerInv(this);
-    }
-
-    public void destroyed() {
-        //Game.handler.addObject(1, new ItemGround(x, y, 1, ID.Item, new ItemRock(5, ITEM_ID.Rock)));
     }
 
 }

@@ -1,5 +1,7 @@
 package game.system.systems.menu.menuAssets;
 
+import game.system.audioEngine.AudioFiles;
+import game.system.audioEngine.AudioPlayer;
 import game.system.inputs.MouseInput;
 import game.system.helpers.Helpers;
 
@@ -10,6 +12,8 @@ public class SliderInput {
 	private boolean holding = false;
 	private SliderKnob knob;
 	private MouseInput mouse;
+
+	private int value, change_timer;
 
 	private int x, y, width;
 
@@ -26,7 +30,17 @@ public class SliderInput {
 		if(holding) {
 			knob.setX(mouse.mouse_x + 4);
 			clampKnob();
+			if(value != getValue()) onCange();
+			value = getValue();
 		}
+	}
+
+	private void onCange() {
+		if(change_timer >= 2) {
+			AudioPlayer.playSound(AudioFiles.menu_move_bar, 0.2f, false, 0);
+			change_timer = 0;
+		}
+		change_timer++;
 	}
 
 	public void render(Graphics g) {
