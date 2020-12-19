@@ -10,7 +10,7 @@ import game.assets.structures.waterfall.Waterfall;
 import game.assets.tiles.*;
 import game.assets.tiles.grass.Tile_Grass;
 import game.assets.tiles.grass.Tile_Grass_Plateau;
-import game.assets.tiles.grass.Tile_Grass_Transition;
+import game.assets.tiles.sand.Tile_Sand;
 import game.assets.tiles.tile.Tile;
 import game.enums.BIOME;
 import game.enums.ID;
@@ -148,6 +148,13 @@ public class World implements Serializable {
 				}
 			}
 
+		}
+	}
+
+	public void createChunk(Chunk chunk) {
+		if(!getActiveChunks().containsKey(new Point(chunk.x, chunk.y))) {
+			getActiveChunks().put(new Point(chunk.x, chunk.y), new Chunk(chunk.x, chunk.y, this));
+			updateChunk(chunk.x, chunk.y);
 		}
 	}
 
