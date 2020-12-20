@@ -1,5 +1,6 @@
 package game.assets;
 
+import game.system.helpers.Logger;
 import game.textures.TEXTURE_LIST;
 import game.system.main.Game;
 import game.system.helpers.Helpers;
@@ -35,7 +36,8 @@ public class HealthBar implements Serializable {
         if(health != max && hide_timer != 0) {
             g.drawImage(Textures.healthbar, x, y, 24, 4, null);
             int health_perc = getHealthPercent();
-            int until = (int)((float)(Textures.texture_lists.get(TEXTURE_LIST.healthbar_list).size()) / 100 * health_perc);
+            float div = (float)Textures.texture_lists.get(TEXTURE_LIST.healthbar_list).size() / 100;
+            int until = Math.round(div * health_perc);
             for(int i=0; i<until; i++) {
                 g.drawImage(Textures.texture_lists.get(TEXTURE_LIST.healthbar_list).get(new Point(i, 0)), x + i + 1, y + 1, 1, 2, null);
             }
@@ -61,7 +63,8 @@ public class HealthBar implements Serializable {
     }
 
     public int getHealthPercent() {
-        return (int)(100 / max * health);
+        float div = 100 / (float)max;
+        return Math.round(div * health);
     }
 
     private int getDrawWidth() {

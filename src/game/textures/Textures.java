@@ -36,7 +36,8 @@ public class Textures {
 			cave_png,
 			attack_slice_png,
 			skeleton_png,
-			grass_plateau_png;
+			grass_plateau_png,
+			stone_golem_idle_png;
 
 	// other standalone tiles
 	public static BufferedImage
@@ -91,6 +92,7 @@ public class Textures {
 		loading_png = loader.loadImage("assets/main/loading_animation_shadow.png");
 
 		skeleton_png = loader.loadImage("assets/entities/skeleton/skeleton.png");
+		stone_golem_idle_png = loader.loadImage("assets/entities/stone_golem/golem_idle.png");
 	}
 
 	private static void fillLists() {
@@ -112,6 +114,7 @@ public class Textures {
 		fillListWithSpriteSheet(cave_png, 32, 32, texture_lists.get(TEXTURE_LIST.cave_list));
 		fillListWithSpriteSheet(attack_slice_png, 64, 64, texture_lists.get(TEXTURE_LIST.attack_slice_list));
 		fillListWithSpriteSheet(skeleton_png, 48, 48, texture_lists.get(TEXTURE_LIST.skeleton_list));
+		fillListWithSpriteSheet(stone_golem_idle_png, 64, 48, texture_lists.get(TEXTURE_LIST.stone_golem_idle_list));
 	}
 
 	private static void fillListWithSpriteSheet(BufferedImage sheet, int width, int height, HashMap<Point, BufferedImage> list) {

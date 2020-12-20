@@ -77,7 +77,6 @@ public class Skeleton extends GameObject implements Collision, Hitable {
 
     @Override
     public void hit(int damage) {
-        Logger.print("skeleton hit: " + damage);
         healthBar.subtractHealth(damage);
     }
 }

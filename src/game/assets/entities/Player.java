@@ -34,7 +34,7 @@ import game.textures.ImageFilters;
 import game.textures.Texture;
 
 public class Player extends GameObject implements Collision, Interactable {
-	private static final int ATTACK_DELAY = 15;
+	private static final int ATTACK_DELAY = 20;
 	private static final int DEFAULT_ATTACK_DAMAGE = 1;
 	public final int REACH = 50;
 	Random r = new Random();
@@ -168,6 +168,16 @@ public class Player extends GameObject implements Collision, Interactable {
 			walk_speed = 2;
 		}
 
+		if (keyInput.keysDown[0] && !keyInput.keysDown[1]) {
+			velY = -walk_speed;
+			direction = DIRECTIONS.up;
+		} else if (keyInput.keysDown[1] && !keyInput.keysDown[0]) {
+			velY = walk_speed;
+			direction = DIRECTIONS.down;
+		} else {
+			velY = 0;
+		}
+
 		if (keyInput.keysDown[2] && !keyInput.keysDown[3]) {
 			velX = -walk_speed;
 			direction = DIRECTIONS.left;
@@ -178,15 +188,6 @@ public class Player extends GameObject implements Collision, Interactable {
 			velX = 0;
 		}
 
-		if (keyInput.keysDown[0] && !keyInput.keysDown[1]) {
-			velY = -walk_speed;
-			direction = DIRECTIONS.up;
-		} else if (keyInput.keysDown[1] && !keyInput.keysDown[0]) {
-			velY = walk_speed;
-			direction = DIRECTIONS.down;
-		} else {
-			velY = 0;
-		}
 		// misschien powerup voor reverse gravity
 
 		// velY = Game.clampDouble(velY, -9.8, 9.8);
