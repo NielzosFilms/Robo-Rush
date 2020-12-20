@@ -41,7 +41,7 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
         inv.setInitXY(300, 100);
 
         healthBar = new HealthBar(x - 4, y - 8, 0, 7);
-        this.tex = new Texture(TEXTURE_LIST.house_list, 6, 0);
+        this.tex = new Texture(TEXTURE_LIST.wood_list, 1, 0);
     }
 
     public Crate(JSONObject json, int z_index, int division, JsonStructureLoader loader) {
@@ -66,7 +66,7 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
         inv.setInitXY(300, 100);
 
         healthBar = new HealthBar(x - 4, y - 8, 0, 7);
-        this.tex = new Texture(TEXTURE_LIST.house_list, 6, 0);
+        this.tex = new Texture(TEXTURE_LIST.wood_list, 1, 0);
     }
 
     public void tick() {

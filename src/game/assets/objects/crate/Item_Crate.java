@@ -14,7 +14,7 @@ import java.awt.*;
 public class Item_Crate extends Item implements Placeable {
 	public Item_Crate(int amount) {
 		super(amount, ITEM_ID.Crate);
-		this.tex = new Texture(TEXTURE_LIST.house_list, 6, 0);
+		this.tex = new Texture(TEXTURE_LIST.wood_list, 1, 0);
 		this.itemGround = new Item_Ground(0, 0, 10, ID.Item, this);
 	}
 

@@ -12,7 +12,7 @@ public class Textures {
 
 	public static HashMap<Integer, Animation> water_gray = new HashMap<>();
 	public static HashMap<Integer, Animation> water_red = new HashMap<>();
-	public static final int water_speed = 25;
+	public static final int water_speed = 22;
 
 
 	// tilesets / sheets
@@ -37,7 +37,8 @@ public class Textures {
 			attack_slice_png,
 			skeleton_png,
 			grass_plateau_png,
-			stone_golem_idle_png;
+			stone_golem_idle_png,
+			wood_tiles_png;
 
 	// other standalone tiles
 	public static BufferedImage
@@ -93,6 +94,7 @@ public class Textures {
 
 		skeleton_png = loader.loadImage("assets/entities/skeleton/skeleton.png");
 		stone_golem_idle_png = loader.loadImage("assets/entities/stone_golem/golem_idle.png");
+		wood_tiles_png = loader.loadImage("assets/main/tile_sheets/wood_tiles.png");
 	}
 
 	private static void fillLists() {
@@ -115,6 +117,7 @@ public class Textures {
 		fillListWithSpriteSheet(attack_slice_png, 64, 64, texture_lists.get(TEXTURE_LIST.attack_slice_list));
 		fillListWithSpriteSheet(skeleton_png, 48, 48, texture_lists.get(TEXTURE_LIST.skeleton_list));
 		fillListWithSpriteSheet(stone_golem_idle_png, 64, 48, texture_lists.get(TEXTURE_LIST.stone_golem_idle_list));
+		fillListWithSpriteSheet(wood_tiles_png, 16, 16, texture_lists.get(TEXTURE_LIST.wood_list));
 	}
 
 	private static void fillListWithSpriteSheet(BufferedImage sheet, int width, int height, HashMap<Point, BufferedImage> list) {
@@ -132,80 +135,67 @@ public class Textures {
 		water_red.put(0b00000000, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 11, 4),
 				new Texture(TEXTURE_LIST.forest_list, 1, 4),
-				new Texture(TEXTURE_LIST.forest_list, 6, 4),
-				new Texture(TEXTURE_LIST.forest_list, 1, 4)));
+				new Texture(TEXTURE_LIST.forest_list, 6, 4)));
 
 		water_red.put(0b00001001, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 10, 6),
 				new Texture(TEXTURE_LIST.forest_list, 0, 6),
-				new Texture(TEXTURE_LIST.forest_list, 5, 6),
-				new Texture(TEXTURE_LIST.forest_list, 0, 6)));
+				new Texture(TEXTURE_LIST.forest_list, 5, 6)));
 
 		water_red.put(0b10000000, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 13, 6),
 				new Texture(TEXTURE_LIST.forest_list, 3, 6),
-				new Texture(TEXTURE_LIST.forest_list, 8, 6),
-				new Texture(TEXTURE_LIST.forest_list, 3, 6)));
+				new Texture(TEXTURE_LIST.forest_list, 8, 6)));
 
 		water_red.put(0b00000001, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 11, 6),
 				new Texture(TEXTURE_LIST.forest_list, 1, 6),
-				new Texture(TEXTURE_LIST.forest_list, 6, 6),
-				new Texture(TEXTURE_LIST.forest_list, 1, 6)));
+				new Texture(TEXTURE_LIST.forest_list, 6, 6)));
 
 		water_red.put(0b00000011, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 12, 6),
 				new Texture(TEXTURE_LIST.forest_list, 2, 6),
-				new Texture(TEXTURE_LIST.forest_list, 7, 6),
-				new Texture(TEXTURE_LIST.forest_list, 2, 6)));
+				new Texture(TEXTURE_LIST.forest_list, 7, 6)));
 
 		water_red.put(0b00010000, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 14, 6),
 				new Texture(TEXTURE_LIST.forest_list, 4, 6),
-				new Texture(TEXTURE_LIST.forest_list, 9, 6),
-				new Texture(TEXTURE_LIST.forest_list, 4, 6)));
+				new Texture(TEXTURE_LIST.forest_list, 9, 6)));
 
 		water_red.put(0b00000010, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 12, 7),
 				new Texture(TEXTURE_LIST.forest_list, 2, 7),
-				new Texture(TEXTURE_LIST.forest_list, 7, 7),
-				new Texture(TEXTURE_LIST.forest_list, 2, 7)));
+				new Texture(TEXTURE_LIST.forest_list, 7, 7)));
 
 		water_red.put(0b00000110, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 12, 8),
 				new Texture(TEXTURE_LIST.forest_list, 2, 8),
-				new Texture(TEXTURE_LIST.forest_list, 7, 8),
-				new Texture(TEXTURE_LIST.forest_list, 2, 8)));
+				new Texture(TEXTURE_LIST.forest_list, 7, 8)));
 
 		water_red.put(0b00100000, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 14, 7),
 				new Texture(TEXTURE_LIST.forest_list, 4, 7),
-				new Texture(TEXTURE_LIST.forest_list, 9, 7),
-				new Texture(TEXTURE_LIST.forest_list, 4, 7)));
+				new Texture(TEXTURE_LIST.forest_list, 9, 7)));
 
 		water_red.put(0b00000100, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 11, 8),
 				new Texture(TEXTURE_LIST.forest_list, 1, 8),
-				new Texture(TEXTURE_LIST.forest_list, 6, 8),
-				new Texture(TEXTURE_LIST.forest_list, 1, 8)));
+				new Texture(TEXTURE_LIST.forest_list, 6, 8)));
 
 		water_red.put(0b00001100, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 10, 8),
 				new Texture(TEXTURE_LIST.forest_list, 0, 8),
-				new Texture(TEXTURE_LIST.forest_list, 5, 8),
-				new Texture(TEXTURE_LIST.forest_list, 0, 8)));
+				new Texture(TEXTURE_LIST.forest_list, 5, 8)));
 
 		water_red.put(0b01000000, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 13, 7),
 				new Texture(TEXTURE_LIST.forest_list, 3, 7),
-				new Texture(TEXTURE_LIST.forest_list, 8, 7),
-				new Texture(TEXTURE_LIST.forest_list, 3, 7)));
+				new Texture(TEXTURE_LIST.forest_list, 8, 7)));
 
 		water_red.put(0b00001000, new Animation(speed,
 				new Texture(TEXTURE_LIST.forest_list, 10, 7),
 				new Texture(TEXTURE_LIST.forest_list, 0, 7),
-				new Texture(TEXTURE_LIST.forest_list, 5, 7),
-				new Texture(TEXTURE_LIST.forest_list, 0, 7)));
+				new Texture(TEXTURE_LIST.forest_list, 5, 7)));
 	}
 
 	// static getter from image list
