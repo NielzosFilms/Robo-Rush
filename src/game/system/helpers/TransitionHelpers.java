@@ -73,10 +73,8 @@ public class TransitionHelpers {
                         Tile tile_to_add = (Tile) ctor.newInstance(offset_world_coords.x, offset_world_coords.y, tile_chunk_coords.x, tile_chunk_coords.y, z_index, BIOME.NULL, offset_chunk);
                         offset_chunk.addTile(tile_to_add);
                     } else {
-                        Chunk new_chunk = new Chunk(chunk_coords.x, chunk_coords.y, Game.world);
-                        Tile tile_to_add = (Tile) ctor.newInstance(offset_world_coords.x, offset_world_coords.y, tile_chunk_coords.x, tile_chunk_coords.y, z_index, BIOME.NULL, new_chunk);
-                        new_chunk.addTile(tile_to_add);
-                        Game.world.createChunk(new_chunk);
+                        Tile tile_to_add = (Tile) ctor.newInstance(offset_world_coords.x, offset_world_coords.y, tile_chunk_coords.x, tile_chunk_coords.y, z_index, BIOME.NULL, null);
+                        Game.world.getHandler().addTile(tile_to_add);
                     }
                 }
             }

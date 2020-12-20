@@ -21,7 +21,7 @@ public class Handler implements Serializable {
 	private transient ParticleSystem ps;
 
 	public LinkedList<LinkedList<GameObject>> object_entities = new LinkedList<LinkedList<GameObject>>();
-	// public LinkedList<LinkedList<Tile>> object_tiles = new
+	public LinkedList<Tile> tiles = new LinkedList<>();
 	// LinkedList<LinkedList<Tile>>();
 
 	public LinkedList<Light> lights = new LinkedList<Light>();
@@ -52,6 +52,18 @@ public class Handler implements Serializable {
 
 		for (Light light : lights) {
 			if(world.addLightToChunk(light)) lights.remove(light);
+		}
+
+		for (int i=0; i<tiles.size(); i++) {
+			Tile tile = tiles.get(i);
+			Chunk chunk = world.getChunkWithCoordsPoint(world.getChunkPointWithCoords(tile.getX(), tile.getY()));
+			if(chunk != null) {
+				tile.setChunk(chunk);
+				if(!chunk.tileExists(tile)) {
+					chunk.addTile(tile);
+				}
+				tiles.remove(tile);
+			}
 		}
 	}
 
@@ -144,13 +156,13 @@ public class Handler implements Serializable {
 		this.object_entities.get(object.getZIndex()).remove(object);
 	}
 
-	public void addTile(int z_index, Tile tile) {
-		// add tile
+	public void addTile(Tile tile) {
+		this.tiles.add(tile);
 	}
 
-	public void removeTile(int z_index, Tile tile) {
+	/*public void removeTile(Tile tile) {
 		// remove tile
-	}
+	}*/
 
 	public LinkedList<GameObject> getBoundsObjects() {
 		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();

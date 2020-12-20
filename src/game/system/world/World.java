@@ -289,6 +289,7 @@ public class World implements Serializable {
 		Point chunk_point = getChunkPointWithCoords(player.getX(), player.getY());
 		Chunk chunk = new Chunk(chunk_point.x, chunk_point.y, this);
 		chunks.put(chunk_point, chunk);
+		updateChunk(chunk.x, chunk.y);
 		handler.addObject(new Waterfall(0, 0, 10));
 		//chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
 		loaded = true;
@@ -298,14 +299,7 @@ public class World implements Serializable {
 		LinkedList<Tile> ret = new LinkedList<>();
 		if(!structureActive()) {
 			BIOME biome = generation.getBiome(height, temp, moist);
-			switch(biome) {
-				case Forest -> ret.add(new Tile_Grass(world_x, world_y, x, y, 1, biome, chunk));
-				case Forest_Plateau -> ret.add(new Tile_Grass_Plateau(world_x, world_y, x, y, 3, biome, chunk));
-				case Desert -> ret.add(new Tile_Sand(world_x, world_y, x, y, 2, biome, chunk));
-				case Polar -> ret.add(new Tile_Snow(world_x, world_y, x, y, 4, biome, chunk));
-				case Tundra -> ret.add(new Tile_Dirt(world_x, world_y, x, y, 5, biome, chunk));
-				default -> ret.add(new Tile_Water(world_x, world_y, x, y, 0, biome, chunk));
-			}
+			ret.add(generation.getTile(world_x, world_y, x, y, chunk, biome));
 		} else {
 			return active_structure.getGeneratedTile(x, y, height, temp, moist, chunk, world_x, world_y);
 		}

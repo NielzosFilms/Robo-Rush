@@ -1,5 +1,6 @@
 package game.system.world;
 
+import game.assets.tiles.tile.Tile;
 import game.enums.BIOME;
 import game.system.world.biome_groups.BiomeGroup;
 
@@ -115,6 +116,10 @@ public class Generation implements Serializable {
         Random r = new Random(seed);
         temp_seed = r.nextLong();
         moist_seed = r.nextLong();
+    }
+
+    public Tile getTile(int x, int y, int tile_chunk_x, int tile_chunk_y, Chunk chunk, BIOME biome) {
+        return biomeGroup.getTile(x, y, tile_chunk_x, tile_chunk_y, chunk, biome);
     }
 
     public Long getTemp_seed() {

@@ -47,9 +47,9 @@ public class Tile_Grass_Transition extends Tile implements UpdateAble {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(texture.getTexure(), x, y, 16, 16, null);
+        g.drawImage(texture.getTexure(), x, y, tileSize, tileSize, null);
         if(animation != null) {
-            animation.drawAnimation(g, x, y, 16, 16);
+            animation.drawAnimation(g, x, y, tileSize, tileSize);
         }
     }
 
