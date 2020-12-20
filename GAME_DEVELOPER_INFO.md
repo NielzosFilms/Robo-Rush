@@ -32,3 +32,8 @@ On this page is some more in depth info about the game.
 
 ### Tile Info
 - A `Tile` is 16 x 16 `pixels`
+- Edge type is selected with an 8 bit byte
+- First four bytes are the connections<br/>North, East, South and West.
+- Last four bytes are the connections in the corners<br/>NorthEast, SouthEast, SouthWest and NorthWest
+
+<img src="./tile_edge_guide.png" alt="Tile Edge Guide">
