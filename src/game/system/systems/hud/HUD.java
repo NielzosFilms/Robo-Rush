@@ -25,7 +25,7 @@ public class HUD implements Serializable {
 	private transient World world;
 	private transient Camera cam;
 
-	private ArrayList<HealthBar> healthBars = new ArrayList<>();
+	private LinkedList<LinkedList<GameObject>> objects_on_hud = new LinkedList<>();
 
 	private Selection selection = new Selection();
 
@@ -43,13 +43,16 @@ public class HUD implements Serializable {
 	}
 
 	public void tick() {
+		objects_on_hud = world.getObjectsOnHud();
 		if(Game.DEBUG_MODE) debugHUD.tick();
 		selection.tick();
 	}
 
 	public void renderCam(Graphics g, Graphics2D g2d) {
-		for(int i=0; i<healthBars.size(); i++) {
-			healthBars.get(i).render(g);
+		for(LinkedList<GameObject> z_list : objects_on_hud) {
+			for(GameObject object : z_list) {
+				object.render(g);
+			}
 		}
 
 		LinkedList<GameObject> objs = handler.getSelectableObjects();
@@ -96,14 +99,6 @@ public class HUD implements Serializable {
 	}
 	public void mouseReleased(MouseEvent e) {
 		debugHUD.mouseReleased(e);
-	}
-
-	public void addHealthBar(HealthBar healthBar) {
-		healthBars.add(healthBar);
-	}
-
-	public void removeHealthBar(HealthBar healthBar) {
-		healthBars.remove(healthBar);
 	}
 
 }

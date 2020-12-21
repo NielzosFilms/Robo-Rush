@@ -35,7 +35,7 @@ public class Skeleton extends GameObject implements Collision, Hitable {
             new Texture(TEXTURE_LIST.skeleton_list, 2, 2)
             );
 
-    private HealthBar healthBar = new HealthBar(0, 0, 0, 50);
+    //private HealthBar healthBar = new HealthBar(0, 0, 0, 50);
 
     public Skeleton(int x, int y, int z_index, ID id) {
         super(x, y, z_index, ID.Skeleton);
@@ -50,12 +50,12 @@ public class Skeleton extends GameObject implements Collision, Hitable {
     }
 
     public void tick() {
-        healthBar.setXY(x, y);
+        /*healthBar.setXY(x, y);
         if(healthBar.dead()) {
             Game.world.getPs().addParticle(new Particle_String(x, y + (getBounds().height / 2), 0, -0.2f, 60, "HE FOKIN DEAD"));
             Game.world.getHandler().findAndRemoveObject(this);
             healthBar.kill();
-        }
+        }*/
         idle.runAnimation();
     }
 
@@ -77,6 +77,6 @@ public class Skeleton extends GameObject implements Collision, Hitable {
 
     @Override
     public void hit(int damage) {
-        healthBar.subtractHealth(damage);
+        //healthBar.subtractHealth(damage);
     }
 }

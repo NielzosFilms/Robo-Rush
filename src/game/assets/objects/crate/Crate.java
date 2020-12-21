@@ -13,6 +13,7 @@ import game.system.audioEngine.AudioPlayer;
 import game.system.helpers.Logger;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.systems.gameObject.*;
+import game.system.systems.hud.Selection;
 import game.system.systems.inventory.Inventory;
 import game.system.systems.inventory.InventorySlot;
 import game.system.main.Game;
@@ -23,7 +24,7 @@ import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import org.json.simple.JSONObject;
 
-public class Crate extends GameObject implements Collision, Pushable, Interactable, Hitable, Destroyable {
+public class Crate extends GameObject implements Collision, Pushable, Interactable, Hitable, Destroyable, Health {
     private final int REGEN_DELAY_AFTER_HIT = 60*10;
     private final int REGEN_DELAY = 30;
     private final int REGEN_AMOUNT = 1;
@@ -34,13 +35,18 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
     private Random rand = new Random();
     private HealthBar healthBar;
 
+    private Selection selection = new Selection();
+
+    private boolean destroyedCalled = false;
+
     public Crate(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
         inv = new Inventory(3, 2);
         inv.setXY(300, 100);
         inv.setInitXY(300, 100);
 
-        healthBar = new HealthBar(x - 4, y - 8, 0, 7);
+        healthBar = new HealthBar(0, 0, 0, 7, 1);
+
         this.tex = new Texture(TEXTURE_LIST.wood_list, 1, 0);
     }
 
@@ -65,7 +71,8 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
         inv.setXY(300, 100);
         inv.setInitXY(300, 100);
 
-        healthBar = new HealthBar(x - 4, y - 8, 0, 7);
+        healthBar = new HealthBar(0, 0, 0, 7, 1);
+
         this.tex = new Texture(TEXTURE_LIST.wood_list, 1, 0);
     }
 
@@ -81,8 +88,6 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
             }
         }
         healthBar.setXY(x - 4, y - 8);
-        healthBar.tick();
-        if(healthBar.dead()) Game.world.getHandler().findAndRemoveObject(this);
 
         Rectangle obj_bounds = this.getSelectBounds();
         Rectangle player_bounds = Game.world.getPlayer().getBounds();
@@ -97,8 +102,7 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
     public void render(Graphics g) {
         g.drawImage(this.tex.getTexure(), x, y, width, height, null);
         if(Game.world.getInventorySystem().openInventoriesContains(this.inv)) {
-            g.setColor(new Color(255, 255, 255, 127));
-            g.drawRect(getSelectBounds().x, getSelectBounds().y, getSelectBounds().width, getSelectBounds().height);
+            selection.renderSelection(g, getSelectBounds(), 2);
         }
     }
 
@@ -116,7 +120,7 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
     }
 
     public void destroyed() {
-        Game.world.getHud().removeHealthBar(healthBar);
+        //Game.world.getHud().removeHealthBar(healthBar);
         Game.world.getInventorySystem().removeOpenInventory(inv);
         for(InventorySlot slot : inv.getSlots()) {
             if(slot.hasItem()) {
@@ -128,6 +132,17 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
             }
         }
         AudioPlayer.playSound(AudioFiles.crate_destroy, Settings.sound_vol, false, 0);
+        destroyedCalled = true;
+    }
+
+    @Override
+    public boolean destroyedCalled() {
+        return destroyedCalled;
+    }
+
+    @Override
+    public boolean canRemove() {
+        return true;
     }
 
     public void hit(int damage) {
@@ -147,5 +162,20 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
             case left -> x -= 1;
             case right -> x+= 1;
         }
+    }
+
+    @Override
+    public int getHealth() {
+        return healthBar.getHealth();
+    }
+
+    @Override
+    public HealthBar getHealthBar() {
+        return healthBar;
+    }
+
+    @Override
+    public boolean dead() {
+        return healthBar.dead();
     }
 }

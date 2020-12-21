@@ -452,4 +452,20 @@ public class World implements Serializable {
 	public Structure getActive_structure() {
 		return active_structure;
 	}
+
+	public LinkedList<LinkedList<GameObject>> getObjectsOnHud() {
+		LinkedList<LinkedList<GameObject>> ret = new LinkedList<>();
+		for(Point key : getActiveChunks().keySet()) {
+			Chunk chunk = getActiveChunks().get(key);
+			for(int i=0; i<chunk.getObjectsOnHud().size(); i++) {
+				GameObject object = chunk.getObjectsOnHud().get(i);
+				int z_index = object.getZIndex();
+				for(int z=ret.size(); z<=z_index; z++) {
+					ret.add(new LinkedList<>());
+				}
+				ret.get(z_index).add(object);
+			}
+		}
+		return ret;
+	}
 }

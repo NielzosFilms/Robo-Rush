@@ -1,6 +1,7 @@
 package game.assets;
 
 import game.system.helpers.Logger;
+import game.system.systems.gameObject.GameObject;
 import game.textures.TEXTURE_LIST;
 import game.system.main.Game;
 import game.system.helpers.Helpers;
@@ -9,7 +10,7 @@ import game.textures.Textures;
 import java.awt.*;
 import java.io.Serializable;
 
-public class HealthBar implements Serializable {
+public class HealthBar extends GameObject implements Serializable {
     private static final Color background = new Color(0, 0, 0, 127);
     private static final int HIDE_DELAY = 60*5;
     private int hide_timer = HIDE_DELAY;
@@ -19,13 +20,14 @@ public class HealthBar implements Serializable {
     private int health;
     private int x, y;
 
-    public HealthBar(int x, int y, int min, int max) {
+    public HealthBar(int x, int y, int min, int max, int hud_z_index) {
+        super(x, y, hud_z_index, null);
         this.x = x;
         this.y = y;
         this.min = min;
         this.max = max;
         this.health = max;
-        Game.world.getHud().addHealthBar(this);
+        //Game.world.getHud().addHealthBar(this);
     }
 
     public void tick() {
@@ -48,10 +50,6 @@ public class HealthBar implements Serializable {
         return health <= min;
     }
 
-    public void kill() {
-        Game.world.getHud().removeHealthBar(this);
-    }
-
     public void subtractHealth(int amount) {
         hide_timer = HIDE_DELAY;
         health = health - amount;
@@ -65,6 +63,10 @@ public class HealthBar implements Serializable {
     public int getHealthPercent() {
         float div = 100 / (float)max;
         return Math.round(div * health);
+    }
+
+    public int getHealth() {
+        return health;
     }
 
     private int getDrawWidth() {

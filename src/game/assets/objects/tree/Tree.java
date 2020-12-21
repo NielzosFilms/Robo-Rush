@@ -20,16 +20,18 @@ import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import game.enums.BIOME;
 
-public class Tree extends GameObject implements Collision, Destroyable, Hitable {
+public class Tree extends GameObject implements Collision, Destroyable, Hitable, Health {
 
 	private ArrayList<ArrayList<Texture>> tex_rows;
 
-	private HealthBar health = new HealthBar(0, 0, 0, 10);
+	private HealthBar health = new HealthBar(0, 0, 0, 10, 1);
 
 	private BIOME biome;
 	private Player player;
 
 	private Random r = new Random();
+
+	private boolean destroyedCalled;
 
 	public Tree(int x, int y, int z_index, ID id, BIOME biome) {
 		super(x, y, z_index, id);
@@ -61,8 +63,6 @@ public class Tree extends GameObject implements Collision, Destroyable, Hitable 
 		}
 
 		health.setXY(x - 4, y - 8);
-		health.tick();
-		if(health.dead()) Game.world.getHandler().findAndRemoveObject(this);
 	}
 
 	public void render(Graphics g) {
@@ -88,14 +88,39 @@ public class Tree extends GameObject implements Collision, Destroyable, Hitable 
 
 	@Override
 	public void destroyed() {
-		health.kill();
 		AudioPlayer.playSound(AudioFiles.tree_broken, 0.7f, false, 0);
 		Game.world.getHandler().addObject(new Item_Ground((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), 15, ID.Item, new Item_Stick(2)));
 		Game.world.getHandler().addObject(new Item_Ground((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), 15, ID.Item, new Item_Stick(2)));
+		destroyedCalled = true;
+	}
+
+	@Override
+	public boolean destroyedCalled() {
+		return destroyedCalled;
+	}
+
+	@Override
+	public boolean canRemove() {
+		return true;
 	}
 
 	@Override
 	public void hit(int damage) {
 		health.subtractHealth(damage);
+	}
+
+	@Override
+	public int getHealth() {
+		return health.getHealth();
+	}
+
+	@Override
+	public HealthBar getHealthBar() {
+		return health;
+	}
+
+	@Override
+	public boolean dead() {
+		return health.dead();
 	}
 }

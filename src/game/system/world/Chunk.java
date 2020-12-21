@@ -9,9 +9,9 @@ import java.util.Random;
 
 import game.assets.tiles.tile.Transition;
 import game.assets.tiles.tile.UpdateAble;
-import game.system.systems.gameObject.Collision;
+import game.system.helpers.Logger;
+import game.system.systems.gameObject.*;
 import game.system.systems.lighting.Light;
-import game.system.systems.gameObject.GameObject;
 import game.assets.tiles.tile.Tile;
 import game.assets.structures.Structure;
 import game.textures.Fonts;
@@ -25,6 +25,7 @@ public class Chunk implements Serializable {
 	public LinkedList<HashMap<Point, Tile>> tiles = new LinkedList<>();
 	public LinkedList<Rectangle> extra_bounds = new LinkedList<>();
 	public HashMap<Point, Structure> structures = new HashMap<>();
+	public LinkedList<GameObject> objects_on_hud = new LinkedList<>();
 
 	public static int tile_width = 16, tile_height = 16;
 	public int x, y;
@@ -46,6 +47,7 @@ public class Chunk implements Serializable {
 
 	public void tick() {
 		// move entity from chunk to chunk
+		objects_on_hud = new LinkedList<>();
 		for (int j = 0; j < entities.size(); j++) {
 			LinkedList<GameObject> list = entities.get(j);
 			for (int i = 0; i < list.size(); i++) {
@@ -72,6 +74,22 @@ public class Chunk implements Serializable {
 					list.remove(entity);
 				} else {
 					entity.tick();
+					if(entity instanceof Health) {
+						objects_on_hud.add(((Health) entity).getHealthBar());
+						if(((Health) entity).dead()) {
+							removeObjectOnHud(((Health) entity).getHealthBar());
+							if(entity instanceof Destroyable) {
+								if(!((Destroyable) entity).destroyedCalled()) {
+									((Destroyable) entity).destroyed();
+								}
+								if(((Destroyable) entity).canRemove()) {
+									list.remove(entity);
+								}
+							} else {
+								list.remove(entity);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -286,5 +304,17 @@ public class Chunk implements Serializable {
 
 	public void addExtraBound(Rectangle rect) {
 		this.extra_bounds.add(rect);
+	}
+
+	public void addObjectOnHud(GameObject object) {
+		objects_on_hud.add(object);
+	}
+
+	public void removeObjectOnHud(GameObject object) {
+		objects_on_hud.remove(object);
+	}
+
+	public LinkedList<GameObject> getObjectsOnHud() {
+		return objects_on_hud;
 	}
 }
