@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import game.assets.HealthBar;
 import game.assets.entities.Player;
 import game.system.helpers.Helpers;
+import game.system.helpers.Timer;
 import game.system.main.*;
 import game.system.inputs.MouseInput;
 import game.system.systems.gameObject.GameObject;
@@ -26,6 +27,8 @@ public class HUD implements Serializable {
 
 	private ArrayList<HealthBar> healthBars = new ArrayList<>();
 
+	private Selection selection = new Selection();
+
 	public HUD() {
 		this.debugHUD = new DebugHUD();
 	}
@@ -41,6 +44,7 @@ public class HUD implements Serializable {
 
 	public void tick() {
 		if(Game.DEBUG_MODE) debugHUD.tick();
+		selection.tick();
 	}
 
 	public void renderCam(Graphics g, Graphics2D g2d) {
@@ -53,14 +57,10 @@ public class HUD implements Serializable {
 			if (((Interactable)obj).getSelectBounds() != null) {
 				if (mouseInput.mouseOverWorldVar(((Interactable)obj).getSelectBounds().x, ((Interactable)obj).getSelectBounds().y,
 						((Interactable)obj).getSelectBounds().width, ((Interactable)obj).getSelectBounds().height)) {
-
 					if (Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), ((Interactable)obj).getSelectBounds()) < Game.world.getPlayer().REACH) {
-						// TODO nicer selectboxes
-						g.setColor(new Color(255, 255, 255, 127));
-						g.drawRect(((Interactable)obj).getSelectBounds().x, ((Interactable)obj).getSelectBounds().y, ((Interactable)obj).getSelectBounds().width,
-								((Interactable)obj).getSelectBounds().height);
+						selection.renderSelection(g, ((Interactable) obj).getSelectBounds(), 2);
+						break;
 					}
-
 				}
 			}
 		}

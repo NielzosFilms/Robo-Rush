@@ -13,6 +13,7 @@ import game.system.main.*;
 import game.system.inputs.MouseInput;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.HasItem;
+import game.system.systems.hud.Selection;
 import game.system.systems.particles.Particle_String;
 import game.system.world.Chunk;
 import game.system.world.World;
@@ -25,7 +26,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class InventorySystem implements Serializable {
-	public static final int slot_w = 18, slot_h = 18;
+	public static final int slot_w = 16, slot_h = 16;
 	public static final int item_w = 16, item_h = 16;
 	public static final int stackSize = 99;
 	public static final Color slot_bg = new Color(0, 0, 0, 127);
@@ -46,6 +47,8 @@ public class InventorySystem implements Serializable {
 	private Item holding = null;
 
 	private Timer placeTimer = new Timer(10);
+
+	private Selection selection = new Selection();
 
 	public InventorySystem() {}
 
@@ -107,8 +110,7 @@ public class InventorySystem implements Serializable {
 			inv.render(g);
 			if(inv == player_hotbar) {
 				Rectangle bnds = inv.getSlots().get(hotbar_selected).getBounds();
-				g.setColor(new Color(255, 255, 255, 127));
-				g.drawRect(bnds.x, bnds.y, bnds.width, bnds.height);
+				selection.renderSelection(g, bnds, 2);
 			}
 		}
 		if(isHolding()) {

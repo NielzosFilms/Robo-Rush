@@ -9,10 +9,10 @@ import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 public class Tool_Iron_Axe extends Item implements CanAttack {
-    int damage = 4;
+    int damage = 8;
     int attack_speed = (int)(60 * 1.5f);
-    public Tool_Iron_Axe(int amount) {
-        super(amount, ITEM_ID.Iron_Axe);
+    public Tool_Iron_Axe() {
+        super(1, ITEM_ID.Iron_Axe);
         this.tex = new Texture(TEXTURE_LIST.tools, 0, 2);
         this.itemGround = new Item_Ground(0, 0, 10, ID.Item, this);
         this.setStackable(false);

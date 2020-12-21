@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.Random;
 
 import game.assets.items.item.CanAttack;
+import game.assets.items.tools.iron.Tool_Iron_Axe;
 import game.assets.objects.crate.Item_Crate;
 import game.assets.items.tools.wood.Tool_WoodenAxe;
 import game.assets.items.tools.wood.Tool_WoodenPickaxe;
@@ -75,7 +76,7 @@ public class Player extends GameObject implements Collision, Interactable {
 		int hotbar_y = Game.HEIGHT - this.hotbar.getInventoryBounds().height;
 		this.hotbar.setXY(hotbar_x, hotbar_y);
 		this.hotbar.addItem(new Tool_WoodenAxe());
-		this.hotbar.addItem(new Tool_WoodenPickaxe());
+		this.hotbar.addItem(new Tool_Iron_Axe());
 		this.hotbar.addItem(new Tool_WoodenSword());
 
 		// default = 100

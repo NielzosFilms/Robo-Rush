@@ -8,37 +8,12 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public class Textures {
+	private static BufferedImageLoader loader = new BufferedImageLoader();
 	public static HashMap<TEXTURE_LIST, HashMap<Point, BufferedImage>> texture_lists = new HashMap<>();
 
 	public static HashMap<Integer, Animation> water_gray = new HashMap<>();
 	public static HashMap<Integer, Animation> water_red = new HashMap<>();
 	public static final int water_speed = 22;
-
-
-	// tilesets / sheets
-	private static BufferedImage
-			tileSetForest,
-			playerSheet,
-			mushroom,
-			tileSetDesert,
-			tileSetWater,
-			tileSetNatureObjects,
-			tileSetHouse,
-			tileSetCave,
-			loading_png,
-			floorTiles_png,
-			stick_png,
-			stone_png,
-			healthbar_content_img,
-			tools_png,
-			waterfall_png,
-			walls_png,
-			cave_png,
-			attack_slice_png,
-			skeleton_png,
-			grass_plateau_png,
-			stone_golem_idle_png,
-			wood_tiles_png;
 
 	// other standalone tiles
 	public static BufferedImage
@@ -46,7 +21,8 @@ public class Textures {
 			placeholder,
 			light,
 			default_btn,
-			healthbar;
+			healthbar,
+			mushroom;
 
 	public Textures() {
 		for(TEXTURE_LIST list_name : TEXTURE_LIST.values()) {
@@ -58,22 +34,9 @@ public class Textures {
 	}
 
 	private static void initImages() {
-		BufferedImageLoader loader = new BufferedImageLoader();
-		tileSetForest = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/1.png");
-		grass_plateau_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/7.png");
-		tileSetCave = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/8.png");
-		tileSetDesert = loader.loadImage("assets/main/tile_sheets/desert_tile.png");
-		tileSetWater = loader.loadImage("assets/main/tile_sheets/water_tiles.png");
-		tileSetNatureObjects = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/3.png");
-		tileSetHouse = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/2.png");
-		floorTiles_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/6.png");
-
-		playerSheet = loader.loadImage("assets/entities/player/player_sheet.png");
 		entity_shadow = loader.loadImage("assets/entities/shadow.png");
 
 		mushroom = loader.loadImage("assets/world/nature/paddenstoel.png");
-		stick_png = loader.loadImage("assets/items/stick.png");
-		stone_png = loader.loadImage("assets/items/stone.png");
 		placeholder = loader.loadImage("assets/main/placeholder.png");
 
 		light = loader.loadImage("assets/main/lights/light_orange.png");
@@ -81,43 +44,30 @@ public class Textures {
 		default_btn = loader.loadImage("assets/menu/buttons/default_btn.png");
 
 		healthbar = loader.loadImage("assets/main/hud/healthbar.png");
-		healthbar_content_img = loader.loadImage("assets/main/hud/healthbar_content.png");
-
-		tools_png = loader.loadImage("assets/items/tools.png");
-
-		waterfall_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/5.png");
-		walls_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/4.png");
-		cave_png = loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/8.png");
-		attack_slice_png = loader.loadImage("assets/entities/player/attack_slice.png");
-
-		loading_png = loader.loadImage("assets/main/loading_animation_shadow.png");
-
-		skeleton_png = loader.loadImage("assets/entities/skeleton/skeleton.png");
-		stone_golem_idle_png = loader.loadImage("assets/entities/stone_golem/golem_idle.png");
-		wood_tiles_png = loader.loadImage("assets/main/tile_sheets/wood_tiles.png");
 	}
 
 	private static void fillLists() {
-		fillListWithSpriteSheet(tileSetForest, 32, 32, texture_lists.get(TEXTURE_LIST.forest_list));
-		fillListWithSpriteSheet(grass_plateau_png, 32, 32, texture_lists.get(TEXTURE_LIST.grass_plateau));
-		fillListWithSpriteSheet(tileSetCave, 32, 32, texture_lists.get(TEXTURE_LIST.cave_list));
-		fillListWithSpriteSheet(playerSheet, 16, 24, texture_lists.get(TEXTURE_LIST.player_list));
-		fillListWithSpriteSheet(tileSetDesert, 16, 16, texture_lists.get(TEXTURE_LIST.desert_list));
-		fillListWithSpriteSheet(tileSetNatureObjects, 32, 32, texture_lists.get(TEXTURE_LIST.nature_list));
-		fillListWithSpriteSheet(tileSetHouse, 32, 32, texture_lists.get(TEXTURE_LIST.house_list));
-		fillListWithSpriteSheet(healthbar_content_img, 1, 2, texture_lists.get(TEXTURE_LIST.healthbar_list));
-		fillListWithSpriteSheet(stick_png, 16, 16, texture_lists.get(TEXTURE_LIST.stick));
-		fillListWithSpriteSheet(stone_png, 16, 16, texture_lists.get(TEXTURE_LIST.stone));
-		fillListWithSpriteSheet(tools_png, 16, 16, texture_lists.get(TEXTURE_LIST.tools));
-		fillListWithSpriteSheet(loading_png, 16, 16, texture_lists.get(TEXTURE_LIST.loading_list));
-		fillListWithSpriteSheet(floorTiles_png, 32, 32, texture_lists.get(TEXTURE_LIST.floorTiles_list));
-		fillListWithSpriteSheet(waterfall_png, 32, 32, texture_lists.get(TEXTURE_LIST.waterfall_list));
-		fillListWithSpriteSheet(walls_png, 32, 32, texture_lists.get(TEXTURE_LIST.walls_list));
-		fillListWithSpriteSheet(cave_png, 32, 32, texture_lists.get(TEXTURE_LIST.cave_list));
-		fillListWithSpriteSheet(attack_slice_png, 64, 64, texture_lists.get(TEXTURE_LIST.attack_slice_list));
-		fillListWithSpriteSheet(skeleton_png, 48, 48, texture_lists.get(TEXTURE_LIST.skeleton_list));
-		fillListWithSpriteSheet(stone_golem_idle_png, 64, 48, texture_lists.get(TEXTURE_LIST.stone_golem_idle_list));
-		fillListWithSpriteSheet(wood_tiles_png, 16, 16, texture_lists.get(TEXTURE_LIST.wood_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/1.png"), 32, 32, texture_lists.get(TEXTURE_LIST.forest_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/7.png"), 32, 32, texture_lists.get(TEXTURE_LIST.grass_plateau));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/8.png"), 32, 32, texture_lists.get(TEXTURE_LIST.cave_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/entities/player/player_sheet.png"), 16, 24, texture_lists.get(TEXTURE_LIST.player_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/desert_tile.png"), 16, 16, texture_lists.get(TEXTURE_LIST.desert_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/3.png"), 32, 32, texture_lists.get(TEXTURE_LIST.nature_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/2.png"), 32, 32, texture_lists.get(TEXTURE_LIST.house_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/healthbar_content.png"), 1, 2, texture_lists.get(TEXTURE_LIST.healthbar_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/items/stick.png"), 16, 16, texture_lists.get(TEXTURE_LIST.stick));
+		fillListWithSpriteSheet(loader.loadImage("assets/items/stone.png"), 16, 16, texture_lists.get(TEXTURE_LIST.stone));
+		fillListWithSpriteSheet(loader.loadImage("assets/items/tools.png"), 16, 16, texture_lists.get(TEXTURE_LIST.tools));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/loading_animation_shadow.png"), 16, 16, texture_lists.get(TEXTURE_LIST.loading_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/6.png"), 32, 32, texture_lists.get(TEXTURE_LIST.floorTiles_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/5.png"), 32, 32, texture_lists.get(TEXTURE_LIST.waterfall_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/4.png"), 32, 32, texture_lists.get(TEXTURE_LIST.walls_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/8.png"), 32, 32, texture_lists.get(TEXTURE_LIST.cave_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/entities/player/attack_slice.png"), 64, 64, texture_lists.get(TEXTURE_LIST.attack_slice_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/entities/skeleton/skeleton.png"), 48, 48, texture_lists.get(TEXTURE_LIST.skeleton_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/entities/stone_golem/golem_idle.png"), 64, 48, texture_lists.get(TEXTURE_LIST.stone_golem_idle_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/wood_tiles.png"), 16, 16, texture_lists.get(TEXTURE_LIST.wood_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/inventory.png"), 16, 16, texture_lists.get(TEXTURE_LIST.gui_list));
 	}
 
 	private static void fillListWithSpriteSheet(BufferedImage sheet, int width, int height, HashMap<Point, BufferedImage> list) {

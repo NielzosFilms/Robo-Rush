@@ -4,6 +4,8 @@ import game.assets.items.item.Item;
 import game.assets.items.Item_Ground;
 import game.system.inputs.MouseInput;
 import game.system.main.Game;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -19,6 +21,16 @@ public class Inventory implements Serializable {
 	private int size_x, size_y;
 	private ArrayList<InventorySlot> slots = new ArrayList<>();
 	private boolean moveable = true;
+
+	private Texture
+			top_left = new Texture(TEXTURE_LIST.gui_list, 0, 0),
+			top = new Texture(TEXTURE_LIST.gui_list, 1, 0),
+			top_right = new Texture(TEXTURE_LIST.gui_list, 3, 0),
+			right = new Texture(TEXTURE_LIST.gui_list, 3, 1),
+			bot_right = new Texture(TEXTURE_LIST.gui_list, 3, 2),
+			bot = new Texture(TEXTURE_LIST.gui_list, 1, 2),
+			bot_left = new Texture(TEXTURE_LIST.gui_list, 0, 2),
+			left = new Texture(TEXTURE_LIST.gui_list, 0, 1);
 
 	public Inventory(int size_x, int size_y) {
 		this.size_x = size_x;
@@ -39,6 +51,34 @@ public class Inventory implements Serializable {
 	}
 
 	public void render(Graphics g) {
+		for(int y=-1; y<size_y+1; y++) {
+			for(int x=-1; x<size_x+1; x++) {
+				if(y == -1) {
+					if(x == -1) {
+						g.drawImage(top_left.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+					} else if(x == size_x) {
+						g.drawImage(top_right.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+					} else {
+						g.drawImage(top.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+					}
+				} else if(y == size_y) {
+					if(x == -1) {
+						g.drawImage(bot_left.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+					} else if(x == size_x) {
+						g.drawImage(bot_right.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+					} else {
+						g.drawImage(bot.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+					}
+				} else {
+					if(x == -1) {
+						g.drawImage(left.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+					} else if(x == size_x) {
+						g.drawImage(right.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+					}
+				}
+
+			}
+		}
 		for(InventorySlot slot : slots) {
 			slot.render(g);
 		}

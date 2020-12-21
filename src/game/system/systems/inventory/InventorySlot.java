@@ -2,6 +2,8 @@ package game.system.systems.inventory;
 
 import game.assets.items.item.Item;
 import game.system.main.Game;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -13,6 +15,9 @@ public class InventorySlot implements Serializable {
 	private int x, y;
 	private int w = InventorySystem.slot_w, h = InventorySystem.slot_h;
 	private boolean hover = false;
+
+	private Texture background = new Texture(TEXTURE_LIST.gui_list, 2, 1);
+	//private Texture background_border = new Texture(TEXTURE_LIST.gui_list, 0, 3);
 
 	public InventorySlot(Inventory inv, int x, int y) {
 		this.inv = inv;
@@ -27,8 +32,8 @@ public class InventorySlot implements Serializable {
 	public void render(Graphics g) {
 		int inv_x = inv.getX();
 		int inv_y = inv.getY();
-		g.setColor(InventorySystem.slot_bg);
-		g.fillRect(inv_x + x, inv_y + y, w, h);
+		g.drawImage(background.getTexure(), inv_x + x, inv_y + y, InventorySystem.item_w, InventorySystem.item_w, null);
+		//g.drawImage(background_border.getTexure(), inv_x + x, inv_y + y, InventorySystem.item_w, InventorySystem.item_w, null);
 
 		int margin = (int)Math.floor((InventorySystem.slot_w - InventorySystem.item_w) / 2);
 		if(this.item != null) item.render(g, inv_x + x + margin, inv_y + y + margin);
