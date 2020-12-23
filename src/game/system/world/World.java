@@ -6,6 +6,7 @@ import java.util.*;
 
 import game.assets.entities.Player;
 import game.assets.entities.enemies.Golem_Stone;
+import game.assets.objects.crafting_table.TestTable;
 import game.assets.structures.Structure;
 import game.assets.structures.waterfall.Waterfall;
 import game.assets.tiles.*;
@@ -293,6 +294,7 @@ public class World implements Serializable {
 		updateChunk(chunk.x, chunk.y);
 		handler.addObject(new Waterfall(0, 0, 10));
 		handler.addObject(new Golem_Stone(64, 64, 10, ID.Enemy));
+		handler.addObject(new TestTable(0, 64, 10, ID.NULL));
 		//chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
 		loaded = true;
 	}

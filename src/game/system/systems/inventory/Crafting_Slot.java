@@ -2,32 +2,33 @@ package game.system.systems.inventory;
 
 import game.assets.items.item.Item;
 import game.system.main.Game;
+import game.system.systems.inventory.inventoryDef.InventoryDef;
+import game.system.systems.inventory.inventoryDef.InventorySlotDef;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class Crafting_Slot {
+public class Crafting_Slot extends InventorySlotDef {
     private Item return_item;
     private Item[] required_items;
-    private Crafting_Inventory inv;
-    private int x, y;
-    private int w = InventorySystem.slot_w, h = InventorySystem.slot_h;
-    private boolean hover = false;
 
-    private Texture background = new Texture(TEXTURE_LIST.gui_list, 2, 1);
-
-    public Crafting_Slot(Crafting_Inventory inv, int x, int y) {
-        this.inv = inv;
-        this.x = x;
-        this.y = y;
+    public Crafting_Slot(InventoryDef inv, int x, int y) {
+        super(inv, x, y);
     }
 
+    public void setItems(Item return_item, Item[] required_items) {
+        this.return_item = return_item;
+        this.required_items = required_items;
+    }
+
+    @Override
     public void tick() {
         this.hover = Game.mouseInput.mouseOverLocalRect(this.getBounds());
     }
 
+    @Override
     public void render(Graphics g) {
         int inv_x = inv.getX();
         int inv_y = inv.getY();
@@ -43,34 +44,23 @@ public class Crafting_Slot {
         }
     }
 
-    public void onClick(MouseEvent e, Crafting_Inventory inv, InventorySystem invSys) {
-        switch (e.getButton()) {
-            case MouseEvent.BUTTON1 -> leftClick(inv, invSys);
-            case MouseEvent.BUTTON2 -> middleClick(inv, invSys);
-            case MouseEvent.BUTTON3 -> rightClick(inv, invSys);
-        }
-    }
-
-    private void leftClick(Crafting_Inventory inv, InventorySystem invSys) {
-
-    }
-    private void middleClick(Crafting_Inventory inv, InventorySystem invSys) {
-
-    }
-    private void rightClick(Crafting_Inventory inv, InventorySystem invSys) {
+    @Override
+    public void leftClick(InventoryDef inv, InventorySystem invSys) {
 
     }
 
-    public void setReturnItem(Item item) {
-        this.return_item = item;
-    }
-    public Item getReturnItem() {
-        return this.return_item;
+    @Override
+    public void middleClick(InventoryDef inv, InventorySystem invSys) {
+
     }
 
-    public boolean hasItem() { return this.return_item != null; }
+    @Override
+    public void rightClick(InventoryDef inv, InventorySystem invSys) {
 
-    public Rectangle getBounds() {
-        return new Rectangle(inv.getX() + x, inv.getY() + y, w, h);
+    }
+
+    @Override
+    public Item addItem(Item item) {
+        return null;
     }
 }
