@@ -29,6 +29,7 @@ import game.system.main.*;
 import game.enums.ID;
 import game.system.inputs.KeyInput;
 import game.enums.BIOME;
+import game.system.systems.inventory.inventoryDef.InventoryDef;
 import game.textures.Animation;
 import game.textures.TEXTURE_LIST;
 import game.textures.ImageFilters;
@@ -402,6 +403,10 @@ public class Player extends GameObject implements Collision, Interactable {
 		attack_timer.setDelay(attack_delay);
 		attack_timer.resetTimer();
 		return damage_output;
+	}
+
+	public InventoryDef getInventory() {
+		return inventory;
 	}
 
 	public void setKeyInput(KeyInput keyInput) {

@@ -158,6 +158,44 @@ public class Inventory extends InventoryDef implements AcceptsItems {
     }
 
     @Override
+    public boolean hasItemWithAmount(Item item) {
+        int tot_item_count = 0;
+        for(InventorySlotDef slot : slots) {
+            if(slot.hasItem()) {
+                if(slot.getItem().getItemType() == item.getItemType()) {
+                    tot_item_count += slot.getItem().getAmount();
+                }
+            }
+        }
+        return item.getAmount() <= tot_item_count;
+    }
+
+    @Override
+    public boolean subtractItem(Item item) {
+        int sub_amount = item.getAmount();
+        while(sub_amount > 0) {
+            for(InventorySlotDef slot : slots) {
+                if(slot.hasItem()) {
+                    Item slot_item = slot.getItem();
+                    if(slot_item.getItemType() == item.getItemType()) {
+                        int result = sub_amount - slot_item.getAmount();
+                        if(result < 0) result = 0;
+
+                        int slot_result = slot_item.getAmount() - sub_amount;
+                        if(slot_result < 0) slot_result = 0;
+                        slot_item.setAmount(slot_result);
+
+                        if(slot_item.getAmount() <= 0) slot.clearItem();
+
+                        sub_amount = result;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
     public boolean canAcceptItem(Item item) {
         if(inventoryContainsItemAndCanStack(item)) {
             return true;
@@ -191,7 +229,7 @@ public class Inventory extends InventoryDef implements AcceptsItems {
         for(InventorySlotDef slot : slots) {
             if(!slot.hasItem()) continue;
             Item slotItem = slot.getItem();
-            if(slotItem.getItemType() == item.getItemType()) {
+            if(slotItem.getItemType() == item.getItemType() && slotItem.isStackable()) {
                 if(slotItem.getAmount() < InventorySystem.stackSize) return true;
             }
         }

@@ -2,8 +2,10 @@ package game.system.systems.inventory;
 
 import game.assets.items.item.Item;
 import game.system.main.Game;
+import game.system.systems.inventory.inventoryDef.AcceptsItems;
 import game.system.systems.inventory.inventoryDef.InventoryDef;
 import game.system.systems.inventory.inventoryDef.InventorySlotDef;
+import game.textures.Fonts;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
@@ -41,12 +43,34 @@ public class Crafting_Slot extends InventorySlotDef {
         if(hover) {
             g.setColor(InventorySystem.slot_hover);
             g.fillRect(inv_x + x, inv_y + y, w, h);
+            g.setFont(Fonts.default_fonts.get(5));
+            int y_offset = 10;
+            if(required_items != null) {
+                for(Item req_item : required_items) {
+                    if(canCraftItem()) {
+                        g.setColor(Color.green);
+                    } else {
+                        g.setColor(Color.red);
+                    }
+                    g.drawString(req_item.toString(), x + inv_x, y+y_offset + inv_y);
+                    y_offset+=5;
+                }
+            }
         }
     }
 
     @Override
     public void leftClick(InventoryDef inv, InventorySystem invSys) {
-
+        if(canCraftItem()) {
+            if(!invSys.isHolding()) {
+                invSys.setHolding(return_item);
+                InventoryDef player_inv = Game.world.getPlayer().getInventory();
+                for(Item req_item : required_items) {
+                    boolean result = ((AcceptsItems)player_inv).subtractItem(req_item);
+                    if(!result) invSys.setHolding(null);
+                }
+            }
+        }
     }
 
     @Override
@@ -62,5 +86,16 @@ public class Crafting_Slot extends InventorySlotDef {
     @Override
     public Item addItem(Item item) {
         return null;
+    }
+
+    private boolean canCraftItem() {
+        InventoryDef player_inv = Game.world.getPlayer().getInventory();
+        int matches = 0;
+        for(Item req_item : required_items) {
+            if(((AcceptsItems)player_inv).hasItemWithAmount(req_item)) {
+                matches++;
+            }
+        }
+        return matches >= required_items.length;
     }
 }

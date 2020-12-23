@@ -37,7 +37,7 @@ public class InventorySlot extends InventorySlotDef {
     public void leftClick(InventoryDef inv, InventorySystem invSys) {
         if(invSys.isHolding()) {
             if(this.hasItem()) {
-                if(invSys.getHolding().getItemType() == this.item.getItemType()) {
+                if(invSys.getHolding().getItemType() == this.item.getItemType() && this.item.isStackable()) {
                     Item rest = this.addItem(invSys.getHolding());
                     invSys.setHolding(rest);
                 } else {

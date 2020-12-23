@@ -9,6 +9,9 @@ public interface AcceptsItems {
     void addItem(Item item);
     boolean addItemAtPos(Item item, int pos);
 
+    boolean hasItemWithAmount(Item item);
+    boolean subtractItem(Item item);
+
     boolean canAcceptItem(Item item);
     InventorySlotDef getNextFreeSlot();
     boolean hasFreeSlot();
