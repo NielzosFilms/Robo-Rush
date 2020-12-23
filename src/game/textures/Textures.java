@@ -67,7 +67,8 @@ public class Textures {
 		fillListWithSpriteSheet(loader.loadImage("assets/entities/skeleton/skeleton.png"), 48, 48, texture_lists.get(TEXTURE_LIST.skeleton_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/entities/stone_golem/golem_idle.png"), 64, 48, texture_lists.get(TEXTURE_LIST.stone_golem_idle_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/wood_tiles.png"), 16, 16, texture_lists.get(TEXTURE_LIST.wood_list));
-		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/inventory.png"), 16, 16, texture_lists.get(TEXTURE_LIST.gui_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/inventory.png"), 22, 22, texture_lists.get(TEXTURE_LIST.gui_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/hud.png"), 16, 16, texture_lists.get(TEXTURE_LIST.hud_list));
 	}
 
 	private static void fillListWithSpriteSheet(BufferedImage sheet, int width, int height, HashMap<Point, BufferedImage> list) {

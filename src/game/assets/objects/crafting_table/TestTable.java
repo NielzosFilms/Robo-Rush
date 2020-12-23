@@ -13,9 +13,10 @@ import game.textures.Texture;
 import java.awt.*;
 
 public class TestTable extends GameObject implements Interactable, Collision {
-    private Crafting_Inventory inventory = new Crafting_Inventory(4, 4, CraftingTableDefinitions.test_table);
+    private Crafting_Inventory inventory;
     public TestTable(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
+        inventory = new Crafting_Inventory(3, 3, CraftingTableDefinitions.test_table);
         inventory.setInitXY(200, 100);
 
         this.tex = new Texture(TEXTURE_LIST.wood_list, 0, 0);

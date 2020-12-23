@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class InventorySystem implements Serializable {
-	public static final int slot_w = 16, slot_h = 16;
+	public static final int slot_w = 22, slot_h = 22;
 	public static final int item_w = 16, item_h = 16;
 	public static final int stackSize = 99;
 	public static final Color slot_bg = new Color(0, 0, 0, 127);

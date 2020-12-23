@@ -13,7 +13,7 @@ public class Tool_Iron_Sword extends Item implements CanAttack {
     private int attack_speed = (int)(60 * 0.25f);
     public Tool_Iron_Sword() {
         super(1, ITEM_ID.Wooden_Sword);
-        this.tex = new Texture(TEXTURE_LIST.tools, 1, 0);
+        this.tex = new Texture(TEXTURE_LIST.tools, 0, 0);
         this.itemGround = new Item_Ground(0, 0, 10, ID.Item, this);
         this.setStackable(false);
     }

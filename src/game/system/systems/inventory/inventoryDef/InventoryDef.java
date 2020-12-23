@@ -21,9 +21,9 @@ public abstract class InventoryDef {
     protected Texture
             top_left = new Texture(TEXTURE_LIST.gui_list, 0, 0),
             top = new Texture(TEXTURE_LIST.gui_list, 1, 0),
-            top_right = new Texture(TEXTURE_LIST.gui_list, 3, 0),
-            right = new Texture(TEXTURE_LIST.gui_list, 3, 1),
-            bot_right = new Texture(TEXTURE_LIST.gui_list, 3, 2),
+            top_right = new Texture(TEXTURE_LIST.gui_list, 2, 0),
+            right = new Texture(TEXTURE_LIST.gui_list, 2, 1),
+            bot_right = new Texture(TEXTURE_LIST.gui_list, 2, 2),
             bot = new Texture(TEXTURE_LIST.gui_list, 1, 2),
             bot_left = new Texture(TEXTURE_LIST.gui_list, 0, 2),
             left = new Texture(TEXTURE_LIST.gui_list, 0, 1);

@@ -21,16 +21,6 @@ public class Crafting_Inventory extends InventoryDef {
     private boolean moveable = true;
     private int active_page = 0;
 
-    private Texture
-            top_left = new Texture(TEXTURE_LIST.gui_list, 0, 0),
-            top = new Texture(TEXTURE_LIST.gui_list, 1, 0),
-            top_right = new Texture(TEXTURE_LIST.gui_list, 3, 0),
-            right = new Texture(TEXTURE_LIST.gui_list, 3, 1),
-            bot_right = new Texture(TEXTURE_LIST.gui_list, 3, 2),
-            bot = new Texture(TEXTURE_LIST.gui_list, 1, 2),
-            bot_left = new Texture(TEXTURE_LIST.gui_list, 0, 2),
-            left = new Texture(TEXTURE_LIST.gui_list, 0, 1);
-
     public Crafting_Inventory(int size_x, int size_y, CraftingTableDefinitions tableDef) {
         this.tableDef = tableDef;
         this.size_x = size_x;

@@ -10,10 +10,10 @@ import java.awt.*;
 
 public class Selection extends GameObject {
     private Texture
-            top_left = new Texture(TEXTURE_LIST.gui_list, 4, 0),
-            top_right = new Texture(TEXTURE_LIST.gui_list, 5, 0),
-            bot_right = new Texture(TEXTURE_LIST.gui_list, 5, 1),
-            bot_left = new Texture(TEXTURE_LIST.gui_list, 4, 1);
+            top_left = new Texture(TEXTURE_LIST.hud_list, 0, 0),
+            top_right = new Texture(TEXTURE_LIST.hud_list, 1, 0),
+            bot_right = new Texture(TEXTURE_LIST.hud_list, 1, 1),
+            bot_left = new Texture(TEXTURE_LIST.hud_list, 0, 1);
 
     private Timer change_size = new Timer(20);
     private int change_size_offset = 0;

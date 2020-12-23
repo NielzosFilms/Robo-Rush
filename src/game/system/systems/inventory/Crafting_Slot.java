@@ -32,8 +32,8 @@ public class Crafting_Slot extends InventorySlotDef {
     public void render(Graphics g) {
         int inv_x = inv.getX();
         int inv_y = inv.getY();
-        g.drawImage(background.getTexure(), inv_x + x, inv_y + y, InventorySystem.item_w, InventorySystem.item_w, null);
-        //g.drawImage(background_border.getTexure(), inv_x + x, inv_y + y, InventorySystem.item_w, InventorySystem.item_w, null);
+        g.drawImage(background.getTexure(), inv_x + x, inv_y + y, InventorySystem.slot_w, InventorySystem.slot_h, null);
+        g.drawImage(background_border.getTexure(), inv_x + x, inv_y + y, InventorySystem.slot_w, InventorySystem.slot_h, null);
 
         int margin = (int)Math.floor((InventorySystem.slot_w - InventorySystem.item_w) / 2);
         if(this.return_item != null) return_item.render(g, inv_x + x + margin, inv_y + y + margin);

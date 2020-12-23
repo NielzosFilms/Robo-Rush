@@ -15,6 +15,8 @@ import game.system.inputs.MouseInput;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Interactable;
 import game.system.world.World;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 
 public class HUD implements Serializable {
 	private DebugHUD debugHUD;

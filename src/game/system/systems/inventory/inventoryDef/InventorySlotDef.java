@@ -16,7 +16,8 @@ public abstract class InventorySlotDef {
     protected int w = InventorySystem.slot_w, h = InventorySystem.slot_h;
     protected boolean hover = false;
 
-    protected Texture background = new Texture(TEXTURE_LIST.gui_list, 2, 1);
+    protected Texture background = new Texture(TEXTURE_LIST.gui_list, 1, 1);
+    protected Texture background_border = new Texture(TEXTURE_LIST.gui_list, 0, 3);
 
     public InventorySlotDef(InventoryDef inv, int x, int y) {
         this.inv = inv;

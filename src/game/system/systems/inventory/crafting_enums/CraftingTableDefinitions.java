@@ -24,6 +24,8 @@ public enum CraftingTableDefinitions {
                         put(new Tool_Iron_Axe(), new Item[]{new Item_Stick(4)});
                         put(new Tool_Iron_Sword(), new Item[]{new Item_Stick(4)});
                     }},
+                    new HashMap<Item, Item[]>() {{
+                    }},
             }
     );
 
