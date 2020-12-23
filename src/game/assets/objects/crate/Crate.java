@@ -19,6 +19,7 @@ import game.system.systems.inventory.InventorySlot;
 import game.system.main.Game;
 import game.enums.ID;
 import game.system.helpers.Settings;
+import game.system.systems.inventory.inventoryDef.InventorySlotDef;
 import game.system.world.JsonStructureLoader;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
@@ -122,7 +123,7 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
     public void destroyed() {
         //Game.world.getHud().removeHealthBar(healthBar);
         Game.world.getInventorySystem().removeOpenInventory(inv);
-        for(InventorySlot slot : inv.getSlots()) {
+        for(InventorySlotDef slot : inv.getSlots()) {
             if(slot.hasItem()) {
                 game.assets.items.item.Item inv_item = slot.getItem();
                 Item_Ground gnd_item = inv_item.getItemGround();

@@ -10,10 +10,10 @@ public interface AcceptsItems {
     boolean addItemAtPos(Item item, int pos);
 
     boolean canAcceptItem(Item item);
-    InventorySlot getNextFreeSlot();
+    InventorySlotDef getNextFreeSlot();
     boolean hasFreeSlot();
     boolean inventoryContainsItemAndCanStack(Item item);
-    InventorySlot getNextStackableSlot(Item item);
+    InventorySlotDef getNextStackableSlot(Item item);
 
     void fillRandom(LinkedList<Item> items);
     void fill(LinkedList<Item> items);

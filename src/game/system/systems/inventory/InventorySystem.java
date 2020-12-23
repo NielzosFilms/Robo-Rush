@@ -16,6 +16,7 @@ import game.system.systems.gameObject.HasItem;
 import game.system.systems.hud.Selection;
 import game.system.systems.inventory.inventoryDef.AcceptsItems;
 import game.system.systems.inventory.inventoryDef.InventoryDef;
+import game.system.systems.inventory.inventoryDef.InventorySlotDef;
 import game.system.systems.particles.Particle_String;
 import game.system.world.Chunk;
 import game.system.world.World;
@@ -322,7 +323,7 @@ public class InventorySystem implements Serializable {
 		} else if(mouseOverInventory()) {
 			InventoryDef inv = getHoveredInventory();
 			for(int i=0; i<inv.getSlots().size(); i++) {
-				InventorySlot invSlot = inv.getSlots().get(i);
+				InventorySlotDef invSlot = inv.getSlots().get(i);
 				if(mouseInput.mouseOverLocalRect(invSlot.getBounds())) {
 					Item hotbar_item = getHotbarSelectedItem();
 					setHotbarSelectedItem(invSlot.getItem());

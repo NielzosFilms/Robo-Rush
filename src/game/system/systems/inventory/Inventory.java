@@ -6,6 +6,7 @@ import game.system.inputs.MouseInput;
 import game.system.main.Game;
 import game.system.systems.inventory.inventoryDef.AcceptsItems;
 import game.system.systems.inventory.inventoryDef.InventoryDef;
+import game.system.systems.inventory.inventoryDef.InventorySlotDef;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -14,7 +15,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class Inventory extends InventoryDef implements AcceptsItems {
-    private ArrayList<InventorySlot> slots = new ArrayList<>();
+    private ArrayList<InventorySlotDef> slots = new ArrayList<>();
 
     public Inventory(int size_x, int size_y) {
         this.size_x = size_x;
@@ -30,7 +31,7 @@ public class Inventory extends InventoryDef implements AcceptsItems {
 
     @Override
     public void tick() {
-        for(InventorySlot slot : slots) {
+        for(InventorySlotDef slot : slots) {
             slot.tick();
         }
     }
@@ -65,7 +66,7 @@ public class Inventory extends InventoryDef implements AcceptsItems {
 
             }
         }
-        for(InventorySlot slot : slots) {
+        for(InventorySlotDef slot : slots) {
             slot.render(g);
         }
         if(Game.DEBUG_MODE) {
@@ -80,15 +81,15 @@ public class Inventory extends InventoryDef implements AcceptsItems {
 
     @Override
     public void mouseClick(MouseEvent e, MouseInput mouseInput, InventorySystem invSys) {
-        InventorySlot slot = getClickedSlot(e, mouseInput);
+        InventorySlotDef slot = getClickedSlot(e, mouseInput);
         if (slot != null) {
             slot.onClick(e,this,  invSys);
         }
     }
 
     @Override
-    protected InventorySlot getClickedSlot(MouseEvent e, MouseInput mouseInput) {
-        for(InventorySlot slot : slots) {
+    protected InventorySlotDef getClickedSlot(MouseEvent e, MouseInput mouseInput) {
+        for(InventorySlotDef slot : slots) {
             if(mouseInput.mouseOverLocalRect(slot.getBounds())) {
                 return slot;
             }
@@ -115,25 +116,25 @@ public class Inventory extends InventoryDef implements AcceptsItems {
     }
 
     @Override
-    public ArrayList<InventorySlot> getSlots() {
+    public ArrayList<InventorySlotDef> getSlots() {
         return slots;
     }
 
     @Override
     public void addItem(Item item) {
         if(inventoryContainsItemAndCanStack(item)) {
-            InventorySlot slot = getNextStackableSlot(item);
+            InventorySlotDef slot = getNextStackableSlot(item);
             if(slot != null) {
-                Item rest = slot.addItem(item, this);
+                Item rest = slot.addItem(item);
                 if (rest != null) {
                     this.addItem(rest);
                 }
             }
         } else {
             if(hasFreeSlot()) {
-                InventorySlot slot = getNextFreeSlot();
+                InventorySlotDef slot = getNextFreeSlot();
                 if(slot != null) {
-                    Item rest = slot.addItem(item, this);
+                    Item rest = slot.addItem(item);
                     if(rest != null) this.addItem(rest);
                 }
             } else {
@@ -148,7 +149,7 @@ public class Inventory extends InventoryDef implements AcceptsItems {
 
     @Override
     public boolean addItemAtPos(Item item, int pos) {
-        InventorySlot slot = slots.get(pos);
+        InventorySlotDef slot = slots.get(pos);
         if(!slot.hasItem()) {
             slot.setItem(item);
             return true;
@@ -166,8 +167,8 @@ public class Inventory extends InventoryDef implements AcceptsItems {
     }
 
     @Override
-    public InventorySlot getNextFreeSlot() {
-        for (InventorySlot slot : slots) {
+    public InventorySlotDef getNextFreeSlot() {
+        for (InventorySlotDef slot : slots) {
             if (!slot.hasItem()) {
                 return slot;
             }
@@ -177,7 +178,7 @@ public class Inventory extends InventoryDef implements AcceptsItems {
 
     @Override
     public boolean hasFreeSlot() {
-        for(InventorySlot slot : slots) {
+        for(InventorySlotDef slot : slots) {
             if(!slot.hasItem()) {
                 return true;
             }
@@ -187,7 +188,7 @@ public class Inventory extends InventoryDef implements AcceptsItems {
 
     @Override
     public boolean inventoryContainsItemAndCanStack(Item item) {
-        for(InventorySlot slot : slots) {
+        for(InventorySlotDef slot : slots) {
             if(!slot.hasItem()) continue;
             Item slotItem = slot.getItem();
             if(slotItem.getItemType() == item.getItemType()) {
@@ -198,8 +199,8 @@ public class Inventory extends InventoryDef implements AcceptsItems {
     }
 
     @Override
-    public InventorySlot getNextStackableSlot(Item item) {
-        for(InventorySlot slot : slots) {
+    public InventorySlotDef getNextStackableSlot(Item item) {
+        for(InventorySlotDef slot : slots) {
             if(!slot.hasItem()) continue;
             Item slotItem = slot.getItem();
             if(slotItem.getItemType() == item.getItemType()) {

@@ -34,12 +34,12 @@ public abstract class InventoryDef {
     public abstract void render(Graphics g);
 
     public abstract void mouseClick(MouseEvent e, MouseInput mouseInput, InventorySystem invSys);
-    protected abstract InventorySlot getClickedSlot(MouseEvent e, MouseInput mouseInput);
+    protected abstract InventorySlotDef getClickedSlot(MouseEvent e, MouseInput mouseInput);
 
     public abstract Rectangle getInventoryBounds();
     public abstract Rectangle getInventoryMoveBounds();
 
-    public abstract ArrayList<InventorySlot> getSlots();
+    public abstract ArrayList<InventorySlotDef> getSlots();
 
     public void setInitXY(int x, int y) {
         this.init_x = x;
