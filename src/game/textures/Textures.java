@@ -24,6 +24,8 @@ public class Textures {
 			healthbar,
 			mushroom;
 
+	public static BufferedImage cursor = loader.loadImage("assets/main/hud/cursor.png");
+
 	public Textures() {
 		for(TEXTURE_LIST list_name : TEXTURE_LIST.values()) {
 			texture_lists.put(list_name, new HashMap<>());

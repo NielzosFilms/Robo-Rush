@@ -1,21 +1,24 @@
 package game.system.main;
 
-import game.textures.TEXTURE_LIST;
-import game.textures.Texture;
+import game.textures.*;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 
 import javax.swing.JFrame;
 
 public class Window extends Canvas {
 
 	private static final long serialVersionUID = 492636734070584756L;
-
-	private Texture cursor_tex = new Texture(TEXTURE_LIST.hud_list, 2, 0);
 	
 	public Window(int width, int height, String title, Game game) {
-		/*Cursor woodCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-				cursor_tex.getTexure(), new Point(0, 0), "wood cursor");*/
+		/*BufferedImage cursor = new BufferedImageLoader().loadImage("assets/main/hud/cursor.png");
+		Cursor woodCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+				cursor, new Point(10, 10), "wood cursor");*/
+
+		Cursor transp_cursor = Toolkit.getDefaultToolkit().createCustomCursor(
+				new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "transp cursor");
 
 		JFrame f = new JFrame(title);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,7 +32,7 @@ public class Window extends Canvas {
 		}
 		f.setLocationRelativeTo(null);
 		f.add(game);
-		//f.getContentPane().setCursor(woodCursor);
+		f.getContentPane().setCursor(transp_cursor);
 		f.pack();
 		f.setVisible(true);
 		game.start();

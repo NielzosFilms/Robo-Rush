@@ -2,7 +2,9 @@ package game.system.main;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.Buffer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +23,7 @@ import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
 import game.system.systems.menu.MenuSystem;
 import game.system.world.JsonStructureLoader;
-import game.textures.Fonts;
-import game.textures.Textures;
+import game.textures.*;
 import game.system.world.World;
 
 public class Game extends Canvas implements Runnable {
@@ -182,6 +183,8 @@ public class Game extends Canvas implements Runnable {
 			}
 		}
 		loadingAnimation.render(g);
+
+		g.drawImage(Textures.cursor, mouseInput.mouse_x, mouseInput.mouse_y, 8, 8, null);
 
 		g.dispose();
 		g2d.dispose();
