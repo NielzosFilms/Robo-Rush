@@ -14,6 +14,8 @@ import game.system.inputs.MouseInput;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.HasItem;
 import game.system.systems.hud.Selection;
+import game.system.systems.inventory.inventoryDef.AcceptsItems;
+import game.system.systems.inventory.inventoryDef.InventoryDef;
 import game.system.systems.particles.Particle_String;
 import game.system.world.Chunk;
 import game.system.world.World;
@@ -36,12 +38,12 @@ public class InventorySystem implements Serializable {
 	private transient Handler handler;
 	private transient MouseInput mouseInput;
 	private transient World world;
-	private transient Inventory player_inv;
+	private transient InventoryDef player_inv;
 	private transient Camera cam;
-	public transient Inventory player_hotbar;
+	public transient InventoryDef player_hotbar;
 
 	public int hotbar_selected = 0;
-	private ArrayList<Inventory> open_inventories = new ArrayList<>();
+	private ArrayList<InventoryDef> open_inventories = new ArrayList<>();
 
 	//public static boolean player_inventory_open = true;
 	private Item holding = null;
@@ -66,14 +68,14 @@ public class InventorySystem implements Serializable {
 	public void tick() {
 		placeTimer.tick();
 		for(int i=0; i<open_inventories.size(); i++) {
-			Inventory inv = open_inventories.get(i);
+			InventoryDef inv = open_inventories.get(i);
 			inv.tick();
 		}
 
 		if(!mouseOverInventory()) {
 			mouseOutside();
 		} else {
-			Inventory inv = getHoveredInventory();
+			InventoryDef inv = getHoveredInventory();
 			if(inv.isMoveable() && mouseInput.leftMouseDown()) {
 				if(mouseInput.mouseOverLocalRect(inv.getInventoryMoveBounds())) {
 					inv.setXY(mouseInput.mouse_x - inv.getInventoryMoveBounds().width / 2, mouseInput.mouse_y + 12 / 2);
@@ -106,7 +108,7 @@ public class InventorySystem implements Serializable {
 		// NOTICE using this for loop instead of "Inventory inv : open_inventories"
 		// will fix the removing inventory inside bug
 		for(int i=0; i<open_inventories.size(); i++) {
-			Inventory inv = open_inventories.get(i);
+			InventoryDef inv = open_inventories.get(i);
 			inv.render(g);
 			if(inv == player_hotbar) {
 				Rectangle bnds = inv.getSlots().get(hotbar_selected).getBounds();
@@ -166,12 +168,12 @@ public class InventorySystem implements Serializable {
 					Tile tile_found = chunk.getTileMap(3).get(tile_coords);
 					Rectangle tile_bnds = new Rectangle(tile_found.getX(), tile_found.getY(), item_w, item_h);
 					if (Helpers.getDistanceBetweenBounds(world.getPlayer().getBounds(), tile_bnds) < world.getPlayer().REACH) {
-						if(tile_found instanceof HasItem) {
+						if(tile_found instanceof HasItem && player_inv instanceof AcceptsItems) {
 							Item tile_item = ((HasItem) tile_found).getItem();
 							if (isHolding() && holding.getClass() == tile_item.getClass() && holding.getAmount() + tile_item.getAmount() <= stackSize) {
 								holding.setAmount(holding.getAmount() + tile_item.getAmount());
-							} else if (player_inv.canAcceptItem(tile_item)) {
-								player_inv.addItem(tile_item);
+							} else if (((AcceptsItems) player_inv).canAcceptItem(tile_item)) {
+								((AcceptsItems) player_inv).addItem(tile_item);
 							} else {
 								dropItemAtPlayer(tile_item);
 							}
@@ -222,11 +224,11 @@ public class InventorySystem implements Serializable {
 		}
 	}
 
-	public void addOpenInventory(Inventory inv) {
+	public void addOpenInventory(InventoryDef inv) {
 		if(!this.open_inventories.contains(inv)) {
 			//if(this.open_inventories.size() > 2) closeAll();
 			// TODO change inventory positions
-			for(Inventory inventory : open_inventories) {
+			for(InventoryDef inventory : open_inventories) {
 				if(inv.getInventoryBounds().intersects(inventory.getInventoryBounds())) {
 					removeOpenInventory(inventory);
 					break;
@@ -237,16 +239,16 @@ public class InventorySystem implements Serializable {
 			removeOpenInventory(inv);
 		}
 	}
-	public void removeOpenInventory(Inventory inv) {
+	public void removeOpenInventory(InventoryDef inv) {
 		this.open_inventories.remove(inv);
 	}
 
 	public void pickupItemToPlayerInv(GameObject obj) {
 		if(obj instanceof HasItem) {
 			Item item = ((HasItem) obj).getItem();
-			if (item != null) {
-				if (player_inv.canAcceptItem(item)) {
-					player_inv.addItem(item);
+			if (item != null && player_inv instanceof AcceptsItems) {
+				if (((AcceptsItems) player_inv).canAcceptItem(item)) {
+					((AcceptsItems) player_inv).addItem(item);
 					handler.findAndRemoveObject(obj);
 					AudioPlayer.playSound(AudioFiles.inv_pickup_item, 0.7f, false, 0);
 				}
@@ -318,7 +320,7 @@ public class InventorySystem implements Serializable {
 				clearHolding();
 			}
 		} else if(mouseOverInventory()) {
-			Inventory inv = getHoveredInventory();
+			InventoryDef inv = getHoveredInventory();
 			for(int i=0; i<inv.getSlots().size(); i++) {
 				InventorySlot invSlot = inv.getSlots().get(i);
 				if(mouseInput.mouseOverLocalRect(invSlot.getBounds())) {
@@ -330,9 +332,9 @@ public class InventorySystem implements Serializable {
 		}
 	}
 
-	public Inventory getHoveredInventory() {
+	public InventoryDef getHoveredInventory() {
 		for(int i=0; i<open_inventories.size(); i++) {
-			Inventory inv = open_inventories.get(i);
+			InventoryDef inv = open_inventories.get(i);
 			if(mouseInput.mouseOverLocalRect(inv.getInventoryBounds())) {
 				return inv;
 			}

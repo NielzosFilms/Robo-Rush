@@ -4,14 +4,18 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.*;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
+import game.assets.items.item.Item;
 import game.enums.GAMESTATES;
 import game.enums.ID;
 import game.system.audioEngine.AudioFiles;
 import game.assets.entities.Player;
 import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
+import game.system.systems.inventory.crafting_enums.CraftingTableDefinitions;
 import game.system.systems.menu.elements.LoadingAnimation;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
@@ -166,7 +170,7 @@ public class Game extends Canvas implements Runnable {
 		 */
 		g2d.scale(SCALE_WIDTH, SCALE_HEIGHT);
 		//g.setColor(new Color(217, 247, 255));
-		g.setColor(new Color(14, 14, 20));
+		g.setColor(new Color(24, 20, 37));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		if (game_state == GAMESTATES.Menu) {
@@ -215,12 +219,6 @@ public class Game extends Canvas implements Runnable {
 		Logger.print("Arguments: " + Arrays.toString(args));
 		Logger.print("Game starting...");
 		canvas = new Game();
-
-		/*int abyte = 0b00000000;
-
-		abyte |= 1 << 1;
-		abyte &= ~(1 << 1);
-		System.out.println(abyte);*/
 	}
 
 }
