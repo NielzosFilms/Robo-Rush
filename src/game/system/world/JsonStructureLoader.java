@@ -2,14 +2,17 @@ package game.system.world;
 
 import game.assets.objects.puzzle_objects.PuzzleReciever;
 import game.assets.objects.puzzle_objects.PuzzleTrigger;
+import game.assets.tiles.Tile_Animation;
 import game.assets.tiles.tile.Tile;
 import game.assets.tiles.Tile_Static;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.helpers.Logger;
 import game.system.main.Game;
 import game.system.systems.gameObject.GameObject;
+import game.textures.Animation;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
+import game.textures.Textures;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -65,11 +68,30 @@ public class JsonStructureLoader {
             String list_name = StructureLoaderHelpers.getCustomProp(tileset, "list_name");
             try {
                 texture_list_indexes.put(firstgid, TEXTURE_LIST.valueOf(list_name));
+                if(tileset.containsKey("tiles")) {
+                    for(Object t : (JSONArray)tileset.get("tiles")) {
+                        JSONObject tile = (JSONObject)t;
+                        if(tile.containsKey("animation")) {
+                            int id = StructureLoaderHelpers.getIntProp(tile, "id");
+                            int animation_id = id + firstgid;
+                            LinkedList<Texture> frames = new LinkedList<>();
+                            for(Object a : (JSONArray) tile.get("animation")) {
+                                JSONObject tile_frame = (JSONObject)a;
+                                int tex_index = StructureLoaderHelpers.getIntProp(tile_frame, "tileid");
+                                frames.add(new Texture(TEXTURE_LIST.valueOf(list_name), tex_index));
+                            }
+                            Animation animation = new Animation(20, frames.toArray(new Texture[0]));
+                            if(Textures.generated_animations.containsKey(animation_id)) System.out.println("ALREADY HAS KEY: " + animation_id);
+                            Textures.generated_animations.put(animation_id, animation);
+                        }
+                    }
+                }
             } catch (Exception e) {
                 Logger.printError("Tileset prop: 'list_name' not found, Tileset 'list_name': " + list_name);
                 e.printStackTrace();
             }
         }
+        System.out.println(Textures.generated_animations);
     }
 
     private void decodeLayers(JSONArray layers) {
@@ -129,8 +151,13 @@ public class JsonStructureLoader {
                 int tile_x = (chunk_x * TO_TILE_SIZE) + x * TO_TILE_SIZE;
                 int tile_y = (chunk_y * TO_TILE_SIZE) + y * TO_TILE_SIZE;
                 if(tex_index > 0) {
-                    chunk.addTile(new Tile_Static(tile_x, tile_y, x, y, layer_index, chunk,
-                            new Texture(getTextureList(tex_index), tex_index-1 - getTextureListGid(tex_index))));
+                    if(Textures.generated_animations.containsKey(tex_index)) {
+                        chunk.addTile(new Tile_Animation(tile_x, tile_y, x, y, layer_index, chunk,
+                                Textures.generated_animations.get(tex_index)));
+                    } else {
+                        chunk.addTile(new Tile_Static(tile_x, tile_y, x, y, layer_index, chunk,
+                                new Texture(getTextureList(tex_index), tex_index-1 - getTextureListGid(tex_index))));
+                    }
                 }
                 x++;
                 if(x >= chunk_width) {

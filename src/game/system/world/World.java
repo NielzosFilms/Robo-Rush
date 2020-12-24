@@ -175,6 +175,9 @@ public class World implements Serializable {
 		for(int key : Textures.water_red.keySet()) {
 			Textures.water_red.get(key).runAnimation();
 		}
+		for(int key : Textures.generated_animations.keySet()) {
+			Textures.generated_animations.get(key).runAnimation();
+		}
 	}
 
 	public LinkedList<Chunk> getChunksOnScreen() {

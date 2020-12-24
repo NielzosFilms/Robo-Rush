@@ -20,8 +20,4 @@ public class Tile_Static extends Tile {
     public void render(Graphics g) {
         g.drawImage(texture.getTexure(), x, y, tileSize, tileSize, null);
     }
-
-    public void update() {
-
-    }
 }

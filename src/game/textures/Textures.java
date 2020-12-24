@@ -10,6 +10,7 @@ import java.util.HashMap;
 public class Textures {
 	private static BufferedImageLoader loader = new BufferedImageLoader();
 	public static HashMap<TEXTURE_LIST, HashMap<Point, BufferedImage>> texture_lists = new HashMap<>();
+	public static HashMap<Integer, Animation> generated_animations = new HashMap<>();
 
 	public static HashMap<Integer, Animation> water_gray = new HashMap<>();
 	public static HashMap<Integer, Animation> water_red = new HashMap<>();
