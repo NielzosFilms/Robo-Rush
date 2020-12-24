@@ -10,6 +10,7 @@ import java.util.Random;
 import game.assets.tiles.tile.Transition;
 import game.assets.tiles.tile.UpdateAble;
 import game.system.helpers.Logger;
+import game.system.main.Game;
 import game.system.systems.gameObject.*;
 import game.system.systems.lighting.Light;
 import game.assets.tiles.tile.Tile;
@@ -29,18 +30,16 @@ public class Chunk implements Serializable {
 
 	public static int tile_width = 16, tile_height = 16;
 	public int x, y;
-	private World world;
 
-	public Chunk(int x, int y, World world) {
+	public Chunk(int x, int y) {
 		this.tiles.add(new HashMap<Point, Tile>());
 		this.entities.add(new LinkedList<GameObject>());
 		this.x = x;
 		this.y = y;
-		this.world = world;
 		// entities.add(new Enemy((x+8)*16, (y+8)*16, ID.Enemy));
 		// generate chunk tiles 16x16 then add to world
 
-		GenerateTiles(world);
+		//GenerateTiles(world);
 		/*createTransitions();
 		update();*/
 	}
@@ -147,7 +146,7 @@ public class Chunk implements Serializable {
 
 	public void update() {
 		// change texture of tile
-		for(int i=0; i<tiles.size(); i++) {
+		/*for(int i=0; i<tiles.size(); i++) {
 			HashMap<Point, Tile> map = new HashMap<>(tiles.get(i));
 			for(Point key : map.keySet()) {
 				if (map.containsKey(key)) {
@@ -157,7 +156,7 @@ public class Chunk implements Serializable {
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 	/*public void updateSameTiles(Tile tile) {
@@ -176,33 +175,6 @@ public class Chunk implements Serializable {
 		}
 		tiles.set(tilemap_index, tmp);
 	}*/
-
-	private void GenerateTiles(World world) {
-		float[][] osn = world.getGeneration().getHeightOsn(x, y, tile_width, tile_height);
-		float[][] temp_osn = world.getGeneration().getTemperatureOsn(x, y, tile_width, tile_height);
-		float[][] moist_osn = world.getGeneration().getMoistureOsn(x, y, tile_width, tile_height);
-
-		// create simple tiles
-		for (int yy = 0; yy < osn.length; yy++) {
-			for (int xx = 0; xx < osn[yy].length; xx++) {
-				float val = osn[xx][yy];
-
-				float temp_val = temp_osn[xx][yy];
-				float moist_val = moist_osn[xx][yy];
-
-				int resized_x = xx * 16;
-				int world_x = resized_x + x * 16;
-
-				int resized_y = yy * 16;
-				int world_y = resized_y + y * 16;
-
-				LinkedList<Tile> tiles = world.getGeneratedTile(xx, yy, val, temp_val, moist_val, this, world_x, world_y);
-				for(Tile tile : tiles) {
-					addTile(tile);
-				}
-			}
-		}
-	}
 
 	public LinkedList<GameObject> getEntities() {
 		LinkedList<GameObject> tmp = new LinkedList<GameObject>();
@@ -280,7 +252,7 @@ public class Chunk implements Serializable {
 	public Chunk getNeighbourChunk(int x_offset, int y_offset) {
 		x_offset *= 16;
 		y_offset *= 16;
-		return this.world.getChunkWithCoordsPoint(new Point(x + x_offset, y + y_offset));
+		return Game.world.getChunkWithCoordsPoint(new Point(x + x_offset, y + y_offset));
 	}
 
 	public LinkedList<Rectangle> getAllTileBounds() {

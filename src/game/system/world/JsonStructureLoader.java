@@ -6,6 +6,7 @@ import game.assets.tiles.tile.Tile;
 import game.assets.tiles.Tile_Static;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.helpers.Logger;
+import game.system.main.Game;
 import game.system.systems.gameObject.GameObject;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
@@ -44,8 +45,8 @@ public class JsonStructureLoader {
             JSONObject map = (JSONObject) parser.parse(new FileReader(filepath));
             tileSize = Integer.parseInt(map.get("tilewidth").toString());
             division = tileSize / TO_TILE_SIZE;
-            if((boolean)map.get("infinite")) {
-                throw new Exception("Loader does not support infinite tilemaps...");
+            if(!(boolean)map.get("infinite")) {
+                throw new Exception("Loader only supports infinite tilemaps. file: " + filepath);
             }
             decodeTextureLists((JSONArray)map.get("tilesets"));
             decodeLayers((JSONArray) map.get("layers"));
@@ -89,14 +90,14 @@ public class JsonStructureLoader {
     private void setLinkages() {
         for(GameObject obj : objects) {
             if(obj instanceof PuzzleTrigger) {
-                PuzzleReciever reciever = getRevieverWithId(((PuzzleTrigger) obj).getRecieverId());
+                PuzzleReciever reciever = getRecieverWithId(((PuzzleTrigger) obj).getRecieverId());
                 if(reciever != null) {
                     ((PuzzleTrigger) obj).setReciever(reciever);
                 }
             }
         }
     }
-    private PuzzleReciever getRevieverWithId(int id) {
+    private PuzzleReciever getRecieverWithId(int id) {
         for(GameObject obj : objects) {
             if(obj instanceof PuzzleReciever) {
                 if(((PuzzleReciever) obj).getRevieverId() == id) {
@@ -108,36 +109,44 @@ public class JsonStructureLoader {
     }
 
     private void decodeTileLayer(JSONObject layer, int layer_index) {
-        int width_tiles = StructureLoaderHelpers.getIntProp(layer, "width");
-        int height_tiles = StructureLoaderHelpers.getIntProp(layer, "height");
-        int layer_x = StructureLoaderHelpers.getIntProp(layer, "x");
-        int layer_y = StructureLoaderHelpers.getIntProp(layer, "y");
         if(StructureLoaderHelpers.hasCustomProp(layer, "z_index")) {
             layer_index = Integer.parseInt(StructureLoaderHelpers.getCustomProp(layer, "z_index"));
         }
+        for(Object c : (JSONArray)layer.get("chunks")) {
+            JSONObject file_chunk = (JSONObject) c;
+            int chunk_width = StructureLoaderHelpers.getIntProp(file_chunk, "width");
+            int chunk_height = StructureLoaderHelpers.getIntProp(file_chunk, "height");
 
-        int x = 0;
-        int y = 0;
-        for(Object o : (JSONArray)layer.get("data")) {
-            int tex_index = Integer.parseInt(o.toString());
-            if(tex_index > 0) {
-                static_tiles.add(new Tile_Static(layer_x + x * TO_TILE_SIZE, layer_y + y * TO_TILE_SIZE, x, y, layer_index, null,
-                        new Texture(getTextureList(tex_index), tex_index-1 - getTextureListGid(tex_index))));
-            }
-            x++;
-            if(x == width_tiles) {
-                x = 0;
-                y++;
+            int chunk_x = StructureLoaderHelpers.getIntProp(file_chunk, "x");
+            int chunk_y = StructureLoaderHelpers.getIntProp(file_chunk, "y");
+
+            Chunk chunk = getOrCreateChunk(chunk_x, chunk_y);
+
+            int x = 0;
+            int y = 0;
+            for(Object o : (JSONArray)file_chunk.get("data")) {
+                int tex_index = Integer.parseInt(o.toString());
+                int tile_x = (chunk_x * TO_TILE_SIZE) + x * TO_TILE_SIZE;
+                int tile_y = (chunk_y * TO_TILE_SIZE) + y * TO_TILE_SIZE;
+                if(tex_index > 0) {
+                    chunk.addTile(new Tile_Static(tile_x, tile_y, x, y, layer_index, chunk,
+                            new Texture(getTextureList(tex_index), tex_index-1 - getTextureListGid(tex_index))));
+                }
+                x++;
+                if(x >= chunk_width) {
+                    x = 0;
+                    y++;
+                }
             }
         }
     }
 
     private void decodeObjectLayer(JSONObject layer, int layer_index) {
+        if(StructureLoaderHelpers.hasCustomProp(layer, "z_index")) {
+            layer_index = Integer.parseInt(StructureLoaderHelpers.getCustomProp(layer, "z_index"));
+        }
         for(Object o : (JSONArray)layer.get("objects")) {
             JSONObject object = (JSONObject) o;
-            if(StructureLoaderHelpers.hasCustomProp(layer, "z_index")) {
-                layer_index = Integer.parseInt(StructureLoaderHelpers.getCustomProp(layer, "z_index"));
-            }
 
             if(object.get("type").toString().equals("bounds")) {
                 this.bounds.add(getRectangle(object));
@@ -147,7 +156,7 @@ public class JsonStructureLoader {
                 try {
                     Class<?> clazz = Class.forName(StructureLoaderHelpers.getFullClassname(object));
                     Constructor<?> ctor = clazz.getConstructor(JSONObject.class, int.class, int.class, JsonStructureLoader.class);
-                    objects.add((GameObject) ctor.newInstance(object, layer_index, division, this));
+                    addObjectToChunk((GameObject) ctor.newInstance(object, layer_index, division, this));
                 } catch (ClassNotFoundException | NoSuchMethodException e) {
                     Logger.printError("Class not found: " + object.get("type").toString());
                     e.printStackTrace();
@@ -159,12 +168,32 @@ public class JsonStructureLoader {
         }
     }
 
+    private void addObjectToChunk(GameObject object) {
+        Point chunk_coords = Game.world.getChunkPointWithCoords(object.getX(), object.getY());
+        getOrCreateChunk(chunk_coords.x, chunk_coords.y).addEntity(object);
+    }
+
+    private Chunk getOrCreateChunk(int chunk_x, int chunk_y) {
+        Chunk chunk;
+        if(chunks.containsKey(new Point(chunk_x, chunk_y))) {
+            chunk = chunks.get(new Point(chunk_x, chunk_y));
+        } else {
+            chunk = new Chunk(chunk_x, chunk_y);
+            chunks.put(new Point(chunk_x, chunk_y), chunk);
+        }
+        return chunk;
+    }
+
     private Rectangle getRectangle(JSONObject bounds) {
         int x = Integer.parseInt(bounds.get("x").toString()) / division;
         int y = Integer.parseInt(bounds.get("y").toString()) / division;
         int width = Integer.parseInt(bounds.get("width").toString()) / division;
         int height = Integer.parseInt(bounds.get("height").toString()) / division;
         return new Rectangle(x, y, width, height);
+    }
+
+    public HashMap<Point, Chunk> getChunks() {
+        return chunks;
     }
 
     private TEXTURE_LIST getTextureList(int index) {
@@ -188,50 +217,6 @@ public class JsonStructureLoader {
         Comparator<Integer> order = Integer::compare;
         gids.sort(order);
         return gids;
-    }
-
-    public HashMap<Point, Chunk> getChunks(World world) {
-        Point origin = world.getChunkPointWithCoords(player_spawn.x, player_spawn.y);
-        chunks.put(origin, new Chunk(origin.x, origin.y, world));
-        for (Tile tile : static_tiles) {
-            chunks.get(getContainingChunk(tile.getX(), tile.getY(), world)).addTile(tile);
-        }
-        for (GameObject entity : objects) {
-            chunks.get(getContainingChunk(entity.getX(), entity.getY(), world)).addEntity(entity);
-        }
-        for (Rectangle bounds : bounds) {
-            chunks.get(getContainingChunk(bounds.x, bounds.y, world)).addExtraBound(bounds);
-        }
-        return chunks;
-    }
-
-    public void addAllToChunk(HashMap<Point, Chunk> chunks, World world) {
-        getContainingChunk(player_spawn.x, player_spawn.y, world);
-        for (Tile tile : static_tiles) {
-            chunks.get(getContainingChunkWithChunks(tile.getX(), tile.getY(), world, chunks)).addTile(tile);
-        }
-        for (GameObject entity : objects) {
-            chunks.get(getContainingChunkWithChunks(entity.getX(), entity.getY(), world, chunks)).addEntity(entity);
-        }
-        for (Rectangle bounds : bounds) {
-            chunks.get(getContainingChunkWithChunks(bounds.x, bounds.y, world, chunks)).addExtraBound(bounds);
-        }
-    }
-
-    public Point getContainingChunkWithChunks(int x, int y, World world, HashMap<Point, Chunk> chunks) {
-        Point chunkPoint = world.getChunkPointWithCoords(x, y);
-        if (!chunks.containsKey(chunkPoint)) {
-            chunks.put(chunkPoint, new Chunk(chunkPoint.x, chunkPoint.y, world));
-        }
-        return chunkPoint;
-    }
-
-    public Point getContainingChunk(int x, int y, World world) {
-        Point chunkPoint = world.getChunkPointWithCoords(x, y);
-        if (!chunks.containsKey(chunkPoint)) {
-            chunks.put(chunkPoint, new Chunk(chunkPoint.x, chunkPoint.y, world));
-        }
-        return chunkPoint;
     }
 
     public LinkedList<Tile> getStatic_tiles() {

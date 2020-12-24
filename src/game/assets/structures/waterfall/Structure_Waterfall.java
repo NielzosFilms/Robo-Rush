@@ -34,12 +34,12 @@ public class Structure_Waterfall extends Structure {
     }
 
     public void generate(World world) {
-        generated = false;
+        /*generated = false;
         JsonStructureLoader loader = new JsonStructureLoader("assets/structures/puzzle_1.json");
         //chunks = loader.getChunks(world);
         loader.addAllToChunk(chunks, world);
         player_spawn = loader.getPlayerSpawn();
-        generated = true;
+        generated = true;*/
     }
 
     public void entered(World world) {

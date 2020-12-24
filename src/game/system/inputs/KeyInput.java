@@ -82,7 +82,7 @@ public class KeyInput extends KeyAdapter {
 				if(world.structureActive()) {
 					world.getGeneration().setNewSeed(world.getNextSeed());
 					world.getActive_structure().generate(world);
-				}else world.generate(new Random().nextLong());
+				}else world.generate();
 			}
 			inventorySystem.keyPressed(e);
 		} else {

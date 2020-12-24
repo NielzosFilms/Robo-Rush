@@ -126,7 +126,7 @@ public class World implements Serializable {
 							if (!getActiveChunks().containsKey(new Point(x + offset.x * 16, y + offset.y * 16))) {
 								getActiveChunks().put(
 										new Point(x + offset.x * 16, y + offset.y * 16),
-										new Chunk(x + offset.x * 16, y + offset.y * 16, this));
+										new Chunk(x + offset.x * 16, y + offset.y * 16));
 								updateChunk(x + offset.x * 16, y + offset.y * 16);
 							}
 						}
@@ -155,7 +155,7 @@ public class World implements Serializable {
 
 	public void createChunk(Chunk chunk) {
 		if(!getActiveChunks().containsKey(new Point(chunk.x, chunk.y))) {
-			getActiveChunks().put(new Point(chunk.x, chunk.y), new Chunk(chunk.x, chunk.y, this));
+			getActiveChunks().put(new Point(chunk.x, chunk.y), new Chunk(chunk.x, chunk.y));
 			updateChunk(chunk.x, chunk.y);
 		}
 	}
@@ -275,39 +275,25 @@ public class World implements Serializable {
 		return new Point(x, y);
 	}
 
-	public void generate(Long seed) {
-		this.r = new Random(seed);
-		this.seed = seed;
-		this.temp_seed = r.nextLong();
-		this.moist_seed = r.nextLong();
-		generation = new Generation(seed, temp_seed, moist_seed, new BiomeGroup_World());
-		generation.setHeight_scale(0.05f);
+	public void generate() {
 		loaded = false;
 		chunks.clear();
 		setRequirements(new Player(0, 0, 20, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
 
-		Logger.print("[seed]: " + this.seed);
+		//Logger.print("[seed]: " + this.seed);
+		Logger.print("World Generating...");
 
-		Point chunk_point = getChunkPointWithCoords(player.getX(), player.getY());
-		Chunk chunk = new Chunk(chunk_point.x, chunk_point.y, this);
+		/*Point chunk_point = getChunkPointWithCoords(player.getX(), player.getY());
+		Chunk chunk = new Chunk(chunk_point.x, chunk_point.y);
 		chunks.put(chunk_point, chunk);
-		updateChunk(chunk.x, chunk.y);
-		handler.addObject(new Waterfall(0, 0, 10));
+		updateChunk(chunk.x, chunk.y);*/
+		JsonStructureLoader jsonLoader = new JsonStructureLoader("assets/structures/main_map_1.json");
+		chunks = jsonLoader.getChunks();
+		//handler.addObject(new Waterfall(0, 0, 10));
 		handler.addObject(new Golem_Stone(64, 64, 10, ID.Enemy));
 		handler.addObject(new TestTable(0, 64, 10, ID.NULL));
 		//chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
 		loaded = true;
-	}
-
-	public LinkedList<Tile> getGeneratedTile(int x, int y, float height, float temp, float moist, Chunk chunk, int world_x, int world_y) {
-		LinkedList<Tile> ret = new LinkedList<>();
-		if(!structureActive()) {
-			BIOME biome = generation.getBiome(height, temp, moist);
-			ret.add(generation.getTile(world_x, world_y, x, y, chunk, biome));
-		} else {
-			return active_structure.getGeneratedTile(x, y, height, temp, moist, chunk, world_x, world_y);
-		}
-		return ret;
 	}
 
 	public Player getPlayer() {

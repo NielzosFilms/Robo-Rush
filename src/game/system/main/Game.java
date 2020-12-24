@@ -93,8 +93,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void generateRequirements() {
-		Long seed = 9034865798355343302L; // r.nextLong();
-		world.generate(seed);
+		world.generate();
 	}
 
 	public synchronized void start() {

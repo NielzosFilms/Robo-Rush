@@ -24,7 +24,6 @@ public abstract class Structure implements Serializable {
 
     public Structure(Long seed, GameObject world_object, BiomeGroup biomeGroup) {
         this.seed = seed;
-        this.generation = new Generation(seed, biomeGroup);
         this.world_object = world_object;
     }
 
