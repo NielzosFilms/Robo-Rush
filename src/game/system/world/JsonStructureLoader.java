@@ -75,12 +75,14 @@ public class JsonStructureLoader {
                             int id = StructureLoaderHelpers.getIntProp(tile, "id");
                             int animation_id = id + firstgid;
                             LinkedList<Texture> frames = new LinkedList<>();
+                            int frame_duration = 300;
                             for(Object a : (JSONArray) tile.get("animation")) {
                                 JSONObject tile_frame = (JSONObject)a;
                                 int tex_index = StructureLoaderHelpers.getIntProp(tile_frame, "tileid");
+                                frame_duration = StructureLoaderHelpers.getIntProp(tile_frame, "duration");
                                 frames.add(new Texture(TEXTURE_LIST.valueOf(list_name), tex_index));
                             }
-                            Animation animation = new Animation(20, frames.toArray(new Texture[0]));
+                            Animation animation = new Animation(frame_duration, frames.toArray(new Texture[0]));
                             if(Textures.generated_animations.containsKey(animation_id)) System.out.println("ALREADY HAS KEY: " + animation_id);
                             Textures.generated_animations.put(animation_id, animation);
                         }

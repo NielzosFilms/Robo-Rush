@@ -89,49 +89,49 @@ public class Player extends GameObject implements Collision, Interactable {
 	}
 
 	private void initAnimations() {
-		idle_down = new Animation(8,
+		idle_down = new Animation(200,
 				new Texture(TEXTURE_LIST.player_list, 0, 0),
 				new Texture(TEXTURE_LIST.player_list, 1, 0),
 				new Texture(TEXTURE_LIST.player_list, 2, 0),
 				new Texture(TEXTURE_LIST.player_list, 3, 0));
-		idle_up = new Animation(8,
+		idle_up = new Animation(200,
 				new Texture(TEXTURE_LIST.player_list, 0, 6),
 				new Texture(TEXTURE_LIST.player_list, 1, 6),
 				new Texture(TEXTURE_LIST.player_list, 2, 6),
 				new Texture(TEXTURE_LIST.player_list, 3, 6));
-		idle_left = new Animation(8,
+		idle_left = new Animation(200,
 				new Texture(TEXTURE_LIST.player_list, 0, 4),
 				new Texture(TEXTURE_LIST.player_list, 1, 4),
 				new Texture(TEXTURE_LIST.player_list, 2, 4),
 				new Texture(TEXTURE_LIST.player_list, 3, 4));
-		idle_right = new Animation(8,
+		idle_right = new Animation(200,
 				new Texture(TEXTURE_LIST.player_list, 0, 2),
 				new Texture(TEXTURE_LIST.player_list, 1, 2),
 				new Texture(TEXTURE_LIST.player_list, 2, 2),
 				new Texture(TEXTURE_LIST.player_list, 3, 2));
 
-		walk_down = new Animation(5,
+		walk_down = new Animation(150,
 				new Texture(TEXTURE_LIST.player_list, 0, 1),
 				new Texture(TEXTURE_LIST.player_list, 1, 1),
 				new Texture(TEXTURE_LIST.player_list, 2, 1),
 				new Texture(TEXTURE_LIST.player_list, 3, 1),
 				new Texture(TEXTURE_LIST.player_list, 4, 1),
 				new Texture(TEXTURE_LIST.player_list, 5, 1));
-		walk_up = new Animation(5,
+		walk_up = new Animation(150,
 				new Texture(TEXTURE_LIST.player_list, 0, 7),
 				new Texture(TEXTURE_LIST.player_list, 1, 7),
 				new Texture(TEXTURE_LIST.player_list, 2, 7),
 				new Texture(TEXTURE_LIST.player_list, 3, 7),
 				new Texture(TEXTURE_LIST.player_list, 4, 7),
 				new Texture(TEXTURE_LIST.player_list, 5, 7));
-		walk_left = new Animation(5,
+		walk_left = new Animation(150,
 				new Texture(TEXTURE_LIST.player_list, 0, 5),
 				new Texture(TEXTURE_LIST.player_list, 1, 5),
 				new Texture(TEXTURE_LIST.player_list, 2, 5),
 				new Texture(TEXTURE_LIST.player_list, 3, 5),
 				new Texture(TEXTURE_LIST.player_list, 4, 5),
 				new Texture(TEXTURE_LIST.player_list, 5, 5));
-		walk_right = new Animation(5,
+		walk_right = new Animation(150,
 				new Texture(TEXTURE_LIST.player_list, 0, 3),
 				new Texture(TEXTURE_LIST.player_list, 1, 3),
 				new Texture(TEXTURE_LIST.player_list, 2, 3),
@@ -139,7 +139,7 @@ public class Player extends GameObject implements Collision, Interactable {
 				new Texture(TEXTURE_LIST.player_list, 4, 3),
 				new Texture(TEXTURE_LIST.player_list, 5, 3));
 
-		attack_slice = new Animation(1,
+		attack_slice = new Animation(50,
 				//new Texture(TEXTURE_LIST.attack_slice_list, 2, 0),
 				new Texture(TEXTURE_LIST.attack_slice_list, 0, 1),
 				new Texture(TEXTURE_LIST.attack_slice_list, 1, 1),

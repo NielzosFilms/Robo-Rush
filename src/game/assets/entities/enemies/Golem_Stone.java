@@ -17,7 +17,7 @@ import org.json.simple.JSONObject;
 import java.awt.*;
 
 public class Golem_Stone extends GameObject implements Collision, Hitable, Health {
-    private Animation idle = new Animation(10,
+    private Animation idle = new Animation(200,
             new Texture(TEXTURE_LIST.stone_golem_idle_list, 0, 0),
             new Texture(TEXTURE_LIST.stone_golem_idle_list, 1, 0),
             new Texture(TEXTURE_LIST.stone_golem_idle_list, 2, 0),
