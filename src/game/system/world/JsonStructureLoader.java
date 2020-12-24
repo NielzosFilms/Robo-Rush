@@ -46,7 +46,7 @@ public class JsonStructureLoader {
     public JsonStructureLoader(String filepath) {
         try {
             JSONObject map = (JSONObject) parser.parse(new FileReader(filepath));
-            tileSize = Integer.parseInt(map.get("tilewidth").toString());
+            tileSize = StructureLoaderHelpers.getIntProp(map, "tilewidth");
             division = tileSize / TO_TILE_SIZE;
             if(!(boolean)map.get("infinite")) {
                 throw new Exception("Loader only supports infinite tilemaps. file: " + filepath);
@@ -57,7 +57,8 @@ public class JsonStructureLoader {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         } catch (Exception e) {
-            Logger.printError(e.getMessage());
+            //Logger.printError(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -68,10 +69,10 @@ public class JsonStructureLoader {
             String list_name = StructureLoaderHelpers.getCustomProp(tileset, "list_name");
             try {
                 texture_list_indexes.put(firstgid, TEXTURE_LIST.valueOf(list_name));
-                if(tileset.containsKey("tiles")) {
+                if(tileset.get("tiles") != null) {
                     for(Object t : (JSONArray)tileset.get("tiles")) {
                         JSONObject tile = (JSONObject)t;
-                        if(tile.containsKey("animation")) {
+                        if(tile.get("animation") != null) {
                             int id = StructureLoaderHelpers.getIntProp(tile, "id");
                             int animation_id = id + firstgid;
                             LinkedList<Texture> frames = new LinkedList<>();
@@ -83,7 +84,6 @@ public class JsonStructureLoader {
                                 frames.add(new Texture(TEXTURE_LIST.valueOf(list_name), tex_index));
                             }
                             Animation animation = new Animation(frame_duration, frames.toArray(new Texture[0]));
-                            if(Textures.generated_animations.containsKey(animation_id)) System.out.println("ALREADY HAS KEY: " + animation_id);
                             Textures.generated_animations.put(animation_id, animation);
                         }
                     }
@@ -93,7 +93,6 @@ public class JsonStructureLoader {
                 e.printStackTrace();
             }
         }
-        System.out.println(Textures.generated_animations);
     }
 
     private void decodeLayers(JSONArray layers) {
@@ -176,9 +175,9 @@ public class JsonStructureLoader {
         }
         for(Object o : (JSONArray)layer.get("objects")) {
             JSONObject object = (JSONObject) o;
-
             if(object.get("type").toString().equals("bounds")) {
-                this.bounds.add(getRectangle(object));
+                //this.bounds.add(getRectangle(object));
+                addBoundToChunk(getRectangle(object));
             } else if(object.get("type").toString().equals("player_spawn")) {
                 player_spawn = getRectangle(object);
             } else {
@@ -200,6 +199,10 @@ public class JsonStructureLoader {
     private void addObjectToChunk(GameObject object) {
         Point chunk_coords = Game.world.getChunkPointWithCoords(object.getX(), object.getY());
         getOrCreateChunk(chunk_coords.x, chunk_coords.y).addEntity(object);
+    }
+    private void addBoundToChunk(Rectangle bounds) {
+        Point chunk_coords = Game.world.getChunkPointWithCoords(bounds.x, bounds.y);
+        getOrCreateChunk(chunk_coords.x, chunk_coords.y).addExtraBound(bounds);
     }
 
     private Chunk getOrCreateChunk(int chunk_x, int chunk_y) {

@@ -11,7 +11,6 @@ public class Animation implements Serializable {
 	private long last_frame_time;
 	private long frame_duration;
 	private int frames;
-	private int index = 0;
 	private int count = 0;
 	
 	private boolean mirrorW;
@@ -32,11 +31,6 @@ public class Animation implements Serializable {
 	}
 	
 	public void runAnimation() {
-		/*index++;
-		if(index > speed) {
-			index = 0;
-			nextFrame();
-		}*/
 		long now = System.currentTimeMillis();
 		long diff = now - last_frame_time;
 		if(diff >= frame_duration) {
@@ -46,7 +40,7 @@ public class Animation implements Serializable {
 	}
 	
 	public void resetAnimation() {
-		index = 0;
+		last_frame_time = System.currentTimeMillis();
 		count = 0;
 		currentImg = images[0];
 		ended = false;
