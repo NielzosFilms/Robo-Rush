@@ -54,7 +54,6 @@ public class Textures {
 		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/7.png"), 32, 32, texture_lists.get(TEXTURE_LIST.grass_plateau));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/8.png"), 32, 32, texture_lists.get(TEXTURE_LIST.cave_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/entities/player/player_sheet.png"), 16, 24, texture_lists.get(TEXTURE_LIST.player_list));
-		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/desert_tile.png"), 16, 16, texture_lists.get(TEXTURE_LIST.desert_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/3.png"), 32, 32, texture_lists.get(TEXTURE_LIST.nature_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/2.png"), 32, 32, texture_lists.get(TEXTURE_LIST.house_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/healthbar_content.png"), 1, 2, texture_lists.get(TEXTURE_LIST.healthbar_list));
@@ -72,6 +71,7 @@ public class Textures {
 		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/wood_tiles.png"), 16, 16, texture_lists.get(TEXTURE_LIST.wood_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/inventory.png"), 22, 22, texture_lists.get(TEXTURE_LIST.gui_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/hud.png"), 16, 16, texture_lists.get(TEXTURE_LIST.hud_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/grass.png"), 16, 16, texture_lists.get(TEXTURE_LIST.grass));
 	}
 
 	private static void fillListWithSpriteSheet(BufferedImage sheet, int width, int height, HashMap<Point, BufferedImage> list) {

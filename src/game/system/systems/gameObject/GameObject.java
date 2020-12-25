@@ -15,12 +15,15 @@ public abstract class GameObject implements Serializable {
 	protected int width = 16, height = 16;
 	protected ID id;
 	protected int z_index;
-	protected double velX;
-	protected double velY;
+	protected float velX;
+	protected float velY;
+	protected float buffer_x, buffer_y;
 
 	public GameObject(int x, int y, int z_index, ID id) {
 		this.x = x;
 		this.y = y;
+		this.buffer_x = x;
+		this.buffer_y = y;
 		this.id = id;
 		this.z_index = z_index;
 	}
@@ -35,10 +38,12 @@ public abstract class GameObject implements Serializable {
 
 	public void setX(int x) {
 		this.x = x;
+		this.buffer_x = x;
 	}
 
 	public void setY(int y) {
 		this.y = y;
+		this.buffer_y = y;
 	}
 
 	public int getX() {

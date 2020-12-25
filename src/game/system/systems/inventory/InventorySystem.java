@@ -163,26 +163,28 @@ public class InventorySystem implements Serializable {
 				Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
 				Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
 				Chunk chunk = world.getChunkWithCoordsPoint(world.getChunkPointWithCoords(world_coords.x, world_coords.y));
-				tile_coords.x = tile_coords.x / 16 - chunk.x;
-				tile_coords.y = tile_coords.y / 16 - chunk.y;
-				if (chunk.tileExistsCoords(3, tile_coords)) {
-					Tile tile_found = chunk.getTileMap(3).get(tile_coords);
-					Rectangle tile_bnds = new Rectangle(tile_found.getX(), tile_found.getY(), item_w, item_h);
-					if (Helpers.getDistanceBetweenBounds(world.getPlayer().getBounds(), tile_bnds) < world.getPlayer().REACH) {
-						if(tile_found instanceof HasItem && player_inv instanceof AcceptsItems) {
-							Item tile_item = ((HasItem) tile_found).getItem();
-							if (isHolding() && holding.getClass() == tile_item.getClass() && holding.getAmount() + tile_item.getAmount() <= stackSize) {
-								holding.setAmount(holding.getAmount() + tile_item.getAmount());
-							} else if (((AcceptsItems) player_inv).canAcceptItem(tile_item)) {
-								((AcceptsItems) player_inv).addItem(tile_item);
-							} else {
-								dropItemAtPlayer(tile_item);
+				if(chunk != null) {
+					tile_coords.x = tile_coords.x / 16 - chunk.x;
+					tile_coords.y = tile_coords.y / 16 - chunk.y;
+					if (chunk.tileExistsCoords(3, tile_coords)) {
+						Tile tile_found = chunk.getTileMap(3).get(tile_coords);
+						Rectangle tile_bnds = new Rectangle(tile_found.getX(), tile_found.getY(), item_w, item_h);
+						if (Helpers.getDistanceBetweenBounds(world.getPlayer().getBounds(), tile_bnds) < world.getPlayer().REACH) {
+							if (tile_found instanceof HasItem && player_inv instanceof AcceptsItems) {
+								Item tile_item = ((HasItem) tile_found).getItem();
+								if (isHolding() && holding.getClass() == tile_item.getClass() && holding.getAmount() + tile_item.getAmount() <= stackSize) {
+									holding.setAmount(holding.getAmount() + tile_item.getAmount());
+								} else if (((AcceptsItems) player_inv).canAcceptItem(tile_item)) {
+									((AcceptsItems) player_inv).addItem(tile_item);
+								} else {
+									dropItemAtPlayer(tile_item);
+								}
+								chunk.removeTile(tile_found);
+								chunk.update();
 							}
-							chunk.removeTile(tile_found);
-							chunk.update();
+						} else {
+							world.getPs().addParticle(new Particle_String(world.getPlayer().getX(), world.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));
 						}
-					} else {
-						world.getPs().addParticle(new Particle_String(world.getPlayer().getX(), world.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));
 					}
 				}
 			}

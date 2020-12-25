@@ -28,8 +28,8 @@ public class Item_Ground extends GameObject implements Interactable, HasItem {
 	public Item_Ground(int x, int y, int z_index, ID id, game.assets.items.item.Item inventoryItem) {
 		super(x, y, z_index, id);
 		this.inventoryItem = inventoryItem;
-		velY = (r.nextDouble() * 3) - 2;
-		velX = (r.nextDouble() * 3) - 2;
+		velY = (r.nextFloat() * 3) - 2;
+		velX = (r.nextFloat() * 3) - 2;
 		buffer_x = x;
 		buffer_y = y;
 	}

@@ -45,7 +45,11 @@ public class Handler implements Serializable {
 				if (tempObject.getId() == ID.Player) {
 					tempObject.tick();
 				} else {
-					if(world.addEntityToChunk(tempObject)) list.remove(tempObject);
+					if(world.addEntityToChunk(tempObject)) {
+						list.remove(tempObject);
+					} else {
+						tempObject.tick();
+					}
 				}
 			}
 		}
