@@ -1,6 +1,7 @@
 package game.textures;
 
 public enum TEXTURE_LIST {
+	cursors,
 	stick, stone, tools,
 
 	grass,

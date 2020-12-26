@@ -15,6 +15,7 @@ import game.system.main.*;
 import game.enums.ID;
 import game.system.systems.menu.MenuSystem;
 import game.system.world.World;
+import game.textures.Textures;
 
 public class KeyInput extends KeyAdapter {
 
@@ -45,18 +46,36 @@ public class KeyInput extends KeyAdapter {
 				for (GameObject tempObject : list) {
 					if (tempObject.getId() == ID.Player) {
 						switch (key) {
-							case KeyEvent.VK_W -> keysDown[0] = true;
-							case KeyEvent.VK_S -> keysDown[1] = true;
-							case KeyEvent.VK_A -> keysDown[2] = true;
-							case KeyEvent.VK_D -> keysDown[3] = true;
-							case KeyEvent.VK_SPACE -> keysDown[4] = true;
-							case KeyEvent.VK_SHIFT -> keysDown[5] = true;
-							case KeyEvent.VK_CONTROL -> {
+							case KeyEvent.VK_W:
+								keysDown[0] = true;
+								break;
+							case KeyEvent.VK_S:
+								keysDown[1] = true;
+								break;
+							case KeyEvent.VK_A:
+								keysDown[2] = true;
+								break;
+							case KeyEvent.VK_D:
+								keysDown[3] = true;
+								break;
+							case KeyEvent.VK_SPACE:
+								keysDown[4] = true;
+								break;
+							case KeyEvent.VK_SHIFT:
+								keysDown[5] = true;
+								break;
+							case KeyEvent.VK_CONTROL:
 								keysDown[6] = true;
-							}
-							case KeyEvent.VK_I -> ((Interactable)tempObject).interact();
-							case KeyEvent.VK_T -> this.world.getChunkWithCoordsPoint(this.world.getChunkPointWithCoords(tempObject.getX(), tempObject.getY())).createTransitions();
-							case KeyEvent.VK_U -> this.world.getChunkWithCoordsPoint(this.world.getChunkPointWithCoords(tempObject.getX(), tempObject.getY())).update();
+								break;
+							case KeyEvent.VK_I:
+								((Interactable)tempObject).interact();
+								break;
+							case KeyEvent.VK_T:
+								this.world.getChunkWithCoordsPoint(this.world.getChunkPointWithCoords(tempObject.getX(), tempObject.getY())).createTransitions();
+								break;
+							case KeyEvent.VK_U:
+								this.world.getChunkWithCoordsPoint(this.world.getChunkPointWithCoords(tempObject.getX(), tempObject.getY())).update();
+								break;
 						}
 						// inventory.pickupItem(handler, world);
 					}
@@ -99,17 +118,30 @@ public class KeyInput extends KeyAdapter {
 			// }
 
 			switch(Game.game_state) {
-				case Game -> {
+				case Game:
 					if(inventorySystem.inventoryIsOpen()) {
 						inventorySystem.closeAll();
 					} else {
 						Game.game_state = GAMESTATES.Pauzed;
 						Game.menuSystem.setState(MENUSTATES.Pauzed);
 					}
-				}
-				case Pauzed -> Game.game_state = GAMESTATES.Game;
-				case Menu -> System.exit(1);
+					break;
+				case Pauzed:
+					Game.game_state = GAMESTATES.Game;
+					break;
+				case Menu:
+					System.exit(1);
+					break;
 			}
+		}
+		if(key == KeyEvent.VK_F1) {
+			int current_cursor = Game.cursor.getIndex();
+			if(current_cursor + 1 >= Textures.texture_lists.get(Game.cursor.getTexture_list()).size()) {
+				current_cursor = 0;
+			} else {
+				current_cursor += 1;
+			}
+			Game.cursor.setIndex(current_cursor);
 		}
 
 	}
@@ -121,13 +153,27 @@ public class KeyInput extends KeyAdapter {
 			for (GameObject tempObject : list) {
 				if (tempObject.getId() == ID.Player) {
 					switch (key) {
-						case KeyEvent.VK_W -> keysDown[0] = false;
-						case KeyEvent.VK_S -> keysDown[1] = false;
-						case KeyEvent.VK_A -> keysDown[2] = false;
-						case KeyEvent.VK_D -> keysDown[3] = false;
-						case KeyEvent.VK_SPACE -> keysDown[4] = false;
-						case KeyEvent.VK_SHIFT -> keysDown[5] = false;
-						case KeyEvent.VK_CONTROL -> keysDown[6] = false;
+						case KeyEvent.VK_W:
+							keysDown[0] = false;
+							break;
+						case KeyEvent.VK_S:
+							keysDown[1] = false;
+							break;
+						case KeyEvent.VK_A:
+							keysDown[2] = false;
+							break;
+						case KeyEvent.VK_D:
+							keysDown[3] = false;
+							break;
+						case KeyEvent.VK_SPACE:
+							keysDown[4] = false;
+							break;
+						case KeyEvent.VK_SHIFT:
+							keysDown[5] = false;
+							break;
+						case KeyEvent.VK_CONTROL:
+							keysDown[6] = false;
+							break;
 					}
 				}
 			}

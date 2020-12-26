@@ -95,4 +95,19 @@ public class Helpers {
             dir.mkdir();
         }
     }
+
+    public static float getAngle(Point origin, Point target) {
+        float atan = (float) Math.atan2(target.y - origin.y, target.x - origin.x);
+        float angle = (float) Math.toDegrees(atan);
+
+        if(angle < 0){
+            angle += 360;
+        }
+
+        return angle;
+    }
+
+    public static float getDotProduct(Point origin, Point target) {
+        return (float) (Math.atan2(origin.x - target.x, target.y - origin.y) / (float) Math.PI);
+    }
 }

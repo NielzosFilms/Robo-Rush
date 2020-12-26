@@ -30,9 +30,15 @@ public abstract class InventorySlotDef {
 
     public void onClick(MouseEvent e, InventoryDef inv, InventorySystem invSys) {
         switch (e.getButton()) {
-            case MouseEvent.BUTTON1 -> leftClick(inv, invSys);
-            case MouseEvent.BUTTON2 -> middleClick(inv, invSys);
-            case MouseEvent.BUTTON3 -> rightClick(inv, invSys);
+            case MouseEvent.BUTTON1:
+                leftClick(inv, invSys);
+                break;
+            case MouseEvent.BUTTON2:
+                middleClick(inv, invSys);
+                break;
+            case MouseEvent.BUTTON3:
+                rightClick(inv, invSys);
+                break;
         }
     }
 

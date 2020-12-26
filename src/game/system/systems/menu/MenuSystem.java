@@ -1,6 +1,5 @@
 package game.system.systems.menu;
 
-import com.sun.tools.javac.Main;
 import game.enums.MENUSTATES;
 import game.system.inputs.MouseInput;
 import game.system.main.Game;

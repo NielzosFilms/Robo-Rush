@@ -52,11 +52,14 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		if(e.getButton() == MouseEvent.BUTTON1) mouseDown_left = true;
 		if(e.getButton() == MouseEvent.BUTTON3) mouseDown_right = true;
 		switch(Game.game_state) {
-			case Game -> {
+			case Game:
 				hud.mousePressed(e);
 				inventorySystem.mouseClicked(e);
-			}
-			case Menu, Pauzed -> menuSystem.mousePressed(e);
+				break;
+			case Pauzed:
+			case Menu:
+				menuSystem.mousePressed(e);
+				break;
 		}
 	}
 
@@ -64,8 +67,13 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		if(e.getButton() == MouseEvent.BUTTON1) mouseDown_left = false;
 		if(e.getButton() == MouseEvent.BUTTON3) mouseDown_right = false;
 		switch(Game.game_state) {
-			case Game -> hud.mouseReleased(e);
-			case Menu, Pauzed -> menuSystem.mouseReleased(e);
+			case Game:
+				hud.mouseReleased(e);
+				break;
+			case Menu:
+			case Pauzed:
+				menuSystem.mouseReleased(e);
+				break;
 		}
 	}
 

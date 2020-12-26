@@ -25,8 +25,6 @@ public class Textures {
 			healthbar,
 			mushroom;
 
-	public static BufferedImage cursor = loader.loadImage("assets/main/hud/cursor.png");
-
 	public Textures() {
 		for(TEXTURE_LIST list_name : TEXTURE_LIST.values()) {
 			texture_lists.put(list_name, new HashMap<>());
@@ -72,6 +70,7 @@ public class Textures {
 		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/inventory.png"), 22, 22, texture_lists.get(TEXTURE_LIST.gui_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/hud.png"), 16, 16, texture_lists.get(TEXTURE_LIST.hud_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/grass.png"), 16, 16, texture_lists.get(TEXTURE_LIST.grass));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/cursor.png"), 8, 8, texture_lists.get(TEXTURE_LIST.cursors));
 	}
 
 	private static void fillListWithSpriteSheet(BufferedImage sheet, int width, int height, HashMap<Point, BufferedImage> list) {

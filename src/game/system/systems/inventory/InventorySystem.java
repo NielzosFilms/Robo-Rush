@@ -205,25 +205,43 @@ public class InventorySystem implements Serializable {
 	public void keyPressed(KeyEvent e) {
 		if(holding != null) {
 			switch (e.getKeyCode()) {
-				case KeyEvent.VK_Q -> {
+				case KeyEvent.VK_Q:
 					Item_Ground item_gnd = holding.getItemGround();
 					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2, cam);
 					item_gnd.setX(world_coords.x);
 					item_gnd.setY(world_coords.y);
 					dropItem(item_gnd);
-				}
+					break;
 			}
 		}
 		switch (e.getKeyCode()) {
-			case KeyEvent.VK_1 -> hotbarKeyPressed(1);
-			case KeyEvent.VK_2 -> hotbarKeyPressed(2);
-			case KeyEvent.VK_3 -> hotbarKeyPressed(3);
-			case KeyEvent.VK_4 -> hotbarKeyPressed(4);
-			case KeyEvent.VK_5 -> hotbarKeyPressed(5);
-			case KeyEvent.VK_6 -> hotbarKeyPressed(6);
-			case KeyEvent.VK_7 -> hotbarKeyPressed(7);
-			case KeyEvent.VK_8 -> hotbarKeyPressed(8);
-			case KeyEvent.VK_9 -> hotbarKeyPressed(9);
+			case KeyEvent.VK_1:
+				hotbarKeyPressed(1);
+				break;
+			case KeyEvent.VK_2:
+				hotbarKeyPressed(2);
+				break;
+			case KeyEvent.VK_3:
+				hotbarKeyPressed(3);
+				break;
+			case KeyEvent.VK_4:
+				hotbarKeyPressed(4);
+				break;
+			case KeyEvent.VK_5:
+				hotbarKeyPressed(5);
+				break;
+			case KeyEvent.VK_6:
+				hotbarKeyPressed(6);
+				break;
+			case KeyEvent.VK_7:
+				hotbarKeyPressed(7);
+				break;
+			case KeyEvent.VK_8:
+				hotbarKeyPressed(8);
+				break;
+			case KeyEvent.VK_9:
+				hotbarKeyPressed(9);
+				break;
 		}
 	}
 

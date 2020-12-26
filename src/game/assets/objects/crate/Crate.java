@@ -158,10 +158,18 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
 
     public void push(DIRECTIONS direction) {
         switch(direction) {
-            case up -> y -= 1;
-            case down -> y += 1;
-            case left -> x -= 1;
-            case right -> x+= 1;
+            case up:
+                y -= 1;
+                break;
+            case down:
+                y += 1;
+                break;
+            case left:
+                x -= 1;
+                break;
+            case right:
+                x += 1;
+                break;
         }
     }
 

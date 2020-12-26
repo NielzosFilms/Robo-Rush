@@ -32,11 +32,15 @@ public class TextField {
 	public void keyPressed(KeyEvent e) {
 		if(focus) {
 			switch(e.getKeyCode()) {
-				case KeyEvent.VK_BACK_SPACE -> {
+				case KeyEvent.VK_BACK_SPACE:
 					if(buffer.length() > 0) buffer.deleteCharAt(buffer.length() - 1);
-				}
-				case KeyEvent.VK_ESCAPE -> focus = false;
-				default -> addChar(e.getKeyChar());
+					break;
+				case KeyEvent.VK_ESCAPE:
+					focus = false;
+					break;
+				default:
+					addChar(e.getKeyChar());
+					break;
 			}
 		}
 	}

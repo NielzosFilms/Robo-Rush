@@ -59,6 +59,7 @@ public class Game extends Canvas implements Runnable {
 	public static World world;
 
 	public static LoadingAnimation loadingAnimation = new LoadingAnimation(32, 32, 32, 32);
+	public static Texture cursor = new Texture(TEXTURE_LIST.cursors, 2);
 
 	public Game() {
 
@@ -183,7 +184,7 @@ public class Game extends Canvas implements Runnable {
 		}
 		loadingAnimation.render(g);
 
-		g.drawImage(Textures.cursor, mouseInput.mouse_x, mouseInput.mouse_y, 8, 8, null);
+		g.drawImage(cursor.getTexure(), mouseInput.mouse_x, mouseInput.mouse_y, 8, 8, null);
 
 		g.dispose();
 		g2d.dispose();

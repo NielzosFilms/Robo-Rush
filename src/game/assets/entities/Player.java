@@ -30,10 +30,9 @@ import game.enums.ID;
 import game.system.inputs.KeyInput;
 import game.enums.BIOME;
 import game.system.systems.inventory.inventoryDef.InventoryDef;
-import game.textures.Animation;
-import game.textures.TEXTURE_LIST;
-import game.textures.ImageFilters;
-import game.textures.Texture;
+import game.textures.*;
+
+import static java.lang.Math.pow;
 
 public class Player extends GameObject implements Collision, Interactable {
 	private static final int ATTACK_DELAY = 20;
@@ -51,6 +50,8 @@ public class Player extends GameObject implements Collision, Interactable {
 
 	private boolean attacking = false;
 	private int attacking_item_rot = 0;
+	private float attacking_item_rot_vel = 0;
+	private float time;
 
 	private Animation idle_down, idle_up, idle_left, idle_right;
 	private Animation walk_down, walk_up, walk_left, walk_right;
@@ -152,10 +153,9 @@ public class Player extends GameObject implements Collision, Interactable {
 
 	public void tick() {
 		attack_timer.tick();
-
 		if(attacking) {
 			attack_slice.runAnimation();
-			attacking_item_rot -= 10;
+			attacking_item_rot += 10;
 			if(attack_slice.animationEnded()) {
 				attacking = false;
 				attacking_item_rot = 0;
@@ -264,6 +264,7 @@ public class Player extends GameObject implements Collision, Interactable {
 	}
 
 	public void render(Graphics g) {
+		g.drawImage(Textures.entity_shadow, getBounds().x-2, getBounds().y+3, 16, 16, null);
 		if(attacking) {
 			drawAttack(g);
 		}
@@ -312,9 +313,15 @@ public class Player extends GameObject implements Collision, Interactable {
 			if(holding instanceof CanAttack) {
 				int direction_rotation = 0;
 				switch(attack_dir) {
-					case up -> direction_rotation = -90;
-					case down ->  direction_rotation = 90;
-					case left -> direction_rotation = 180;
+					case up:
+						direction_rotation = -90;
+						break;
+					case down:
+						direction_rotation = 90;
+						break;
+					case left:
+						direction_rotation = 180;
+						break;
 				}
 				//attack_slice.drawAnimationRotated(g, cenX-24, cenY-40, 64, 64, cenX, cenY, direction_rotation);
 				ImageFilters.renderImageWithRotation(g, holding.getTexture().getTexure(), cenX + 4, cenY - 20, 16, 16,
@@ -363,26 +370,26 @@ public class Player extends GameObject implements Collision, Interactable {
 		//this.direction = direction;
 
 		switch (attack_dir) {
-			case up -> {
+			case up:
 				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
 						new Hitbox(x-8, y-16, 32, 16, 0, 5, dmg),
 				}, this));
-			}
-			case down -> {
+				break;
+			case down:
 				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
 						new Hitbox(x-8, y+getBounds().height + 16, 32, 16, 0, 5, dmg),
 				}, this));
-			}
-			case left -> {
+				break;
+			case left:
 				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
 						new Hitbox(x-24, y, 16, 32, 0, 5, dmg),
 				}, this));
-			}
-			case right -> {
+				break;
+			case right:
 				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
 						new Hitbox(x+getBounds().width + 16, y, 16, 32, 0, 5, dmg),
 				}, this));
-			}
+				break;
 		}
 	}
 
