@@ -64,7 +64,7 @@ public class Textures {
 		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/4.png"), 32, 32, texture_lists.get(TEXTURE_LIST.walls_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/downloaded_tiles/pack_1/8.png"), 32, 32, texture_lists.get(TEXTURE_LIST.cave_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/entities/player/attack_slice.png"), 64, 64, texture_lists.get(TEXTURE_LIST.attack_slice_list));
-		fillListWithSpriteSheet(loader.loadImage("assets/entities/skeleton/skeleton.png"), 48, 48, texture_lists.get(TEXTURE_LIST.skeleton_list));
+		fillListWithSpriteSheet(loader.loadImage("assets/entities/skeleton/skeleton.png"), 32, 48, texture_lists.get(TEXTURE_LIST.skeleton_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/entities/stone_golem/golem_idle.png"), 64, 48, texture_lists.get(TEXTURE_LIST.stone_golem_idle_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/wood_tiles.png"), 16, 16, texture_lists.get(TEXTURE_LIST.wood_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/inventory.png"), 22, 22, texture_lists.get(TEXTURE_LIST.gui_list));

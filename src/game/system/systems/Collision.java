@@ -78,12 +78,16 @@ public class Collision {
 
 			if (player_cenY < obj_cenY && player_bottomY < obj_y + 4) {
 				player.setY(obj_y - player.getBounds().height - player_y_diff);
+				player.setVelY(0);
 			} else if (player_cenY > obj_cenY && player_y > obj_bottomY - 4) {
 				player.setY(obj_y + bounds.height - player_y_diff);
+				player.setVelY(0);
 			} else if (player_cenX < obj_cenX && player_rightX < obj_x + 4) {
 				player.setX(obj_x - player.getBounds().width - player_x_diff);
+				player.setVelX(0);
 			} else if (player_cenX > obj_cenX && player_x > obj_rightX - 4) {
 				player.setX(obj_x + bounds.width - player_x_diff);
+				player.setVelX(0);
 			}
 		}
 	}

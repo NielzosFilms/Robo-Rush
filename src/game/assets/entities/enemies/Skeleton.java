@@ -1,7 +1,9 @@
 package game.assets.entities.enemies;
 
 import game.assets.HealthBar;
+import game.enums.DIRECTIONS;
 import game.enums.ID;
+import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.main.Game;
@@ -19,23 +21,17 @@ import org.json.simple.JSONObject;
 import java.awt.*;
 
 public class Skeleton extends GameObject implements Collision, Hitable {
-    private Animation idle = new Animation(8,
+    private Animation idle = new Animation(200,
             new Texture(TEXTURE_LIST.skeleton_list, 0, 0),
             new Texture(TEXTURE_LIST.skeleton_list, 1, 0),
-            new Texture(TEXTURE_LIST.skeleton_list, 2, 0),
-            new Texture(TEXTURE_LIST.skeleton_list, 3, 0),
 
             new Texture(TEXTURE_LIST.skeleton_list, 0, 1),
-            new Texture(TEXTURE_LIST.skeleton_list, 1, 1),
-            new Texture(TEXTURE_LIST.skeleton_list, 2, 1),
-            new Texture(TEXTURE_LIST.skeleton_list, 3, 1),
-
-            new Texture(TEXTURE_LIST.skeleton_list, 0, 2),
-            new Texture(TEXTURE_LIST.skeleton_list, 1, 2),
-            new Texture(TEXTURE_LIST.skeleton_list, 2, 2)
+            new Texture(TEXTURE_LIST.skeleton_list, 1, 1)
             );
 
     //private HealthBar healthBar = new HealthBar(0, 0, 0, 50);
+
+    private boolean facing = true;
 
     public Skeleton(int x, int y, int z_index, ID id) {
         super(x, y, z_index, ID.Skeleton);
@@ -50,18 +46,43 @@ public class Skeleton extends GameObject implements Collision, Hitable {
     }
 
     public void tick() {
+        buffer_x += velX;
+        buffer_y += velY;
+        x = Math.round(buffer_x);
+        y = Math.round(buffer_y);
+
+        Point mouse = Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, Game.world.getCam());
+
+        int player_x = Game.world.getPlayer().getX();
+        int player_y = Game.world.getPlayer().getY();
+
+        velX += (mouse.x - x) * 0.01f;
+        velY += (mouse.y - y) * 0.01f;
+        velX -= (velX) * 0.03f;
+        velY -= (velY) * 0.03f;
         /*healthBar.setXY(x, y);
         if(healthBar.dead()) {
             Game.world.getPs().addParticle(new Particle_String(x, y + (getBounds().height / 2), 0, -0.2f, 60, "HE FOKIN DEAD"));
             Game.world.getHandler().findAndRemoveObject(this);
             healthBar.kill();
         }*/
+
+        if(velX > 0) {
+            facing = true;
+        } else if(velX < 0) {
+            facing = false;
+        }
+
         idle.runAnimation();
     }
 
     public void render(Graphics g) {
         g.drawImage(Textures.entity_shadow, x + ((getBounds().width / 2) - 8), y + getBounds().height - 8, 16, 16, null);
-        idle.drawAnimation(g, x, y);
+        if(facing) {
+            idle.drawAnimation(g, x, y);
+        } else {
+            idle.drawAnimationMirroredH(g, x, y);
+        }
         //healthBar.render(g);
         if(Game.DEBUG_MODE) {
             g.setColor(Color.red);

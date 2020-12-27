@@ -20,6 +20,8 @@ import game.system.systems.inventory.inventoryDef.InventorySlotDef;
 import game.system.systems.particles.Particle_String;
 import game.system.world.Chunk;
 import game.system.world.World;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -46,12 +48,11 @@ public class InventorySystem implements Serializable {
 	public int hotbar_selected = 0;
 	private ArrayList<InventoryDef> open_inventories = new ArrayList<>();
 
-	//public static boolean player_inventory_open = true;
 	private Item holding = null;
 
 	private Timer placeTimer = new Timer(10);
 
-	private Selection selection = new Selection();
+	private Texture hotbar_selection = new Texture(TEXTURE_LIST.gui_list, 4, 3);
 
 	public InventorySystem() {}
 
@@ -106,14 +107,12 @@ public class InventorySystem implements Serializable {
 	}
 
 	public void render(Graphics g) {
-		// NOTICE using this for loop instead of "Inventory inv : open_inventories"
-		// will fix the removing inventory inside bug
 		for(int i=0; i<open_inventories.size(); i++) {
 			InventoryDef inv = open_inventories.get(i);
 			inv.render(g);
 			if(inv == player_hotbar) {
 				Rectangle bnds = inv.getSlots().get(hotbar_selected).getBounds();
-				selection.renderSelection(g, bnds, 2);
+				g.drawImage(hotbar_selection.getTexure(), bnds.x, bnds.y, null);
 			}
 		}
 		if(isHolding()) {
@@ -192,7 +191,7 @@ public class InventorySystem implements Serializable {
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		AudioPlayer.playSound(AudioFiles.inv_select_1, 0.7f, false, 0);
+		//AudioPlayer.playSound(AudioFiles.inv_select_1, 0.7f, false, 0);
 		int new_index = hotbar_selected + e.getWheelRotation();
 		if (new_index > player_hotbar.getSizeX() - 1) {
 			new_index = 0;

@@ -4,10 +4,14 @@ import game.assets.items.item.Item;
 import game.system.main.Game;
 import game.system.systems.inventory.inventoryDef.InventoryDef;
 import game.system.systems.inventory.inventoryDef.InventorySlotDef;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 
 import java.awt.*;
 
 public class InventorySlot extends InventorySlotDef {
+    private boolean hotbarSlot = false;
+    private Texture hotbar_bg = new Texture(TEXTURE_LIST.gui_list, 2, 3);
     public InventorySlot(InventoryDef inv, int x, int y) {
         super(inv, x, y);
     }
@@ -21,8 +25,12 @@ public class InventorySlot extends InventorySlotDef {
     public void render(Graphics g) {
         int inv_x = inv.getX();
         int inv_y = inv.getY();
-        g.drawImage(background.getTexure(), inv_x + x, inv_y + y, InventorySystem.slot_w, InventorySystem.slot_h, null);
-        g.drawImage(background_border.getTexure(), inv_x + x, inv_y + y, InventorySystem.slot_w, InventorySystem.slot_h, null);
+        if(hotbarSlot) {
+            g.drawImage(hotbar_bg.getTexure(), inv_x + x, inv_y + y, InventorySystem.slot_w, InventorySystem.slot_h, null);
+        } else {
+            g.drawImage(background.getTexure(), inv_x + x, inv_y + y, InventorySystem.slot_w, InventorySystem.slot_h, null);
+            g.drawImage(background_border.getTexure(), inv_x + x, inv_y + y, InventorySystem.slot_w, InventorySystem.slot_h, null);
+        }
 
         int margin = (int)Math.floor((InventorySystem.slot_w - InventorySystem.item_w) / 2);
         if(this.item != null) item.render(g, inv_x + x + margin, inv_y + y + margin);
@@ -125,5 +133,9 @@ public class InventorySlot extends InventorySlotDef {
             }
         }
         return null;
+    }
+
+    public void setHotbarSlot(boolean hotbar) {
+        this.hotbarSlot = hotbar;
     }
 }

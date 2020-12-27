@@ -73,6 +73,7 @@ public class Player extends GameObject implements Collision, Interactable {
 		this.inventory.addItem(new Item_FloorWood(InventorySystem.stackSize));
 
 		this.hotbar = new Inventory(5, 1);
+		this.hotbar.setHotbar(true);
 		hotbar.setMoveable(false);
 		int hotbar_x = Game.WIDTH / 2 - this.hotbar.getInventoryBounds().width / 2;
 		int hotbar_y = Game.HEIGHT - this.hotbar.getInventoryBounds().height;
@@ -152,6 +153,7 @@ public class Player extends GameObject implements Collision, Interactable {
 	}
 
 	public void tick() {
+
 		attack_timer.tick();
 		if(attacking) {
 			attack_slice.runAnimation();

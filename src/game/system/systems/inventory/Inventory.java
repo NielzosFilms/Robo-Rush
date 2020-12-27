@@ -16,6 +16,7 @@ import java.util.Random;
 
 public class Inventory extends InventoryDef implements AcceptsItems {
     private ArrayList<InventorySlotDef> slots = new ArrayList<>();
+    private boolean hotbar = false;
 
     public Inventory(int size_x, int size_y) {
         this.size_x = size_x;
@@ -38,32 +39,34 @@ public class Inventory extends InventoryDef implements AcceptsItems {
 
     @Override
     public void render(Graphics g) {
-        for(int y=-1; y<size_y+1; y++) {
-            for(int x=-1; x<size_x+1; x++) {
-                if(y == -1) {
-                    if(x == -1) {
-                        g.drawImage(top_left.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
-                    } else if(x == size_x) {
-                        g.drawImage(top_right.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+        if(!hotbar) {
+            for (int y = -1; y < size_y + 1; y++) {
+                for (int x = -1; x < size_x + 1; x++) {
+                    if (y == -1) {
+                        if (x == -1) {
+                            g.drawImage(top_left.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+                        } else if (x == size_x) {
+                            g.drawImage(top_right.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+                        } else {
+                            g.drawImage(top.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+                        }
+                    } else if (y == size_y) {
+                        if (x == -1) {
+                            g.drawImage(bot_left.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+                        } else if (x == size_x) {
+                            g.drawImage(bot_right.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+                        } else {
+                            g.drawImage(bot.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+                        }
                     } else {
-                        g.drawImage(top.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+                        if (x == -1) {
+                            g.drawImage(left.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+                        } else if (x == size_x) {
+                            g.drawImage(right.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
+                        }
                     }
-                } else if(y == size_y) {
-                    if(x == -1) {
-                        g.drawImage(bot_left.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
-                    } else if(x == size_x) {
-                        g.drawImage(bot_right.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
-                    } else {
-                        g.drawImage(bot.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
-                    }
-                } else {
-                    if(x == -1) {
-                        g.drawImage(left.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
-                    } else if(x == size_x) {
-                        g.drawImage(right.getTexure(), this.x + x * slot_w, this.y + y * slot_h, slot_w, slot_h, null);
-                    }
-                }
 
+                }
             }
         }
         for(InventorySlotDef slot : slots) {
@@ -263,6 +266,14 @@ public class Inventory extends InventoryDef implements AcceptsItems {
     public void fill(LinkedList<Item> items) {
         for(Item item : items) {
             this.addItem(item);
+        }
+    }
+
+    public void setHotbar(boolean hotbar) {
+        this.hotbar = hotbar;
+        for(InventorySlotDef s : slots) {
+            InventorySlot slot = (InventorySlot) s;
+            ((InventorySlot) s).setHotbarSlot(hotbar);
         }
     }
 }

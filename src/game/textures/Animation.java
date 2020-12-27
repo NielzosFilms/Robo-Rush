@@ -63,27 +63,43 @@ public class Animation implements Serializable {
 	}
 	
 	public void drawAnimation(Graphics g, int x, int y) {
-		if(mirrorW) {
-			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-			tx.translate(-currentImg.getTexure().getWidth(null), 0);
-			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-			BufferedImage temp = op.filter(currentImg.getTexure(), null);
-			g.drawImage(temp, x, y, null);
-			
-		}else
-			g.drawImage(currentImg.getTexure(), x, y, null);
+		g.drawImage(currentImg.getTexure(), x, y, null);
 	}
 	
 	public void drawAnimation(Graphics g, int x, int y, int scaleX, int scaleY) {
-		if(mirrorW) {
-			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-			tx.translate(-currentImg.getTexure().getWidth(null), 0);
-			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-			BufferedImage temp = op.filter(currentImg.getTexure(), null);
-			g.drawImage(temp, x, y, scaleX, scaleY, null);
-			
-		}else
-			g.drawImage(currentImg.getTexure(), x, y, scaleX, scaleY, null);
+		g.drawImage(currentImg.getTexure(), x, y, scaleX, scaleY, null);
+	}
+
+	public void drawAnimationMirroredH(Graphics g, int x, int y) {
+		AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+		tx.translate(-currentImg.getTexure().getWidth(null), 0);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+		BufferedImage temp = op.filter(currentImg.getTexure(), null);
+		g.drawImage(temp, x, y, null);
+	}
+
+	public void drawAnimationMirroredH(Graphics g, int x, int y, int scaleX, int scaleY) {
+		AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+		tx.translate(-currentImg.getTexure().getWidth(null), 0);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+		BufferedImage temp = op.filter(currentImg.getTexure(), null);
+		g.drawImage(temp, x, y, scaleX, scaleY, null);
+	}
+
+	public void drawAnimationMirroredV(Graphics g, int x, int y) {
+		AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
+		tx.translate(0, -currentImg.getTexure().getHeight(null));
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+		BufferedImage temp = op.filter(currentImg.getTexure(), null);
+		g.drawImage(temp, x, y, null);
+	}
+
+	public void drawAnimationMirroredV(Graphics g, int x, int y, int scaleX, int scaleY) {
+		AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
+		tx.translate(0, -currentImg.getTexure().getHeight(null));
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+		BufferedImage temp = op.filter(currentImg.getTexure(), null);
+		g.drawImage(temp, x, y, scaleX, scaleY, null);
 	}
 
 	public void drawAnimationRotated(Graphics g, int x, int y, int scaleX, int scaleY, int anchX, int anchY, int rotation) {
