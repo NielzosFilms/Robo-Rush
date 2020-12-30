@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.*;
 
 import game.assets.entities.Player;
+import game.assets.entities.TargetDummy;
 import game.assets.entities.enemies.Enemy;
 import game.assets.entities.enemies.Golem_Stone;
 import game.assets.entities.enemies.Skeleton;
@@ -297,10 +298,14 @@ public class World implements Serializable {
 		//handler.addObject(new Waterfall(0, 0, 10));
 		//handler.addObject(new Golem_Stone(64, 64, 10, ID.Enemy));
 		//handler.addObject(new TestTable(0, 64, 10, ID.NULL));
-		handler.addObject(new Enemy(64, 64, 10, ID.Enemy));
-		handler.addObject(new Enemy(64, 64, 10, ID.Enemy));
-		handler.addObject(new Enemy(64, 64, 10, ID.Enemy));
-		//handler.addObject(new Skeleton(0, 0, 10, ID.Enemy));
+		//Skeleton skele = new Skeleton(0, 0, 10, ID.Skeleton);
+		Enemy enemy1 = new Enemy(64, 64, 10, ID.Enemy);
+		Enemy enemy2 = new Enemy(64, 64, 10, ID.Enemy);
+		Enemy enemy3 = new Enemy(64, 64, 10, ID.Enemy);
+		handler.addObject(enemy1);
+		handler.addObject(enemy2);
+		handler.addObject(enemy3);
+		handler.addObject(new TargetDummy(32, 32, 10, ID.Dummy));
 		//chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
 		loaded = true;
 	}

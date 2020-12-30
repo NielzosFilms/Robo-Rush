@@ -37,6 +37,7 @@ import static java.lang.Math.pow;
 public class Player extends GameObject implements Collision, Interactable {
 	private static final int ATTACK_DELAY = 20;
 	private static final int DEFAULT_ATTACK_DAMAGE = 999;
+	private float acceleration = 0.2f, deceleration = 0.3f;
 	public final int REACH = 50;
 	Random r = new Random();
 	private transient KeyInput keyInput;
@@ -153,6 +154,10 @@ public class Player extends GameObject implements Collision, Interactable {
 	}
 
 	public void tick() {
+		buffer_x += velX;
+		buffer_y += velY;
+		x = Math.round(buffer_x);
+		y = Math.round(buffer_y);
 
 		attack_timer.tick();
 		if(attacking) {
@@ -173,54 +178,27 @@ public class Player extends GameObject implements Collision, Interactable {
 		}
 
 		if (keyInput.keysDown[0] && !keyInput.keysDown[1]) {
-			velY = -walk_speed;
+			velY += (-walk_speed - velY) * acceleration;
 			direction = DIRECTIONS.up;
 		} else if (keyInput.keysDown[1] && !keyInput.keysDown[0]) {
-			velY = walk_speed;
+			velY += (walk_speed - velY) * acceleration;
 			direction = DIRECTIONS.down;
 		} else {
-			velY = 0;
+			velY -= (velY) * deceleration;
+			if(velY < 0.01f && velY > -0.01f) velY = 0;
 		}
 
 		if (keyInput.keysDown[2] && !keyInput.keysDown[3]) {
-			velX = -walk_speed;
+			velX += (-walk_speed - velX) * acceleration;
 			direction = DIRECTIONS.left;
 		} else if (keyInput.keysDown[3] && !keyInput.keysDown[2]) {
-			velX = walk_speed;
+			velX += (walk_speed - velX) * acceleration;
 			direction = DIRECTIONS.right;
 		} else {
-			velX = 0;
+			velX -= (velX) * deceleration;
+			if(velX < 0.01f && velX > -0.01f) velX = 0;
 		}
 
-		// misschien powerup voor reverse gravity
-
-		// velY = Game.clampDouble(velY, -9.8, 9.8);
-
-		velX = velX;
-		velY = velY;
-		/*
-		 * if(!space && velY < 0)velY = velY + accY*3; else velY = velY + accY;
-		 */
-
-		if (velX < 0) {
-			x = (int) Math.floor(x + velX);
-		} else if (velX > 0) {
-			x = (int) Math.ceil(x + velX);
-		} else {
-			x = (int) Math.round(x + velX);
-		}
-
-		if (velY < 0) {
-			y = (int) Math.floor(y + velY);
-		} else if (velY > 0) {
-			y = (int) Math.ceil(y + velY);
-		} else {
-			y = (int) Math.round(y + velY);
-		}
-
-		// x = Game.clamp(x, -13, 800-50);
-
-		// y = Game.clamp(y, 0, Game.HEIGHT);
 		needs_timer.tick();
 		if (needs_timer.timerOver()) {
 			needs_timer.resetTimer();

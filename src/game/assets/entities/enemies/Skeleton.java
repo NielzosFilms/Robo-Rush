@@ -53,13 +53,13 @@ public class Skeleton extends GameObject implements Collision, Hitable {
 
         Point mouse = Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, Game.world.getCam());
 
-        int player_x = Game.world.getPlayer().getX();
-        int player_y = Game.world.getPlayer().getY();
+        if(Game.mouseInput.leftMouseDown()) {
+            velX += (mouse.x - x) * 0.01f;
+            velY += (mouse.y - y) * 0.01f;
+        }
 
-        velX += (mouse.x - x) * 0.01f;
-        velY += (mouse.y - y) * 0.01f;
-        velX -= (velX) * 0.03f;
-        velY -= (velY) * 0.03f;
+        velX -= (velX) * 0.05f;
+        velY -= (velY) * 0.05f;
         /*healthBar.setXY(x, y);
         if(healthBar.dead()) {
             Game.world.getPs().addParticle(new Particle_String(x, y + (getBounds().height / 2), 0, -0.2f, 60, "HE FOKIN DEAD"));

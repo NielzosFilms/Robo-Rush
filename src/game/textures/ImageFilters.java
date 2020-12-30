@@ -4,8 +4,17 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 
 public class ImageFilters {
+	public static void renderImageMirroredH(Graphics g, BufferedImage img, int x, int y) {
+		AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+		tx.translate(-img.getWidth(null), 0);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+		BufferedImage temp = op.filter(img, null);
+		g.drawImage(temp, x, y, null);
+	}
+
 	public static void renderImageWithRotation(Graphics g, BufferedImage img, int x, int y,
 											   int width, int height,
 											   int anchX, int anchY, int rot_deg) {

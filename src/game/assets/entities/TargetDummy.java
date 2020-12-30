@@ -36,6 +36,8 @@ public class TargetDummy extends GameObject implements Collision, Hitable {
     public void render(Graphics g) {
         g.drawImage(top_tex.getTexure(), x, y-height, width, height, null);
         g.drawImage(bot_tex.getTexure(), x, y, width, height, null);
+        g.setColor(new Color(254, 174, 52));
+        g.drawRect(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
     }
 
     public Rectangle getBounds() {

@@ -23,7 +23,8 @@ public class Textures {
 			light,
 			default_btn,
 			healthbar,
-			mushroom;
+			mushroom,
+			lil_skelly = loader.loadImage("assets/entities/skeleton/lil_skeleton.png");
 
 	public Textures() {
 		for(TEXTURE_LIST list_name : TEXTURE_LIST.values()) {
