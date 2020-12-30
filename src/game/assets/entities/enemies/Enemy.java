@@ -2,6 +2,7 @@ package game.assets.entities.enemies;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Random;
 
 import game.system.helpers.Helpers;
@@ -14,23 +15,38 @@ import game.enums.ID;
 import game.system.systems.gameObject.Hitable;
 import game.textures.Fonts;
 
+enum Decision {
+	wonder,
+	goto_target,
+	avoid_target,
+	circle_target,
+	attack_target,
+}
+
 public class Enemy extends GameObject implements Collision, Hitable {
-	float max_vel = 0.5f;
+	float max_vel = 0.3f;
 	float acceleration = 0.05f;
 	float deceleration = 0.1f;
 	private HashMap<Integer, Float> angles = new HashMap<>();
+	private HashMap<Integer, Float> prev_angles = new HashMap<>();
 	private Point spawnPoint;
 
 	private Timer decide = new Timer(120);
+	private Timer decideAction = new Timer(120);
 	private boolean move = false;
+	private Decision action = Decision.goto_target;
+	private GameObject target = Game.world.getPlayer();
+
+	private int wonderAreaSize = 75;
 
 	private Random r = new Random();
 
 	public Enemy(int x, int y, int z_index, ID id) {
 		super(x, y, z_index, id);
 		for(int i=0; i<360; i+=30) {
-			angles.put(i, ((float)Math.round(r.nextFloat()*10))/10);
+			angles.put(i, 0.5f);
 		}
+		prev_angles = new HashMap<>(angles);
 		spawnPoint = new Point(x, y);
 		System.out.println(angles);
 	}
@@ -43,17 +59,22 @@ public class Enemy extends GameObject implements Collision, Hitable {
 
 		Point mouse = Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, Game.world.getCam());
 
-		int player_x = Game.world.getPlayer().getX();
-		int player_y = Game.world.getPlayer().getY();
-
 		/*velX += (mouse.x - x) * 0.01f;
 		velY += (mouse.y - y) * 0.01f;
 		velX -= (velX) * 0.03f;
 		velY -= (velY) * 0.03f;*/
 
-		float targ_velX = (float) (max_vel*Math.cos(Math.toRadians(getHighestAngle())));
-		float targ_velY = (float) (max_vel*Math.sin(Math.toRadians(getHighestAngle())));
+		float targ_velX = 0f;
+		float targ_velY = 0f;
+		for(int angle : getPositiveAngles()) {
+			targ_velX += (float) (max_vel*Math.cos(Math.toRadians(getClosestAngle(angle))));
+			targ_velY += (float) (max_vel*Math.sin(Math.toRadians(getClosestAngle(angle))));
+		}
 
+		for(int angle : getNegativeAngles()) {
+			targ_velX -= (float) (max_vel*Math.cos(Math.toRadians(getClosestAngle(angle))));
+			targ_velY -= (float) (max_vel*Math.sin(Math.toRadians(getClosestAngle(angle))));
+		}
 		//float distance = (float)Helpers.getDistance(new Point(x, y), mouse);
 
 		if(move) {
@@ -64,36 +85,114 @@ public class Enemy extends GameObject implements Collision, Hitable {
 			velY -= (velY) * deceleration;
 		}
 
-		/*velX = Helpers.clampFloat(velX, -max_vel, max_vel);
-		velY = Helpers.clampFloat(velY, -max_vel, max_vel);*/
+		velX = Helpers.clampFloat(velX, -max_vel, max_vel);
+		velY = Helpers.clampFloat(velY, -max_vel, max_vel);
 
-		if(decide.timerOver()) {
-			decide.setDelay(r.nextInt(240));
-			decide.resetTimer();
+		if(decideAction.timerOver()) {
+			decideAction.setDelay(r.nextInt(120)*2);
+			decideAction.resetTimer();
 			if(r.nextInt(2) == 0) {
-				move = false;
+				action = Decision.goto_target;
 			} else {
-				move = true;
-				for(int angle : angles.keySet()) {
-					angles.put(angle, ((float)Math.round(r.nextFloat()*10))/10);
-				}
-				int spawn_angle = getClosestAngle((int) Helpers.getAngle(new Point(x, y), spawnPoint));
-				int spawn_distance = (int) Helpers.getDistance(new Point(x, y), spawnPoint);
-				float new_val = 1f / 50 * spawn_distance;
-				if(angles.get(spawn_angle) < new_val) {
-					angles.put(spawn_angle, new_val);
-				}
-				int player_angle = getClosestAngle((int) Helpers.getAngle(new Point(x, y), new Point(player_x, player_y)));
-				if(angles.get(player_angle) < 1f) {
-					angles.put(player_angle, 1f);
-				}
+				action = Decision.avoid_target;
 			}
 		}
-		decide.tick();
-		if(Game.mouseInput.leftMouseDown()) {
-			setX(mouse.x);
-			setY(mouse.y);
+
+		for(int angle : angles.keySet()) {
+			angles.put(angle, 0f);
 		}
+
+		int target_x = target.getX();
+		int target_y = target.getY();
+		if(target instanceof Collision) {
+			if(((Collision) target).getBounds() != null) {
+				target_x = (int) ((Collision) target).getBounds().getCenterX();
+				target_y = (int) ((Collision) target).getBounds().getCenterY();
+			}
+		}
+		int target_angle = getClosestAngle((int) Helpers.getAngle(new Point(x, y), new Point(target_x, target_y)));
+		int target_dist = (int) Helpers.getDistance(new Point(x, y), new Point(target_x, target_y));
+
+		switch (action) {
+			case wonder:
+				if(decide.timerOver()) {
+					decide.resetTimer();
+					decide.setDelay(r.nextInt(120)*2);
+					if(r.nextInt(2) == 0) {
+						move = false;
+					} else {
+						move = true;
+						int random_angle = getClosestAngle(r.nextInt(360));
+						if(angles.containsKey(random_angle)) angles.put(random_angle, 1f);
+					}
+					prev_angles = new HashMap<>(angles);
+				} else {
+					angles = new HashMap<>(prev_angles);
+				}
+				break;
+			case goto_target:
+				if(target_dist < 50 || true) {
+					move = true;
+					angles.put(target_angle, 1f);
+				} else {
+					move = false;
+				}
+				break;
+			case avoid_target:
+				if(target_dist < 50 || true) {
+					move = true;
+					angles.put(target_angle, -0.3f);
+				} else {
+					move = false;
+				}
+				break;
+		}
+
+		int spawn_angle = getClosestAngle((int) Helpers.getAngle(new Point(x, y), spawnPoint));
+		int spawn_distance = (int) Helpers.getDistance(new Point(x, y), spawnPoint);
+		if(spawn_distance > wonderAreaSize) {
+			// decide if it wants to stop chasing and return to wandering
+			action = Decision.wonder;
+			//angles.put(spawn_angle, 1f);
+		}
+
+		LinkedList<GameObject> objects = Game.world.getHandler().getObjectsWithIds(ID.Enemy);
+		for(GameObject object : objects) {
+			if(object == this) continue;
+			int objX = object.getX();
+			int objY = object.getY();
+			if(object instanceof Collision) {
+				if(((Collision) object).getBounds() != null) {
+					objX = (int) ((Collision) object).getBounds().getCenterX();
+					objY = (int) ((Collision) object).getBounds().getCenterY();
+				}
+			}
+			int angle = getClosestAngle((int) Helpers.getAngle(new Point(x, y), new Point(objX, objY)));
+			int dist = (int) Helpers.getDistance(new Point(x, y), new Point(objX, objY));
+			if(dist < 30) angles.put(angle, -0.3f);
+		}
+
+		decide.tick();
+		decideAction.tick();
+	}
+
+	private void setAngle(int angle, float value) {
+		if(value < 0.5f) {
+			int highest = getHighestAngle();
+			int diff = highest - angle;
+			if(Math.abs(diff) < 90) {
+				if(diff < 0) {
+					angles.put(getOffsetAngle(highest, -60), angles.get(highest));
+				} else if(diff > 0) {
+					angles.put(getOffsetAngle(highest, 60), angles.get(highest));
+				} else {
+					angles.put(getOffsetAngle(highest, 60), angles.get(highest));
+					angles.put(getOffsetAngle(highest, -60), angles.get(highest));
+				}
+				angles.put(highest, angles.get(highest)/2);
+			}
+		}
+		angles.put(angle, value);
 	}
 
 	public void render(Graphics g) {
@@ -101,14 +200,7 @@ public class Enemy extends GameObject implements Collision, Hitable {
 		g.drawRect(x-8, y-8, 16, 16);
 
 		if(Game.DEBUG_MODE) {
-
-			g.setColor(new Color(255, 123, 47));
-			Point mouse = Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, Game.world.getCam());
-			g.drawLine(x, y, mouse.x, mouse.y);
-
-			g.setColor(new Color(255, 180, 139));
 			g.setFont(Fonts.default_fonts.get(5));
-			g.drawString(String.valueOf(Helpers.getAngle(new Point(x, y), mouse)), mouse.x, mouse.y);
 
 			renderAI(g);
 		}
@@ -117,7 +209,7 @@ public class Enemy extends GameObject implements Collision, Hitable {
 	private void renderAI(Graphics g) {
 		g.setColor(new Color(199, 130, 77));
 		g.drawRect(spawnPoint.x, spawnPoint.y, 1, 1);
-		g.drawArc(spawnPoint.x-50, spawnPoint.y-50, 100, 100,0, 360);
+		g.drawArc(spawnPoint.x-wonderAreaSize, spawnPoint.y-wonderAreaSize, wonderAreaSize*2, wonderAreaSize*2,0, 360);
 
 		for(int angle : angles.keySet()) {
 			if(angle == getHighestAngle()) {
@@ -134,11 +226,13 @@ public class Enemy extends GameObject implements Collision, Hitable {
 			int endX = (int) Math.round(x + length * Math.cos(Math.toRadians(angle)));
 			int endY = (int) Math.round(y + length * Math.sin(Math.toRadians(angle)));
 			g.drawLine(startX, startY, endX, endY);
-			g.drawString(String.valueOf(angle), endX, endY);
+			//g.drawString(String.valueOf(angle), endX, endY);
 		}
 
 		g.setColor(new Color(139, 155, 180));
 		g.drawArc(x-10, y-10, 20, 20, 0, 360);
+		g.setColor(new Color(99, 199, 77));
+		g.drawString(action.name(), x, y);
 	}
 
 	@Override
@@ -150,6 +244,32 @@ public class Enemy extends GameObject implements Collision, Hitable {
 	@Override
 	public void hit(int damage) {
 
+	}
+
+	private LinkedList<Integer> getPositiveAngles() {
+		LinkedList<Integer> ret = new LinkedList<>();
+		for(int angle : angles.keySet()) {
+			if(angles.get(angle) > 0f) {
+				ret.add(angle);
+			}
+		}
+		return ret;
+	}
+	private LinkedList<Integer> getNegativeAngles() {
+		LinkedList<Integer> ret = new LinkedList<>();
+		for(int angle : angles.keySet()) {
+			if(angles.get(angle) < 0f) {
+				ret.add(angle);
+			}
+		}
+		return ret;
+	}
+	private int getAverageAngle(LinkedList<Integer> angles) {
+		float total = 0;
+		for(int angle : angles) {
+			total += angle;
+		}
+		return Math.round(total / angles.size());
 	}
 
 	private int getHighestAngle() {
@@ -164,6 +284,18 @@ public class Enemy extends GameObject implements Collision, Hitable {
 		return highest;
 	}
 
+	private int getLowestAngle() {
+		int lowest = 0;
+		float lastval = 0f;
+		for(int angle : angles.keySet()) {
+			if(angles.get(angle) < lastval) {
+				lastval = angles.get(angle);
+				lowest = angle;
+			}
+		}
+		return lowest;
+	}
+
 	private int getClosestAngle(int input_angle) {
 		int closest = 0;
 		int distance = input_angle;
@@ -176,5 +308,13 @@ public class Enemy extends GameObject implements Collision, Hitable {
 			}
 		}
 		return closest;
+	}
+
+	private int getOffsetAngle(int angle, int offset) {
+		int ret = angle + offset;
+		if(ret < 0) ret += 360;
+		if(ret >= 360) ret -= 360;
+		//if(ret == 360) ret = 0;
+		return ret;
 	}
 }

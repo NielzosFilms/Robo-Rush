@@ -13,6 +13,7 @@ import game.system.world.World;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Handler implements Serializable {
@@ -195,6 +196,33 @@ public class Handler implements Serializable {
 		}
 
 		return objs;
+	}
+
+	public LinkedList<GameObject> getObjectsWithIds(ID... args) {
+		ID[] ids = new ID[args.length];
+		for(int i = 0; i < args.length; i++) {
+			ids[i] = args[i];
+		}
+		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
+		LinkedList<GameObject> objs = new LinkedList<>();
+
+		for (LinkedList<GameObject> list : object_entities) {
+			for (int i = 0; i < list.size(); i++) {
+				GameObject tempObject = list.get(i);
+				if (isInArray(ids, tempObject.getId())) {
+					objs.add(tempObject);
+				}
+			}
+		}
+
+		for (Chunk chunk : chunks_on_screen) {
+			for (GameObject tempObject : chunk.getEntities()) {
+				if (isInArray(ids, tempObject.getId())) {
+					objs.add(tempObject);
+				}
+			}
+		}
+ 		return objs;
 	}
 
 	public LinkedList<GameObject> getSelectableObjects() {
