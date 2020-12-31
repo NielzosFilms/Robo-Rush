@@ -343,42 +343,44 @@ public class Player extends GameObject implements Collision, Interactable, Hitab
 	}
 
 	public void attack() {
-		attacking = true;
-		//Item holding = Game.inventorySystem.getHotbarSelectedItem();
-		int dmg = getExpectedDamage();
-		AudioPlayer.playSound(AudioFiles.swing, 0.2f, false, 0);
-		// TODO make direction function 8 way instead of 4
-		Point screenCoords = Helpers.getScreenCoords((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), Game.world.getCam());
-		attack_dir = Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
-		//Logger.print(direction.name());
-		//this.direction = direction;
+		if(!keyInput.keysDown[5]) {
+			attacking = true;
+			//Item holding = Game.inventorySystem.getHotbarSelectedItem();
+			int dmg = getExpectedDamage();
+			AudioPlayer.playSound(AudioFiles.swing, 0.2f, false, 0);
+			// TODO make direction function 8 way instead of 4
+			Point screenCoords = Helpers.getScreenCoords((int) getBounds().getCenterX(), (int) getBounds().getCenterY(), Game.world.getCam());
+			attack_dir = Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
+			//Logger.print(direction.name());
+			//this.direction = direction;
 
-		float knockback = 1f;
-		if(dmg > DEFAULT_ATTACK_DAMAGE) {
-			knockback = 2f;
-		}
+			float knockback = 1f;
+			if (dmg > DEFAULT_ATTACK_DAMAGE) {
+				knockback = 2f;
+			}
 
-		switch (attack_dir) {
-			case up:
-				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
-						new Hitbox(x-8, y-16, 32, 16, 10, 4, dmg, knockback),
-				}, this));
-				break;
-			case down:
-				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
-						new Hitbox(x-8, y+getBounds().height + 16, 32, 16, 10, 4, dmg, knockback),
-				}, this));
-				break;
-			case left:
-				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
-						new Hitbox(x-24, y, 16, 32, 10, 4, dmg, knockback),
-				}, this));
-				break;
-			case right:
-				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
-						new Hitbox(x+getBounds().width + 16, y, 16, 32, 10, 4, dmg, knockback),
-				}, this));
-				break;
+			switch (attack_dir) {
+				case up:
+					Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+							new Hitbox(x - 8, y - 16, 32, 16, 10, 4, dmg, knockback),
+					}, this));
+					break;
+				case down:
+					Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+							new Hitbox(x - 8, y + getBounds().height + 16, 32, 16, 10, 4, dmg, knockback),
+					}, this));
+					break;
+				case left:
+					Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+							new Hitbox(x - 24, y, 16, 32, 10, 4, dmg, knockback),
+					}, this));
+					break;
+				case right:
+					Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+							new Hitbox(x + getBounds().width + 16, y, 16, 32, 10, 4, dmg, knockback),
+					}, this));
+					break;
+			}
 		}
 	}
 
@@ -411,6 +413,7 @@ public class Player extends GameObject implements Collision, Interactable, Hitab
 
 	@Override
 	public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
+		Game.world.getCam().screenShake(2f, 6);
 		AudioPlayer.playSound(AudioFiles.hurt_2, 0.7f, false, 0);
 		int dmg = hitboxContainer.getHitboxes().get(hit_hitbox_index).getDamage();
 		float knockback = hitboxContainer.getHitboxes().get(hit_hitbox_index).getKnockback();

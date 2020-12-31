@@ -34,7 +34,7 @@ public class Game extends Canvas implements Runnable {
 	public static int WIDTH = 480, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 3.70.0 COMBAT";
+	public static final String VERSION = "ALPHA V 3.72.0 COMBAT";
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEBUG_MODE = false;

@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.Random;
 
+import game.assets.entities.enemies.Enemy;
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
 import game.system.helpers.Helpers;
@@ -143,6 +144,7 @@ public class KeyInput extends KeyAdapter {
 			}
 			Game.cursor.setIndex(current_cursor);
 		}
+		if(key == KeyEvent.VK_R) handler.addObject( new Enemy(64, 64, 10, ID.Enemy));
 
 	}
 

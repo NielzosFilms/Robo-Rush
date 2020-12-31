@@ -29,7 +29,7 @@ enum Decision {
 }
 
 public class Enemy extends GameObject implements Collision, Hitable, Health, Destroyable {
-	float max_vel = 0.8f; //0.8
+	float max_vel = 1f; //0.8
 	float wander_vel = 0.5f;
 	float acceleration = 0.05f;
 	float deceleration = 0.1f;
@@ -40,7 +40,7 @@ public class Enemy extends GameObject implements Collision, Hitable, Health, Des
 	private Timer decide = new Timer(120);
 	private Timer decideAction = new Timer(120);
 	private boolean move = false;
-	private Decision action = Decision.goto_target;
+	private Decision action = Decision.wander;
 	private GameObject target = Game.world.getPlayer();
 
 	private int wonderAreaSize = 75, circle_offset = 60, folow_time = 0;
@@ -135,8 +135,10 @@ public class Enemy extends GameObject implements Collision, Hitable, Health, Des
 						}
 						folow_time = 0;
 					} else if(folow_time > 300 + r.nextInt(60)) {
-						if(r.nextInt(2) == 0) {
+						if(r.nextInt(3) == 0) {
 							action = Decision.wander;
+						} else {
+							action = Decision.circle_target;
 						}
 						folow_time = 0;
 					}
@@ -357,7 +359,17 @@ public class Enemy extends GameObject implements Collision, Hitable, Health, Des
 		GameObject hit_by = hitboxContainer.getCreated_by();
 		if(action == Decision.wander) {
 			target = hit_by;
-			action = Decision.goto_target;
+			action = r.nextInt(2) == 0 ? Decision.goto_target : Decision.circle_target;
+		}
+		for(GameObject mate : Game.world.getHandler().getObjectsWithIds(this.id)) {
+			int mate_dist = (int) Helpers.getDistance(new Point(x, y), new Point(mate.getX(), mate.getY()));
+			Enemy mate_e = (Enemy) mate;
+			if(mate_dist < wonderAreaSize*2) {
+				if(mate_e.getAction() == Decision.wander) {
+					mate_e.setTarget(hit_by);
+					mate_e.setDecision(r.nextInt(2) == 0 ? Decision.goto_target : Decision.circle_target);
+				}
+			}
 		}
 		int hit_x = hit_by.getX();
 		int hit_y = hit_by.getY();
@@ -480,5 +492,13 @@ public class Enemy extends GameObject implements Collision, Hitable, Health, Des
 	@Override
 	public boolean canRemove() {
 		return destroyed;
+	}
+
+	public void setDecision(Decision decision) {
+		this.action = decision;
+	}
+
+	public Decision getAction() {
+		return action;
 	}
 }
