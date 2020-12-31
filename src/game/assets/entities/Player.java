@@ -10,6 +10,7 @@ import game.assets.items.tools.wood.Tool_WoodenAxe;
 import game.assets.items.tools.wood.Tool_WoodenPickaxe;
 import game.assets.items.tools.wood.Tool_WoodenSword;
 import game.assets.tiles.floor.wood.Item_FloorWood;
+import game.system.audioEngine.AudioClip;
 import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
 import game.enums.DIRECTIONS;
@@ -17,6 +18,7 @@ import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
 import game.system.systems.gameObject.Collision;
 import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.Hitable;
 import game.system.systems.gameObject.Interactable;
 import game.system.systems.hitbox.Hitbox;
 import game.system.systems.hitbox.HitboxContainer;
@@ -34,9 +36,9 @@ import game.textures.*;
 
 import static java.lang.Math.pow;
 
-public class Player extends GameObject implements Collision, Interactable {
-	private static final int ATTACK_DELAY = 20;
-	private static final int DEFAULT_ATTACK_DAMAGE = 999;
+public class Player extends GameObject implements Collision, Interactable, Hitable {
+	private static final int ATTACK_DELAY = 60;
+	private static final int DEFAULT_ATTACK_DAMAGE = 1;
 	private float acceleration = 0.2f, deceleration = 0.3f;
 	public final int REACH = 50;
 	Random r = new Random();
@@ -50,7 +52,7 @@ public class Player extends GameObject implements Collision, Interactable {
 	private Timer needs_timer = new Timer(60);
 
 	private boolean attacking = false;
-	private int attacking_item_rot = 0;
+	private float attacking_item_rot = 0;
 	private float attacking_item_rot_vel = 0;
 	private float time;
 
@@ -161,13 +163,23 @@ public class Player extends GameObject implements Collision, Interactable {
 
 		attack_timer.tick();
 		if(attacking) {
-			attack_slice.runAnimation();
-			attacking_item_rot += 10;
-			if(attack_slice.animationEnded()) {
+			//attack_slice.runAnimation();
+			attacking_item_rot += attacking_item_rot_vel;
+			if(attacking_item_rot >= 90) {
+				attacking_item_rot_vel -= 0.3f * (attacking_item_rot_vel+1);
+				if(attacking_item_rot_vel <= 0) {
+					attacking = false;
+					attacking_item_rot = 0;
+					attacking_item_rot_vel = 0;
+				}
+			} else {
+				attacking_item_rot_vel += 0.3f * (attacking_item_rot_vel+1);
+			}
+			/*if(attack_slice.animationEnded()) {
 				attacking = false;
 				attacking_item_rot = 0;
 				attack_slice.resetAnimation();
-			}
+			}*/
 		}
 
 		updateAnimations();
@@ -197,14 +209,6 @@ public class Player extends GameObject implements Collision, Interactable {
 		} else {
 			velX -= (velX) * deceleration;
 			if(velX < 0.01f && velX > -0.01f) velX = 0;
-		}
-
-		needs_timer.tick();
-		if (needs_timer.timerOver()) {
-			needs_timer.resetTimer();
-			this.health = r.nextInt(100) + 1;
-			this.food = r.nextInt(100) + 1;
-			this.water = r.nextInt(100) + 1;
 		}
 	}
 
@@ -305,7 +309,7 @@ public class Player extends GameObject implements Collision, Interactable {
 				}
 				//attack_slice.drawAnimationRotated(g, cenX-24, cenY-40, 64, 64, cenX, cenY, direction_rotation);
 				ImageFilters.renderImageWithRotation(g, holding.getTexture().getTexure(), cenX + 4, cenY - 20, 16, 16,
-						cenX, cenY, direction_rotation + 90 + 45 + attacking_item_rot );
+						cenX, cenY, (int) (direction_rotation+90 + 45 + -attacking_item_rot));
 			}
 		}
 	}
@@ -342,32 +346,37 @@ public class Player extends GameObject implements Collision, Interactable {
 		attacking = true;
 		//Item holding = Game.inventorySystem.getHotbarSelectedItem();
 		int dmg = getExpectedDamage();
-		AudioPlayer.playSound(AudioFiles.swing, 0.5f, false, 0);
+		AudioPlayer.playSound(AudioFiles.swing, 0.2f, false, 0);
 		// TODO make direction function 8 way instead of 4
 		Point screenCoords = Helpers.getScreenCoords((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), Game.world.getCam());
 		attack_dir = Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
 		//Logger.print(direction.name());
 		//this.direction = direction;
 
+		float knockback = 1f;
+		if(dmg > DEFAULT_ATTACK_DAMAGE) {
+			knockback = 2f;
+		}
+
 		switch (attack_dir) {
 			case up:
 				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
-						new Hitbox(x-8, y-16, 32, 16, 0, 5, dmg),
+						new Hitbox(x-8, y-16, 32, 16, 10, 4, dmg, knockback),
 				}, this));
 				break;
 			case down:
 				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
-						new Hitbox(x-8, y+getBounds().height + 16, 32, 16, 0, 5, dmg),
+						new Hitbox(x-8, y+getBounds().height + 16, 32, 16, 10, 4, dmg, knockback),
 				}, this));
 				break;
 			case left:
 				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
-						new Hitbox(x-24, y, 16, 32, 0, 5, dmg),
+						new Hitbox(x-24, y, 16, 32, 10, 4, dmg, knockback),
 				}, this));
 				break;
 			case right:
 				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
-						new Hitbox(x+getBounds().width + 16, y, 16, 32, 0, 5, dmg),
+						new Hitbox(x+getBounds().width + 16, y, 16, 32, 10, 4, dmg, knockback),
 				}, this));
 				break;
 		}
@@ -400,4 +409,14 @@ public class Player extends GameObject implements Collision, Interactable {
 		this.keyInput = keyInput;
 	}
 
+	@Override
+	public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
+		AudioPlayer.playSound(AudioFiles.hurt_2, 0.7f, false, 0);
+		int dmg = hitboxContainer.getHitboxes().get(hit_hitbox_index).getDamage();
+		float knockback = hitboxContainer.getHitboxes().get(hit_hitbox_index).getKnockback();
+		int angle = (int) Helpers.getAngle(new Point(x, y), new Point(hitboxContainer.getCreated_by().getX(), hitboxContainer.getCreated_by().getY()));
+		velX = (float) -(knockback*Math.cos(Math.toRadians(angle)));
+		velY = (float) -(knockback*Math.sin(Math.toRadians(angle)));
+		health -= dmg;
+	}
 }

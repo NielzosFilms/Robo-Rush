@@ -13,6 +13,7 @@ import game.system.audioEngine.AudioPlayer;
 import game.system.helpers.Logger;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.systems.gameObject.*;
+import game.system.systems.hitbox.HitboxContainer;
 import game.system.systems.hud.Selection;
 import game.system.systems.inventory.Inventory;
 import game.system.systems.inventory.InventorySlot;
@@ -146,10 +147,11 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
         return true;
     }
 
-    public void hit(int damage) {
+    @Override
+    public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
         regen_timer_after_hit = REGEN_DELAY_AFTER_HIT;
         AudioPlayer.playSound(AudioFiles.crate_impact, Settings.sound_vol, false, 0);
-        healthBar.subtractHealth(damage);
+        healthBar.subtractHealth(hitboxContainer.getHitboxes().get(hit_hitbox_index).getDamage());
     }
 
     public void addItemToInv(Item item) {

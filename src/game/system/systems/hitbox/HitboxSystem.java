@@ -29,11 +29,12 @@ public class HitboxSystem {
         for(GameObject object : objects_w_bounds) {
             for(int i=0; i<hitboxContainers.size(); i++) {
                 if(hitboxContainers.get(i).canHitObject(object)) {
-                    for(Hitbox hitbox : hitboxContainers.get(i).getHitboxes()) {
+                    for(int j=0; j<hitboxContainers.get(i).getHitboxes().size(); j++) {
+                        Hitbox hitbox = hitboxContainers.get(i).getHitboxes().get(j);
                         if(hitbox.active()) {
                             if(object instanceof Hitable && object instanceof Collision) {
                                 if(((Collision) object).getBounds().intersects(hitbox.getBounds())) {
-                                    ((Hitable) object).hit(hitbox.getDamage());
+                                    ((Hitable) object).hit(hitboxContainers.get(i), j);
                                     Game.world.getPs().addParticle(new Particle_DamageNumber(object.getX(), object.getY(), 0f, -0.3f, 40, hitbox.getDamage()));
                                     hitboxContainers.get(i).addHitObject(object);
                                 }

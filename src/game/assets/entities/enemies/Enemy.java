@@ -6,20 +6,19 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 
+import game.assets.HealthBar;
+import game.enums.DIRECTIONS;
 import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
 import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
 import game.system.helpers.Timer;
 import game.system.main.Game;
-import game.system.systems.gameObject.Collision;
-import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.*;
 import game.enums.ID;
-import game.system.systems.gameObject.Hitable;
-import game.textures.Fonts;
-import game.textures.ImageFilters;
-import game.textures.Texture;
-import game.textures.Textures;
+import game.system.systems.hitbox.Hitbox;
+import game.system.systems.hitbox.HitboxContainer;
+import game.textures.*;
 
 enum Decision {
 	wander,
@@ -29,8 +28,8 @@ enum Decision {
 	attack_target,
 }
 
-public class Enemy extends GameObject implements Collision, Hitable {
-	float max_vel = 1f;
+public class Enemy extends GameObject implements Collision, Hitable, Health, Destroyable {
+	float max_vel = 0.8f; //0.8
 	float wander_vel = 0.5f;
 	float acceleration = 0.05f;
 	float deceleration = 0.1f;
@@ -49,6 +48,10 @@ public class Enemy extends GameObject implements Collision, Hitable {
 	private Random r = new Random();
 	private int circle_radius = 60 - r.nextInt(10);
 
+	private Animation idle = new Animation(150, new Texture(TEXTURE_LIST.lil_skeleton_list, 0, 0), new Texture(TEXTURE_LIST.lil_skeleton_list, 1, 0), new Texture(TEXTURE_LIST.lil_skeleton_list, 2, 0), new Texture(TEXTURE_LIST.lil_skeleton_list, 3, 0));
+	private HealthBar health = new HealthBar(0, 0, 0, 8, 1);
+	private boolean destroyed = false;
+
 	public Enemy(int x, int y, int z_index, ID id) {
 		super(x, y, z_index, id);
 		for(int i=0; i<360; i+=30) {
@@ -56,7 +59,6 @@ public class Enemy extends GameObject implements Collision, Hitable {
 		}
 		prev_angles = new HashMap<>(angles);
 		spawnPoint = new Point(x, y);
-		System.out.println(angles);
 	}
 
 	public void tick() {
@@ -96,8 +98,14 @@ public class Enemy extends GameObject implements Collision, Hitable {
 			velY -= (velY) * deceleration;
 		}
 
-		velX = Helpers.clampFloat(velX, -max_vel, max_vel);
-		velY = Helpers.clampFloat(velY, -max_vel, max_vel);
+		/*velX = Helpers.clampFloat(velX, -max_vel, max_vel);
+		velY = Helpers.clampFloat(velY, -max_vel, max_vel);*/
+		if(Math.abs(velX) > max_vel) {
+			velX -= (velX) * deceleration;
+		}
+		if(Math.abs(velY) > max_vel) {
+			velY -= (velY) * deceleration;
+		}
 
 		for(int angle : angles.keySet()) {
 			angles.put(angle, 0f);
@@ -117,17 +125,30 @@ public class Enemy extends GameObject implements Collision, Hitable {
 		if(action != Decision.wander) {
 			switch(action) {
 				case goto_target:
-					if(target_dist < 20) {
-						System.out.println("attack target");
-						AudioPlayer.playSound(AudioFiles.crate_impact, 0.7f, false, 0);
+					if(target_dist < 25) {
+						attackTarget(target_x, target_y);
 						action = Decision.avoid_target;
 					}
-					if(target_dist > 200 && folow_time > r.nextInt(30)*4) action = Decision.wander;
+					if(target_dist > 200 && folow_time > r.nextInt(15)*8) {
+						if(r.nextInt(2) == 0) {
+							action = Decision.wander;
+						}
+						folow_time = 0;
+					} else if(folow_time > 300 + r.nextInt(60)) {
+						if(r.nextInt(2) == 0) {
+							action = Decision.wander;
+						}
+						folow_time = 0;
+					}
 					folow_time++;
 					break;
 				case avoid_target:
 					if(target_dist > 35) {
 						action = Decision.circle_target;
+					}
+					if(decideAction.timerOver()) {
+						decideAction.setDelay(r.nextInt(30)*4);
+						action = Decision.goto_target;
 					}
 					break;
 				case circle_target:
@@ -228,6 +249,36 @@ public class Enemy extends GameObject implements Collision, Hitable {
 		}
 
 		decideAction.tick();
+		idle.runAnimation();
+		health.setXY(x-8, y - 16);
+	}
+
+	private void attackTarget(int targ_x, int targ_y) {
+		DIRECTIONS directions = Helpers.getDirection(new Point(x, y), new Point(targ_x, targ_y));
+		int dmg = 2;
+		float knockback = 1f;
+		switch (directions) {
+			case up:
+				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+						new Hitbox(x-8, y-16, 16, 8, 10, 4, dmg, knockback),
+				}, this));
+				break;
+			case down:
+				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+						new Hitbox(x-8, y+16, 16, 8, 10, 4, dmg, knockback),
+				}, this));
+				break;
+			case left:
+				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+						new Hitbox(x-16, y-8, 8, 16, 10, 4, dmg, knockback),
+				}, this));
+				break;
+			case right:
+				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+						new Hitbox(x+16, y-8, 8, 16, 10, 4, dmg, knockback),
+				}, this));
+				break;
+		}
 	}
 
 	private void setAngle(int angle, float value) {
@@ -254,9 +305,9 @@ public class Enemy extends GameObject implements Collision, Hitable {
 		//g.drawRect(x-8, y-8, 16, 16);
 
 		if(velX < 0) {
-			ImageFilters.renderImageMirroredH(g, Textures.lil_skelly, x - 8, y - 16);
+			idle.drawAnimationMirroredH(g, x-8, y-16);
 		} else {
-			g.drawImage(Textures.lil_skelly, x - 8, y - 16, null);
+			idle.drawAnimation(g, x-8, y-16);
 		}
 
 		if(Game.DEBUG_MODE) {
@@ -301,10 +352,27 @@ public class Enemy extends GameObject implements Collision, Hitable {
 	}
 
 	@Override
-	public void hit(int damage) {
+	public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
+		AudioPlayer.playSound(AudioFiles.hurt_1, 0.7f, false, 0);
+		GameObject hit_by = hitboxContainer.getCreated_by();
 		if(action == Decision.wander) {
+			target = hit_by;
 			action = Decision.goto_target;
 		}
+		int hit_x = hit_by.getX();
+		int hit_y = hit_by.getY();
+		if(hit_by instanceof Collision) {
+			if(((Collision) hit_by).getBounds() != null) {
+				hit_x = (int) ((Collision) hit_by).getBounds().getCenterX();
+				hit_y = (int) ((Collision) hit_by).getBounds().getCenterY();
+			}
+		}
+		int dmg = hitboxContainer.getHitboxes().get(hit_hitbox_index).getDamage();
+		health.subtractHealth(dmg);
+		float knockback = hitboxContainer.getHitboxes().get(hit_hitbox_index).getKnockback();
+		int angle = (int) Helpers.getAngle(new Point(x, y), new Point(hit_x, hit_y));
+		velX = (float) -(knockback*Math.cos(Math.toRadians(getClosestAngle(angle))));
+		velY = (float) -(knockback*Math.sin(Math.toRadians(getClosestAngle(angle))));
 	}
 
 	private LinkedList<Integer> getPositiveAngles() {
@@ -381,5 +449,36 @@ public class Enemy extends GameObject implements Collision, Hitable {
 
 	public void setTarget(GameObject target) {
 		this.target = target;
+	}
+
+	@Override
+	public int getHealth() {
+		return health.getHealth();
+	}
+
+	@Override
+	public HealthBar getHealthBar() {
+		return health;
+	}
+
+	@Override
+	public boolean dead() {
+		return health.dead();
+	}
+
+	@Override
+	public void destroyed() {
+		AudioPlayer.playSound(AudioFiles.explosion, 0.6f, false, 0);
+		destroyed = true;
+	}
+
+	@Override
+	public boolean destroyedCalled() {
+		return destroyed;
+	}
+
+	@Override
+	public boolean canRemove() {
+		return destroyed;
 	}
 }

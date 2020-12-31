@@ -7,6 +7,7 @@ import game.system.systems.gameObject.Collision;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Health;
 import game.system.systems.gameObject.Hitable;
+import game.system.systems.hitbox.HitboxContainer;
 import game.system.world.JsonStructureLoader;
 import game.textures.Animation;
 import game.textures.TEXTURE_LIST;
@@ -74,8 +75,8 @@ public class Golem_Stone extends GameObject implements Collision, Hitable, Healt
     }
 
     @Override
-    public void hit(int damage) {
-        health.subtractHealth(damage);
+    public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
+        health.subtractHealth(hitboxContainer.getHitboxes().get(hit_hitbox_index).getDamage());
     }
 
     @Override

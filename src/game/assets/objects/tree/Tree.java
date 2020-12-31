@@ -16,6 +16,7 @@ import game.system.helpers.Logger;
 import game.system.main.Game;
 import game.system.systems.gameObject.*;
 import game.enums.ID;
+import game.system.systems.hitbox.HitboxContainer;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import game.enums.BIOME;
@@ -105,8 +106,8 @@ public class Tree extends GameObject implements Collision, Destroyable, Hitable,
 	}
 
 	@Override
-	public void hit(int damage) {
-		health.subtractHealth(damage);
+	public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
+		health.subtractHealth(hitboxContainer.getHitboxes().get(hit_hitbox_index).getDamage());
 	}
 
 	@Override

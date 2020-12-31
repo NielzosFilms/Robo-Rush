@@ -8,6 +8,7 @@ import game.system.systems.gameObject.Collision;
 import game.system.systems.gameObject.GameObject;
 import game.system.helpers.Settings;
 import game.system.systems.gameObject.Hitable;
+import game.system.systems.hitbox.HitboxContainer;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
@@ -44,7 +45,8 @@ public class TargetDummy extends GameObject implements Collision, Hitable {
         return new Rectangle(x, y, width, height);
     }
 
-    public void hit(int damage) {
+    @Override
+    public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
         AudioPlayer.playSound(AudioFiles.crate_impact, Settings.sound_vol, false, 0);
     }
 }

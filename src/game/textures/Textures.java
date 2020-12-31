@@ -23,8 +23,7 @@ public class Textures {
 			light,
 			default_btn,
 			healthbar,
-			mushroom,
-			lil_skelly = loader.loadImage("assets/entities/skeleton/lil_skeleton.png");
+			mushroom;
 
 	public Textures() {
 		for(TEXTURE_LIST list_name : TEXTURE_LIST.values()) {
@@ -72,6 +71,7 @@ public class Textures {
 		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/hud.png"), 16, 16, texture_lists.get(TEXTURE_LIST.hud_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/grass.png"), 16, 16, texture_lists.get(TEXTURE_LIST.grass));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/cursor.png"), 8, 8, texture_lists.get(TEXTURE_LIST.cursors));
+		fillListWithSpriteSheet(loader.loadImage("assets/entities/skeleton/lil_skeleton.png"), 16, 24, texture_lists.get(TEXTURE_LIST.lil_skeleton_list));
 	}
 
 	private static void fillListWithSpriteSheet(BufferedImage sheet, int width, int height, HashMap<Point, BufferedImage> list) {

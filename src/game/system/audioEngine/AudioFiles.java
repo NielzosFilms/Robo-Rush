@@ -11,6 +11,11 @@ public class AudioFiles {
 	public static AudioClip inv_select_1, inv_select_2, inv_select_3, inv_pickup_item;
 
 	public static AudioClip swing;
+
+	public static AudioClip
+			hurt_1 = new AudioClip("assets/audio/hurt_1.wav"),
+			hurt_2 = new AudioClip("assets/audio/hurt_2.wav"),
+			explosion = new AudioClip("assets/audio/explosion.wav");
 	
 	public AudioFiles() {
 		futureopolis = new AudioClip("assets/audio/world/Futureopolis.wav");

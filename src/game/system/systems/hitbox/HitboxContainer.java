@@ -9,13 +9,15 @@ import java.util.LinkedList;
 public class HitboxContainer {
     private LinkedList<Hitbox> hitboxes = new LinkedList<>();
     private LinkedList<GameObject> objects_hit = new LinkedList<>();
+    private GameObject created_by;
 
     public HitboxContainer(Hitbox[] hitboxes, GameObject created_by) {
+        objects_hit.add(created_by);
+        this.created_by = created_by;
         for(Hitbox hitbox : hitboxes) {
             hitbox.setParent(this);
             this.hitboxes.add(hitbox);
         }
-        objects_hit.add(created_by);
     }
 
     public void tick() {
@@ -47,5 +49,9 @@ public class HitboxContainer {
 
     public LinkedList<Hitbox> getHitboxes() {
         return hitboxes;
+    }
+
+    public GameObject getCreated_by() {
+        return this.created_by;
     }
 }

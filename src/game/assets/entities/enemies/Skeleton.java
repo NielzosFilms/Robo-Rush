@@ -10,6 +10,7 @@ import game.system.main.Game;
 import game.system.systems.gameObject.Collision;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Hitable;
+import game.system.systems.hitbox.HitboxContainer;
 import game.system.systems.particles.Particle_String;
 import game.system.world.JsonStructureLoader;
 import game.textures.Animation;
@@ -97,7 +98,7 @@ public class Skeleton extends GameObject implements Collision, Hitable {
     }
 
     @Override
-    public void hit(int damage) {
+    public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
         //healthBar.subtractHealth(damage);
     }
 }

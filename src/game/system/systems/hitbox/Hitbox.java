@@ -12,20 +12,28 @@ public class Hitbox extends GameObject {
     private int creation_delay;
     private int lifetime;
     private int damage;
-    public Hitbox(int x, int y, int width, int height, int creation_delay, int lifetime, int damage ) {
+    private float knockback;
+
+    private int x_diff = 0, y_diff = 0;
+    public Hitbox(int x, int y, int width, int height, int creation_delay, int lifetime, int damage, float knockback ) {
         super(x, y, 1, ID.Hitbox);
         this.creation_delay = creation_delay;
         this.lifetime = lifetime;
         this.width = width;
         this.height = height;
         this.damage = damage;
+        this.knockback = knockback;
     }
 
     public void setParent(HitboxContainer parent) {
         this.parent = parent;
+        this.x_diff = x - parent.getCreated_by().getX();
+        this.y_diff = y - parent.getCreated_by().getY();
     }
 
     public void tick() {
+        x = parent.getCreated_by().getX() + x_diff;
+        y = parent.getCreated_by().getY() + y_diff;
         if(active()) {
             if(lifetime > 0) {
                 lifetime--;
@@ -65,6 +73,7 @@ public class Hitbox extends GameObject {
     public int getDamage() {
         return this.damage;
     }
+    public float getKnockback() {return this.knockback;}
 
     public boolean active() {
         return creation_delay <= 0;
