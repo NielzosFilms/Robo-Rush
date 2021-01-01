@@ -122,14 +122,48 @@ public class Handler implements Serializable {
 		if(entities.size() > tiles.size()) highest_size = entities.size();
 
 		for(int i=0; i<highest_size; i++) {
-			if(i < tiles.size()) {
-				for(Tile tile : tiles.get(i)) {
-					tile.render(g);
+			if(i == Game.world.getPlayer().getZIndex()) {
+				if(i < entities.size()) {
+					LinkedList<GameObject> player_layer = new LinkedList<>(entities.get(i));
+					LinkedList<GameObject> y_sorted = new LinkedList<>();
+					while(player_layer.size() > 0) {
+						GameObject lowest = player_layer.get(0);
+						int lowestY = lowest.getY();
+						if(lowest instanceof Collision) {
+							if(((Collision) lowest).getBounds() != null) {
+								lowestY = (int) (((Collision) lowest).getBounds().getY() + ((Collision) lowest).getBounds().getHeight());
+							}
+						}
+						for(int y=1; y<player_layer.size(); y++) {
+							GameObject new_ent = player_layer.get(y);
+							int newY = new_ent.getY();
+							if(new_ent instanceof Collision) {
+								if(((Collision) new_ent).getBounds() != null) {
+									newY = (int) (((Collision) new_ent).getBounds().getY() + ((Collision) new_ent).getBounds().getHeight());
+								}
+							}
+							if(newY < lowestY) {
+								lowest = new_ent;
+							}
+						}
+						y_sorted.add(lowest);
+						player_layer.remove(lowest);
+					}
+					for(GameObject entity : y_sorted) {
+						entity.render(g);
+					}
 				}
-			}
-			if(i < entities.size()) {
-				for(GameObject entity : entities.get(i)) {
-					entity.render(g);
+
+			} else {
+				if(i < tiles.size()) {
+					for(Tile tile : tiles.get(i)) {
+						tile.render(g);
+					}
+				}
+				if(i < entities.size()) {
+					for(GameObject entity : entities.get(i)) {
+						entity.render(g);
+					}
 				}
 			}
 		}
@@ -139,7 +173,6 @@ public class Handler implements Serializable {
 				chunk.renderBorder(g);
 			}
 		}
-
 	}
 
 	public void addLight(Light light) {

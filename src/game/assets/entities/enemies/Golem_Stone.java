@@ -47,7 +47,7 @@ public class Golem_Stone extends GameObject implements Collision, Hitable, Healt
             health.kill();
         }*/
 
-        int player_cenX = Game.world.getPlayer().getX() + 8;
+        /*int player_cenX = Game.world.getPlayer().getX() + 8;
         int player_cenY = Game.world.getPlayer().getY() + (16 + 8) / 2;
         int this_cenY = (int) getBounds().getCenterY();
 
@@ -55,7 +55,7 @@ public class Golem_Stone extends GameObject implements Collision, Hitable, Healt
             this.setZIndex(Game.world.getPlayer().getZIndex() - 1);
         } else {
             this.setZIndex(Game.world.getPlayer().getZIndex() + 1);
-        }
+        }*/
     }
 
     @Override

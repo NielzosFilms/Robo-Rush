@@ -284,7 +284,7 @@ public class World implements Serializable {
 	public void generate() {
 		loaded = false;
 		chunks.clear();
-		setRequirements(new Player(0, 0, 20, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
+		setRequirements(new Player(0, 0, 10, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
 
 		//Logger.print("[seed]: " + this.seed);
 		Logger.print("World Generating...");
@@ -295,8 +295,12 @@ public class World implements Serializable {
 		updateChunk(chunk.x, chunk.y);*/
 		JsonStructureLoader jsonLoader = new JsonStructureLoader("assets/structures/main_map_1.json");
 		chunks = jsonLoader.getChunks();
+		if(jsonLoader.getPlayerSpawn() != null) {
+			getPlayer().setX(jsonLoader.getPlayerSpawn().x);
+			getPlayer().setY(jsonLoader.getPlayerSpawn().y);
+		}
 		//handler.addObject(new Waterfall(0, 0, 10));
-		//handler.addObject(new Golem_Stone(64, 64, 10, ID.Enemy));
+		//
 		//handler.addObject(new TestTable(0, 64, 10, ID.NULL));
 		//Skeleton skele = new Skeleton(0, 0, 10, ID.Skeleton);
 		handler.addObject(new Enemy(64, 64, 10, ID.Enemy));
@@ -304,7 +308,7 @@ public class World implements Serializable {
 		handler.addObject(new Enemy(64, 64, 10, ID.Enemy));
 		handler.addObject(new Enemy(64, 64, 10, ID.Enemy));
 		handler.addObject(new Enemy(64, 64, 10, ID.Enemy));
-		handler.addObject(new TargetDummy(32, 32, 10, ID.Dummy));
+		handler.addObject(new Golem_Stone(64, 64, 10, ID.Enemy));
 		//chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
 		loaded = true;
 	}

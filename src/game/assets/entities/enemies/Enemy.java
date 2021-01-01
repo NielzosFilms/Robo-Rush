@@ -363,12 +363,16 @@ public class Enemy extends GameObject implements Collision, Hitable, Health, Des
 		}
 		for(GameObject mate : Game.world.getHandler().getObjectsWithIds(this.id)) {
 			int mate_dist = (int) Helpers.getDistance(new Point(x, y), new Point(mate.getX(), mate.getY()));
-			Enemy mate_e = (Enemy) mate;
-			if(mate_dist < wonderAreaSize*2) {
-				if(mate_e.getAction() == Decision.wander) {
-					mate_e.setTarget(hit_by);
-					mate_e.setDecision(r.nextInt(2) == 0 ? Decision.goto_target : Decision.circle_target);
+			try {
+				Enemy mate_e = (Enemy) mate;
+				if (mate_dist < wonderAreaSize * 2) {
+					if (mate_e.getAction() == Decision.wander) {
+						mate_e.setTarget(hit_by);
+						mate_e.setDecision(r.nextInt(2) == 0 ? Decision.goto_target : Decision.circle_target);
+					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		int hit_x = hit_by.getX();
