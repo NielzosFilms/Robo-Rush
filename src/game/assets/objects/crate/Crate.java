@@ -26,7 +26,7 @@ import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import org.json.simple.JSONObject;
 
-public class Crate extends GameObject implements Collision, Pushable, Interactable, Hitable, Destroyable, Health {
+public class Crate extends GameObject implements Bounds, Pushable, Interactable, Hitable, Destroyable, Health {
     private final int REGEN_DELAY_AFTER_HIT = 60*10;
     private final int REGEN_DELAY = 30;
     private final int REGEN_AMOUNT = 1;
@@ -110,6 +110,26 @@ public class Crate extends GameObject implements Collision, Pushable, Interactab
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
+    }
+
+    @Override
+    public Rectangle getTopBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getBottomBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getLeftBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getRightBounds() {
+        return null;
     }
 
     public Rectangle getSelectBounds() {

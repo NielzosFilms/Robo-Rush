@@ -6,14 +6,14 @@ import java.util.ArrayList;
 
 import game.enums.GAMESTATES;
 import game.system.main.Game;
-import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.enums.ID;
 import game.system.systems.gameObject.Interactable;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
-public class House extends GameObject implements Collision, Interactable {
+public class House extends GameObject implements Bounds, Interactable {
 
     private ArrayList<ArrayList<Texture>> tex_rows = new ArrayList<ArrayList<Texture>>();
 
@@ -69,6 +69,26 @@ public class House extends GameObject implements Collision, Interactable {
 
     public Rectangle getBounds() {
         return new Rectangle(x + 8, y + 16, 16 * 3, 16 * 2 - 8);
+    }
+
+    @Override
+    public Rectangle getTopBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getBottomBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getLeftBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getRightBounds() {
+        return null;
     }
 
     public Rectangle getSelectBounds() {

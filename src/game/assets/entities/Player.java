@@ -16,7 +16,7 @@ import game.system.audioEngine.AudioPlayer;
 import game.enums.DIRECTIONS;
 import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
-import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Hitable;
 import game.system.systems.gameObject.Interactable;
@@ -36,7 +36,7 @@ import game.textures.*;
 
 import static java.lang.Math.pow;
 
-public class Player extends GameObject implements Collision, Interactable, Hitable {
+public class Player extends GameObject implements Bounds, Interactable, Hitable {
 	private static final int ATTACK_DELAY = 60;
 	private static final int DEFAULT_ATTACK_DAMAGE = 1;
 	private float acceleration = 0.2f, deceleration = 0.3f;
@@ -283,9 +283,8 @@ public class Player extends GameObject implements Collision, Interactable, Hitab
 
 
 		if(Game.DEBUG_MODE) {
-			g.setColor(Color.pink);
-			g.drawRect(getBounds().x, getBounds().y, getBounds().width,
-					getBounds().height);
+			g.setColor(new Color(255, 108, 252, 92));
+			Helpers.drawBounds(g, this);
 		}
 	}
 
@@ -314,8 +313,29 @@ public class Player extends GameObject implements Collision, Interactable, Hitab
 		}
 	}
 
+	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(x + 2, y + 12, 12, 12);
+		return new Rectangle(x + 3, y + 14, 10, 10);
+	}
+
+	@Override
+	public Rectangle getTopBounds() {
+		return new Rectangle(x + 5, y + 14, 6, 5);
+	}
+
+	@Override
+	public Rectangle getBottomBounds() {
+		return new Rectangle(x + 5, y + 19, 6, 5);
+	}
+
+	@Override
+	public Rectangle getLeftBounds() {
+		return new Rectangle(x + 3, y + 15, 2, 8);
+	}
+
+	@Override
+	public Rectangle getRightBounds() {
+		return new Rectangle(x + 11, y + 15, 2, 8);
 	}
 
 	public Rectangle getSelectBounds() {

@@ -4,7 +4,7 @@ import game.assets.items.item.Item;
 import game.assets.tiles.tile.Tile;
 import game.enums.TILE_TYPE;
 import game.system.helpers.TileHelperFunctions;
-import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Bounds;
 import game.textures.TEXTURE_LIST;
 import game.system.world.Chunk;
 import game.textures.Texture;
@@ -12,7 +12,7 @@ import game.textures.Texture;
 import java.awt.*;
 import java.util.HashMap;
 
-public class Tile_Wall extends Tile implements Collision {
+public class Tile_Wall extends Tile implements Bounds {
     private HashMap<TILE_TYPE, Texture> textures = new HashMap<>();
     private TILE_TYPE type;
 
@@ -36,6 +36,26 @@ public class Tile_Wall extends Tile implements Collision {
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, tileSize, tileSize);
+    }
+
+    @Override
+    public Rectangle getTopBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getBottomBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getLeftBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getRightBounds() {
+        return null;
     }
 
     public void update() {

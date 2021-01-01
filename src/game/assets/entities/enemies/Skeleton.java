@@ -7,7 +7,7 @@ import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.main.Game;
-import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Hitable;
 import game.system.systems.hitbox.HitboxContainer;
@@ -21,7 +21,7 @@ import org.json.simple.JSONObject;
 
 import java.awt.*;
 
-public class Skeleton extends GameObject implements Collision, Hitable {
+public class Skeleton extends GameObject implements Bounds, Hitable {
     private Animation idle = new Animation(200,
             new Texture(TEXTURE_LIST.skeleton_list, 0, 0),
             new Texture(TEXTURE_LIST.skeleton_list, 1, 0),
@@ -95,6 +95,26 @@ public class Skeleton extends GameObject implements Collision, Hitable {
     @Override
     public Rectangle getBounds() {
         return new Rectangle(x, y, 32, 48);
+    }
+
+    @Override
+    public Rectangle getTopBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getBottomBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getLeftBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getRightBounds() {
+        return null;
     }
 
     @Override

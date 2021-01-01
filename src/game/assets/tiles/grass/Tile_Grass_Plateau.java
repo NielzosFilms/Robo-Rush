@@ -5,7 +5,6 @@ import game.enums.BIOME;
 import game.enums.TILE_TYPE;
 import game.system.helpers.TileHelperFunctions;
 import game.system.helpers.TransitionHelpers;
-import game.system.systems.gameObject.Collision;
 import game.system.world.Chunk;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;

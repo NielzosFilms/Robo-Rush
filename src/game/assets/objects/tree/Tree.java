@@ -21,7 +21,7 @@ import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import game.enums.BIOME;
 
-public class Tree extends GameObject implements Collision, Destroyable, Hitable, Health {
+public class Tree extends GameObject implements Bounds, Destroyable, Hitable, Health {
 
 	private ArrayList<ArrayList<Texture>> tex_rows;
 
@@ -85,6 +85,26 @@ public class Tree extends GameObject implements Collision, Destroyable, Hitable,
 
 	public Rectangle getBounds() {
 		return new Rectangle(x, y + 3, this.width, this.height - 6);
+	}
+
+	@Override
+	public Rectangle getTopBounds() {
+		return null;
+	}
+
+	@Override
+	public Rectangle getBottomBounds() {
+		return null;
+	}
+
+	@Override
+	public Rectangle getLeftBounds() {
+		return null;
+	}
+
+	@Override
+	public Rectangle getRightBounds() {
+		return null;
 	}
 
 	@Override

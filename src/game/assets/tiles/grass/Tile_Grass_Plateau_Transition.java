@@ -4,7 +4,7 @@ import game.assets.tiles.tile.Tile;
 import game.assets.tiles.tile.UpdateAble;
 import game.enums.BIOME;
 import game.system.helpers.TransitionHelpers;
-import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Bounds;
 import game.system.world.Chunk;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
@@ -12,7 +12,7 @@ import game.textures.Texture;
 import java.awt.*;
 import java.util.HashMap;
 
-public class Tile_Grass_Plateau_Transition extends Tile implements UpdateAble, Collision {
+public class Tile_Grass_Plateau_Transition extends Tile implements UpdateAble, Bounds {
     private HashMap<Integer, Texture> textures = new HashMap<>();
     private int type;
 
@@ -79,6 +79,26 @@ public class Tile_Grass_Plateau_Transition extends Tile implements UpdateAble, C
             }
             return new Rectangle(x, y, tileSize, tileSize);
         }
+        return null;
+    }
+
+    @Override
+    public Rectangle getTopBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getBottomBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getLeftBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getRightBounds() {
         return null;
     }
 }

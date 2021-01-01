@@ -28,7 +28,7 @@ enum Decision {
 	attack_target,
 }
 
-public class Enemy extends GameObject implements Collision, Hitable, Health, Destroyable {
+public class Enemy extends GameObject implements Bounds, Hitable, Health, Destroyable {
 	float max_vel = 1f; //0.8
 	float wander_vel = 0.5f;
 	float acceleration = 0.05f;
@@ -113,10 +113,10 @@ public class Enemy extends GameObject implements Collision, Hitable, Health, Des
 
 		int target_x = target.getX();
 		int target_y = target.getY();
-		if(target instanceof Collision) {
-			if(((Collision) target).getBounds() != null) {
-				target_x = (int) ((Collision) target).getBounds().getCenterX();
-				target_y = (int) ((Collision) target).getBounds().getCenterY();
+		if(target instanceof Bounds) {
+			if(((Bounds) target).getBounds() != null) {
+				target_x = (int) ((Bounds) target).getBounds().getCenterX();
+				target_y = (int) ((Bounds) target).getBounds().getCenterY();
 			}
 		}
 		int target_angle = getClosestAngle((int) Helpers.getAngle(new Point(x, y), new Point(target_x, target_y)));
@@ -239,10 +239,10 @@ public class Enemy extends GameObject implements Collision, Hitable, Health, Des
 			if(object == this || object == target) continue;
 			int objX = object.getX();
 			int objY = object.getY();
-			if(object instanceof Collision) {
-				if(((Collision) object).getBounds() != null) {
-					objX = (int) ((Collision) object).getBounds().getCenterX();
-					objY = (int) ((Collision) object).getBounds().getCenterY();
+			if(object instanceof Bounds) {
+				if(((Bounds) object).getBounds() != null) {
+					objX = (int) ((Bounds) object).getBounds().getCenterX();
+					objY = (int) ((Bounds) object).getBounds().getCenterY();
 				}
 			}
 			int angle = getClosestAngle((int) Helpers.getAngle(new Point(x, y), new Point(objX, objY)));
@@ -304,7 +304,7 @@ public class Enemy extends GameObject implements Collision, Hitable, Health, Des
 
 	public void render(Graphics g) {
 		g.setColor(Color.red);
-		//g.drawRect(x-8, y-8, 16, 16);
+		g.drawRect(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
 
 		if(velX < 0) {
 			idle.drawAnimationMirroredH(g, x-8, y-16);
@@ -350,7 +350,27 @@ public class Enemy extends GameObject implements Collision, Hitable, Health, Des
 
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(x-8, y-8, 16, 16);
+		return new Rectangle(x-5, y-6, 10, 14);
+	}
+
+	@Override
+	public Rectangle getTopBounds() {
+		return new Rectangle(x-3, y-6, 6, 7);
+	}
+
+	@Override
+	public Rectangle getBottomBounds() {
+		return new Rectangle(x-3, y-6+7, 6, 7);
+	}
+
+	@Override
+	public Rectangle getLeftBounds() {
+		return new Rectangle(x-5, y-5, 2, 12);
+	}
+
+	@Override
+	public Rectangle getRightBounds() {
+		return new Rectangle(x+5-2, y-5, 2, 12);
 	}
 
 	@Override
@@ -377,10 +397,10 @@ public class Enemy extends GameObject implements Collision, Hitable, Health, Des
 		}
 		int hit_x = hit_by.getX();
 		int hit_y = hit_by.getY();
-		if(hit_by instanceof Collision) {
-			if(((Collision) hit_by).getBounds() != null) {
-				hit_x = (int) ((Collision) hit_by).getBounds().getCenterX();
-				hit_y = (int) ((Collision) hit_by).getBounds().getCenterY();
+		if(hit_by instanceof Bounds) {
+			if(((Bounds) hit_by).getBounds() != null) {
+				hit_x = (int) ((Bounds) hit_by).getBounds().getCenterX();
+				hit_y = (int) ((Bounds) hit_by).getBounds().getCenterY();
 			}
 		}
 		int dmg = hitboxContainer.getHitboxes().get(hit_hitbox_index).getDamage();

@@ -4,7 +4,6 @@ import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
 import game.enums.ID;
 import game.system.main.Game;
-import game.system.systems.gameObject.Collision;
 import game.system.systems.gameObject.GameObject;
 import game.system.helpers.Settings;
 import game.system.systems.gameObject.Hitable;
@@ -14,7 +13,7 @@ import game.textures.Texture;
 
 import java.awt.*;
 
-public class TargetDummy extends GameObject implements Collision, Hitable {
+public class TargetDummy extends GameObject implements Hitable {
     private Texture top_tex;
     private Texture bot_tex;
     public TargetDummy(int x, int y, int z_index, ID id) {

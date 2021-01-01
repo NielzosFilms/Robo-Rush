@@ -1,7 +1,7 @@
 package game.assets.structures.waterfall;
 
 import game.enums.ID;
-import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.Interactable;
 import game.system.world.biome_groups.BiomeGroup_Cave;
 import game.textures.TEXTURE_LIST;
@@ -14,7 +14,7 @@ import game.textures.Textures;
 import java.awt.*;
 import java.util.HashMap;
 
-public class Waterfall extends GameObject implements Collision, Interactable {
+public class Waterfall extends GameObject implements Bounds, Interactable {
     private HashMap<Point, Texture> tiles = new HashMap<>();
     private HashMap<Point, Animation> water_tiles = new HashMap<>();
     private Structure_Waterfall structure;
@@ -75,6 +75,26 @@ public class Waterfall extends GameObject implements Collision, Interactable {
 
     public Rectangle getBounds() {
         return new Rectangle(x, y+16, 3 * 16, 2 * 16);
+    }
+
+    @Override
+    public Rectangle getTopBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getBottomBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getLeftBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getRightBounds() {
+        return null;
     }
 
     public Rectangle getSelectBounds() {

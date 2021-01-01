@@ -1,7 +1,10 @@
 package game.system.helpers;
 
+import game.assets.entities.Player;
 import game.enums.DIRECTIONS;
 import game.system.main.Camera;
+import game.system.systems.gameObject.Bounds;
+import game.system.systems.gameObject.GameObject;
 import game.system.systems.inventory.InventorySystem;
 
 import java.awt.*;
@@ -110,7 +113,21 @@ public class Helpers {
         return angle;
     }
 
+    public static int getNearest90Degrees(float angle) {
+        float div = angle / 360;
+        int rounded = Math.round(div * 4);
+        return rounded * 90;
+    }
+
     public static float getDotProduct(Point origin, Point target) {
         return (float) (Math.atan2(origin.x - target.x, target.y - origin.y) / (float) Math.PI);
+    }
+
+    public static void drawBounds(Graphics g, Bounds entity) {
+        //if(entity.getBounds() != null) g.drawRect(entity.getBounds().x, entity.getBounds().y, entity.getBounds().width, entity.getBounds().height);
+        if(entity.getBottomBounds() != null) g.drawRect(entity.getBottomBounds().x, entity.getBottomBounds().y, entity.getBottomBounds().width, entity.getBottomBounds().height);
+        if(entity.getTopBounds() != null) g.drawRect(entity.getTopBounds().x, entity.getTopBounds().y, entity.getTopBounds().width, entity.getTopBounds().height);
+        if(entity.getLeftBounds() != null) g.drawRect(entity.getLeftBounds().x, entity.getLeftBounds().y, entity.getLeftBounds().width, entity.getLeftBounds().height);
+        if(entity.getRightBounds() != null) g.drawRect(entity.getRightBounds().x, entity.getRightBounds().y, entity.getRightBounds().width, entity.getRightBounds().height);
     }
 }

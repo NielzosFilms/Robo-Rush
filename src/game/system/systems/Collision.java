@@ -5,8 +5,10 @@ import java.util.LinkedList;
 
 import game.assets.entities.Player;
 import game.enums.DIRECTIONS;
+import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
 import game.system.main.Handler;
+import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Pushable;
 import game.system.world.Chunk;
@@ -28,98 +30,92 @@ public class Collision {
 
 	public void tick() {
 		LinkedList<GameObject> objects_w_bounds = handler.getBoundsObjects();
-		LinkedList<Rectangle> all_bounds = new LinkedList<>();
+		LinkedList<Rectangle> other_bounds = new LinkedList<>();
 		for(Chunk chunk : world.getChunksOnScreen()) {
-			all_bounds.addAll(chunk.getAllTileBounds());
+			other_bounds.addAll(chunk.getAllTileBounds());
 		}
-		for(GameObject entity : objects_w_bounds) {
+		/*for(GameObject entity : objects_w_bounds) {
 			//if(entity instanceof Pushable) continue;
-			all_bounds.add(((game.system.systems.gameObject.Collision)entity).getBounds());
-		}
+			//all_bounds.add(((game.system.systems.gameObject.Collision)entity).getBounds());
+		}*/
 
 		for(GameObject entity : objects_w_bounds) {
 			if(entity instanceof Pushable) {
-				if(player.getBounds().intersects(((game.system.systems.gameObject.Collision)entity).getBounds())) {
+				if(player.getBounds().intersects(((Bounds)entity).getBounds())) {
 					//((Pushable) entity).push(DIRECTIONS.down);
 				}
 			}
 		}
 
 		for(GameObject entity : objects_w_bounds) {
-			for (Rectangle bounds : all_bounds) {
+			for (GameObject entity_2 : objects_w_bounds) {
+				checkCollisionFor2Entities(entity, entity_2);
+				//checkCollisionForMovingEntities(entity, entity_2);
 				// wierd stuff happens
 				//checkCollisionForGameObject(bounds, entity);
 			}
+			for (Rectangle bounds : other_bounds) {
+				checkCollisionForRectangle(entity, bounds);
+			}
 		}
-
+/*
 		for (Rectangle bounds : all_bounds) {
 			checkBoundWithPlayer(bounds);
-		}
+		}*/
 
 	}
 
-	private void checkBoundWithPlayer(Rectangle bounds) {
-		if(bounds == player.getBounds()) return;
-		if (bounds.intersects(player.getBounds())) {
-			int player_x = player.getBounds().x;
-			int player_y = player.getBounds().y;
-			int player_x_diff = player.getBounds().x - player.getX();
-			int player_y_diff = player.getBounds().y - player.getY();
-			int player_cenX = player_x + (player.getBounds().width / 2);
-			int player_cenY = player_y + (player.getBounds().height / 2);
-			int player_bottomY = player_y + player.getBounds().height;
-			int player_rightX = player_x + player.getBounds().width;
-			int obj_x = bounds.x;
-			int obj_y = bounds.y;
-			int obj_cenX = obj_x + (bounds.width / 2);
-			int obj_cenY = obj_y + (bounds.height / 2);
-			int obj_bottomY = obj_y + bounds.height;
-			int obj_rightX = obj_x + bounds.width;
-
-			if (player_cenY < obj_cenY && player_bottomY < obj_y + 4) {
-				player.setY(obj_y - player.getBounds().height - player_y_diff);
-				player.setVelY(0);
-			} else if (player_cenY > obj_cenY && player_y > obj_bottomY - 4) {
-				player.setY(obj_y + bounds.height - player_y_diff);
-				player.setVelY(0);
-			} else if (player_cenX < obj_cenX && player_rightX < obj_x + 4) {
-				player.setX(obj_x - player.getBounds().width - player_x_diff);
-				player.setVelX(0);
-			} else if (player_cenX > obj_cenX && player_x > obj_rightX - 4) {
-				player.setX(obj_x + bounds.width - player_x_diff);
-				player.setVelX(0);
+	private void checkCollisionFor2Entities(GameObject entity_1, GameObject entity_2) {
+		if(entity_1 == entity_2) return;
+		Rectangle ent_1_bounds = ((Bounds)entity_1).getBounds();
+		Rectangle ent_2_bounds = ((Bounds)entity_2).getBounds();
+		if(ent_1_bounds.intersects(ent_2_bounds)) {
+			Bounds ent_1 = (Bounds) entity_1;
+			if(ent_1.getTopBounds() != null && ent_1.getBottomBounds() != null && ent_1.getLeftBounds() != null && ent_1.getRightBounds() != null) {
+				if(ent_1.getTopBounds().intersects(ent_2_bounds)) {
+					entity_1.setY(entity_1.getY() + 1);
+					entity_1.setVelY(0);
+				}
+				if(ent_1.getBottomBounds().intersects(ent_2_bounds)) {
+					entity_1.setY(entity_1.getY() - 1);
+					entity_1.setVelY(0);
+				}
+				if(ent_1.getLeftBounds().intersects(ent_2_bounds)) {
+					entity_1.setX(entity_1.getX() + 1);
+					entity_1.setVelX(0);
+				}
+				if(ent_1.getRightBounds().intersects(ent_2_bounds)) {
+					entity_1.setX(entity_1.getX() - 1);
+					entity_1.setVelX(0);
+				}
 			}
 		}
 	}
 
-	private void checkCollisionForGameObject(Rectangle bounds, GameObject entity) {
-		//wierd stuff happens when moving entities touch
-		Rectangle entity_bounds = ((game.system.systems.gameObject.Collision) entity).getBounds();
-		if(bounds == entity_bounds) return;
-		if (bounds.intersects(entity_bounds)) {
-			int player_x = entity_bounds.x;
-			int player_y = entity_bounds.y;
-			int player_x_diff = entity_bounds.x - entity.getX();
-			int player_y_diff = entity_bounds.y - entity.getY();
-			int player_cenX = player_x + (entity_bounds.width / 2);
-			int player_cenY = player_y + (entity_bounds.height / 2);
-			int player_bottomY = player_y + entity_bounds.height;
-			int player_rightX = player_x + entity_bounds.width;
-			int obj_x = bounds.x;
-			int obj_y = bounds.y;
-			int obj_cenX = obj_x + (bounds.width / 2);
-			int obj_cenY = obj_y + (bounds.height / 2);
-			int obj_bottomY = obj_y + bounds.height;
-			int obj_rightX = obj_x + bounds.width;
-
-			if (player_cenY < obj_cenY && player_bottomY < obj_y + 4) {
-				entity.setY(obj_y - entity_bounds.height - player_y_diff);
-			} else if (player_cenY > obj_cenY && player_y > obj_bottomY - 4) {
-				entity.setY(obj_y + bounds.height - player_y_diff);
-			} else if (player_cenX < obj_cenX && player_rightX < obj_x + 4) {
-				entity.setX(obj_x - entity_bounds.width - player_x_diff);
-			} else if (player_cenX > obj_cenX && player_x > obj_rightX - 4) {
-				entity.setX(obj_x + bounds.width - player_x_diff);
+	private void checkCollisionForRectangle(GameObject entity_1, Rectangle bounds) {
+		Rectangle ent_1_bounds = ((Bounds)entity_1).getBounds();
+		if(ent_1_bounds == bounds) return;
+		if(bounds == null || ent_1_bounds == null) return;
+		if(bounds.x == ent_1_bounds.x && bounds.y == ent_1_bounds.y && bounds.width == ent_1_bounds.width && bounds.height == ent_1_bounds.height) return;
+		if(ent_1_bounds.intersects(bounds)) {
+			Bounds ent_1 = (Bounds) entity_1;
+			if(ent_1.getTopBounds() != null && ent_1.getBottomBounds() != null && ent_1.getLeftBounds() != null && ent_1.getRightBounds() != null) {
+				if(ent_1.getTopBounds().intersects(bounds)) {
+					entity_1.setY(entity_1.getY() + 1);
+					entity_1.setVelY(0);
+				}
+				if(ent_1.getBottomBounds().intersects(bounds)) {
+					entity_1.setY(entity_1.getY() - 1);
+					entity_1.setVelY(0);
+				}
+				if(ent_1.getLeftBounds().intersects(bounds)) {
+					entity_1.setX(entity_1.getX() + 1);
+					entity_1.setVelX(0);
+				}
+				if(ent_1.getRightBounds().intersects(bounds)) {
+					entity_1.setX(entity_1.getX() - 1);
+					entity_1.setVelX(0);
+				}
 			}
 		}
 	}

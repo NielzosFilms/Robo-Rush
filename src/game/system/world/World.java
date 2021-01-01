@@ -303,12 +303,12 @@ public class World implements Serializable {
 		//
 		//handler.addObject(new TestTable(0, 64, 10, ID.NULL));
 		//Skeleton skele = new Skeleton(0, 0, 10, ID.Skeleton);
-		handler.addObject(new Enemy(64, 64, 10, ID.Enemy));
-		handler.addObject(new Enemy(64, 64, 10, ID.Enemy));
-		handler.addObject(new Enemy(64, 64, 10, ID.Enemy));
-		handler.addObject(new Enemy(64, 64, 10, ID.Enemy));
-		handler.addObject(new Enemy(64, 64, 10, ID.Enemy));
-		handler.addObject(new Golem_Stone(64, 64, 10, ID.Enemy));
+		handler.addObject(new Enemy(80, 64, 10, ID.Enemy));
+		/*handler.addObject(new Enemy(80, 64, 10, ID.Enemy));
+		handler.addObject(new Enemy(80, 64, 10, ID.Enemy));
+		handler.addObject(new Enemy(80, 64, 10, ID.Enemy));
+		handler.addObject(new Enemy(80, 64, 10, ID.Enemy));*/
+		//handler.addObject(new Golem_Stone(64, 64, 10, ID.Enemy));
 		//chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
 		loaded = true;
 	}

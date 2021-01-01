@@ -2,7 +2,7 @@ package game.assets.objects.crafting_table;
 
 import game.enums.ID;
 import game.system.main.Game;
-import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Interactable;
 import game.system.systems.inventory.Crafting_Inventory;
@@ -12,7 +12,7 @@ import game.textures.Texture;
 
 import java.awt.*;
 
-public class TestTable extends GameObject implements Interactable, Collision {
+public class TestTable extends GameObject implements Interactable, Bounds {
     private Crafting_Inventory inventory;
     public TestTable(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
@@ -52,5 +52,25 @@ public class TestTable extends GameObject implements Interactable, Collision {
     @Override
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
+    }
+
+    @Override
+    public Rectangle getTopBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getBottomBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getLeftBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getRightBounds() {
+        return null;
     }
 }

@@ -2,7 +2,7 @@ package game.system.main;
 
 import game.assets.tiles.tile.Tile;
 import game.enums.ID;
-import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.Destroyable;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Interactable;
@@ -123,23 +123,53 @@ public class Handler implements Serializable {
 
 		for(int i=0; i<highest_size; i++) {
 			if(i == Game.world.getPlayer().getZIndex()) {
+				if(i < tiles.size()) {
+					LinkedList<Tile> player_layer = new LinkedList<>(tiles.get(i));
+					LinkedList<Tile> y_sorted = new LinkedList<>();
+					while(player_layer.size() > 0) {
+						Tile lowest = player_layer.get(0);
+						int lowestY = lowest.getY();
+						if(lowest instanceof Bounds) {
+							if(((Bounds) lowest).getBounds() != null) {
+								lowestY = (int) (((Bounds) lowest).getBounds().getY() + ((Bounds) lowest).getBounds().getHeight());
+							}
+						}
+						for(int y=1; y<player_layer.size(); y++) {
+							Tile new_ent = player_layer.get(y);
+							int newY = new_ent.getY();
+							if(new_ent instanceof Bounds) {
+								if(((Bounds) new_ent).getBounds() != null) {
+									newY = (int) (((Bounds) new_ent).getBounds().getY() + ((Bounds) new_ent).getBounds().getHeight());
+								}
+							}
+							if(newY < lowestY) {
+								lowest = new_ent;
+							}
+						}
+						y_sorted.add(lowest);
+						player_layer.remove(lowest);
+					}
+					for(Tile tile : y_sorted) {
+						tile.render(g);
+					}
+				}
 				if(i < entities.size()) {
 					LinkedList<GameObject> player_layer = new LinkedList<>(entities.get(i));
 					LinkedList<GameObject> y_sorted = new LinkedList<>();
 					while(player_layer.size() > 0) {
 						GameObject lowest = player_layer.get(0);
 						int lowestY = lowest.getY();
-						if(lowest instanceof Collision) {
-							if(((Collision) lowest).getBounds() != null) {
-								lowestY = (int) (((Collision) lowest).getBounds().getY() + ((Collision) lowest).getBounds().getHeight());
+						if(lowest instanceof Bounds) {
+							if(((Bounds) lowest).getBounds() != null) {
+								lowestY = (int) (((Bounds) lowest).getBounds().getY() + ((Bounds) lowest).getBounds().getHeight());
 							}
 						}
 						for(int y=1; y<player_layer.size(); y++) {
 							GameObject new_ent = player_layer.get(y);
 							int newY = new_ent.getY();
-							if(new_ent instanceof Collision) {
-								if(((Collision) new_ent).getBounds() != null) {
-									newY = (int) (((Collision) new_ent).getBounds().getY() + ((Collision) new_ent).getBounds().getHeight());
+							if(new_ent instanceof Bounds) {
+								if(((Bounds) new_ent).getBounds() != null) {
+									newY = (int) (((Bounds) new_ent).getBounds().getY() + ((Bounds) new_ent).getBounds().getHeight());
 								}
 							}
 							if(newY < lowestY) {
@@ -153,7 +183,6 @@ public class Handler implements Serializable {
 						entity.render(g);
 					}
 				}
-
 			} else {
 				if(i < tiles.size()) {
 					for(Tile tile : tiles.get(i)) {
@@ -209,8 +238,8 @@ public class Handler implements Serializable {
 		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
-				if(tempObject instanceof Collision) {
-					if(((Collision) tempObject).getBounds() != null) {
+				if(tempObject instanceof Bounds) {
+					if(((Bounds) tempObject).getBounds() != null) {
 						objs.add(tempObject);
 					}
 				}
@@ -219,8 +248,8 @@ public class Handler implements Serializable {
 
 		for (Chunk chunk : chunks_on_screen) {
 			for (GameObject tempObject : chunk.getEntities()) {
-				if (tempObject instanceof Collision) {
-					if(((Collision) tempObject).getBounds() != null) {
+				if (tempObject instanceof Bounds) {
+					if(((Bounds) tempObject).getBounds() != null) {
 						objs.add(tempObject);
 					}
 				}
@@ -355,8 +384,8 @@ public class Handler implements Serializable {
 
 		for(LinkedList<GameObject> list : object_entities) {
 			for(GameObject obj : list) {
-				if(obj instanceof Collision) {
-					if(((Collision) obj).getBounds().contains(coords) || obj.getX() == coords.x && obj.getY() == coords.y) {
+				if(obj instanceof Bounds) {
+					if(((Bounds) obj).getBounds().contains(coords) || obj.getX() == coords.x && obj.getY() == coords.y) {
 						return true;
 					}
 				} else {
@@ -376,8 +405,8 @@ public class Handler implements Serializable {
 
 		for(Chunk chunk : chunks_on_screen) {
 			for(GameObject obj : chunk.getEntities()) {
-				if(obj instanceof Collision) {
-					if(((Collision) obj).getBounds().contains(coords) || obj.getX() == coords.x && obj.getY() == coords.y) {
+				if(obj instanceof Bounds) {
+					if(((Bounds) obj).getBounds().contains(coords) || obj.getX() == coords.x && obj.getY() == coords.y) {
 						return true;
 					}
 				} else {

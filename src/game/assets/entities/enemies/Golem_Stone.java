@@ -3,7 +3,7 @@ package game.assets.entities.enemies;
 import game.assets.HealthBar;
 import game.enums.ID;
 import game.system.main.Game;
-import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Health;
 import game.system.systems.gameObject.Hitable;
@@ -17,7 +17,7 @@ import org.json.simple.JSONObject;
 
 import java.awt.*;
 
-public class Golem_Stone extends GameObject implements Collision, Hitable, Health {
+public class Golem_Stone extends GameObject implements Bounds, Hitable, Health {
     private Animation idle = new Animation(200,
             new Texture(TEXTURE_LIST.stone_golem_idle_list, 0, 0),
             new Texture(TEXTURE_LIST.stone_golem_idle_list, 1, 0),
@@ -72,6 +72,26 @@ public class Golem_Stone extends GameObject implements Collision, Hitable, Healt
     @Override
     public Rectangle getBounds() {
         return new Rectangle(x + 16, y + 16 + 8, 64 - 32, 48 - 16 - 8);
+    }
+
+    @Override
+    public Rectangle getTopBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getBottomBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getLeftBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getRightBounds() {
+        return null;
     }
 
     @Override

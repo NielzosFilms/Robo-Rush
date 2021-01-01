@@ -2,14 +2,14 @@ package game.assets.objects.puzzle_objects;
 
 import game.enums.ID;
 import game.system.helpers.StructureLoaderHelpers;
-import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.world.JsonStructureLoader;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
 
-public class Door extends GameObject implements Collision, PuzzleReciever {
+public class Door extends GameObject implements Bounds, PuzzleReciever {
     private int reciever_id;
     private boolean open = false;
     public Door(int x, int y, int z_index) {
@@ -42,6 +42,26 @@ public class Door extends GameObject implements Collision, PuzzleReciever {
         if(!open) {
             return new Rectangle(x, y, width, height);
         }
+        return null;
+    }
+
+    @Override
+    public Rectangle getTopBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getBottomBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getLeftBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getRightBounds() {
         return null;
     }
 

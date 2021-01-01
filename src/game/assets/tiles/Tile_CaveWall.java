@@ -6,7 +6,7 @@ import game.enums.BIOME;
 import game.enums.TILE_TYPE;
 import game.system.helpers.TileHelperFunctions;
 import game.system.main.Game;
-import game.system.systems.gameObject.Collision;
+import game.system.systems.gameObject.Bounds;
 import game.system.world.Chunk;
 import game.textures.Fonts;
 import game.textures.TEXTURE_LIST;
@@ -16,7 +16,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Tile_CaveWall extends Tile implements Collision {
+public class Tile_CaveWall extends Tile implements Bounds {
     private HashMap<TILE_TYPE, Texture> textures = new HashMap<>();
     private LinkedList<TILE_TYPE> types_to_add_bg = new LinkedList<>();
 
@@ -62,6 +62,26 @@ public class Tile_CaveWall extends Tile implements Collision {
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, tileSize, tileSize);
+    }
+
+    @Override
+    public Rectangle getTopBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getBottomBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getLeftBounds() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getRightBounds() {
+        return null;
     }
 
     /*public void findAndSetEdgeTexture() {

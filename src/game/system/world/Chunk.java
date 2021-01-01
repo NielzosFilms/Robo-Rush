@@ -260,8 +260,8 @@ public class Chunk implements Serializable {
 		for(HashMap<Point, Tile> list : tiles) {
 			for(Point key : list.keySet()) {
 				Tile tile = list.get(key);
-				if(tile instanceof Collision) {
-					Rectangle rect = ((Collision) tile).getBounds();
+				if(tile instanceof Bounds) {
+					Rectangle rect = ((Bounds) tile).getBounds();
 					if(rect != null) bounds.add(rect);
 				}
 			}
