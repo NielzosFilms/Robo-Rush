@@ -2,27 +2,18 @@ package game.system.main;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.Buffer;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-
-import game.assets.items.item.Item;
 import game.enums.GAMESTATES;
 import game.enums.ID;
 import game.system.audioEngine.AudioFiles;
 import game.assets.entities.Player;
 import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
-import game.system.systems.inventory.crafting_enums.CraftingTableDefinitions;
 import game.system.systems.menu.elements.LoadingAnimation;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
 import game.system.systems.menu.MenuSystem;
-import game.system.world.JsonStructureLoader;
 import game.textures.*;
 import game.system.world.World;
 

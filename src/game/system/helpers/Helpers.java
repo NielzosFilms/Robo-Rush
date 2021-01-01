@@ -130,4 +130,9 @@ public class Helpers {
         if(entity.getLeftBounds() != null) g.drawRect(entity.getLeftBounds().x, entity.getLeftBounds().y, entity.getLeftBounds().width, entity.getLeftBounds().height);
         if(entity.getRightBounds() != null) g.drawRect(entity.getRightBounds().x, entity.getRightBounds().y, entity.getRightBounds().width, entity.getRightBounds().height);
     }
+
+    public static boolean sameRectangle(Rectangle rect1, Rectangle rect2) {
+        return rect1.x == rect2.x && rect1.y == rect2.y && rect1.width == rect2.width && rect1.height == rect2.height;
+
+    }
 }

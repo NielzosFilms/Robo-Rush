@@ -1,6 +1,7 @@
 package game.assets.entities.enemies;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,6 +19,7 @@ import game.system.systems.gameObject.*;
 import game.enums.ID;
 import game.system.systems.hitbox.Hitbox;
 import game.system.systems.hitbox.HitboxContainer;
+import game.system.world.Chunk;
 import game.textures.*;
 
 enum Decision {
@@ -235,19 +237,41 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 
 		LinkedList<GameObject> objects = Game.world.getHandler().getObjectsWithIds(ID.Enemy);
 		objects.addAll(Game.world.getHandler().getBoundsObjects());
+
+		LinkedList<Rectangle> all_bounds = new LinkedList<>();
+		for(Chunk chunk : Game.world.getChunksOnScreen()) {
+			all_bounds.addAll(chunk.getAllTileBounds());
+		}
 		for(GameObject object : objects) {
-			if(object == this || object == target) continue;
-			int objX = object.getX();
-			int objY = object.getY();
+			if(object == target) continue;
 			if(object instanceof Bounds) {
 				if(((Bounds) object).getBounds() != null) {
-					objX = (int) ((Bounds) object).getBounds().getCenterX();
-					objY = (int) ((Bounds) object).getBounds().getCenterY();
+					all_bounds.add(((Bounds) object).getBounds());
 				}
 			}
-			int angle = getClosestAngle((int) Helpers.getAngle(new Point(x, y), new Point(objX, objY)));
+		}
+		for(Rectangle bounds : all_bounds) {
+			if(bounds == getBounds() || Helpers.sameRectangle(bounds, getBounds())) continue;
+			int objX = (int) bounds.getCenterX();
+			int objY = (int) bounds.getCenterY();
 			int dist = (int) Helpers.getDistance(new Point(x, y), new Point(objX, objY));
-			if(dist < 30) angles.put(angle, -0.3f);
+
+			if(Helpers.getDistance(new Point(x, y), new Point(bounds.x, objY)) < dist) {
+				objX = bounds.x;
+			}
+			if(Helpers.getDistance(new Point(x, y), new Point(bounds.x + bounds.width, objY)) < dist) {
+				objX = bounds.x + bounds.width;
+			}
+
+			if(Helpers.getDistance(new Point(x, y), new Point(objX, bounds.y)) < dist) {
+				objY = bounds.y;
+			}
+			if(Helpers.getDistance(new Point(x, y), new Point(objX, bounds.y + bounds.height)) < dist) {
+				objY = bounds.y + bounds.height;
+			}
+
+			int angle = getClosestAngle((int) Helpers.getAngle(new Point(x, y), new Point(objX, objY)));
+			if(dist < 20) angles.put(angle, -0.3f);
 		}
 
 		decideAction.tick();
@@ -259,7 +283,20 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 		DIRECTIONS directions = Helpers.getDirection(new Point(x, y), new Point(targ_x, targ_y));
 		int dmg = 2;
 		float knockback = 1f;
-		switch (directions) {
+
+		int angle = getClosestAngle((int) Helpers.getAngle(new Point(x, y), new Point(targ_x, targ_y)));
+		double[] pt = {x + 16, y - 8};
+
+		AffineTransform.getRotateInstance(Math.toRadians(angle), x, y).transform(pt, 0, pt, 0, 1);
+
+		int newX = (int) Math.round(pt[0]);
+		int newY = (int) Math.round(pt[1]);
+
+		Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+				new Hitbox(newX, newY, 8, 16, 10, 4, dmg, knockback),
+		}, this));
+
+		/*switch (directions) {
 			case up:
 				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
 						new Hitbox(x-8, y-16, 16, 8, 10, 4, dmg, knockback),
@@ -280,7 +317,7 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 						new Hitbox(x+16, y-8, 8, 16, 10, 4, dmg, knockback),
 				}, this));
 				break;
-		}
+		}*/
 	}
 
 	private void setAngle(int angle, float value) {
