@@ -23,7 +23,8 @@ public class Textures {
 			light,
 			default_btn,
 			healthbar,
-			mushroom;
+			mushroom,
+			tree = loader.loadImage("assets/main/tree.png");
 
 	public Textures() {
 		for(TEXTURE_LIST list_name : TEXTURE_LIST.values()) {

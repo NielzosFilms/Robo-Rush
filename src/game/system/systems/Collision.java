@@ -72,21 +72,26 @@ public class Collision {
 		if(ent_1_bounds.intersects(ent_2_bounds)) {
 			Bounds ent_1 = (Bounds) entity_1;
 			if(ent_1.getTopBounds() != null && ent_1.getBottomBounds() != null && ent_1.getLeftBounds() != null && ent_1.getRightBounds() != null) {
-				if(ent_1.getTopBounds().intersects(ent_2_bounds)) {
-					entity_1.setY(entity_1.getY() + 1);
-					entity_1.setVelY(0);
-				}
-				if(ent_1.getBottomBounds().intersects(ent_2_bounds)) {
-					entity_1.setY(entity_1.getY() - 1);
-					entity_1.setVelY(0);
-				}
-				if(ent_1.getLeftBounds().intersects(ent_2_bounds)) {
-					entity_1.setX(entity_1.getX() + 1);
-					entity_1.setVelX(0);
-				}
-				if(ent_1.getRightBounds().intersects(ent_2_bounds)) {
-					entity_1.setX(entity_1.getX() - 1);
-					entity_1.setVelX(0);
+				if(!ent_1.getTopBounds().intersects(ent_2_bounds) ||
+						!ent_1.getBottomBounds().intersects(ent_2_bounds) ||
+						!ent_1.getLeftBounds().intersects(ent_2_bounds) ||
+						!ent_1.getRightBounds().intersects(ent_2_bounds)) {
+					if (ent_1.getTopBounds().intersects(ent_2_bounds)) {
+						entity_1.setY(entity_1.getY() + 1);
+						entity_1.setVelY(0);
+					}
+					if (ent_1.getBottomBounds().intersects(ent_2_bounds)) {
+						entity_1.setY(entity_1.getY() - 1);
+						entity_1.setVelY(0);
+					}
+					if (ent_1.getLeftBounds().intersects(ent_2_bounds)) {
+						entity_1.setX(entity_1.getX() + 1);
+						entity_1.setVelX(0);
+					}
+					if (ent_1.getRightBounds().intersects(ent_2_bounds)) {
+						entity_1.setX(entity_1.getX() - 1);
+						entity_1.setVelX(0);
+					}
 				}
 			}
 		}
@@ -100,21 +105,26 @@ public class Collision {
 		if(ent_1_bounds.intersects(bounds)) {
 			Bounds ent_1 = (Bounds) entity_1;
 			if(ent_1.getTopBounds() != null && ent_1.getBottomBounds() != null && ent_1.getLeftBounds() != null && ent_1.getRightBounds() != null) {
-				if(ent_1.getTopBounds().intersects(bounds)) {
-					entity_1.setY(entity_1.getY() + 1);
-					entity_1.setVelY(0);
-				}
-				if(ent_1.getBottomBounds().intersects(bounds)) {
-					entity_1.setY(entity_1.getY() - 1);
-					entity_1.setVelY(0);
-				}
-				if(ent_1.getLeftBounds().intersects(bounds)) {
-					entity_1.setX(entity_1.getX() + 1);
-					entity_1.setVelX(0);
-				}
-				if(ent_1.getRightBounds().intersects(bounds)) {
-					entity_1.setX(entity_1.getX() - 1);
-					entity_1.setVelX(0);
+				if(!ent_1.getTopBounds().intersects(bounds) ||
+						!ent_1.getBottomBounds().intersects(bounds) ||
+						!ent_1.getLeftBounds().intersects(bounds) ||
+						!ent_1.getRightBounds().intersects(bounds)) {
+					if(ent_1.getTopBounds().intersects(bounds)) {
+						entity_1.setY(entity_1.getY() + 1);
+						entity_1.setVelY(0);
+					}
+					if(ent_1.getBottomBounds().intersects(bounds)) {
+						entity_1.setY(entity_1.getY() - 1);
+						entity_1.setVelY(0);
+					}
+					if(ent_1.getLeftBounds().intersects(bounds)) {
+						entity_1.setX(entity_1.getX() + 1);
+						entity_1.setVelX(0);
+					}
+					if(ent_1.getRightBounds().intersects(bounds)) {
+						entity_1.setX(entity_1.getX() - 1);
+						entity_1.setVelX(0);
+					}
 				}
 			}
 		}

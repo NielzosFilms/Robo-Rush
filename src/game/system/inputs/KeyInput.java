@@ -144,7 +144,11 @@ public class KeyInput extends KeyAdapter {
 			}
 			Game.cursor.setIndex(current_cursor);
 		}
-		if(key == KeyEvent.VK_R) handler.addObject( new Enemy(64, 64, 10, ID.Enemy));
+		if(key == KeyEvent.VK_R) handler.addObject( new Enemy(80, 64, 10, ID.Enemy));
+		if(key == KeyEvent.VK_T) {
+			world.getPlayer().setX(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, world.getCam()).x);
+			world.getPlayer().setY(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, world.getCam()).y);
+		}
 
 	}
 

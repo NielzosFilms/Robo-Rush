@@ -20,10 +20,9 @@ import game.system.systems.hitbox.HitboxContainer;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import game.enums.BIOME;
+import game.textures.Textures;
 
 public class Tree extends GameObject implements Bounds, Destroyable, Hitable, Health {
-
-	private ArrayList<ArrayList<Texture>> tex_rows;
 
 	private HealthBar health = new HealthBar(0, 0, 0, 10, 1);
 
@@ -38,49 +37,16 @@ public class Tree extends GameObject implements Bounds, Destroyable, Hitable, He
 		super(x, y, z_index, id);
 		this.biome = biome;
 		this.player = Game.world.getPlayer();
-
-		tex_rows = new ArrayList<>();
 		int tree_type = r.nextInt(2);
-		tex_rows.add(new ArrayList<>());
-		tex_rows.add(new ArrayList<>());
-
-		tex_rows.get(0).add(new Texture(TEXTURE_LIST.nature_list, 0, 0));
-		tex_rows.get(0).add(new Texture(TEXTURE_LIST.nature_list, 1, 0));
-
-		tex_rows.get(1).add(new Texture(TEXTURE_LIST.nature_list, 0, 1));
-		tex_rows.get(1).add(new Texture(TEXTURE_LIST.nature_list, 1, 1));
 
 	}
 
 	public void tick() {
-		int player_cenX = player.getX() + 8;
-		int player_cenY = player.getY() + (16 + 8) / 2;
-		int tree_cenY = y + 8;
-
-		if (player_cenY > tree_cenY) {
-			this.setZIndex(player.getZIndex() - 1);
-		} else {
-			this.setZIndex(player.getZIndex() + 1);
-		}
-
 		health.setXY(x - 4, y - 8);
 	}
 
 	public void render(Graphics g) {
-		renderTreeTiles(g, x - 8, y - this.width, this.height);
-	}
-
-	private void renderTreeTiles(Graphics g, int local_x, int local_y, int tile_size) {
-		int r = 0;
-		int c = 0;
-		for (ArrayList<Texture> row : tex_rows) {
-			for (Texture tex : row) {
-				g.drawImage(tex.getTexure(), local_x + (c * tile_size), local_y + (r * tile_size), tile_size, tile_size, null);
-				c++;
-			}
-			r++;
-			c = 0;
-		}
+		g.drawImage(Textures.tree, x-16, y-32, null);
 	}
 
 	public Rectangle getBounds() {

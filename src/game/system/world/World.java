@@ -10,6 +10,7 @@ import game.assets.entities.enemies.Enemy;
 import game.assets.entities.enemies.Golem_Stone;
 import game.assets.entities.enemies.Skeleton;
 import game.assets.objects.crafting_table.TestTable;
+import game.assets.objects.tree.Tree;
 import game.assets.structures.Structure;
 import game.assets.structures.waterfall.Waterfall;
 import game.assets.tiles.*;
@@ -308,6 +309,7 @@ public class World implements Serializable {
 		handler.addObject(new Enemy(80, 64, 10, ID.Enemy));
 		handler.addObject(new Enemy(80, 64, 10, ID.Enemy));
 		handler.addObject(new Enemy(80, 64, 10, ID.Enemy));*/
+		handler.addObject(new Tree(64, 64, 10, ID.Tree, null));
 		//handler.addObject(new Golem_Stone(64, 64, 10, ID.Enemy));
 		//chunks.get(chunk_point).addTile(new Tile_Wall(64, 64, 4, 4, 4, chunks.get(chunk_point)));
 		loaded = true;

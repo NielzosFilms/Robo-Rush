@@ -124,7 +124,7 @@ public class Helpers {
     }
 
     public static void drawBounds(Graphics g, Bounds entity) {
-        //if(entity.getBounds() != null) g.drawRect(entity.getBounds().x, entity.getBounds().y, entity.getBounds().width, entity.getBounds().height);
+        if(entity.getBounds() != null) g.drawRect(entity.getBounds().x, entity.getBounds().y, entity.getBounds().width, entity.getBounds().height);
         if(entity.getBottomBounds() != null) g.drawRect(entity.getBottomBounds().x, entity.getBottomBounds().y, entity.getBottomBounds().width, entity.getBottomBounds().height);
         if(entity.getTopBounds() != null) g.drawRect(entity.getTopBounds().x, entity.getTopBounds().y, entity.getTopBounds().width, entity.getTopBounds().height);
         if(entity.getLeftBounds() != null) g.drawRect(entity.getLeftBounds().x, entity.getLeftBounds().y, entity.getLeftBounds().width, entity.getLeftBounds().height);

@@ -144,6 +144,7 @@ public class Handler implements Serializable {
 							}
 							if(newY < lowestY) {
 								lowest = new_ent;
+								lowestY = newY;
 							}
 						}
 						y_sorted.add(lowest);
@@ -174,6 +175,7 @@ public class Handler implements Serializable {
 							}
 							if(newY < lowestY) {
 								lowest = new_ent;
+								lowestY = newY;
 							}
 						}
 						y_sorted.add(lowest);
