@@ -153,7 +153,7 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
                 Game.world.getHandler().addObject(gnd_item);
             }
         }
-        AudioPlayer.playSound(AudioFiles.crate_destroy, Settings.sound_vol, false, 0);
+        AudioPlayer.playSound(AudioFiles.crate_destroy, Game.settings.getSound_vol(), false, 0);
         destroyedCalled = true;
     }
 
@@ -170,7 +170,7 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
     @Override
     public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
         regen_timer_after_hit = REGEN_DELAY_AFTER_HIT;
-        AudioPlayer.playSound(AudioFiles.crate_impact, Settings.sound_vol, false, 0);
+        AudioPlayer.playSound(AudioFiles.crate_impact, Game.settings.getSound_vol(), false, 0);
         healthBar.subtractHealth(hitboxContainer.getHitboxes().get(hit_hitbox_index).getDamage());
     }
 

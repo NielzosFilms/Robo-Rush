@@ -1,26 +1,38 @@
 package game.system.systems.menu.buttons;
 
 import game.enums.BUTTONS;
+import game.textures.Fonts;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public abstract class Button {
 	protected int x, y, width, height;
+	protected String text;
 	protected BUTTONS btn_type;
 	protected boolean hover, click;
-	protected Color bg_color = new Color(0, 0, 0, 0);
-	protected Color hover_color = new Color(255, 255, 255, 50);
-	protected Color pressed_color = new Color(0, 0, 0, 50);
+	protected Color bg_color = new Color(24, 20, 37, 0);
+	protected Color hover_color = new Color(192, 203, 220, 50);
+	protected Color pressed_color = new Color(24, 20, 37, 50);
 
-	public Button(int x, int y, int width, int height) {
+	public Button(int x, int y, int width, int height, String text) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.text = text;
 	}
-	public abstract void render(Graphics g, Graphics2D g2d);
+
+	public void render(Graphics g) {
+		g.setFont(Fonts.default_fonts.get(10));
+		g.setColor(new Color(24, 20, 37));
+		g.drawString(text, x+1, y + height - 4);
+		g.setColor(new Color(90, 105, 136));
+		g.drawString(text, x, y + height - 5);
+		this.setColor(g);
+		g.fillRect(x, y, width, height);
+	}
 
 	public abstract void handleClick(MouseEvent e);
 

@@ -3,6 +3,8 @@ package game.system.main;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import game.enums.GAMESTATES;
 import game.enums.ID;
@@ -10,6 +12,7 @@ import game.system.audioEngine.AudioFiles;
 import game.assets.entities.Player;
 import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
+import game.system.helpers.Settings;
 import game.system.systems.menu.elements.LoadingAnimation;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
@@ -31,8 +34,9 @@ public class Game extends Canvas implements Runnable {
 	public static boolean DEBUG_MODE = false;
 	public static boolean NO_SAVE = false, NO_LOAD = false, WINDOWED = false;
 	public static boolean DEV_MODE = false;
+	public static final String SAVES_DIRECTORY = "saves";
 
-	public static int current_loaded_save_slot;
+	public static int current_loaded_save_slot = 1;
 
 	private Thread thread;
 	private boolean running = true;
@@ -44,18 +48,19 @@ public class Game extends Canvas implements Runnable {
 	public static Fonts fonts;
 	public static KeyInput keyInput;
 	public static MouseInput mouseInput;
+	public static Settings settings;
 
 	public static MenuSystem menuSystem;
 
 	public static World world;
 
-	public static LoadingAnimation loadingAnimation = new LoadingAnimation(32, 32, 32, 32);
-	public static Texture cursor = new Texture(TEXTURE_LIST.cursors, 2);
+	public static LoadingAnimation loadingAnimation = new LoadingAnimation(16, 16, 16, 16);
 
 	public Game() {
 
 		keyInput = new KeyInput();
 		mouseInput = new MouseInput();
+		loadSettings();
 
 		textures = new Textures();
 		audioFiles = new AudioFiles();
@@ -175,7 +180,7 @@ public class Game extends Canvas implements Runnable {
 		}
 		loadingAnimation.render(g);
 
-		g.drawImage(cursor.getTexure(), mouseInput.mouse_x, mouseInput.mouse_y, 8, 8, null);
+		g.drawImage(settings.getCursor().getTexure(), mouseInput.mouse_x, mouseInput.mouse_y, 8, 8, null);
 
 		g.dispose();
 		g2d.dispose();
@@ -185,16 +190,57 @@ public class Game extends Canvas implements Runnable {
 	public static void saveChunks() {
 		loadingAnimation.setLoading(true);
 		if(!NO_SAVE) {
-			String directory = "saves";
-			Helpers.createDirIfNotExisting(directory);
+			Helpers.createDirIfNotExisting(SAVES_DIRECTORY);
 			try {
-				FileOutputStream fos = new FileOutputStream(directory + "/save_slot_" + current_loaded_save_slot + ".data");
+				FileOutputStream fos = new FileOutputStream(SAVES_DIRECTORY + "/save_slot.data");
 				ObjectOutputStream oos = new ObjectOutputStream(fos);
 				oos.writeObject(world);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
+		loadingAnimation.setLoading(false);
+	}
+
+	public static void loadChunks() {
+		loadingAnimation.setLoading(true);
+		if(!NO_LOAD) {
+			try {
+				FileInputStream fis = new FileInputStream(SAVES_DIRECTORY + "save_slot.data");
+				ObjectInputStream ois = new ObjectInputStream(fis);
+
+				World loaded_world = (World) ois.readObject();
+				world = loaded_world;
+				world.setRequirements(loaded_world.getPlayer(), textures, keyInput, mouseInput);
+
+				ois.close();
+				fis.close();
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		loadingAnimation.setLoading(false);
+	}
+
+	public static void loadSettings() {
+		loadingAnimation.setLoading(true);
+		if(!NO_LOAD) {
+			if(Files.exists(Paths.get("gameSettings.data"))) {
+				Logger.print("settings found");
+				try {
+					FileInputStream fis = new FileInputStream("gameSettings.data");
+					ObjectInputStream ois = new ObjectInputStream(fis);
+
+					settings = (Settings) ois.readObject();
+					System.out.println(settings);
+
+					ois.close();
+					fis.close();
+				} catch (IOException | ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+			} else settings = new Settings();
+		} else settings = new Settings();
 		loadingAnimation.setLoading(false);
 	}
 

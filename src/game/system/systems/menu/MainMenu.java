@@ -1,41 +1,52 @@
 package game.system.systems.menu;
 
+import game.enums.MENUSTATES;
+import game.system.audioEngine.AudioFiles;
+import game.system.audioEngine.AudioPlayer;
+import game.system.helpers.Logger;
+import game.system.main.Game;
+import game.system.systems.menu.buttons.Button;
 import game.textures.TEXTURE_LIST;
 import game.system.inputs.MouseInput;
-import game.system.systems.menu.buttons.ButtonPlay;
-import game.system.systems.menu.buttons.ButtonQuit;
-import game.system.systems.menu.buttons.ButtonSettings;
 import game.textures.Fonts;
 import game.textures.Textures;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 
 public class MainMenu extends Menu {
     public MainMenu(MouseInput mouse) {
         super(mouse);
-        ButtonQuit btnQuit = new ButtonQuit(0, 200, 64, 32);
-        btnQuit.alignCenterX(screenWidth);
-
-        ButtonPlay btnPlay = new ButtonPlay(0, 50, 64, 32);
-        btnPlay.alignCenterX(screenWidth);
-
-        ButtonSettings btnSettings = new ButtonSettings(0, 125, 64, 32);
-        btnSettings.alignCenterX(screenWidth);
-
-        buttons.add(btnQuit);
-        buttons.add(btnPlay);
-        buttons.add(btnSettings);
+        buttons.add(new Button(8, 48, 96, 16, "Play") {
+            @Override
+            public void handleClick(MouseEvent e) {
+                AudioPlayer.playSound(AudioFiles.menu_forward, 0.7f, false, 0);
+                Game.menuSystem.update();
+                Game.menuSystem.setState(MENUSTATES.SaveSlotSelect);
+            }
+        });
+        buttons.add(new Button(8, 64, 96, 16, "Settings") {
+            @Override
+            public void handleClick(MouseEvent e) {
+                AudioPlayer.playSound(AudioFiles.menu_forward, 0.7f, false, 0);
+                Game.menuSystem.setState(MENUSTATES.Settings);
+            }
+        });
+        buttons.add(new Button(8, 80, 96, 16, "Quit") {
+            @Override
+            public void handleClick(MouseEvent e) {
+                AudioPlayer.playSound(AudioFiles.menu_back, 0.7f, false, 0);
+                Logger.print("(╯°□°）╯︵ ┻━┻");
+                System.exit(1);
+            }
+        });
     }
 
     public void tickAbs() {}
 
     public void renderBefore(Graphics g, Graphics2D g2d) {
-        for(int y = 0;y < screenHeight;y+=16) {
-            for(int x = 0;x < screenWidth;x+=16) {
-                g.drawImage(Textures.texture_lists.get(TEXTURE_LIST.forest_list).get(new Point(6, 19)), x, y, 16, 16, null);
-            }
-        }
+        renderBgTiles(g);
     }
 
     public void renderAfter(Graphics g, Graphics2D g2d) {
@@ -44,6 +55,9 @@ public class MainMenu extends Menu {
         FontMetrics fm = g2d.getFontMetrics(Fonts.default_fonts.get(20));
         Rectangle2D bounds = fm.getStringBounds("Main Menu", g2d);
 
+        g.setColor(new Color(38, 43, 68));
+        g2d.drawString("Main Menu", (int)(screenWidth / 2 - bounds.getWidth() / 2)+1, 21);
+        g.setColor(new Color(192, 203, 220));
         g2d.drawString("Main Menu", (int)(screenWidth / 2 - bounds.getWidth() / 2), 20);
     }
 

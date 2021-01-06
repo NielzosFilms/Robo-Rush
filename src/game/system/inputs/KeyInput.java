@@ -9,6 +9,7 @@ import game.assets.entities.enemies.Enemy;
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
 import game.system.helpers.Helpers;
+import game.system.helpers.Settings;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Interactable;
 import game.system.systems.inventory.InventorySystem;
@@ -136,13 +137,13 @@ public class KeyInput extends KeyAdapter {
 			}
 		}
 		if(key == KeyEvent.VK_F1) {
-			int current_cursor = Game.cursor.getIndex();
-			if(current_cursor + 1 >= Textures.texture_lists.get(Game.cursor.getTexture_list()).size()) {
+			int current_cursor = Game.settings.getCursor().getIndex();
+			if(current_cursor + 1 >= Textures.texture_lists.get(Game.settings.getCursor().getTexture_list()).size()) {
 				current_cursor = 0;
 			} else {
 				current_cursor += 1;
 			}
-			Game.cursor.setIndex(current_cursor);
+			Game.settings.getCursor().setIndex(current_cursor);
 		}
 		if(key == KeyEvent.VK_R) handler.addObject( new Enemy(80, 64, 10, ID.Enemy));
 		if(key == KeyEvent.VK_T) {

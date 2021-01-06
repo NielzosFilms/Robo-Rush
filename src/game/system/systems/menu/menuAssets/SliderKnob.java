@@ -27,7 +27,7 @@ public class SliderKnob {
 	}
 
 	public void render(Graphics g) {
-		g.setColor(new Color(255, 255, 255, 100));
+		g.setColor(new Color(192, 203, 220, 255));
 		g.fillRect(x- (width / 2), y- (height / 2) + 1, width, width);
 	}
 

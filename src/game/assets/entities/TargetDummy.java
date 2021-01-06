@@ -46,6 +46,6 @@ public class TargetDummy extends GameObject implements Hitable {
 
     @Override
     public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
-        AudioPlayer.playSound(AudioFiles.crate_impact, Settings.sound_vol, false, 0);
+        AudioPlayer.playSound(AudioFiles.crate_impact, Game.settings.getSound_vol(), false, 0);
     }
 }

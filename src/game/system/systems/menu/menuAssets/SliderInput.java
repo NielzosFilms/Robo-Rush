@@ -4,6 +4,7 @@ import game.system.audioEngine.AudioFiles;
 import game.system.audioEngine.AudioPlayer;
 import game.system.inputs.MouseInput;
 import game.system.helpers.Helpers;
+import game.system.main.Game;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -13,11 +14,12 @@ public class SliderInput {
 	private SliderKnob knob;
 	private MouseInput mouse;
 
-	private int value, change_timer;
+	private int change_timer;
+	private float value;
 
 	private int x, y, width;
 
-	public SliderInput(int x, int y, int width, MouseInput mouse, int value) {
+	public SliderInput(int x, int y, int width, MouseInput mouse, float value) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -29,22 +31,29 @@ public class SliderInput {
 	public void tick() {
 		if(holding) {
 			knob.setX(mouse.mouse_x + 4);
+
+			Rectangle knobBounds = knob.getBounds();
+			float knobX = Math.round(knobBounds.getCenterX());
+			knobX = knobX - x;
+			float max = width;
+			float new_value = 1 / max * knobX;
+
+			if(value != new_value) onCange();
+			value = new_value;
 			clampKnob();
-			if(value != getValue()) onCange();
-			value = getValue();
 		}
 	}
 
 	private void onCange() {
 		if(change_timer >= 2) {
-			AudioPlayer.playSound(AudioFiles.menu_move_bar, 0.2f, false, 0);
+			AudioPlayer.playSound(AudioFiles.menu_move_bar, Game.settings.getSound_vol(), false, 0);
 			change_timer = 0;
 		}
 		change_timer++;
 	}
 
 	public void render(Graphics g) {
-		g.setColor(Color.GRAY);
+		g.setColor(new Color(38, 43, 68));
 		g.fillRect(x, y, width, 2);
 		knob.render(g);
 	}
@@ -68,20 +77,24 @@ public class SliderInput {
 		knob.setX(Helpers.clampInt(knobBounds.x, x, x + width));
 	}
 
-	public int getValue() {
-		Rectangle knobBounds = knob.getBounds();
-		int knobX = (int) knobBounds.getCenterX();
-		knobX = knobX - x;
-		int max = width;
-		return 100 / max * knobX;
+	public float getValue() {
+		return value;
 	}
 
-	public void setValue(int value) {
-		knob.setX(x + (width / 100 * value));
+	public void setValue(float value) {
+		this.value = value;
+
+		int knobX = Math.round(width * value);
+
+		knob.setX(x + knobX);
 	}
 
 	public void alignCenterX(int screenWidth) {
 		this.x = screenWidth / 2 - width / 2;
-		knob.setX(x);
+		setValue(value);
+	}
+
+	public int getX() {
+		return x;
 	}
 }
