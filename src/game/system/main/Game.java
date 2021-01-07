@@ -165,12 +165,12 @@ public class Game extends Canvas implements Runnable {
 			this.createBufferStrategy(3);
 			return;
 		}
-		Graphics g_bs = bs.getDrawGraphics();
-		/*Graphics g = bs.getDrawGraphics();
-		Graphics2D g2d = (Graphics2D) g;*/
-
-		Graphics g = game_image.createGraphics();
+		//Graphics g_bs = bs.getDrawGraphics();
+		Graphics g = bs.getDrawGraphics();
 		Graphics2D g2d = (Graphics2D) g;
+
+		/*Graphics g = game_image.createGraphics();
+		Graphics2D g2d = (Graphics2D) g;*/
 
 		/*
 		 * AffineTransform scalingTransform =
@@ -194,10 +194,10 @@ public class Game extends Canvas implements Runnable {
 
 		g.drawImage(settings.getCursor().getTexure(), mouseInput.mouse_x, mouseInput.mouse_y, 8, 8, null);
 
-		postProcessing.render(g_bs, game_image);
+		//postProcessing.render(g_bs, game_image);
 		//g_bs.drawImage(game_image, 0, 0, null);
 
-		g_bs.dispose();
+		//g_bs.dispose();
 		g.dispose();
 		g2d.dispose();
 		bs.show();
