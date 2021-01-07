@@ -2,6 +2,7 @@ package game.system.main;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,6 +14,9 @@ import game.assets.entities.Player;
 import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
 import game.system.helpers.Settings;
+import game.system.main.postProcessing.PostProcessing;
+import game.system.main.postProcessing.filters.GaussianFilter;
+import game.system.main.postProcessing.filters.GlowFilter;
 import game.system.systems.menu.elements.LoadingAnimation;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
@@ -28,7 +32,9 @@ public class Game extends Canvas implements Runnable {
 	public static int WIDTH = 360, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 3.74.0 COMBAT";
+	public static final String VERSION = "ALPHA V 3.75.0 COMBAT";
+
+	public static BufferedImage game_image = new BufferedImage(NEW_WIDTH, NEW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEBUG_MODE = false;
@@ -49,6 +55,7 @@ public class Game extends Canvas implements Runnable {
 	public static KeyInput keyInput;
 	public static MouseInput mouseInput;
 	public static Settings settings;
+	public static PostProcessing postProcessing;
 
 	public static MenuSystem menuSystem;
 
@@ -61,6 +68,7 @@ public class Game extends Canvas implements Runnable {
 		keyInput = new KeyInput();
 		mouseInput = new MouseInput();
 		loadSettings();
+		postProcessing = new PostProcessing();
 
 		textures = new Textures();
 		audioFiles = new AudioFiles();
@@ -157,7 +165,11 @@ public class Game extends Canvas implements Runnable {
 			this.createBufferStrategy(3);
 			return;
 		}
-		Graphics g = bs.getDrawGraphics();
+		Graphics g_bs = bs.getDrawGraphics();
+		/*Graphics g = bs.getDrawGraphics();
+		Graphics2D g2d = (Graphics2D) g;*/
+
+		Graphics g = game_image.createGraphics();
 		Graphics2D g2d = (Graphics2D) g;
 
 		/*
@@ -182,6 +194,10 @@ public class Game extends Canvas implements Runnable {
 
 		g.drawImage(settings.getCursor().getTexure(), mouseInput.mouse_x, mouseInput.mouse_y, 8, 8, null);
 
+		postProcessing.render(g_bs, game_image);
+		//g_bs.drawImage(game_image, 0, 0, null);
+
+		g_bs.dispose();
 		g.dispose();
 		g2d.dispose();
 		bs.show();
@@ -258,6 +274,7 @@ public class Game extends Canvas implements Runnable {
 		Logger.clearLogs();
 		Logger.print("Arguments: " + Arrays.toString(args));
 		Logger.print("Game starting...");
+		System.setProperty("sun.java2d.opengl", "True");
 		canvas = new Game();
 	}
 
