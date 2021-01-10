@@ -95,8 +95,8 @@ public class Golem_Stone extends GameObject implements Bounds, Hitable, Health {
     }
 
     @Override
-    public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
-        health.subtractHealth(hitboxContainer.getHitboxes().get(hit_hitbox_index).getDamage());
+    public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
+
     }
 
     @Override

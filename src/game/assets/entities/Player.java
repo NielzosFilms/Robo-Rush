@@ -1,8 +1,11 @@
 package game.assets.entities;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.Random;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+import game.assets.entities.bullets.Bullet;
 import game.assets.items.item.CanAttack;
 import game.assets.items.tools.iron.Tool_Iron_Axe;
 import game.assets.objects.crate.Item_Crate;
@@ -37,7 +40,7 @@ import game.textures.*;
 import static java.lang.Math.pow;
 
 public class Player extends GameObject implements Bounds, Interactable, Hitable {
-	private static final int ATTACK_DELAY = 60;
+	private static final int ATTACK_DELAY = 30;
 	private static final int DEFAULT_ATTACK_DAMAGE = 1;
 	private float acceleration = 0.2f, deceleration = 0.3f;
 	public final int REACH = 50;
@@ -56,8 +59,10 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	private float attacking_item_rot_vel = 0;
 	private float time;
 
-	private Animation idle_down, idle_up, idle_left, idle_right;
-	private Animation walk_down, walk_up, walk_left, walk_right;
+	private Texture hand = new Texture(TEXTURE_LIST.player_list, 4, 0);
+	private Animation idle, run, blink, hurt;
+	private Timer idle_timer = new Timer(300);
+	private boolean hurt_animation = false;
 
 	private Animation attack_slice;
 
@@ -94,55 +99,37 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	}
 
 	private void initAnimations() {
-		idle_down = new Animation(200,
+		idle = new Animation(100,
 				new Texture(TEXTURE_LIST.player_list, 0, 0),
 				new Texture(TEXTURE_LIST.player_list, 1, 0),
 				new Texture(TEXTURE_LIST.player_list, 2, 0),
 				new Texture(TEXTURE_LIST.player_list, 3, 0));
-		idle_up = new Animation(200,
-				new Texture(TEXTURE_LIST.player_list, 0, 6),
-				new Texture(TEXTURE_LIST.player_list, 1, 6),
-				new Texture(TEXTURE_LIST.player_list, 2, 6),
-				new Texture(TEXTURE_LIST.player_list, 3, 6));
-		idle_left = new Animation(200,
-				new Texture(TEXTURE_LIST.player_list, 0, 4),
-				new Texture(TEXTURE_LIST.player_list, 1, 4),
-				new Texture(TEXTURE_LIST.player_list, 2, 4),
-				new Texture(TEXTURE_LIST.player_list, 3, 4));
-		idle_right = new Animation(200,
+
+		blink = new Animation(200,
+				new Texture(TEXTURE_LIST.player_list, 0, 0),
+				new Texture(TEXTURE_LIST.player_list, 0, 1),
+				new Texture(TEXTURE_LIST.player_list, 1, 1),
+				new Texture(TEXTURE_LIST.player_list, 0, 1),
+				new Texture(TEXTURE_LIST.player_list, 1, 1),
+				new Texture(TEXTURE_LIST.player_list, 0, 0),
+				new Texture(TEXTURE_LIST.player_list, 0, 0));
+
+		run = new Animation(100,
 				new Texture(TEXTURE_LIST.player_list, 0, 2),
 				new Texture(TEXTURE_LIST.player_list, 1, 2),
 				new Texture(TEXTURE_LIST.player_list, 2, 2),
-				new Texture(TEXTURE_LIST.player_list, 3, 2));
+				new Texture(TEXTURE_LIST.player_list, 3, 2),
+				new Texture(TEXTURE_LIST.player_list, 4, 2),
+				new Texture(TEXTURE_LIST.player_list, 5, 2));
 
-		walk_down = new Animation(150,
-				new Texture(TEXTURE_LIST.player_list, 0, 1),
-				new Texture(TEXTURE_LIST.player_list, 1, 1),
-				new Texture(TEXTURE_LIST.player_list, 2, 1),
-				new Texture(TEXTURE_LIST.player_list, 3, 1),
-				new Texture(TEXTURE_LIST.player_list, 4, 1),
-				new Texture(TEXTURE_LIST.player_list, 5, 1));
-		walk_up = new Animation(150,
-				new Texture(TEXTURE_LIST.player_list, 0, 7),
-				new Texture(TEXTURE_LIST.player_list, 1, 7),
-				new Texture(TEXTURE_LIST.player_list, 2, 7),
-				new Texture(TEXTURE_LIST.player_list, 3, 7),
-				new Texture(TEXTURE_LIST.player_list, 4, 7),
-				new Texture(TEXTURE_LIST.player_list, 5, 7));
-		walk_left = new Animation(150,
-				new Texture(TEXTURE_LIST.player_list, 0, 5),
-				new Texture(TEXTURE_LIST.player_list, 1, 5),
-				new Texture(TEXTURE_LIST.player_list, 2, 5),
-				new Texture(TEXTURE_LIST.player_list, 3, 5),
-				new Texture(TEXTURE_LIST.player_list, 4, 5),
-				new Texture(TEXTURE_LIST.player_list, 5, 5));
-		walk_right = new Animation(150,
-				new Texture(TEXTURE_LIST.player_list, 0, 3),
+		hurt = new Animation(100,
+				//new Texture(TEXTURE_LIST.player_list, 0, 3),
 				new Texture(TEXTURE_LIST.player_list, 1, 3),
 				new Texture(TEXTURE_LIST.player_list, 2, 3),
 				new Texture(TEXTURE_LIST.player_list, 3, 3),
-				new Texture(TEXTURE_LIST.player_list, 4, 3),
-				new Texture(TEXTURE_LIST.player_list, 5, 3));
+				new Texture(TEXTURE_LIST.player_list, 2, 3),
+				new Texture(TEXTURE_LIST.player_list, 3, 3),
+				new Texture(TEXTURE_LIST.player_list, 0, 3));
 
 		attack_slice = new Animation(50,
 				//new Texture(TEXTURE_LIST.attack_slice_list, 2, 0),
@@ -185,9 +172,9 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		updateAnimations();
 
 		int walk_speed = 1;
-		if (keyInput.keysDown[5]) {
+		/*if (keyInput.keysDown[5]) {
 			walk_speed = 2;
-		}
+		}*/
 
 		if (keyInput.keysDown[0] && !keyInput.keysDown[1]) {
 			velY += (-walk_speed - velY) * acceleration;
@@ -217,74 +204,92 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	}
 
 	private void updateAnimations() {
-		if (direction == DIRECTIONS.down) {
-			if (velY == 0) {
-				idle_down.runAnimation();
-			} else {
-				walk_down.runAnimation();
+		if(hurt_animation) {
+			if(hurt.animationEnded()) {
+				hurt_animation = false;
+				hurt.resetAnimation();
 			}
-		} else if (direction == DIRECTIONS.up) {
-			if (velY == 0) {
-				idle_up.runAnimation();
-			} else {
-				walk_up.runAnimation();
-			}
-		} else if (direction == DIRECTIONS.left) {
-			if (velX == 0) {
-				idle_left.runAnimation();
-			} else {
-				walk_left.runAnimation();
-			}
-		} else if (direction == DIRECTIONS.right) {
-			if (velX == 0) {
-				idle_right.runAnimation();
-			} else {
-				walk_right.runAnimation();
-			}
+			hurt.runAnimation();
 		} else {
-			idle_down.runAnimation();
+			if(velX == 0 && velY == 0) {
+				if(idle_timer.timerOver()) {
+					blink.runAnimation();
+					if(blink.animationEnded()) {
+						blink.resetAnimation();
+						idle_timer.resetTimer();
+					}
+				} else {
+					idle.runAnimation();
+				}
+				idle_timer.tick();
+			} else {
+				idle_timer.resetTimer();
+				blink.resetAnimation();
+				run.runAnimation();
+			}
 		}
-
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(Textures.entity_shadow, getBounds().x-2, getBounds().y+3, 16, 16, null);
-		if(attacking) {
-			drawAttack(g);
-		}
+		Graphics2D g2d = (Graphics2D) g;
+		g.drawImage(Textures.entity_shadow, getBounds().x-3, getBounds().y+2, 16, 16, null);
 
-		if (direction == DIRECTIONS.down) {
-			if (velY == 0) {
-				idle_down.drawAnimation(g, x, y);
-			} else {
-				walk_down.drawAnimation(g, x, y);
-			}
-		} else if (direction == DIRECTIONS.up) {
-			if (velY == 0) {
-				idle_up.drawAnimation(g, x, y);
-			} else {
-				walk_up.drawAnimation(g, x, y);
-			}
-		} else if (direction == DIRECTIONS.left) {
-			if (velX == 0) {
-				idle_left.drawAnimation(g, x, y);
-			} else {
-				walk_left.drawAnimation(g, x, y);
-			}
-		} else if (direction == DIRECTIONS.right) {
-			if (velX == 0) {
-				idle_right.drawAnimation(g, x, y);
-			} else {
-				walk_right.drawAnimation(g, x, y);
-			}
-		} else {
-			idle_down.drawAnimation(g, x, y);
-		}
+		Point mouse = Game.mouseInput.getMouseWorldCoords();
+		boolean mirror = mouse.x < getBounds().getCenterX();
 
+		int cenX = (int)getBounds().getCenterX();
+		int cenY = (int)getBounds().getCenterY();
+		int angle = Math.round(Helpers.getAngle(new Point(cenX, cenY), mouse));
+		Item holding = Game.world.getInventorySystem().getHotbarSelectedItem();
+
+		AffineTransform backup = g2d.getTransform();
+		AffineTransform rotation_transform = new AffineTransform(backup);
+		rotation_transform.rotate(Math.toRadians(angle), cenX, cenY);
+		g2d.setTransform(rotation_transform);
+		if(holding != null) {
+			g.drawImage(holding.getTexture().getTexure(), cenX + 6, cenY - 13, 16, 16, null);
+		}
+		g.drawImage(hand.getTexure(), cenX+8, cenY-2, 16, 24, null);
+		g2d.setTransform(backup);
+
+		drawPlayerAnimations(g, mirror);
 
 		if(Game.DEBUG_MODE) {
 			g.setColor(new Color(255, 108, 252, 92));
 			Helpers.drawBounds(g, this);
+		}
+	}
+
+	private void drawPlayerAnimations(Graphics g, boolean mirror) {
+
+		if(hurt_animation) {
+			if(mirror) {
+				hurt.drawAnimationMirroredH(g, x, y);
+			} else {
+				hurt.drawAnimation(g, x, y);
+			}
+		} else {
+			if (velX == 0 && velY == 0) {
+				if (mirror) {
+					if (idle_timer.timerOver()) {
+						blink.drawAnimationMirroredH(g, x, y);
+					} else {
+						idle.drawAnimationMirroredH(g, x, y);
+					}
+				} else {
+					if (idle_timer.timerOver()) {
+						blink.drawAnimation(g, x, y);
+					} else {
+						idle.drawAnimation(g, x, y);
+					}
+				}
+			} else {
+				if (mirror) {
+					run.drawAnimationMirroredH(g, x, y);
+				} else {
+					run.drawAnimation(g, x, y);
+				}
+			}
 		}
 	}
 
@@ -363,45 +368,49 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	}
 
 	public void attack() {
-		if(!keyInput.keysDown[5]) {
-			attacking = true;
-			//Item holding = Game.inventorySystem.getHotbarSelectedItem();
-			int dmg = getExpectedDamage();
-			AudioPlayer.playSound(AudioFiles.swing, 0.2f, false, 0);
-			// TODO make direction function 8 way instead of 4
-			Point screenCoords = Helpers.getScreenCoords((int) getBounds().getCenterX(), (int) getBounds().getCenterY(), Game.world.getCam());
-			attack_dir = Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
-			//Logger.print(direction.name());
-			//this.direction = direction;
+		attacking = true;
+		//Item holding = Game.inventorySystem.getHotbarSelectedItem();
+		int dmg = getExpectedDamage();
+		AudioPlayer.playSound(AudioFiles.swing, 0.2f, false, 0);
+		// TODO make direction function 8 way instead of 4
+		Point screenCoords = Helpers.getScreenCoords((int) getBounds().getCenterX(), (int) getBounds().getCenterY(), Game.world.getCam());
+		attack_dir = Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
+		//Logger.print(direction.name());
+		//this.direction = direction;
 
-			float knockback = 1f;
-			if (dmg > DEFAULT_ATTACK_DAMAGE) {
-				knockback = 2f;
-			}
-
-			switch (attack_dir) {
-				case up:
-					Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
-							new Hitbox(x - 8, y - 16, 32, 16, 10, 4, dmg, knockback),
-					}, this));
-					break;
-				case down:
-					Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
-							new Hitbox(x - 8, y + getBounds().height + 16, 32, 16, 10, 4, dmg, knockback),
-					}, this));
-					break;
-				case left:
-					Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
-							new Hitbox(x - 24, y, 16, 32, 10, 4, dmg, knockback),
-					}, this));
-					break;
-				case right:
-					Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
-							new Hitbox(x + getBounds().width + 16, y, 16, 32, 10, 4, dmg, knockback),
-					}, this));
-					break;
-			}
+		/*float knockback = 1f;
+		if (dmg > DEFAULT_ATTACK_DAMAGE) {
+			knockback = 2f;
 		}
+
+		switch (attack_dir) {
+			case up:
+				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+						new Hitbox(x - 8, y - 16, 32, 16, 10, 4, dmg, knockback),
+				}, this));
+				break;
+			case down:
+				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+						new Hitbox(x - 8, y + getBounds().height + 16, 32, 16, 10, 4, dmg, knockback),
+				}, this));
+				break;
+			case left:
+				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+						new Hitbox(x - 24, y, 16, 32, 10, 4, dmg, knockback),
+				}, this));
+				break;
+			case right:
+				Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+						new Hitbox(x + getBounds().width + 16, y, 16, 32, 10, 4, dmg, knockback),
+				}, this));
+				break;
+		}*/
+
+		int cenX = (int) getBounds().getCenterX();
+		int cenY = (int) getBounds().getCenterY();
+		int angle = (int) Helpers.getAngle(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
+		Bullet bullet = new Bullet(cenX, cenY, z_index, angle, this);
+		Game.world.getHandler().addBullet(bullet);
 	}
 
 	public boolean canAttack() {
@@ -432,14 +441,14 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	}
 
 	@Override
-	public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
-		Game.world.getCam().screenShake(2f, 6);
-		AudioPlayer.playSound(AudioFiles.hurt_2, 0.7f, false, 0);
-		int dmg = hitboxContainer.getHitboxes().get(hit_hitbox_index).getDamage();
-		float knockback = hitboxContainer.getHitboxes().get(hit_hitbox_index).getKnockback();
-		int angle = (int) Helpers.getAngle(new Point(x, y), new Point(hitboxContainer.getCreated_by().getX(), hitboxContainer.getCreated_by().getY()));
-		velX = (float) -(knockback*Math.cos(Math.toRadians(angle)));
-		velY = (float) -(knockback*Math.sin(Math.toRadians(angle)));
-		health -= dmg;
+	public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
+		if(!hurt_animation) {
+			Game.world.getCam().screenShake(2f, 6);
+			AudioPlayer.playSound(AudioFiles.hurt_2, 0.7f, false, 0);
+			velX = (float) -(knockback*Math.cos(Math.toRadians(knockback_angle)));
+			velY = (float) -(knockback*Math.sin(Math.toRadians(knockback_angle)));
+			health -= damage;
+			hurt_animation = true;
+		}
 	}
 }

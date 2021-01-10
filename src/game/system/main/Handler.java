@@ -2,17 +2,16 @@ package game.system.main;
 
 import game.assets.tiles.tile.Tile;
 import game.enums.ID;
-import game.system.systems.gameObject.Bounds;
-import game.system.systems.gameObject.Destroyable;
-import game.system.systems.gameObject.GameObject;
-import game.system.systems.gameObject.Interactable;
+import game.system.systems.gameObject.*;
 import game.system.systems.lighting.Light;
 import game.system.systems.particles.ParticleSystem;
 import game.system.world.Chunk;
 import game.system.world.World;
+import sun.security.jca.GetInstance;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.net.InterfaceAddress;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -22,6 +21,7 @@ public class Handler implements Serializable {
 	private transient ParticleSystem ps;
 
 	public LinkedList<LinkedList<GameObject>> object_entities = new LinkedList<LinkedList<GameObject>>();
+	public LinkedList<GameObject> bullets = new LinkedList<>();
 	public LinkedList<Tile> tiles = new LinkedList<>();
 	// LinkedList<LinkedList<Tile>>();
 
@@ -70,6 +70,10 @@ public class Handler implements Serializable {
 				tiles.remove(tile);
 			}
 		}
+
+		for(int i=0; i<bullets.size(); i++) {
+			bullets.get(i).tick();
+		}
 	}
 
 	public void render(Graphics g, int width, int height) {
@@ -116,6 +120,8 @@ public class Handler implements Serializable {
 			}
 
 		}
+
+		entities.get(Game.world.getPlayer().getZIndex()).addAll(bullets);
 
 		// RENDER
 		int highest_size = tiles.size();
@@ -419,6 +425,18 @@ public class Handler implements Serializable {
 			}
 		}
 		return false;
+	}
+
+	public LinkedList<GameObject> getBullets() {
+		return new LinkedList<>(bullets);
+	}
+
+	public void addBullet(GameObject bullet) {
+		bullets.add(bullet);
+	}
+
+	public void removeBullet(GameObject bullet) {
+		bullets.remove(bullet);
 	}
 
 }

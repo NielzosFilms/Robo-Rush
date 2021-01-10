@@ -411,9 +411,8 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 	}
 
 	@Override
-	public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
+	public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
 		AudioPlayer.playSound(AudioFiles.hurt_1, 0.7f, false, 0);
-		GameObject hit_by = hitboxContainer.getCreated_by();
 		if(action == Decision.wander) {
 			target = hit_by;
 			action = r.nextInt(2) == 0 ? Decision.goto_target : Decision.circle_target;
@@ -440,12 +439,9 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 				hit_y = (int) ((Bounds) hit_by).getBounds().getCenterY();
 			}
 		}
-		int dmg = hitboxContainer.getHitboxes().get(hit_hitbox_index).getDamage();
-		health.subtractHealth(dmg);
-		float knockback = hitboxContainer.getHitboxes().get(hit_hitbox_index).getKnockback();
-		int angle = (int) Helpers.getAngle(new Point(x, y), new Point(hit_x, hit_y));
-		velX = (float) -(knockback*Math.cos(Math.toRadians(getClosestAngle(angle))));
-		velY = (float) -(knockback*Math.sin(Math.toRadians(getClosestAngle(angle))));
+		health.subtractHealth(damage);
+		velX = (float) -(knockback*Math.cos(Math.toRadians(getClosestAngle(knockback_angle))));
+		velY = (float) -(knockback*Math.sin(Math.toRadians(getClosestAngle(knockback_angle))));
 	}
 
 	private LinkedList<Integer> getPositiveAngles() {

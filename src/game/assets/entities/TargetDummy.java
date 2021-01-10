@@ -45,7 +45,7 @@ public class TargetDummy extends GameObject implements Hitable {
     }
 
     @Override
-    public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
+    public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
         AudioPlayer.playSound(AudioFiles.crate_impact, Game.settings.getSound_vol(), false, 0);
     }
 }

@@ -4,12 +4,14 @@ import java.awt.*;
 import java.util.LinkedList;
 
 import game.assets.entities.Player;
+import game.assets.entities.bullets.Bullet;
 import game.enums.DIRECTIONS;
 import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
 import game.system.main.Handler;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.Hitable;
 import game.system.systems.gameObject.Pushable;
 import game.system.world.Chunk;
 import game.system.world.World;
@@ -62,6 +64,25 @@ public class Collision {
 		for (Rectangle bounds : all_bounds) {
 			checkBoundWithPlayer(bounds);
 		}*/
+
+		for(GameObject bullet : handler.getBullets()) {
+			Bullet bullet_cast = (Bullet) bullet;
+			for(GameObject entity : objects_w_bounds) {
+				if (!bullet_cast.getHitObjects().contains(entity)) {
+					if (bullet_cast.getBounds().intersects(((Bounds) entity).getBounds())) {
+						if (entity instanceof Hitable) {
+							((Hitable) entity).hit(bullet_cast.getDamage(), 0, 0f, bullet_cast.getCreatedBy());
+						}
+						bullet_cast.destroy();
+					}
+				}
+			}
+			for(Rectangle bounds : other_bounds) {
+				if(bullet_cast.getBounds().intersects(bounds)) {
+					bullet_cast.destroy();
+				}
+			}
+		}
 
 	}
 

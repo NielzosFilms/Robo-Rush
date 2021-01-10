@@ -10,6 +10,7 @@ public class HitboxContainer {
     private LinkedList<Hitbox> hitboxes = new LinkedList<>();
     private LinkedList<GameObject> objects_hit = new LinkedList<>();
     private GameObject created_by;
+    private int hit_count = 0;
 
     public HitboxContainer(Hitbox[] hitboxes, GameObject created_by) {
         objects_hit.add(created_by);
@@ -54,4 +55,10 @@ public class HitboxContainer {
     public GameObject getCreated_by() {
         return this.created_by;
     }
+
+    public void addHit_count(int amount) {
+        hit_count += amount;
+    }
+
+    public int getHit_count() { return hit_count; }
 }

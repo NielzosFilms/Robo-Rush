@@ -168,10 +168,10 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
     }
 
     @Override
-    public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
+    public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
         regen_timer_after_hit = REGEN_DELAY_AFTER_HIT;
         AudioPlayer.playSound(AudioFiles.crate_impact, Game.settings.getSound_vol(), false, 0);
-        healthBar.subtractHealth(hitboxContainer.getHitboxes().get(hit_hitbox_index).getDamage());
+        healthBar.subtractHealth(damage);
     }
 
     public void addItemToInv(Item item) {

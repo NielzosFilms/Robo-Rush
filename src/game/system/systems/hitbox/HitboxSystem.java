@@ -1,6 +1,9 @@
 package game.system.systems.hitbox;
 
+import game.enums.ID;
+import game.system.helpers.Helpers;
 import game.system.systems.gameObject.Bounds;
+import game.system.systems.gameObject.Bullet;
 import game.system.systems.gameObject.Hitable;
 import game.system.systems.particles.Particle_DamageNumber;
 import game.system.main.Game;
@@ -34,9 +37,14 @@ public class HitboxSystem {
                         if(hitbox.active()) {
                             if(object instanceof Hitable && object instanceof Bounds) {
                                 if(((Bounds) object).getBounds().intersects(hitbox.getBounds())) {
-                                    ((Hitable) object).hit(hitboxContainers.get(i), j);
+                                    int dmg = hitbox.getDamage();
+                                    float knock = hitbox.getKnockback();
+                                    GameObject created_by = hitboxContainers.get(i).getCreated_by();
+                                    int angle = (int) Helpers.getAngle(new Point((int)hitbox.getBounds().getCenterX(), (int)hitbox.getBounds().getCenterY()), new Point(created_by.getX(), created_by.getY()));
+                                    ((Hitable) object).hit(dmg, angle, knock, created_by);
                                     Game.world.getPs().addParticle(new Particle_DamageNumber(object.getX(), object.getY(), 0f, -0.3f, 40, hitbox.getDamage()));
                                     hitboxContainers.get(i).addHitObject(object);
+                                    hitboxContainers.get(i).addHit_count(1);
                                 }
                             }
                         }

@@ -18,7 +18,7 @@ public class PostProcessing {
 	SoftLightComposite softLight = new SoftLightComposite(0.5f);
 	public PostProcessing() {
 		image = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
-		glow.setAmount(0.2f);
+		glow.setAmount(0.6f);
 		//glow.setRadius(6f);
 	}
 

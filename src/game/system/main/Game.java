@@ -32,7 +32,7 @@ public class Game extends Canvas implements Runnable {
 	public static int WIDTH = 360, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 3.75.0 COMBAT";
+	public static final String VERSION = "ALPHA V 3.76.0 COMBAT";
 
 	public static BufferedImage game_image = new BufferedImage(NEW_WIDTH, NEW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
@@ -194,8 +194,8 @@ public class Game extends Canvas implements Runnable {
 
 		g.drawImage(settings.getCursor().getTexure(), mouseInput.mouse_x, mouseInput.mouse_y, 8, 8, null);
 
-		//postProcessing.render(g_bs, game_image);
-		//g_bs.drawImage(game_image, 0, 0, null);
+		/*postProcessing.render(g_bs, game_image);
+		g_bs.drawImage(game_image, 0, 0, null);*/
 
 		//g_bs.dispose();
 		g.dispose();

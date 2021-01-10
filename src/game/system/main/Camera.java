@@ -1,8 +1,10 @@
 package game.system.main;
 
+import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
 import game.system.systems.gameObject.GameObject;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.Random;
 
@@ -10,6 +12,8 @@ public class Camera implements Serializable {
 	private Random r = new Random();
 
 	public float x, y;
+	public float buffer_x, buffer_y;
+
 	private float velX = 0f, velY = 0f;
 	private float shake_x = 0f, shake_y = 0f;
 	private float screenShake = 0f;
@@ -18,14 +22,25 @@ public class Camera implements Serializable {
 	public Camera(float x, float y) {
 		this.x = x;
 		this.y = y;
+		this.buffer_x = x;
+		this.buffer_y = y;
 	}
 	
-	public void tick(GameObject Player) {
-		float xTarg = -Player.getX() + Game.WIDTH/2-16;
-		x += (xTarg - x) * (0.1f);
+	public void tick(GameObject player) {
+		Point mouse = Game.mouseInput.getMouseWorldCoords();
+		Point player_coords = new Point(player.getX(), player.getY());
 
-		float yTarg = -Player.getY() + Game.HEIGHT/2-16;
-		y += (yTarg - y) * (0.1f);
+		Point target = new Point(((mouse.x + player_coords.x*3) / 4), ((mouse.y + player_coords.y*3) / 4));
+
+
+		float xTarg = -target.x + Game.WIDTH/2-16;
+		buffer_x += (xTarg - buffer_x) * (0.1f);
+
+		float yTarg = -target.y + Game.HEIGHT/2-16;
+		buffer_y += (yTarg - buffer_y) * (0.1f);
+
+		x = buffer_x;
+		y = buffer_y;
 
 		if(screenShake <= 0) {
 			screenShake = 0;
@@ -43,11 +58,13 @@ public class Camera implements Serializable {
 		y += shake_y;
 	}
 	
-	public void setX(float x) { 
+	public void setX(float x) {
 		this.x = x;
+		this.buffer_x = x;
 	}
-	public void setY(float x) {
+	public void setY(float y) {
 		this.y = y;
+		this.buffer_y = y;
 	}
 	public float getX() {
 		return x;
@@ -59,6 +76,8 @@ public class Camera implements Serializable {
 	public void setCoordsWithPlayerCoords(int x, int y) {
 		this.x = -x + Game.WIDTH/2-16;
 		this.y = -y + Game.HEIGHT/2-16;
+		this.buffer_x = this.x;
+		this.buffer_y = this.y;
 	}
 
 	public void screenShake(float amount, int speed) {

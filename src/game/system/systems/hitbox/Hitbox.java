@@ -35,10 +35,12 @@ public class Hitbox extends GameObject {
         x = parent.getCreated_by().getX() + x_diff;
         y = parent.getCreated_by().getY() + y_diff;
         if(active()) {
-            if(lifetime > 0) {
-                lifetime--;
-            } else {
-                parent.removeHitbox(this);
+            if(lifetime != -1) {
+                if (lifetime > 0) {
+                    lifetime--;
+                } else {
+                    parent.removeHitbox(this);
+                }
             }
         } else {
             if(creation_delay > 0) creation_delay--;
@@ -77,5 +79,9 @@ public class Hitbox extends GameObject {
 
     public boolean active() {
         return creation_delay <= 0;
+    }
+
+    public void setLifetime(int lifetime) {
+        this.lifetime = lifetime;
     }
 }

@@ -118,7 +118,7 @@ public class Skeleton extends GameObject implements Bounds, Hitable {
     }
 
     @Override
-    public void hit(HitboxContainer hitboxContainer, int hit_hitbox_index) {
+    public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
         //healthBar.subtractHealth(damage);
     }
 }
