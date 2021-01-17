@@ -29,7 +29,8 @@ public class Game extends Canvas implements Runnable {
 	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
 	public static final float RATIO = (float) NEW_WIDTH / NEW_HEIGHT;
-	public static int WIDTH = 360, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
+	public static int WIDTH = 384, HEIGHT = 216;//(int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
+	//public static int WIDTH = 360, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
 	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final String TITLE = "Top Down Java Game";
 	public static final String VERSION = "ALPHA V 3.76.0 COMBAT";

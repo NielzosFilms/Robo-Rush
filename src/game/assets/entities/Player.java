@@ -60,9 +60,17 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	private float time;
 
 	private Texture hand = new Texture(TEXTURE_LIST.player_list, 4, 0);
-	private Animation idle, run, blink, hurt;
+	private Animation idle, run, blink, hurt, dash_start, dash_end;
+	private Texture dash_idle = new Texture(TEXTURE_LIST.player_list, 4, 4);
 	private Timer idle_timer = new Timer(300);
 	private boolean hurt_animation = false;
+
+	private Timer dash_cooldown = new Timer(60);
+	private Timer dash = new Timer(20);
+	private final float dash_speed = 8f;
+	private boolean dashing = false;
+	private DIRECTIONS dash_direction = DIRECTIONS.up;
+	private Timer particle_timer = new Timer(5);
 
 	private Animation attack_slice;
 
@@ -131,6 +139,17 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 				new Texture(TEXTURE_LIST.player_list, 3, 3),
 				new Texture(TEXTURE_LIST.player_list, 0, 3));
 
+		dash_start = new Animation(50,
+				new Texture(TEXTURE_LIST.player_list, 1, 4),
+				new Texture(TEXTURE_LIST.player_list, 2, 4),
+				new Texture(TEXTURE_LIST.player_list, 3, 4));
+
+		dash_end = new Animation(100,
+				//new Texture(TEXTURE_LIST.player_list, 5, 4),
+				new Texture(TEXTURE_LIST.player_list, 6, 4),
+				new Texture(TEXTURE_LIST.player_list, 7, 4),
+				new Texture(TEXTURE_LIST.player_list, 1, 4));
+
 		attack_slice = new Animation(50,
 				//new Texture(TEXTURE_LIST.attack_slice_list, 2, 0),
 				new Texture(TEXTURE_LIST.attack_slice_list, 0, 1),
@@ -172,31 +191,102 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		updateAnimations();
 
 		int walk_speed = 1;
-		/*if (keyInput.keysDown[5]) {
-			walk_speed = 2;
-		}*/
 
-		if (keyInput.keysDown[0] && !keyInput.keysDown[1]) {
-			velY += (-walk_speed - velY) * acceleration;
-			direction = DIRECTIONS.up;
-		} else if (keyInput.keysDown[1] && !keyInput.keysDown[0]) {
-			velY += (walk_speed - velY) * acceleration;
-			direction = DIRECTIONS.down;
-		} else {
-			velY -= (velY) * deceleration;
-			if(velY < 0.01f && velY > -0.01f) velY = 0;
-		}
+		if(dash.timerOver()) {
+			if (keyInput.keysDown[0] && !keyInput.keysDown[1]) {
+				velY += (-walk_speed - velY) * acceleration;
+				direction = DIRECTIONS.up;
+			} else if (keyInput.keysDown[1] && !keyInput.keysDown[0]) {
+				velY += (walk_speed - velY) * acceleration;
+				direction = DIRECTIONS.down;
+			} else {
+				velY -= (velY) * deceleration;
+				if (velY < 0.01f && velY > -0.01f) velY = 0;
+			}
 
-		if (keyInput.keysDown[2] && !keyInput.keysDown[3]) {
-			velX += (-walk_speed - velX) * acceleration;
-			direction = DIRECTIONS.left;
-		} else if (keyInput.keysDown[3] && !keyInput.keysDown[2]) {
-			velX += (walk_speed - velX) * acceleration;
-			direction = DIRECTIONS.right;
+			if (keyInput.keysDown[2] && !keyInput.keysDown[3]) {
+				velX += (-walk_speed - velX) * acceleration;
+				direction = DIRECTIONS.left;
+			} else if (keyInput.keysDown[3] && !keyInput.keysDown[2]) {
+				velX += (walk_speed - velX) * acceleration;
+				direction = DIRECTIONS.right;
+			} else {
+				velX -= (velX) * deceleration;
+				if (velX < 0.01f && velX > -0.01f) velX = 0;
+			}
 		} else {
 			velX -= (velX) * deceleration;
-			if(velX < 0.01f && velX > -0.01f) velX = 0;
+			if (velX < 0.01f && velX > -0.01f) velX = 0;
+			velY -= (velY) * deceleration;
+			if (velY < 0.01f && velY > -0.01f) velY = 0;
 		}
+
+		if(dash.timerOver()) {
+			if(keyInput.keysDown[0] && keyInput.keysDown[2]) {
+				dash_direction = DIRECTIONS.up_left;
+			} else if(keyInput.keysDown[0] && keyInput.keysDown[3]) {
+				dash_direction = DIRECTIONS.up_right;
+			} else if(keyInput.keysDown[1] && keyInput.keysDown[2]) {
+				dash_direction = DIRECTIONS.down_left;
+			} else if(keyInput.keysDown[1] && keyInput.keysDown[3]) {
+				dash_direction = DIRECTIONS.down_right;
+			} else if(keyInput.keysDown[0]) {
+				dash_direction = DIRECTIONS.up;
+			} else if(keyInput.keysDown[1]) {
+				dash_direction = DIRECTIONS.down;
+			} else if(keyInput.keysDown[2]) {
+				dash_direction = DIRECTIONS.left;
+			} else if(keyInput.keysDown[3]) {
+				dash_direction = DIRECTIONS.right;
+			}
+		}
+
+		if (keyInput.keysDown[5]) {
+			if(dash_cooldown.timerOver()) {
+				dashing = true;
+				dash_cooldown.resetTimer();
+				dash.resetTimer();
+			}
+		}
+		if(!dash.timerOver()) {
+			switch(dash_direction) {
+				case up:
+					velY += (-dash_speed - velY) * acceleration;
+					break;
+				case down:
+					velY += (dash_speed - velY) * acceleration;
+					break;
+				case left:
+					velX += (-dash_speed - velX) * acceleration;
+					break;
+				case right:
+					velX += (dash_speed - velX) * acceleration;
+					break;
+				case up_left:
+					velY += ((dash_speed*Math.sin(Math.toRadians(-135))) - velY) * acceleration;
+					velX += ((dash_speed*Math.cos(Math.toRadians(-135))) - velX) * acceleration;
+					break;
+				case up_right:
+					velY += ((dash_speed*Math.sin(Math.toRadians(-45))) - velY) * acceleration;
+					velX += ((dash_speed*Math.cos(Math.toRadians(-45))) - velX) * acceleration;
+					break;
+				case down_left:
+					velY += ((dash_speed*Math.sin(Math.toRadians(135))) - velY) * acceleration;
+					velX += ((dash_speed*Math.cos(Math.toRadians(135))) - velX) * acceleration;
+					break;
+				case down_right:
+					velY += ((dash_speed*Math.sin(Math.toRadians(45))) - velY) * acceleration;
+					velX += ((dash_speed*Math.cos(Math.toRadians(45))) - velX) * acceleration;
+					break;
+			}
+			if(particle_timer.timerOver()) {
+				Game.world.getPs().addParticle(new Effect_Texture(x, y, new Texture(TEXTURE_LIST.player_list, 7, 3), 10, 0.5f));
+				particle_timer.resetTimer();
+			}
+			particle_timer.tick();
+		}
+		dash.tick();
+		dash_cooldown.tick();
 	}
 
 	private void updateVelocity() {
@@ -211,21 +301,34 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 			}
 			hurt.runAnimation();
 		} else {
-			if(velX == 0 && velY == 0) {
-				if(idle_timer.timerOver()) {
-					blink.runAnimation();
-					if(blink.animationEnded()) {
-						blink.resetAnimation();
-						idle_timer.resetTimer();
-					}
+			if(dashing) {
+				if(!dash.timerOver()) {
+					dash_start.runAnimation();
 				} else {
-					idle.runAnimation();
+					if(dash_end.animationEnded()) {
+						dashing = false;
+					}
+					dash_end.runAnimation();
 				}
-				idle_timer.tick();
 			} else {
-				idle_timer.resetTimer();
-				blink.resetAnimation();
-				run.runAnimation();
+				dash_start.resetAnimation();
+				dash_end.resetAnimation();
+				if (velX == 0 && velY == 0) {
+					if (idle_timer.timerOver()) {
+						blink.runAnimation();
+						if (blink.animationEnded()) {
+							blink.resetAnimation();
+							idle_timer.resetTimer();
+						}
+					} else {
+						idle.runAnimation();
+					}
+					idle_timer.tick();
+				} else {
+					idle_timer.resetTimer();
+					blink.resetAnimation();
+					run.runAnimation();
+				}
 			}
 		}
 	}
@@ -269,25 +372,49 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 				hurt.drawAnimation(g, x, y);
 			}
 		} else {
-			if (velX == 0 && velY == 0) {
-				if (mirror) {
-					if (idle_timer.timerOver()) {
-						blink.drawAnimationMirroredH(g, x, y);
+			if(dashing) {
+				if(!dash.timerOver()) {
+					if(dash_start.animationEnded()) {
+						if(mirror) {
+							ImageFilters.renderImageMirroredH(g, dash_idle.getTexure(), x, y);
+						} else {
+							g.drawImage(dash_idle.getTexure(), x, y, null);
+						}
 					} else {
-						idle.drawAnimationMirroredH(g, x, y);
+						if(mirror) {
+							dash_start.drawAnimationMirroredH(g, x, y);
+						} else {
+							dash_start.drawAnimation(g, x, y);
+						}
 					}
 				} else {
-					if (idle_timer.timerOver()) {
-						blink.drawAnimation(g, x, y);
+					if(mirror) {
+						dash_end.drawAnimationMirroredH(g, x, y);
 					} else {
-						idle.drawAnimation(g, x, y);
+						dash_end.drawAnimation(g, x, y);
 					}
 				}
 			} else {
-				if (mirror) {
-					run.drawAnimationMirroredH(g, x, y);
+				if (velX == 0 && velY == 0) {
+					if (mirror) {
+						if (idle_timer.timerOver()) {
+							blink.drawAnimationMirroredH(g, x, y);
+						} else {
+							idle.drawAnimationMirroredH(g, x, y);
+						}
+					} else {
+						if (idle_timer.timerOver()) {
+							blink.drawAnimation(g, x, y);
+						} else {
+							idle.drawAnimation(g, x, y);
+						}
+					}
 				} else {
-					run.drawAnimation(g, x, y);
+					if (mirror) {
+						run.drawAnimationMirroredH(g, x, y);
+					} else {
+						run.drawAnimation(g, x, y);
+					}
 				}
 			}
 		}
