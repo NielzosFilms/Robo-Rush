@@ -7,11 +7,9 @@ import game.system.systems.lighting.Light;
 import game.system.systems.particles.ParticleSystem;
 import game.system.world.Chunk;
 import game.system.world.World;
-import sun.security.jca.GetInstance;
 
 import java.awt.*;
 import java.io.Serializable;
-import java.net.InterfaceAddress;
 import java.util.Arrays;
 import java.util.LinkedList;
 
