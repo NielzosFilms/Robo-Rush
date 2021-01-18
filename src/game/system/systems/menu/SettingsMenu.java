@@ -1,8 +1,7 @@
 package game.system.systems.menu;
 
+import game.audio.SoundEffect;
 import game.enums.MENUSTATES;
-import game.system.audioEngine.AudioFiles;
-import game.system.audioEngine.AudioPlayer;
 import game.system.main.Game;
 import game.system.systems.menu.buttons.Button;
 import game.system.systems.menu.buttons.ImageButton;
@@ -27,7 +26,7 @@ public class SettingsMenu extends Menu {
 		buttons.add(new Button(8, 64, 96, 16, "Save and Exit") {
 			@Override
 			public void handleClick(MouseEvent e) {
-				AudioPlayer.playSound(AudioFiles.menu_forward, Game.settings.getSound_vol(), false, 0);
+				SoundEffect.menu_forward.play();
 				Game.settings.save();
 				Game.menuSystem.setState(Game.menuSystem.getPreviousState());
 			}
@@ -36,7 +35,7 @@ public class SettingsMenu extends Menu {
 		buttons.add(new Button(8, 80, 96, 16, "Cancel") {
 			@Override
 			public void handleClick(MouseEvent e) {
-				AudioPlayer.playSound(AudioFiles.menu_back, Game.settings.getSound_vol(), false, 0);
+				SoundEffect.menu_back.play();
 				Game.menuSystem.setState(Game.menuSystem.getPreviousState());
 			}
 		});
@@ -61,7 +60,7 @@ public class SettingsMenu extends Menu {
 					if(texture.getIndex() == Game.settings.getCursor().getIndex()) selected.renderSelection(g, new Rectangle(x, y, width, height), 4);
 				}
 				public void handleClick(MouseEvent e) {
-					AudioPlayer.playSound(AudioFiles.menu_move_bar, Game.settings.getSound_vol(), false, 0);
+					SoundEffect.menu_move_bar.play();
 					Game.settings.setCursor(this.texture);
 				}
 			});

@@ -13,7 +13,8 @@ public class Fonts {
     public Fonts() {
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("assets/main/hud/gameovercre1.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, ClassLoader.getSystemResourceAsStream("assets/main/hud/gameovercre1.ttf")));
+
             //System.out.println(Arrays.toString(ge.getAllFonts()));
 
             for(int i = 0;i < 50;i++) {

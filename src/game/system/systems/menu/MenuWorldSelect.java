@@ -1,9 +1,8 @@
 package game.system.systems.menu;
 
+import game.audio.SoundEffect;
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
-import game.system.audioEngine.AudioFiles;
-import game.system.audioEngine.AudioPlayer;
 import game.system.main.Game;
 import game.system.systems.menu.buttons.Button;
 import game.system.world.World;
@@ -24,7 +23,7 @@ public class MenuWorldSelect extends Menu {
 		buttons.add(new Button(8, 80, 96, 16, "Back") {
 			@Override
 			public void handleClick(MouseEvent e) {
-				AudioPlayer.playSound(AudioFiles.menu_back, 0.7f, false, 0);
+				SoundEffect.menu_back.play();
 				Game.menuSystem.setState(Game.menuSystem.getPreviousState());
 			}
 		});
@@ -33,7 +32,7 @@ public class MenuWorldSelect extends Menu {
 			buttons.add(new Button(8, 48, 96, 16, "Load Game") {
 				@Override
 				public void handleClick(MouseEvent e) {
-					AudioPlayer.playSound(AudioFiles.menu_forward, 0.7f, false, 0);
+					SoundEffect.menu_forward.play();
 					Game.loadChunks();
 					World.loaded = true;
 					Game.game_state = GAMESTATES.Game;
@@ -43,7 +42,7 @@ public class MenuWorldSelect extends Menu {
 			buttons.add(new Button(8, 48, 96, 16, "New Game") {
 				@Override
 				public void handleClick(MouseEvent e) {
-					AudioPlayer.playSound(AudioFiles.menu_forward, 0.7f, false, 0);
+					SoundEffect.menu_forward.play();
 					Game.world.setActiveStructure(null);
 					Game.world.generate();
 					Game.game_state = GAMESTATES.Game;

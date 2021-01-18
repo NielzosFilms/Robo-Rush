@@ -6,10 +6,9 @@ import java.util.Random;
 import game.assets.HealthBar;
 import game.assets.items.*;
 import game.assets.items.item.Item;
+import game.audio.SoundEffect;
 import game.enums.DIRECTIONS;
 import game.enums.LOOT_TABLES;
-import game.system.audioEngine.AudioFiles;
-import game.system.audioEngine.AudioPlayer;
 import game.system.helpers.Logger;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.systems.gameObject.*;
@@ -153,7 +152,7 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
                 Game.world.getHandler().addObject(gnd_item);
             }
         }
-        AudioPlayer.playSound(AudioFiles.crate_destroy, Game.settings.getSound_vol(), false, 0);
+        SoundEffect.crate_destroy.play();
         destroyedCalled = true;
     }
 
@@ -170,7 +169,7 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
     @Override
     public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
         regen_timer_after_hit = REGEN_DELAY_AFTER_HIT;
-        AudioPlayer.playSound(AudioFiles.crate_impact, Game.settings.getSound_vol(), false, 0);
+        SoundEffect.crate_impact.play();
         healthBar.subtractHealth(damage);
     }
 

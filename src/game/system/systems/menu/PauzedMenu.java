@@ -1,9 +1,8 @@
 package game.system.systems.menu;
 
+import game.audio.SoundEffect;
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
-import game.system.audioEngine.AudioFiles;
-import game.system.audioEngine.AudioPlayer;
 import game.system.inputs.MouseInput;
 import game.system.main.Game;
 import game.system.systems.menu.buttons.Button;
@@ -19,7 +18,7 @@ public class PauzedMenu extends Menu {
         buttons.add(new Button(8, 48, 96, 16, "Resume Game") {
             @Override
             public void handleClick(MouseEvent e) {
-                AudioPlayer.playSound(AudioFiles.menu_forward, 0.7f, false, 0);
+                SoundEffect.menu_forward.play();
                 Game.game_state = GAMESTATES.Game;
             }
         });
@@ -27,7 +26,7 @@ public class PauzedMenu extends Menu {
         buttons.add(new Button(8, 64, 96, 16, "Settings") {
             @Override
             public void handleClick(MouseEvent e) {
-                AudioPlayer.playSound(AudioFiles.menu_forward, 0.7f, false, 0);
+                SoundEffect.menu_forward.play();
                 Game.menuSystem.setState(MENUSTATES.Settings);
             }
         });
@@ -35,7 +34,7 @@ public class PauzedMenu extends Menu {
         buttons.add(new Button(8, 80, 96, 16, "Save Game") {
             @Override
             public void handleClick(MouseEvent e) {
-                AudioPlayer.playSound(AudioFiles.menu_back, 0.7f, false, 0);
+                SoundEffect.menu_back.play();
                 Game.saveChunks();
                 //Game.game_state = GAMESTATES.Game;
             }
@@ -44,7 +43,7 @@ public class PauzedMenu extends Menu {
         buttons.add(new Button(8, 96, 96, 16, "Save and Exit") {
             @Override
             public void handleClick(MouseEvent e) {
-                AudioPlayer.playSound(AudioFiles.menu_back, 0.7f, false, 0);
+                SoundEffect.menu_back.play();
                 Game.saveChunks();
                 Game.game_state = GAMESTATES.Menu;
                 Game.menuSystem.setState(MENUSTATES.Main);

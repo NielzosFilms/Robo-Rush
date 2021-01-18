@@ -8,9 +8,8 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import game.assets.HealthBar;
+import game.audio.SoundEffect;
 import game.enums.DIRECTIONS;
-import game.system.audioEngine.AudioFiles;
-import game.system.audioEngine.AudioPlayer;
 import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
 import game.system.helpers.Timer;
@@ -412,7 +411,7 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 
 	@Override
 	public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
-		AudioPlayer.playSound(AudioFiles.hurt_1, 0.7f, false, 0);
+		SoundEffect.hurt_1.play();
 		if(action == Decision.wander) {
 			target = hit_by;
 			action = r.nextInt(2) == 0 ? Decision.goto_target : Decision.circle_target;
@@ -537,7 +536,7 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 
 	@Override
 	public void destroyed() {
-		AudioPlayer.playSound(AudioFiles.explosion, 0.6f, false, 0);
+		SoundEffect.explosion.play();
 		destroyed = true;
 	}
 

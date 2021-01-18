@@ -1,7 +1,6 @@
 package game.assets.entities;
 
-import game.system.audioEngine.AudioFiles;
-import game.system.audioEngine.AudioPlayer;
+import game.audio.SoundEffect;
 import game.enums.ID;
 import game.system.main.Game;
 import game.system.systems.gameObject.GameObject;
@@ -46,6 +45,6 @@ public class TargetDummy extends GameObject implements Hitable {
 
     @Override
     public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
-        AudioPlayer.playSound(AudioFiles.crate_impact, Game.settings.getSound_vol(), false, 0);
+        SoundEffect.crate_impact.play();
     }
 }

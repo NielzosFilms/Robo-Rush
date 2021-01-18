@@ -12,9 +12,7 @@ import game.assets.items.tools.wood.Tool_WoodenAxe;
 import game.assets.items.tools.wood.Tool_WoodenPickaxe;
 import game.assets.items.tools.wood.Tool_WoodenSword;
 import game.assets.tiles.floor.wood.Item_FloorWood;
-import game.system.audioEngine.AudioClip;
-import game.system.audioEngine.AudioFiles;
-import game.system.audioEngine.AudioPlayer;
+import game.audio.SoundEffect;
 import game.enums.DIRECTIONS;
 import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
@@ -497,7 +495,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		attacking = true;
 		//Item holding = Game.inventorySystem.getHotbarSelectedItem();
 		int dmg = getExpectedDamage();
-		AudioPlayer.playSound(AudioFiles.swing, 0.2f, false, 0);
+		SoundEffect.swing.play();
 		// TODO make direction function 8 way instead of 4
 		Point screenCoords = Helpers.getScreenCoords((int) getBounds().getCenterX(), (int) getBounds().getCenterY(), Game.world.getCam());
 		attack_dir = Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
@@ -570,7 +568,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
 		if(!hurt_animation) {
 			Game.world.getCam().screenShake(2f, 6);
-			AudioPlayer.playSound(AudioFiles.hurt_2, 0.7f, false, 0);
+			SoundEffect.hurt_2.play();
 			velX = (float) -(knockback*Math.cos(Math.toRadians(knockback_angle)));
 			velY = (float) -(knockback*Math.sin(Math.toRadians(knockback_angle)));
 			health -= damage;

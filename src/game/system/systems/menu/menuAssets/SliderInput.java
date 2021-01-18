@@ -1,7 +1,6 @@
 package game.system.systems.menu.menuAssets;
 
-import game.system.audioEngine.AudioFiles;
-import game.system.audioEngine.AudioPlayer;
+import game.audio.SoundEffect;
 import game.system.inputs.MouseInput;
 import game.system.helpers.Helpers;
 import game.system.main.Game;
@@ -46,7 +45,7 @@ public class SliderInput {
 
 	private void onCange() {
 		if(change_timer >= 2) {
-			AudioPlayer.playSound(AudioFiles.menu_move_bar, Game.settings.getSound_vol(), false, 0);
+			SoundEffect.menu_move_bar.play();
 			change_timer = 0;
 		}
 		change_timer++;

@@ -7,9 +7,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+
+import game.audio.SoundEffect;
 import game.enums.GAMESTATES;
 import game.enums.ID;
-import game.system.audioEngine.AudioFiles;
 import game.assets.entities.Player;
 import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
@@ -51,7 +52,6 @@ public class Game extends Canvas implements Runnable {
 	static Canvas canvas;
 
 	public static Textures textures;
-	public static AudioFiles audioFiles;
 	public static Fonts fonts;
 	public static KeyInput keyInput;
 	public static MouseInput mouseInput;
@@ -69,10 +69,10 @@ public class Game extends Canvas implements Runnable {
 		keyInput = new KeyInput();
 		mouseInput = new MouseInput();
 		loadSettings();
+		SoundEffect.init();
 		postProcessing = new PostProcessing();
 
 		textures = new Textures();
-		audioFiles = new AudioFiles();
 		fonts = new Fonts();
 
 		menuSystem = new MenuSystem();

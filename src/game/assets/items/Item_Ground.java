@@ -4,8 +4,6 @@ import java.awt.*;
 import java.util.Random;
 
 import game.assets.items.item.Item;
-import game.system.audioEngine.AudioFiles;
-import game.system.audioEngine.AudioPlayer;
 import game.system.main.Game;
 import game.system.systems.gameObject.GameObject;
 import game.enums.ID;

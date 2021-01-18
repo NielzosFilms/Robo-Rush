@@ -19,6 +19,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.awt.*;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -45,7 +46,8 @@ public class JsonStructureLoader {
 
     public JsonStructureLoader(String filepath) {
         try {
-            JSONObject map = (JSONObject) parser.parse(new FileReader(filepath));
+            FileReader reader = new FileReader(new File(ClassLoader.getSystemResource(filepath).toURI()));
+            JSONObject map = (JSONObject) parser.parse(reader);
             tileSize = StructureLoaderHelpers.getIntProp(map, "tilewidth");
             division = tileSize / TO_TILE_SIZE;
             if(!(boolean)map.get("infinite")) {
@@ -54,12 +56,10 @@ public class JsonStructureLoader {
             decodeTextureLists((JSONArray)map.get("tilesets"));
             decodeLayers((JSONArray) map.get("layers"));
             setLinkages();
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            //Logger.printError(e.getMessage());
             e.printStackTrace();
         }
+
     }
 
     private void decodeTextureLists(JSONArray tilesets) {
