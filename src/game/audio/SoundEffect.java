@@ -1,5 +1,6 @@
 package game.audio;
 
+import game.system.helpers.Logger;
 import game.system.main.Game;
 
 import javax.sound.sampled.*;
@@ -59,5 +60,6 @@ public enum SoundEffect {
 	 */
 	public static void init() {
 		values();
+		Logger.print("SoundEffects Loaded");
 	}
 }

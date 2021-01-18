@@ -33,6 +33,7 @@ public class Textures {
 		initImages();
 		fillLists();
 		initWaterAnimations();
+		Logger.print("Textures loaded");
 	}
 
 	private static void initImages() {
