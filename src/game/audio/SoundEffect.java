@@ -36,7 +36,6 @@ public enum SoundEffect {
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
 			clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
-			setVol(Game.settings.getSound_vol(), clip);
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
 			e.printStackTrace();
 		}
@@ -45,6 +44,7 @@ public enum SoundEffect {
 	public void play() {
 		if (clip.isRunning()) clip.stop();
 		clip.setFramePosition(0);
+		setVol(Game.settings.getSound_vol(), clip);
 		clip.start();
 	}
 

@@ -16,7 +16,7 @@ import java.awt.*;
 import java.util.LinkedList;
 
 public class Bullet extends GameObject implements game.system.systems.gameObject.Bullet {
-    private final float max_vel = 2f;
+    private final float max_vel = 4f;
     private int lifeTime = 300;
     private int angle;
     private LinkedList<GameObject> hit_objects = new LinkedList<>();
