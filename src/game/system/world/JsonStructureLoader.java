@@ -19,9 +19,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
@@ -46,7 +44,7 @@ public class JsonStructureLoader {
 
     public JsonStructureLoader(String filepath) {
         try {
-            FileReader reader = new FileReader(new File(ClassLoader.getSystemResource(filepath).toURI()));
+            Reader reader = new InputStreamReader(ClassLoader.getSystemResourceAsStream(filepath));
             JSONObject map = (JSONObject) parser.parse(reader);
             tileSize = StructureLoaderHelpers.getIntProp(map, "tilewidth");
             division = tileSize / TO_TILE_SIZE;
