@@ -294,7 +294,7 @@ public class World implements Serializable {
 		Chunk chunk = new Chunk(chunk_point.x, chunk_point.y);
 		chunks.put(chunk_point, chunk);
 		updateChunk(chunk.x, chunk.y);*/
-		JsonStructureLoader jsonLoader = new JsonStructureLoader("assets/structures/main_map_1.json");
+		JsonStructureLoader jsonLoader = new JsonStructureLoader("assets/structures/dungeon_map.json");
 		chunks = jsonLoader.getChunks();
 		if(jsonLoader.getPlayerSpawn() != null) {
 			getPlayer().setX(jsonLoader.getPlayerSpawn().x);
