@@ -63,6 +63,7 @@ public class JsonStructureLoader {
     private void decodeTextureLists(JSONArray tilesets) {
         for(Object o : tilesets) {
             JSONObject tileset = (JSONObject) o;
+            if(tileset == null) continue;
             int firstgid = StructureLoaderHelpers.getIntProp(tileset, "firstgid");
             String list_name = StructureLoaderHelpers.getCustomProp(tileset, "list_name");
             try {
