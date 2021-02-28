@@ -33,7 +33,7 @@ public class Tree extends GameObject implements Bounds, Destroyable, Hitable, He
 	private boolean destroyedCalled;
 
 	public Tree(int x, int y, int z_index, ID id, BIOME biome) {
-		super(x, y, z_index, id);
+		super(x, y, Game.gameController.getPlayer().getZIndex(), id);
 		this.biome = biome;
 		this.player = Game.gameController.getPlayer();
 		int tree_type = r.nextInt(2);

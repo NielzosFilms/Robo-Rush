@@ -2,6 +2,7 @@ package game.system.main;
 
 import game.assets.tiles.tile.Tile;
 import game.enums.ID;
+import game.system.helpers.Logger;
 import game.system.systems.gameObject.*;
 import game.system.systems.lighting.Light;
 import game.system.systems.particles.ParticleSystem;
@@ -38,19 +39,29 @@ public class Handler implements Serializable {
 	}
 
 	public void tick() {
-		for (LinkedList<GameObject> list : object_entities) {
+		LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
+
+//		for (LinkedList<GameObject> list : object_entities) {
+//			for (int i = 0; i < list.size(); i++) {
+//				GameObject tempObject = list.get(i);
+//				tempObject.tick();
+////				if (tempObject.getId() == ID.Player) {
+////					tempObject.tick();
+////				} else {
+////					// TODO ?
+//////					if(gameController.addEntityToChunk(tempObject)) {
+//////						list.remove(tempObject);
+//////					} else {
+//////						tempObject.tick();
+//////					}
+////				}
+//			}
+//		}
+
+		for (LinkedList<GameObject> list : all_game_objects) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
-				if (tempObject.getId() == ID.Player) {
-					tempObject.tick();
-				} else {
-					// TODO ?
-//					if(gameController.addEntityToChunk(tempObject)) {
-//						list.remove(tempObject);
-//					} else {
-//						tempObject.tick();
-//					}
-				}
+				tempObject.tick();
 			}
 		}
 
@@ -82,25 +93,34 @@ public class Handler implements Serializable {
 
 		// RENDER
 
-		for (LinkedList<GameObject> layer_game_objects : all_game_objects) {
+//		for(LinkedList<GameObject> list : all_game_objects) {
+//			for(GameObject object : list) {
+//				object.render(g);
+//			}
+//		}
+
+		for (int i=0; i < all_game_objects.size(); i++) {
+			LinkedList<GameObject> layer_game_objects = new LinkedList<>(all_game_objects.get(i));
 			LinkedList<GameObject> y_sorted = new LinkedList<>();
 			while (layer_game_objects.size() > 0) {
-				GameObject lowest = layer_game_objects.get(0);
-				int lowestY = lowest.getY();
-				if (lowest instanceof Bounds) {
-					if (((Bounds) lowest).getBounds() != null) {
-						lowestY = (int) (((Bounds) lowest).getBounds().getY() + ((Bounds) lowest).getBounds().getHeight());
-					}
-				}
-				for (int y = 1; y < layer_game_objects.size(); y++) {
+//				GameObject lowest = layer_game_objects.get(0);
+//				int lowestY = lowest.getY();
+//				if (lowest instanceof Bounds) {
+//					if (((Bounds) lowest).getBounds() != null) {
+//						lowestY = (int) (((Bounds) lowest).getBounds().getY() + ((Bounds) lowest).getBounds().getHeight());
+//					}
+//				}
+				GameObject lowest = null;
+				int lowestY = 0;
+				for (int y = 0; y < layer_game_objects.size(); y++) {
 					GameObject new_ent = layer_game_objects.get(y);
 					int newY = new_ent.getY();
-					if (new_ent instanceof Bounds) {
-						if (((Bounds) new_ent).getBounds() != null) {
-							newY = (int) (((Bounds) new_ent).getBounds().getY() + ((Bounds) new_ent).getBounds().getHeight());
-						}
-					}
-					if (newY < lowestY) {
+//					if (new_ent instanceof Bounds) {
+//						if (((Bounds) new_ent).getBounds() != null) {
+//							newY = (int) (((Bounds) new_ent).getBounds().getY() + ((Bounds) new_ent).getBounds().getHeight());
+//						}
+//					}
+					if (newY < lowestY || lowest == null) {
 						lowest = new_ent;
 						lowestY = newY;
 					}

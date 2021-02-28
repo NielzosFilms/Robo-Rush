@@ -2,6 +2,8 @@ package game.system.main;
 
 import game.assets.entities.Player;
 import game.assets.entities.enemies.Enemy;
+import game.assets.levels.def.Level;
+import game.assets.levels.level_1.Level_1;
 import game.assets.objects.tree.Tree;
 import game.assets.structures.Structure;
 import game.enums.ID;
@@ -46,6 +48,8 @@ public class GameController implements Serializable {
     private InventorySystem inventorySystem;
     private static LightingSystem lightingSystem;
     private static ParticleSystem ps;
+
+    private Level active_level;
 
     public GameController() {
         handler = new Handler();
@@ -98,6 +102,7 @@ public class GameController implements Serializable {
 //        player.tick();
 //        generateNewChunksOffScreen(camX, camY, camW, camH);
 //        tickChunksOnScreen(camX, camY, camW, camH);
+
         collision.tick();
         hitboxSystem.tick();
 
@@ -142,19 +147,35 @@ public class GameController implements Serializable {
 
         //Logger.print("[seed]: " + this.seed);
         Logger.print("World Generating...");
-        JsonStructureLoader jsonLoader = new JsonStructureLoader("assets/structures/dungeon_map.json");
+        //JsonStructureLoader jsonLoader = new JsonStructureLoader("assets/structures/dungeon_map.json");
 //        chunks = jsonLoader.getChunks();
 //        if(jsonLoader.getPlayerSpawn() != null) {
 //            getPlayer().setX(jsonLoader.getPlayerSpawn().x);
 //            getPlayer().setY(jsonLoader.getPlayerSpawn().y);
 //        }
+
+        active_level = new Level_1();
+        active_level.generate();
+        //active_level.getActiveRoom().addObject(player);
+
         handler.addObject(new Enemy(80, 64, 10, ID.Enemy));
         handler.addObject(new Tree(64, 64, 10, ID.Tree, null));
         loaded = true;
     }
 
     public LinkedList<LinkedList<GameObject>> getAllGameObjects() {
-        return new LinkedList<>();
+        LinkedList<LinkedList<GameObject>> ret = active_level.getObjects();
+
+
+
+        int player_z_index = player.getZIndex();
+        for(int i=ret.size(); i<=player_z_index; i++) {
+            ret.add(new LinkedList<>());
+        }
+        if(!ret.get(player_z_index).contains(player))
+            ret.get(player_z_index).add(player);
+
+        return ret;
     }
 
     public Player getPlayer() {
