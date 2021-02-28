@@ -25,12 +25,12 @@ public class TestTable extends GameObject implements Interactable, Bounds {
     @Override
     public void tick() {
         Rectangle obj_bounds = this.getSelectBounds();
-        Rectangle player_bounds = Game.world.getPlayer().getBounds();
+        Rectangle player_bounds = Game.gameController.getPlayer().getBounds();
         double dis = Math.sqrt((obj_bounds.getCenterX() - player_bounds.getCenterX())
                 * (obj_bounds.getCenterX() - player_bounds.getCenterX())
                 + (obj_bounds.getCenterY() - player_bounds.getCenterY()) * (obj_bounds.getCenterY() - player_bounds.getCenterY()));
         if (dis > 50) {
-            Game.world.getInventorySystem().removeOpenInventory(inventory);
+            Game.gameController.getInventorySystem().removeOpenInventory(inventory);
         }
     }
 

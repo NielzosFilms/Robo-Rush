@@ -4,6 +4,7 @@ import game.audio.SoundEffect;
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
 import game.system.main.Game;
+import game.system.main.GameController;
 import game.system.systems.menu.buttons.Button;
 import game.system.world.World;
 import game.textures.TEXTURE_LIST;
@@ -28,13 +29,13 @@ public class MenuWorldSelect extends Menu {
 			}
 		});
 
-		if(new File("saves/save_slot.data").exists()) {
+		if(false && new File("saves/save_slot.data").exists()) {
 			buttons.add(new Button(8, 48, 96, 16, "Load Game") {
 				@Override
 				public void handleClick(MouseEvent e) {
 					SoundEffect.menu_forward.play();
-					Game.loadChunks();
-					World.loaded = true;
+//					Game.loadChunks();
+					GameController.loaded = true;
 					Game.game_state = GAMESTATES.Game;
 				}
 			});
@@ -43,8 +44,8 @@ public class MenuWorldSelect extends Menu {
 				@Override
 				public void handleClick(MouseEvent e) {
 					SoundEffect.menu_forward.play();
-					Game.world.setActiveStructure(null);
-					Game.world.generate();
+//					Game.gameController.setActiveStructure(null);
+					Game.gameController.generate();
 					Game.game_state = GAMESTATES.Game;
 				}
 			});

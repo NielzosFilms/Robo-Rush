@@ -91,18 +91,18 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
         healthBar.setXY(x - 4, y - 8);
 
         Rectangle obj_bounds = this.getSelectBounds();
-        Rectangle player_bounds = Game.world.getPlayer().getBounds();
+        Rectangle player_bounds = Game.gameController.getPlayer().getBounds();
         double dis = Math.sqrt((obj_bounds.getCenterX() - player_bounds.getCenterX())
                 * (obj_bounds.getCenterX() - player_bounds.getCenterX())
                 + (obj_bounds.getCenterY() - player_bounds.getCenterY()) * (obj_bounds.getCenterY() - player_bounds.getCenterY()));
         if (dis > 50) {
-            Game.world.getInventorySystem().removeOpenInventory(inv);
+            Game.gameController.getInventorySystem().removeOpenInventory(inv);
         }
     }
 
     public void render(Graphics g) {
         g.drawImage(this.tex.getTexure(), x, y, width, height, null);
-        if(Game.world.getInventorySystem().openInventoriesContains(this.inv)) {
+        if(Game.gameController.getInventorySystem().openInventoriesContains(this.inv)) {
             selection.renderSelection(g, getSelectBounds(), 2);
         }
     }
@@ -142,14 +142,14 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
 
     public void destroyed() {
         //Game.world.getHud().removeHealthBar(healthBar);
-        Game.world.getInventorySystem().removeOpenInventory(inv);
+        Game.gameController.getInventorySystem().removeOpenInventory(inv);
         for(InventorySlotDef slot : inv.getSlots()) {
             if(slot.hasItem()) {
                 game.assets.items.item.Item inv_item = slot.getItem();
                 Item_Ground gnd_item = inv_item.getItemGround();
                 gnd_item.setX(x);
                 gnd_item.setY(y);
-                Game.world.getHandler().addObject(gnd_item);
+                Game.gameController.getHandler().addObject(gnd_item);
             }
         }
         SoundEffect.crate_destroy.play();

@@ -39,7 +39,7 @@ public class InventorySystem implements Serializable {
 
 	private transient Handler handler;
 	private transient MouseInput mouseInput;
-	private transient World world;
+	private transient GameController gameController;
 	private transient InventoryDef player_inv;
 	private transient Camera cam;
 	public transient InventoryDef player_hotbar;
@@ -55,10 +55,10 @@ public class InventorySystem implements Serializable {
 
 	public InventorySystem() {}
 
-	public void setRequirements(Handler handler, MouseInput mouseInput, World world, Player player, Camera cam) {
+	public void setRequirements(Handler handler, MouseInput mouseInput, GameController gameController, Player player, Camera cam) {
 		this.handler = handler;
 		this.mouseInput = mouseInput;
-		this.world = world;
+		this.gameController = gameController;
 		this.player_hotbar = player.hotbar;
 		this.open_inventories.clear();
 		this.open_inventories.add(this.player_hotbar);
@@ -93,7 +93,7 @@ public class InventorySystem implements Serializable {
 					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
 					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
 					Rectangle bnds = new Rectangle(tile_coords.x, tile_coords.y, item_w, item_h);
-					if(Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), bnds) < Game.world.getPlayer().REACH) {
+					if(Helpers.getDistanceBetweenBounds(Game.gameController.getPlayer().getBounds(), bnds) < Game.gameController.getPlayer().REACH) {
 						g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
 					} else {
 						g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
@@ -141,18 +141,18 @@ public class InventorySystem implements Serializable {
 					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
 					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
 					Rectangle bnds = new Rectangle(tile_coords.x, tile_coords.y, item_w, item_h);
-					if(Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), bnds) < Game.world.getPlayer().REACH) {
+					if(Helpers.getDistanceBetweenBounds(Game.gameController.getPlayer().getBounds(), bnds) < Game.gameController.getPlayer().REACH) {
 						if (((Placeable) holding).place(tile_coords.x, tile_coords.y)) {
 							holding.setAmount(holding.getAmount() - 1);
 							if (holding.getAmount() <= 0) clearHolding();
 						}
 					} else {
-						world.getPs().addParticle(new Particle_String(world.getPlayer().getX(), world.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));
+						gameController.getPs().addParticle(new Particle_String(gameController.getPlayer().getX(), gameController.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));
 					}
 				}
 			} else {
-				if(Game.world.getPlayer().canAttack()) {
-					Game.world.getPlayer().attack();
+				if(Game.gameController.getPlayer().canAttack()) {
+					Game.gameController.getPlayer().attack();
 				}
 			}
 		} else if(mouseInput.rightMouseDown()) {
@@ -160,31 +160,31 @@ public class InventorySystem implements Serializable {
 				placeTimer.resetTimer();
 				Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
 				Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
-				Chunk chunk = world.getChunkWithCoordsPoint(world.getChunkPointWithCoords(world_coords.x, world_coords.y));
-				if(chunk != null) {
-					tile_coords.x = tile_coords.x / 16 - chunk.x;
-					tile_coords.y = tile_coords.y / 16 - chunk.y;
-					if (chunk.tileExistsCoords(3, tile_coords)) {
-						Tile tile_found = chunk.getTileMap(3).get(tile_coords);
-						Rectangle tile_bnds = new Rectangle(tile_found.getX(), tile_found.getY(), item_w, item_h);
-						if (Helpers.getDistanceBetweenBounds(world.getPlayer().getBounds(), tile_bnds) < world.getPlayer().REACH) {
-							if (tile_found instanceof HasItem && player_inv instanceof AcceptsItems) {
-								Item tile_item = ((HasItem) tile_found).getItem();
-								if (isHolding() && holding.getClass() == tile_item.getClass() && holding.getAmount() + tile_item.getAmount() <= stackSize) {
-									holding.setAmount(holding.getAmount() + tile_item.getAmount());
-								} else if (((AcceptsItems) player_inv).canAcceptItem(tile_item)) {
-									((AcceptsItems) player_inv).addItem(tile_item);
-								} else {
-									dropItemAtPlayer(tile_item);
-								}
-								chunk.removeTile(tile_found);
-								chunk.update();
-							}
-						} else {
-							world.getPs().addParticle(new Particle_String(world.getPlayer().getX(), world.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));
-						}
-					}
-				}
+				// Chunk chunk = gameController.getChunkWithCoordsPoint(world.getChunkPointWithCoords(world_coords.x, world_coords.y));
+//				if(chunk != null) {
+//					tile_coords.x = tile_coords.x / 16 - chunk.x;
+//					tile_coords.y = tile_coords.y / 16 - chunk.y;
+//					if (chunk.tileExistsCoords(3, tile_coords)) {
+//						Tile tile_found = chunk.getTileMap(3).get(tile_coords);
+//						Rectangle tile_bnds = new Rectangle(tile_found.getX(), tile_found.getY(), item_w, item_h);
+//						if (Helpers.getDistanceBetweenBounds(world.getPlayer().getBounds(), tile_bnds) < world.getPlayer().REACH) {
+//							if (tile_found instanceof HasItem && player_inv instanceof AcceptsItems) {
+//								Item tile_item = ((HasItem) tile_found).getItem();
+//								if (isHolding() && holding.getClass() == tile_item.getClass() && holding.getAmount() + tile_item.getAmount() <= stackSize) {
+//									holding.setAmount(holding.getAmount() + tile_item.getAmount());
+//								} else if (((AcceptsItems) player_inv).canAcceptItem(tile_item)) {
+//									((AcceptsItems) player_inv).addItem(tile_item);
+//								} else {
+//									dropItemAtPlayer(tile_item);
+//								}
+//								chunk.removeTile(tile_found);
+//								chunk.update();
+//							}
+//						} else {
+//							world.getPs().addParticle(new Particle_String(world.getPlayer().getX(), world.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));
+//						}
+//					}
+//				}
 			}
 		}
 	}
@@ -282,8 +282,8 @@ public class InventorySystem implements Serializable {
 
 	public void dropItemAtPlayer(Item item) {
 		Item_Ground item_g = item.getItemGround();
-		item_g.setX(Game.world.getPlayer().getX());
-		item_g.setY(Game.world.getPlayer().getY());
+		item_g.setX(Game.gameController.getPlayer().getX());
+		item_g.setY(Game.gameController.getPlayer().getY());
 		handler.addObject(item_g);
 	}
 

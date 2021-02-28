@@ -21,7 +21,7 @@ public class Effect_Texture extends GameObject {
     @Override
     public void tick() {
         if(lifetime <= 0) {
-            Game.world.getPs().removeParticle(this);
+            Game.gameController.getPs().removeParticle(this);
         }
         lifetime--;
     }

@@ -8,6 +8,7 @@ import game.assets.entities.bullets.Bullet;
 import game.enums.DIRECTIONS;
 import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
+import game.system.main.GameController;
 import game.system.main.Handler;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
@@ -19,23 +20,19 @@ import game.system.world.World;
 public class Collision {
 
 	private Handler handler;
-	private World world;
+	private GameController gameController;
 	private Player player;
 
 	public Collision() {}
 
-	public void setRequirements(Handler handler, World world, Player player) {
+	public void setRequirements(Handler handler, GameController gameController, Player player) {
 		this.handler = handler;
-		this.world = world;
+		this.gameController = gameController;
 		this.player = player;
 	}
 
 	public void tick() {
 		LinkedList<GameObject> objects_w_bounds = handler.getBoundsObjects();
-		LinkedList<Rectangle> other_bounds = new LinkedList<>();
-		for(Chunk chunk : world.getChunksOnScreen()) {
-			other_bounds.addAll(chunk.getAllTileBounds());
-		}
 		/*for(GameObject entity : objects_w_bounds) {
 			//if(entity instanceof Pushable) continue;
 			//all_bounds.add(((game.system.systems.gameObject.Collision)entity).getBounds());
@@ -56,9 +53,6 @@ public class Collision {
 				// wierd stuff happens
 				//checkCollisionForGameObject(bounds, entity);
 			}
-			for (Rectangle bounds : other_bounds) {
-				checkCollisionForRectangle(entity, bounds);
-			}
 		}
 /*
 		for (Rectangle bounds : all_bounds) {
@@ -75,11 +69,6 @@ public class Collision {
 						}
 						bullet_cast.destroy();
 					}
-				}
-			}
-			for(Rectangle bounds : other_bounds) {
-				if(bullet_cast.getBounds().intersects(bounds)) {
-					bullet_cast.destroy();
 				}
 			}
 		}

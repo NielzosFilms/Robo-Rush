@@ -250,9 +250,10 @@ public class Chunk implements Serializable {
 	}
 
 	public Chunk getNeighbourChunk(int x_offset, int y_offset) {
-		x_offset *= 16;
-		y_offset *= 16;
-		return Game.world.getChunkWithCoordsPoint(new Point(x + x_offset, y + y_offset));
+//		x_offset *= 16;
+//		y_offset *= 16;
+//		return Game.world.getChunkWithCoordsPoint(new Point(x + x_offset, y + y_offset));
+		return null;
 	}
 
 	public LinkedList<Rectangle> getAllTileBounds() {

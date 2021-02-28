@@ -40,13 +40,13 @@ public class House extends GameObject implements Bounds, Interactable {
     }
 
     public void tick() {
-        int player_cenY = Game.world.getPlayer().getY() + (16 + 8) / 2;
+        int player_cenY = Game.gameController.getPlayer().getY() + (16 + 8) / 2;
         int tree_cenY = y + (16 * 2);
 
         if (player_cenY > tree_cenY) {
-            this.setZIndex(Game.world.getPlayer().getZIndex() - 1);
+            this.setZIndex(Game.gameController.getPlayer().getZIndex() - 1);
         } else {
-            this.setZIndex(Game.world.getPlayer().getZIndex() + 1);
+            this.setZIndex(Game.gameController.getPlayer().getZIndex() + 1);
         }
     }
 

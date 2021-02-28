@@ -60,7 +60,7 @@ public class Item_Ground extends GameObject implements Interactable, HasItem {
 		}
 		lifeTimer--;
 		if (lifeTimer <= 0) {
-			Game.world.getHandler().findAndRemoveObject(this);
+			Game.gameController.getHandler().findAndRemoveObject(this);
 			// Game.handler.removeObject(z_index, this);
 		}
 	}
@@ -79,7 +79,7 @@ public class Item_Ground extends GameObject implements Interactable, HasItem {
 	}
 
 	public void interact() {
-		Game.world.getInventorySystem().pickupItemToPlayerInv(this);
+		Game.gameController.getInventorySystem().pickupItemToPlayerInv(this);
 	}
 
 	public void setX(int x) {

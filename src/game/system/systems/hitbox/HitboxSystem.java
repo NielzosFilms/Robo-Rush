@@ -42,7 +42,7 @@ public class HitboxSystem {
                                     GameObject created_by = hitboxContainers.get(i).getCreated_by();
                                     int angle = (int) Helpers.getAngle(new Point((int)hitbox.getBounds().getCenterX(), (int)hitbox.getBounds().getCenterY()), new Point(created_by.getX(), created_by.getY()));
                                     ((Hitable) object).hit(dmg, angle, knock, created_by);
-                                    Game.world.getPs().addParticle(new Particle_DamageNumber(object.getX(), object.getY(), 0f, -0.3f, 40, hitbox.getDamage()));
+                                    Game.gameController.getPs().addParticle(new Particle_DamageNumber(object.getX(), object.getY(), 0f, -0.3f, 40, hitbox.getDamage()));
                                     hitboxContainers.get(i).addHitObject(object);
                                     hitboxContainers.get(i).addHit_count(1);
                                 }

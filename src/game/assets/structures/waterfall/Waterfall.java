@@ -42,17 +42,17 @@ public class Waterfall extends GameObject implements Bounds, Interactable {
             }
         }
 
-        structure = new Structure_Waterfall(Game.world.getSeed(), this, new BiomeGroup_Cave());
+//        structure = new Structure_Waterfall(Game.gameController.getSeed(), this, new BiomeGroup_Cave());
     }
 
     public void tick() {
-        int player_cenY = (int) Game.world.getPlayer().getBounds().getCenterY();
+        int player_cenY = (int) Game.gameController.getPlayer().getBounds().getCenterY();
         int cenY = (int) getBounds().getCenterY();
 
         if (player_cenY > cenY) {
-            this.setZIndex(Game.world.getPlayer().getZIndex() - 1);
+            this.setZIndex(Game.gameController.getPlayer().getZIndex() - 1);
         } else {
-            this.setZIndex(Game.world.getPlayer().getZIndex() + 1);
+            this.setZIndex(Game.gameController.getPlayer().getZIndex() + 1);
         }
 
         for(Point key : water_tiles.keySet()) {
@@ -102,6 +102,6 @@ public class Waterfall extends GameObject implements Bounds, Interactable {
     }
 
     public void interact() {
-        Game.world.setActiveStructure(structure);
+//        Game.world.setActiveStructure(structure);
     }
 }

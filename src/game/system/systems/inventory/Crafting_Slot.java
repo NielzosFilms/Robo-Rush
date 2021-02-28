@@ -64,7 +64,7 @@ public class Crafting_Slot extends InventorySlotDef {
         if(canCraftItem()) {
             if(!invSys.isHolding()) {
                 invSys.setHolding(return_item);
-                InventoryDef player_inv = Game.world.getPlayer().getInventory();
+                InventoryDef player_inv = Game.gameController.getPlayer().getInventory();
                 for(Item req_item : required_items) {
                     boolean result = ((AcceptsItems)player_inv).subtractItem(req_item);
                     if(!result) invSys.setHolding(null);
@@ -89,7 +89,7 @@ public class Crafting_Slot extends InventorySlotDef {
     }
 
     private boolean canCraftItem() {
-        InventoryDef player_inv = Game.world.getPlayer().getInventory();
+        InventoryDef player_inv = Game.gameController.getPlayer().getInventory();
         int matches = 0;
         for(Item req_item : required_items) {
             if(((AcceptsItems)player_inv).hasItemWithAmount(req_item)) {

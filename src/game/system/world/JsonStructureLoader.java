@@ -196,12 +196,12 @@ public class JsonStructureLoader {
     }
 
     private void addObjectToChunk(GameObject object) {
-        Point chunk_coords = Game.world.getChunkPointWithCoords(object.getX(), object.getY());
-        getOrCreateChunk(chunk_coords.x, chunk_coords.y).addEntity(object);
+//        Point chunk_coords = Game.world.getChunkPointWithCoords(object.getX(), object.getY());
+//        getOrCreateChunk(chunk_coords.x, chunk_coords.y).addEntity(object);
     }
     private void addBoundToChunk(Rectangle bounds) {
-        Point chunk_coords = Game.world.getChunkPointWithCoords(bounds.x, bounds.y);
-        getOrCreateChunk(chunk_coords.x, chunk_coords.y).addExtraBound(bounds);
+//        Point chunk_coords = Game.world.getChunkPointWithCoords(bounds.x, bounds.y);
+//        getOrCreateChunk(chunk_coords.x, chunk_coords.y).addExtraBound(bounds);
     }
 
     private Chunk getOrCreateChunk(int chunk_x, int chunk_y) {

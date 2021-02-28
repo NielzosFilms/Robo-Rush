@@ -26,7 +26,7 @@ public class HitboxContainer {
             hitboxes.get(i).tick();
         }
         if(hitboxes.size() == 0) {
-            Game.world.getHitboxSystem().removeHitboxContainer(this);
+            Game.gameController.getHitboxSystem().removeHitboxContainer(this);
         }
     }
 

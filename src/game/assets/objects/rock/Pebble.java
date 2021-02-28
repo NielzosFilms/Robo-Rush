@@ -42,7 +42,7 @@ public class Pebble extends GameObject implements Interactable, HasItem {
     }
 
     public void interact() {
-        Game.world.getInventorySystem().pickupItemToPlayerInv(this);
+        Game.gameController.getInventorySystem().pickupItemToPlayerInv(this);
         //Game.inventorySystem.pickupItemToPlayerInv(this);
     }
 

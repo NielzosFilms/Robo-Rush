@@ -35,7 +35,7 @@ public class PauzedMenu extends Menu {
             @Override
             public void handleClick(MouseEvent e) {
                 SoundEffect.menu_back.play();
-                Game.saveChunks();
+                //Game.saveChunks();
                 //Game.game_state = GAMESTATES.Game;
             }
         });
@@ -44,7 +44,7 @@ public class PauzedMenu extends Menu {
             @Override
             public void handleClick(MouseEvent e) {
                 SoundEffect.menu_back.play();
-                Game.saveChunks();
+                //Game.saveChunks();
                 Game.game_state = GAMESTATES.Menu;
                 Game.menuSystem.setState(MENUSTATES.Main);
             }

@@ -22,14 +22,14 @@ public class TargetDummy extends GameObject implements Hitable {
     }
 
     public void tick() {
-        int player_cenX = (int) Game.world.getPlayer().getBounds().getCenterX();
-        int player_cenY = (int) Game.world.getPlayer().getBounds().getCenterY();
-
-        if (player_cenY > getBounds().getCenterY()) {
-            this.setZIndex(Game.world.getPlayer().getZIndex() - 1);
-        } else {
-            this.setZIndex(Game.world.getPlayer().getZIndex() + 1);
-        }
+//        int player_cenX = (int) Game.gameController.getPlayer().getBounds().getCenterX();
+//        int player_cenY = (int) Game.gameController.getPlayer().getBounds().getCenterY();
+//
+//        if (player_cenY > getBounds().getCenterY()) {
+//            this.setZIndex(Game.gameController.getPlayer().getZIndex() - 1);
+//        } else {
+//            this.setZIndex(Game.gameController.getPlayer().getZIndex() + 1);
+//        }
     }
 
     public void render(Graphics g) {

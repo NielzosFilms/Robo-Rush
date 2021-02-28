@@ -19,8 +19,8 @@ public class Item_Crate extends Item implements Placeable {
 	}
 
 	public boolean place(int x, int y) {
-		if(!Game.world.getHandler().objectExistsAtCoords(new Point(x, y))) {
-			Game.world.getHandler().addObject(new Crate(x, y, 10, ID.Crate));
+		if(!Game.gameController.getHandler().objectExistsAtCoords(new Point(x, y))) {
+			Game.gameController.getHandler().addObject(new Crate(x, y, 10, ID.Crate));
 			return true;
 		}
 		return false;

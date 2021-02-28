@@ -35,7 +35,7 @@ public class Tree extends GameObject implements Bounds, Destroyable, Hitable, He
 	public Tree(int x, int y, int z_index, ID id, BIOME biome) {
 		super(x, y, z_index, id);
 		this.biome = biome;
-		this.player = Game.world.getPlayer();
+		this.player = Game.gameController.getPlayer();
 		int tree_type = r.nextInt(2);
 
 	}
@@ -75,8 +75,8 @@ public class Tree extends GameObject implements Bounds, Destroyable, Hitable, He
 	@Override
 	public void destroyed() {
 		SoundEffect.tree_broken.play();
-		Game.world.getHandler().addObject(new Item_Ground((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), 15, ID.Item, new Item_Stick(2)));
-		Game.world.getHandler().addObject(new Item_Ground((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), 15, ID.Item, new Item_Stick(2)));
+		Game.gameController.getHandler().addObject(new Item_Ground((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), 15, ID.Item, new Item_Stick(2)));
+		Game.gameController.getHandler().addObject(new Item_Ground((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), 15, ID.Item, new Item_Stick(2)));
 		destroyedCalled = true;
 	}
 

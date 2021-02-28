@@ -42,7 +42,7 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 	private Timer decideAction = new Timer(120);
 	private boolean move = false;
 	private Decision action = Decision.wander;
-	private GameObject target = Game.world.getPlayer();
+	private GameObject target = Game.gameController.getPlayer();
 
 	private int wonderAreaSize = 75, circle_offset = 60, folow_time = 0;
 
@@ -234,13 +234,13 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 			//angles.put(spawn_angle, 1f);
 		}*/
 
-		LinkedList<GameObject> objects = Game.world.getHandler().getObjectsWithIds(ID.Enemy);
-		objects.addAll(Game.world.getHandler().getBoundsObjects());
+		LinkedList<GameObject> objects = Game.gameController.getHandler().getObjectsWithIds(ID.Enemy);
+		objects.addAll(Game.gameController.getHandler().getBoundsObjects());
 
 		LinkedList<Rectangle> all_bounds = new LinkedList<>();
-		for(Chunk chunk : Game.world.getChunksOnScreen()) {
-			all_bounds.addAll(chunk.getAllTileBounds());
-		}
+//		for(Chunk chunk : Game.gameController.getChunksOnScreen()) {
+//			all_bounds.addAll(chunk.getAllTileBounds());
+//		}
 		for(GameObject object : objects) {
 			if(object == target) continue;
 			if(object instanceof Bounds) {
@@ -291,7 +291,7 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 		int newX = (int) Math.round(pt[0]);
 		int newY = (int) Math.round(pt[1]);
 
-		Game.world.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
+		Game.gameController.getHitboxSystem().addHitboxContainer(new HitboxContainer(new Hitbox[]{
 				new Hitbox(newX, newY, 8, 16, 10, 4, dmg, knockback),
 		}, this));
 
@@ -416,7 +416,7 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 			target = hit_by;
 			action = r.nextInt(2) == 0 ? Decision.goto_target : Decision.circle_target;
 		}
-		for(GameObject mate : Game.world.getHandler().getObjectsWithIds(this.id)) {
+		for(GameObject mate : Game.gameController.getHandler().getObjectsWithIds(this.id)) {
 			int mate_dist = (int) Helpers.getDistance(new Point(x, y), new Point(mate.getX(), mate.getY()));
 			try {
 				Enemy mate_e = (Enemy) mate;

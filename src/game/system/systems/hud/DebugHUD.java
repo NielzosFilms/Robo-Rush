@@ -3,6 +3,7 @@ package game.system.systems.hud;
 import game.assets.entities.Player;
 import game.system.inputs.MouseInput;
 import game.system.main.Game;
+import game.system.main.GameController;
 import game.system.world.World;
 
 import java.awt.*;
@@ -12,16 +13,16 @@ import java.io.Serializable;
 public class DebugHUD implements Serializable {
 	private transient MouseInput mouse;
 	private transient Player player;
-	private transient World world;
+	private transient GameController gameController;
 
 	public DebugHUD() {
 		//this.btn = new Button(50, 50, 30, 10, "New Seed");
 	}
 
-	public void setRequirements(MouseInput mouse, Player player, World world) {
+	public void setRequirements(MouseInput mouse, Player player, GameController gameController) {
 		this.mouse = mouse;
 		this.player = player;
-		this.world = world;
+		this.gameController = gameController;
 	}
 
 	public void tick() {
@@ -35,7 +36,7 @@ public class DebugHUD implements Serializable {
 			g2d.drawString("X: " + player.getX(), 1, 35);
 			g2d.drawString("Y: " + player.getY(), 1, 40);
 			// g2d.drawString("BIOME: " + player.getCurrentBiome().toString(), 1, 45);
-			g2d.drawString("SEED: " + world.getSeed(), 1, 70);
+			//g2d.drawString("SEED: " + gameController.getSeed(), 1, 70);
 		}
 	}
 

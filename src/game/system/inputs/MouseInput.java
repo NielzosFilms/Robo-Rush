@@ -21,7 +21,7 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	private Camera cam;
 	private HUD hud;
 	private Handler handler;
-	private World world;
+	private GameController gameController;
 	private Player player;
 
 	public int mouse_x, mouse_y;
@@ -33,15 +33,15 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		this.mouse_y = 0;
 	}
 
-	public void setRequirements(Game game, World world) {
+	public void setRequirements(Game game, GameController gameController) {
 		this.game = game;
-		this.inventorySystem = world.getInventorySystem();
+		this.inventorySystem = gameController.getInventorySystem();
 		this.menuSystem = Game.menuSystem;
-		this.cam = world.getCam();
-		this.hud = world.getHud();
-		this.handler = world.getHandler();
-		this.world = world;
-		this.player = world.getPlayer();
+		this.cam = gameController.getCam();
+		this.hud = gameController.getHud();
+		this.handler = gameController.getHandler();
+		this.gameController = gameController;
+		this.player = gameController.getPlayer();
 	}
 
 	public void tick() {
@@ -123,13 +123,13 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		return new Point((int) (mouse_x + -cam.getX()), (int) (mouse_y + -cam.getY()));
 	}
 
-	public void setWorld(World world) {
-		this.inventorySystem = world.getInventorySystem();
-		this.cam = world.getCam();
-		this.hud = world.getHud();
-		this.handler = world.getHandler();
-		this.world = world;
-		this.player = world.getPlayer();
+	public void setGameController(GameController gameController) {
+		this.inventorySystem = gameController.getInventorySystem();
+		this.cam = gameController.getCam();
+		this.hud = gameController.getHud();
+		this.handler = gameController.getHandler();
+		this.gameController = gameController;
+		this.player = gameController.getPlayer();
 	}
 
 	public boolean leftMouseDown() {

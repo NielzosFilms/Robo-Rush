@@ -80,6 +80,6 @@ public class Bullet extends GameObject implements game.system.systems.gameObject
     @Override
     public void destroy() {
         Logger.print("destroy");
-        Game.world.getHandler().removeBullet(this);
+        Game.gameController.getHandler().removeBullet(this);
     }
 }

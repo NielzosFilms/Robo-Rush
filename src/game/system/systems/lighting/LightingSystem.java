@@ -13,6 +13,7 @@ import java.util.LinkedList;
 
 import game.system.main.Camera;
 import game.system.main.Game;
+import game.system.main.GameController;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.main.Handler;
@@ -22,15 +23,15 @@ import game.system.world.World;
 public class LightingSystem {
 
 	private Handler handler;
-	private World world;
+	private GameController gameController;
 	private Camera cam;
 	
 	public LightingSystem() {
 		
 	}
-	public void setRequirements(Handler handler, World world, Camera cam) {
+	public void setRequirements(Handler handler, GameController gameController, Camera cam) {
 		this.handler = handler;
-		this.world = world;
+		this.gameController = gameController;
 		this.cam = cam;
 	}
 	
@@ -43,7 +44,7 @@ public class LightingSystem {
 		BufferedImage overlay = getBufferedImageMap(null, null, null);
 		g.drawImage(overlay, 0, 0, null);
 		
-		LinkedList<Light> lights = handler.getLights();
+		LinkedList<Light> lights = new LinkedList<>();//handler.getLights();
 		LinkedList<GameObject> objects = handler.getShadowObjects();
 		for(Light light : lights) {
 //			int lightMap_x = light.getX()-80;

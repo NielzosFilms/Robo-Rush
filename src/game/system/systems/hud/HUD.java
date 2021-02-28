@@ -24,7 +24,7 @@ public class HUD implements Serializable {
 	private transient Handler handler;
 	private transient Player player;
 	private transient MouseInput mouseInput;
-	private transient World world;
+	private transient GameController gameController;
 	private transient Camera cam;
 
 	private LinkedList<LinkedList<GameObject>> objects_on_hud = new LinkedList<>();
@@ -35,17 +35,17 @@ public class HUD implements Serializable {
 		this.debugHUD = new DebugHUD();
 	}
 
-	public void setRequirements(Handler handler, Player player, MouseInput mouseInput, World world, Camera cam) {
+	public void setRequirements(Handler handler, Player player, MouseInput mouseInput, GameController gameController, Camera cam) {
 		this.handler = handler;
 		this.player = player;
 		this.mouseInput = mouseInput;
-		this.world = world;
+		this.gameController = gameController;
 		this.cam = cam;
-		this.debugHUD.setRequirements(mouseInput, player, world);
+		this.debugHUD.setRequirements(mouseInput, player, gameController);
 	}
 
 	public void tick() {
-		objects_on_hud = world.getObjectsOnHud();
+		objects_on_hud = gameController.getObjectsOnHud();
 		if(Game.DEBUG_MODE) debugHUD.tick();
 		selection.tick();
 	}
@@ -62,7 +62,7 @@ public class HUD implements Serializable {
 			if (((Interactable)obj).getSelectBounds() != null) {
 				if (mouseInput.mouseOverWorldVar(((Interactable)obj).getSelectBounds().x, ((Interactable)obj).getSelectBounds().y,
 						((Interactable)obj).getSelectBounds().width, ((Interactable)obj).getSelectBounds().height)) {
-					if (Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), ((Interactable)obj).getSelectBounds()) < Game.world.getPlayer().REACH) {
+					if (Helpers.getDistanceBetweenBounds(Game.gameController.getPlayer().getBounds(), ((Interactable)obj).getSelectBounds()) < Game.gameController.getPlayer().REACH) {
 						selection.renderSelection(g, ((Interactable) obj).getSelectBounds(), 2);
 						break;
 					}

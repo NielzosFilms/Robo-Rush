@@ -60,7 +60,8 @@ public class Game extends Canvas implements Runnable {
 
 	public static MenuSystem menuSystem;
 
-	public static World world;
+	//public static World world;
+	public static GameController gameController;
 
 	public static LoadingAnimation loadingAnimation = new LoadingAnimation(16, 16, 16, 16);
 
@@ -77,7 +78,7 @@ public class Game extends Canvas implements Runnable {
 
 		menuSystem = new MenuSystem();
 
-		world = new World();
+		gameController = new GameController();
 		setRequirements();
 
 		if(game_state == GAMESTATES.Game) generateRequirements();
@@ -90,16 +91,16 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void setRequirements() {
-		world.setRequirements(new Player(0, 0, 2, ID.Player, null), textures, keyInput, mouseInput);
+		gameController.setRequirements(new Player(0, 0, 2, ID.Player, null), textures, keyInput, mouseInput);
 
-		keyInput.setRequirements(world);
-		mouseInput.setRequirements(this, world);
+		keyInput.setRequirements(gameController);
+		mouseInput.setRequirements(this, gameController);
 
 		menuSystem.setRequirements(mouseInput);
 	}
 
 	private void generateRequirements() {
-		world.generate();
+		gameController.generate();
 	}
 
 	public synchronized void start() {
@@ -146,8 +147,8 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-		if (game_state == GAMESTATES.Game && World.loaded) {
-			world.tick();
+		if (game_state == GAMESTATES.Game && GameController.loaded) {
+			gameController.tick();
 
 			/*
 			 * if(AudioPlayer.audioEnded(audioFiles.futureopolis)) {
@@ -185,8 +186,8 @@ public class Game extends Canvas implements Runnable {
 
 		if (game_state == GAMESTATES.Menu) {
 			menuSystem.render(g, g2d);
-		} else if ((game_state == GAMESTATES.Game || game_state == GAMESTATES.Pauzed) && World.loaded) {
-			world.render(g, g2d);
+		} else if ((game_state == GAMESTATES.Game || game_state == GAMESTATES.Pauzed) && GameController.loaded) {
+			gameController.render(g, g2d);
 			if (game_state == GAMESTATES.Pauzed) {
 				menuSystem.render(g, g2d);
 			}
@@ -204,40 +205,40 @@ public class Game extends Canvas implements Runnable {
 		bs.show();
 	}
 
-	public static void saveChunks() {
-		loadingAnimation.setLoading(true);
-		if(!NO_SAVE) {
-			Helpers.createDirIfNotExisting(SAVES_DIRECTORY);
-			try {
-				FileOutputStream fos = new FileOutputStream(SAVES_DIRECTORY + "/save_slot.data");
-				ObjectOutputStream oos = new ObjectOutputStream(fos);
-				oos.writeObject(world);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		loadingAnimation.setLoading(false);
-	}
+//	public static void saveChunks() {
+//		loadingAnimation.setLoading(true);
+//		if(!NO_SAVE) {
+//			Helpers.createDirIfNotExisting(SAVES_DIRECTORY);
+//			try {
+//				FileOutputStream fos = new FileOutputStream(SAVES_DIRECTORY + "/save_slot.data");
+//				ObjectOutputStream oos = new ObjectOutputStream(fos);
+//				oos.writeObject(world);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		loadingAnimation.setLoading(false);
+//	}
 
-	public static void loadChunks() {
-		loadingAnimation.setLoading(true);
-		if(!NO_LOAD) {
-			try {
-				FileInputStream fis = new FileInputStream(SAVES_DIRECTORY + "save_slot.data");
-				ObjectInputStream ois = new ObjectInputStream(fis);
-
-				World loaded_world = (World) ois.readObject();
-				world = loaded_world;
-				world.setRequirements(loaded_world.getPlayer(), textures, keyInput, mouseInput);
-
-				ois.close();
-				fis.close();
-			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		loadingAnimation.setLoading(false);
-	}
+//	public static void loadChunks() {
+//		loadingAnimation.setLoading(true);
+//		if(!NO_LOAD) {
+//			try {
+//				FileInputStream fis = new FileInputStream(SAVES_DIRECTORY + "save_slot.data");
+//				ObjectInputStream ois = new ObjectInputStream(fis);
+//
+//				World loaded_world = (World) ois.readObject();
+//				world = loaded_world;
+//				world.setRequirements(loaded_world.getPlayer(), textures, keyInput, mouseInput);
+//
+//				ois.close();
+//				fis.close();
+//			} catch (IOException | ClassNotFoundException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		loadingAnimation.setLoading(false);
+//	}
 
 	public static void loadSettings() {
 		loadingAnimation.setLoading(true);

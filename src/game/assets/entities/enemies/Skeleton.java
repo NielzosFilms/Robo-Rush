@@ -52,7 +52,7 @@ public class Skeleton extends GameObject implements Bounds, Hitable {
         x = Math.round(buffer_x);
         y = Math.round(buffer_y);
 
-        Point mouse = Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, Game.world.getCam());
+        Point mouse = Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, Game.gameController.getCam());
 
         if(Game.mouseInput.leftMouseDown()) {
             velX += (mouse.x - x) * 0.01f;

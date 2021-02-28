@@ -277,7 +277,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 					break;
 			}
 			if(particle_timer.timerOver()) {
-				Game.world.getPs().addParticle(new Effect_Texture(x, y, new Texture(TEXTURE_LIST.player_list, 7, 3), 10, 0.5f));
+				Game.gameController.getPs().addParticle(new Effect_Texture(x, y, new Texture(TEXTURE_LIST.player_list, 7, 3), 10, 0.5f));
 				particle_timer.resetTimer();
 			}
 			particle_timer.tick();
@@ -340,7 +340,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		int cenX = (int)getBounds().getCenterX();
 		int cenY = (int)getBounds().getCenterY();
 		int angle = Math.round(Helpers.getAngle(new Point(cenX, cenY), mouse));
-		Item holding = Game.world.getInventorySystem().getHotbarSelectedItem();
+		Item holding = Game.gameController.getInventorySystem().getHotbarSelectedItem();
 
 		AffineTransform backup = g2d.getTransform();
 		AffineTransform rotation_transform = new AffineTransform(backup);
@@ -420,7 +420,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	private void drawAttack(Graphics g) {
 		int cenX = (int) getBounds().getCenterX();
 		int cenY = (int) getBounds().getCenterY();
-		Item holding = Game.world.getInventorySystem().getHotbarSelectedItem();
+		Item holding = Game.gameController.getInventorySystem().getHotbarSelectedItem();
 		if(holding != null) {
 			if(holding instanceof CanAttack) {
 				int direction_rotation = 0;
@@ -483,9 +483,9 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		return this.water;
 	}
 
-	public BIOME getCurrentBiome() {
-		return Game.world.getGeneration().getBiomeWithCoords(x, y);
-	}
+//	public BIOME getCurrentBiome() {
+//		return Game.gameController.getGeneration().getBiomeWithCoords(x, y);
+//	}
 
 	public void interact() {
 		inventory.open();
@@ -497,7 +497,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		int dmg = getExpectedDamage();
 		SoundEffect.swing.play();
 		// TODO make direction function 8 way instead of 4
-		Point screenCoords = Helpers.getScreenCoords((int) getBounds().getCenterX(), (int) getBounds().getCenterY(), Game.world.getCam());
+		Point screenCoords = Helpers.getScreenCoords((int) getBounds().getCenterX(), (int) getBounds().getCenterY(), Game.gameController.getCam());
 		attack_dir = Helpers.getDirection(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
 		//Logger.print(direction.name());
 		//this.direction = direction;
@@ -534,7 +534,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		int cenY = (int) getBounds().getCenterY();
 		int angle = (int) Helpers.getAngle(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
 		Bullet bullet = new Bullet(cenX, cenY, z_index, angle, this);
-		Game.world.getHandler().addBullet(bullet);
+		Game.gameController.getHandler().addBullet(bullet);
 	}
 
 	public boolean canAttack() {
@@ -544,7 +544,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	public int getExpectedDamage() {
 		int damage_output = DEFAULT_ATTACK_DAMAGE;
 		int attack_delay = ATTACK_DELAY;
-		Item holding = Game.world.getInventorySystem().getHotbarSelectedItem();
+		Item holding = Game.gameController.getInventorySystem().getHotbarSelectedItem();
 		if(holding != null) {
 			if(holding instanceof CanAttack) {
 				damage_output += ((CanAttack) holding).getDamage();
@@ -567,7 +567,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	@Override
 	public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
 		if(!hurt_animation) {
-			Game.world.getCam().screenShake(2f, 6);
+			Game.gameController.getCam().screenShake(2f, 6);
 			SoundEffect.hurt_2.play();
 			velX = (float) -(knockback*Math.cos(Math.toRadians(knockback_angle)));
 			velY = (float) -(knockback*Math.sin(Math.toRadians(knockback_angle)));

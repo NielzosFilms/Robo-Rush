@@ -23,7 +23,7 @@ public class KeyInput extends KeyAdapter {
 
 	private Handler handler;
 	private InventorySystem inventorySystem;
-	private World world;
+	private GameController gameController;
 	private MenuSystem menuSystem;
 
 	public KeyInput() {}
@@ -33,10 +33,10 @@ public class KeyInput extends KeyAdapter {
 	 */
 	public boolean[] keysDown = { false, false, false, false, false, false, false, false };
 
-	public void setRequirements(World world) {
-		this.handler = world.getHandler();
-		this.inventorySystem = world.getInventorySystem();
-		this.world = world;
+	public void setRequirements(GameController gameController) {
+		this.handler = gameController.getHandler();
+		this.inventorySystem = gameController.getInventorySystem();
+		this.gameController = gameController;
 		this.menuSystem = Game.menuSystem;
 	}
 
@@ -72,12 +72,6 @@ public class KeyInput extends KeyAdapter {
 							case KeyEvent.VK_I:
 								((Interactable)tempObject).interact();
 								break;
-							case KeyEvent.VK_T:
-								this.world.getChunkWithCoordsPoint(this.world.getChunkPointWithCoords(tempObject.getX(), tempObject.getY())).createTransitions();
-								break;
-							case KeyEvent.VK_U:
-								this.world.getChunkWithCoordsPoint(this.world.getChunkPointWithCoords(tempObject.getX(), tempObject.getY())).update();
-								break;
 						}
 						// inventory.pickupItem(handler, world);
 					}
@@ -91,7 +85,7 @@ public class KeyInput extends KeyAdapter {
 						Interactable object = (Interactable) obj;
 						if (Game.mouseInput.mouseOverWorldVar(object.getSelectBounds().x, object.getSelectBounds().y,
 								object.getSelectBounds().width, object.getSelectBounds().height)) {
-							if (Helpers.getDistanceBetweenBounds(Game.world.getPlayer().getBounds(), object.getSelectBounds()) < Game.world.getPlayer().REACH) {
+							if (Helpers.getDistanceBetweenBounds(Game.gameController.getPlayer().getBounds(), object.getSelectBounds()) < Game.gameController.getPlayer().REACH) {
 								object.interact();
 								return;
 							}
@@ -99,12 +93,12 @@ public class KeyInput extends KeyAdapter {
 					}
 				}
 			}
-			if(key == KeyEvent.VK_N) {
-				if(world.structureActive()) {
-					world.getGeneration().setNewSeed(world.getNextSeed());
-					world.getActive_structure().generate(world);
-				}else world.generate();
-			}
+//			if(key == KeyEvent.VK_N) {
+//				if(world.structureActive()) {
+//					world.getGeneration().setNewSeed(world.getNextSeed());
+//					world.getActive_structure().generate(world);
+//				}else world.generate();
+//			}
 			inventorySystem.keyPressed(e);
 		} else {
 			menuSystem.keyPressed(e);
@@ -147,8 +141,8 @@ public class KeyInput extends KeyAdapter {
 		}
 		if(key == KeyEvent.VK_R) handler.addObject( new Enemy(80, 64, 10, ID.Enemy));
 		if(key == KeyEvent.VK_T) {
-			world.getPlayer().setX(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, world.getCam()).x);
-			world.getPlayer().setY(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, world.getCam()).y);
+			gameController.getPlayer().setX(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, gameController.getCam()).x);
+			gameController.getPlayer().setY(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, gameController.getCam()).y);
 		}
 
 	}

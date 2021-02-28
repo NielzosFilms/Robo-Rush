@@ -86,17 +86,17 @@ public class World implements Serializable {
 		this.player.setId(ID.Player);
 
 		this.keyInput = keyInput;
-		keyInput.setRequirements(this);
-		mouseInput.setWorld(this);
+//		keyInput.setRequirements(this);
+//		mouseInput.setWorld(this);
 
-		handler.setRequirements(this, cam, ps);
-		collision.setRequirements(handler, this, this.player);
+//		handler.setRequirements(this, cam, ps);
+		//collision.setRequirements(handler, this, this.player);
 		hitboxSystem.setRequirements(handler);
 
-		inventorySystem.setRequirements(handler, mouseInput, this, this.player, cam);
-		lightingSystem.setRequirements(handler, this, cam);
-
-		hud.setRequirements(handler, this.player, mouseInput, this, cam);
+//		inventorySystem.setRequirements(handler, mouseInput, this, this.player, cam);
+//		lightingSystem.setRequirements(handler, this, cam);
+//
+//		hud.setRequirements(handler, this.player, mouseInput, this, cam);
 		handler.addObject(this.player);
 	}
 

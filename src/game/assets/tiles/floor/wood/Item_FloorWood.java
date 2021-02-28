@@ -24,18 +24,18 @@ public class Item_FloorWood extends Item implements Placeable {
 
     @Override
     public boolean place(int x, int y) {
-        Chunk chunk = Game.world.getChunkWithCoordsPoint(Game.world.getChunkPointWithCoords(x, y));
-        if(chunk != null) {
-            Point tile_coords = Helpers.getTileCoords(new Point(x, y), InventorySystem.item_w, InventorySystem.item_h);
-            int tile_x = tile_coords.x / 16 - chunk.x;
-            int tile_y = tile_coords.y / 16 - chunk.y;
-            Tile tile = new Tile_FloorWood(tile_coords.x, tile_coords.y, tile_x, tile_y, 3, chunk);
-            if(!chunk.tileExists(tile)) {
-                chunk.addTile(tile);
-                chunk.update();
-                return true;
-            }
-        }
+//        Chunk chunk = Game.gameController.getChunkWithCoordsPoint(Game.gameController.getChunkPointWithCoords(x, y));
+//        if(chunk != null) {
+//            Point tile_coords = Helpers.getTileCoords(new Point(x, y), InventorySystem.item_w, InventorySystem.item_h);
+//            int tile_x = tile_coords.x / 16 - chunk.x;
+//            int tile_y = tile_coords.y / 16 - chunk.y;
+//            Tile tile = new Tile_FloorWood(tile_coords.x, tile_coords.y, tile_x, tile_y, 3, chunk);
+//            if(!chunk.tileExists(tile)) {
+//                chunk.addTile(tile);
+//                chunk.update();
+//                return true;
+//            }
+//        }
         return false;
     }
 }

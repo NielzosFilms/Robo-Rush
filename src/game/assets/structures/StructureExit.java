@@ -41,6 +41,6 @@ public class StructureExit extends GameObject implements Interactable {
     }
 
     public void interact() {
-        Game.world.gotoLastEnteredStructure();
+//        Game.world.gotoLastEnteredStructure();
     }
 }
