@@ -72,6 +72,9 @@ public class KeyInput extends KeyAdapter {
 							case KeyEvent.VK_I:
 								((Interactable)tempObject).interact();
 								break;
+							case KeyEvent.VK_R:
+								gameController.generate();
+								break;
 						}
 						// inventory.pickupItem(handler, world);
 					}

@@ -7,9 +7,12 @@ import java.util.LinkedList;
 
 public abstract class Room {
     protected LinkedList<LinkedList<GameObject>> objects = new LinkedList<>();
+    protected Level parent_level;
+    protected Point location;
+    protected ROOM_TYPE room_type;
 
-    public Room() {
-
+    public Room(Point location) {
+        this.location = location;
     }
 
     public abstract void tick();
@@ -29,5 +32,17 @@ public abstract class Room {
 
     public void removeObject(GameObject object) {
         objects.get(object.getZIndex()).remove(object);
+    }
+
+    public LinkedList<RoomSpawner> getSpawners() {
+        return this.room_type.getSpawners(location);
+    }
+
+    public ROOM_TYPE getRoomType() {
+        return room_type;
+    }
+
+    public void setRoomType(ROOM_TYPE room_type) {
+        this.room_type = room_type;
     }
 }

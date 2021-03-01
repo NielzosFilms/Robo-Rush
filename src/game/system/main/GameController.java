@@ -98,6 +98,9 @@ public class GameController implements Serializable {
         handler.tick();
         ps.tick();
 
+        if(active_level != null)
+            active_level.tick();
+
         runWaterAnimations();
 //        player.tick();
 //        generateNewChunksOffScreen(camX, camY, camW, camH);
@@ -126,6 +129,9 @@ public class GameController implements Serializable {
         handler.render(g, Game.WIDTH, Game.HEIGHT);
         ps.render(g);
         hitboxSystem.render(g);
+
+        if(active_level != null)
+            active_level.render(g);
 //        player.render(g);
 
         // ongeveer 30-35 ms
@@ -156,10 +162,9 @@ public class GameController implements Serializable {
 
         active_level = new Level_1();
         active_level.generate();
-        //active_level.getActiveRoom().addObject(player);
 
-        handler.addObject(new Enemy(80, 64, 10, ID.Enemy));
-        handler.addObject(new Tree(64, 64, 10, ID.Tree, null));
+        //handler.addObject(new Enemy(80, 64, 10, ID.Enemy));
+        //handler.addObject(new Tree(64, 64, 10, ID.Tree, null));
         loaded = true;
     }
 

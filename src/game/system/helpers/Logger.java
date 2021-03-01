@@ -1,7 +1,11 @@
 package game.system.helpers;
 
+import game.assets.levels.def.ROOM_TYPE;
+import game.assets.levels.def.Room;
+import game.assets.levels.def.RoomSpawner;
 import game.system.main.Game;
 
+import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -12,6 +16,8 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Logger {
     private static String logs_dir = "logs";
@@ -69,5 +75,37 @@ public class Logger {
         if(log_file.exists()) {
             log_file.delete();
         }
+    }
+
+    public static void printRoomMatrix(HashMap<Point, Room> rooms, int room_count, LinkedList<RoomSpawner> spawners) {
+        System.out.println("--- Generated Level ---");
+        String no_room = " . ", room = " 0 ";
+        for(int y=-room_count+1; y<room_count; y++) {
+            StringBuilder row = new StringBuilder();
+            for(int x=-room_count+1; x<room_count; x++) {
+                if(rooms.containsKey(new Point(x, y))) {
+                    if(x == 0 && y == 0) {
+                        row.append(" x ");
+                    } else if(rooms.get(new Point(x, y)).getRoomType() == ROOM_TYPE.TBLR) {
+                        row.append(" O ");
+                    } else {
+                        row.append(room);
+                    }
+                } else {
+                    boolean appended = false;
+                    for(RoomSpawner spawner : spawners) {
+                        if(spawner.location.equals(new Point(x, y))) {
+                            row.append(" * ");
+                            appended = true;
+                            break;
+                        }
+                    }
+                    if(!appended)
+                        row.append(no_room);
+                }
+            }
+            System.out.println(row.toString());
+        }
+        System.out.println("-----------------------");
     }
 }
