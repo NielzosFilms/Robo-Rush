@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import game.assets.entities.Player;
 import game.assets.entities.bullets.Bullet;
 import game.enums.DIRECTIONS;
+import game.enums.ID;
 import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
 import game.system.main.GameController;
@@ -59,7 +60,8 @@ public class Collision {
 			checkBoundWithPlayer(bounds);
 		}*/
 
-		for(GameObject bullet : handler.getBullets()) {
+		for(GameObject bullet : handler.getObjectsWithIds(ID.Bullet)) {
+			Logger.print("bullet collision");
 			Bullet bullet_cast = (Bullet) bullet;
 			for(GameObject entity : objects_w_bounds) {
 				if (!bullet_cast.getHitObjects().contains(entity)) {

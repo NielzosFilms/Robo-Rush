@@ -213,23 +213,23 @@ public class Chunk implements Serializable {
 		// this.entities.remove(object);
 	}
 
-	public void addTile(Tile tile) {
-		int zIndex = tile.getZIndex();
-		for (int i = tiles.size(); i <= zIndex; i++) {
-			tiles.add(new HashMap<Point, Tile>());
-		}
-		tiles.get(zIndex).put(new Point(tile.getChunkX(), tile.getChunkY()), tile);
-	}
-
-	public void removeTile(Tile tile) {
-		int zIndex = tile.getZIndex();
-		tiles.get(zIndex).remove(new Point(tile.getChunkX(), tile.getChunkY()), tile);
-	}
-
-	public boolean tileExists(Tile tile) {
-		if(tile.getZIndex() >= tiles.size()) return false;
-		return tiles.get(tile.getZIndex()).containsKey(new Point(tile.getChunkX(), tile.getChunkY()));
-	}
+//	public void addTile(Tile tile) {
+//		int zIndex = tile.getZIndex();
+//		for (int i = tiles.size(); i <= zIndex; i++) {
+//			tiles.add(new HashMap<Point, Tile>());
+//		}
+//		tiles.get(zIndex).put(new Point(tile.getChunkX(), tile.getChunkY()), tile);
+//	}
+//
+//	public void removeTile(Tile tile) {
+//		int zIndex = tile.getZIndex();
+//		tiles.get(zIndex).remove(new Point(tile.getChunkX(), tile.getChunkY()), tile);
+//	}
+//
+//	public boolean tileExists(Tile tile) {
+//		if(tile.getZIndex() >= tiles.size()) return false;
+//		return tiles.get(tile.getZIndex()).containsKey(new Point(tile.getChunkX(), tile.getChunkY()));
+//	}
 
 	public boolean tileExistsCoords(int index, Point tile_coords) {
 		if(index >= tiles.size()) return false;

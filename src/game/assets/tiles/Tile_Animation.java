@@ -2,6 +2,7 @@ package game.assets.tiles;
 
 import game.assets.tiles.tile.Tile;
 import game.enums.BIOME;
+import game.enums.ID;
 import game.system.world.Chunk;
 import game.textures.Animation;
 
@@ -9,8 +10,8 @@ import java.awt.*;
 
 public class Tile_Animation extends Tile {
     private Animation animation;
-    public Tile_Animation(int x, int y, int chunk_x, int chunk_y, int z_index, Chunk chunk, Animation animation) {
-        super(x, y, chunk_x, chunk_y, z_index, null, chunk);
+    public Tile_Animation(int x, int y, int z_index, Animation animation) {
+        super(x, y, z_index, ID.Animation_tile);
         this.animation = animation;
     }
 

@@ -151,13 +151,14 @@ public class JsonStructureLoader {
                 int tile_x = (chunk_x * TO_TILE_SIZE) + x * TO_TILE_SIZE;
                 int tile_y = (chunk_y * TO_TILE_SIZE) + y * TO_TILE_SIZE;
                 if(tex_index > 0) {
-                    if(Textures.generated_animations.containsKey(tex_index)) {
-                        chunk.addTile(new Tile_Animation(tile_x, tile_y, x, y, layer_index, chunk,
-                                Textures.generated_animations.get(tex_index)));
-                    } else {
-                        chunk.addTile(new Tile_Static(tile_x, tile_y, x, y, layer_index, chunk,
-                                new Texture(getTextureList(tex_index), tex_index-1 - getTextureListGid(tex_index))));
-                    }
+                    // BROKEN
+//                    if(Textures.generated_animations.containsKey(tex_index)) {
+//                        chunk.addTile(new Tile_Animation(tile_x, tile_y, x, y, layer_index, chunk,
+//                                Textures.generated_animations.get(tex_index)));
+//                    } else {
+//                        chunk.addTile(new Tile_Static(tile_x, tile_y, x, y, layer_index, chunk,
+//                                new Texture(getTextureList(tex_index), tex_index-1 - getTextureListGid(tex_index))));
+//                    }
                 }
                 x++;
                 if(x >= chunk_width) {

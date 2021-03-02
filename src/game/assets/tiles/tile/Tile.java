@@ -6,28 +6,20 @@ import java.io.Serializable;
 
 import game.assets.items.item.Item;
 import game.enums.BIOME;
+import game.enums.ID;
 import game.enums.TILE_TYPE;
+import game.system.systems.gameObject.GameObject;
 import game.system.world.Chunk;
 import game.textures.Texture;
 
-public abstract class Tile implements Serializable {
+public abstract class Tile extends GameObject implements Serializable {
 
-    protected int x, y, chunk_x, chunk_y;
-    protected BIOME biome;
-    protected Chunk chunk;
-    protected int z_index;
     protected int tileSize = 16;
 
     protected Texture texture;
 
-    public Tile(int x, int y, int chunk_x, int chunk_y, int z_index, BIOME biome, Chunk chunk) {
-        this.x = x;
-        this.y = y;
-        this.chunk_x = chunk_x;
-        this.chunk_y = chunk_y;
-        this.z_index = z_index;
-        this.biome = biome;
-        this.chunk = chunk;
+    public Tile(int x, int y, int z_index, ID id) {
+        super(x, y, z_index, id);
     }
 
     public abstract void tick();
@@ -48,38 +40,6 @@ public abstract class Tile implements Serializable {
 
     public int getY() {
         return this.y;
-    }
-
-    public void setChunkX(int chunk_x) {
-        this.chunk_x = chunk_x;
-    }
-
-    public int getChunkX() {
-        return this.chunk_x;
-    }
-
-    public void setChunkY(int chunk_y) {
-        this.chunk_y = chunk_y;
-    }
-
-    public int getChunkY() {
-        return this.chunk_y;
-    }
-
-    public void setBiome(BIOME biome) {
-        this.biome = biome;
-    }
-
-    public BIOME getBiome() {
-        return this.biome;
-    }
-
-    public Chunk getChunk() {
-        return this.chunk;
-    }
-
-    public void setChunk(Chunk chunk) {
-        this.chunk = chunk;
     }
 
     public int getZIndex() {

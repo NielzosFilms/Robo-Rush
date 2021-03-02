@@ -11,7 +11,6 @@ import game.assets.objects.crate.Item_Crate;
 import game.assets.items.tools.wood.Tool_WoodenAxe;
 import game.assets.items.tools.wood.Tool_WoodenPickaxe;
 import game.assets.items.tools.wood.Tool_WoodenSword;
-import game.assets.tiles.floor.wood.Item_FloorWood;
 import game.audio.SoundEffect;
 import game.enums.DIRECTIONS;
 import game.system.helpers.Helpers;
@@ -83,7 +82,6 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		this.inventory.addItem(new Item_Rock(InventorySystem.stackSize));
 		this.inventory.addItem(new Item_Stick(InventorySystem.stackSize));
 		this.inventory.addItem(new Item_Crate(InventorySystem.stackSize));
-		this.inventory.addItem(new Item_FloorWood(InventorySystem.stackSize));
 
 		this.hotbar = new Inventory(5, 1);
 		this.hotbar.setHotbar(true);
@@ -534,7 +532,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		int cenY = (int) getBounds().getCenterY();
 		int angle = (int) Helpers.getAngle(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
 		Bullet bullet = new Bullet(cenX, cenY, z_index, angle, this);
-		Game.gameController.getHandler().addBullet(bullet);
+		Game.gameController.getHandler().addObject(bullet);
 	}
 
 	public boolean canAttack() {

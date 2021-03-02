@@ -20,11 +20,6 @@ public class Handler implements Serializable {
 	private transient ParticleSystem ps;
 
 	public LinkedList<LinkedList<GameObject>> object_entities = new LinkedList<LinkedList<GameObject>>();
-	public LinkedList<GameObject> bullets = new LinkedList<>();
-	public LinkedList<Tile> tiles = new LinkedList<>();
-	// LinkedList<LinkedList<Tile>>();
-
-	public LinkedList<Light> lights = new LinkedList<Light>();
 
 	public Handler() {
 		for (int i = 0; i < 4; i++) {
@@ -44,12 +39,13 @@ public class Handler implements Serializable {
 		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
-				if (tempObject.getId() == ID.Player) {
-					tempObject.tick();
-				} else {
-					gameController.addEntityToActiveRoom(tempObject);
-					list.remove(tempObject);
-				}
+				tempObject.tick();
+//				if (tempObject.getId() == ID.Player) {
+//					tempObject.tick();
+//				} else {
+//					gameController.addEntityToActiveRoom(tempObject);
+//					list.remove(tempObject);
+//				}
 			}
 		}
 
@@ -75,10 +71,6 @@ public class Handler implements Serializable {
 //				tiles.remove(tile);
 //			}
 //		}
-
-		for(int i=0; i<bullets.size(); i++) {
-			bullets.get(i).tick();
-		}
 	}
 
 	public void render(Graphics g, int width, int height) {
@@ -93,6 +85,10 @@ public class Handler implements Serializable {
 
 			if(i == gameController.getPlayer().getZIndex()) {
 				layer_game_objects.add(gameController.getPlayer());
+			}
+
+			if(i < object_entities.size()) {
+				layer_game_objects.addAll(object_entities.get(i));
 			}
 
 			LinkedList<GameObject> y_sorted = new LinkedList<>();
@@ -128,10 +124,6 @@ public class Handler implements Serializable {
 		}
 	}
 
-	public void addLight(Light light) {
-		this.lights.add(light);
-	}
-
 	public void addObject(GameObject object) {
 		int z_index = object.getZIndex();
 		for(int i=object_entities.size(); i<=z_index; i++) {
@@ -143,10 +135,6 @@ public class Handler implements Serializable {
 
 	public void removeObject(GameObject object) {
 		this.object_entities.get(object.getZIndex()).remove(object);
-	}
-
-	public void addTile(Tile tile) {
-		this.tiles.add(tile);
 	}
 
 	/*public void removeTile(Tile tile) {
@@ -193,10 +181,8 @@ public class Handler implements Serializable {
 		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
-				if (tempObject instanceof Interactable) {
-					if(((Interactable) tempObject).getSelectBounds() != null) {
-						ret.add(tempObject);
-					}
+				if (isInArray(ids, tempObject.getId())) {
+					ret.add(tempObject);
 				}
 			}
 		}
@@ -345,18 +331,6 @@ public class Handler implements Serializable {
 			}
 		}
 		return false;
-	}
-
-	public LinkedList<GameObject> getBullets() {
-		return new LinkedList<>(bullets);
-	}
-
-	public void addBullet(GameObject bullet) {
-		bullets.add(bullet);
-	}
-
-	public void removeBullet(GameObject bullet) {
-		bullets.remove(bullet);
 	}
 
 }
