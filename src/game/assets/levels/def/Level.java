@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public abstract class Level {
-
+    protected long level_seed;
     protected int room_count;
     protected HashMap<Point, Room> rooms = new HashMap<>();
     protected Point active_room = new Point(0, 0);
@@ -23,19 +23,16 @@ public abstract class Level {
     public abstract void render(Graphics g);
 
     public void generate() {
-        long seed = new Random().nextLong();
-        Logger.print("[seed]: " + seed);
-        this.generateRooms(new Random(seed));
+        this.level_seed = new Random().nextLong();
+        Logger.print("[seed]: " + level_seed);
+        this.generateRooms(new Random(level_seed));
     }
-    public void generate(Long seed) {
-        Logger.print("[seed]: " + seed);
-        this.generateRooms(new Random(seed));
+    public void generate(Long level_seed) {
+        this.level_seed = level_seed;
+        Logger.print("[seed]: " + level_seed);
+        this.generateRooms(new Random(level_seed));
     }
     protected abstract void generateRooms(Random rand);
-
-//    public int getRoomKey(Room room) {
-//        return rooms.(room);
-//    }
 
     public void setActiveRoomKey(Point point) {
         this.active_room = point;

@@ -171,16 +171,18 @@ public class GameController implements Serializable {
     public LinkedList<LinkedList<GameObject>> getAllGameObjects() {
         LinkedList<LinkedList<GameObject>> ret = active_level.getObjects();
 
-
-
         int player_z_index = player.getZIndex();
         for(int i=ret.size(); i<=player_z_index; i++) {
             ret.add(new LinkedList<>());
         }
-        if(!ret.get(player_z_index).contains(player))
-            ret.get(player_z_index).add(player);
+//        if(!ret.get(player_z_index).contains(player))
+//            ret.get(player_z_index).add(player);
 
         return ret;
+    }
+
+    public void addEntityToActiveRoom(GameObject entity) {
+        active_level.getActiveRoom().addObject(entity);
     }
 
     public Player getPlayer() {

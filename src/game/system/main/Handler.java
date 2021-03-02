@@ -41,22 +41,17 @@ public class Handler implements Serializable {
 	public void tick() {
 		LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
 
-//		for (LinkedList<GameObject> list : object_entities) {
-//			for (int i = 0; i < list.size(); i++) {
-//				GameObject tempObject = list.get(i);
-//				tempObject.tick();
-////				if (tempObject.getId() == ID.Player) {
-////					tempObject.tick();
-////				} else {
-////					// TODO ?
-//////					if(gameController.addEntityToChunk(tempObject)) {
-//////						list.remove(tempObject);
-//////					} else {
-//////						tempObject.tick();
-//////					}
-////				}
-//			}
-//		}
+		for (LinkedList<GameObject> list : object_entities) {
+			for (int i = 0; i < list.size(); i++) {
+				GameObject tempObject = list.get(i);
+				if (tempObject.getId() == ID.Player) {
+					tempObject.tick();
+				} else {
+					gameController.addEntityToActiveRoom(tempObject);
+					list.remove(tempObject);
+				}
+			}
+		}
 
 		for (LinkedList<GameObject> list : all_game_objects) {
 			for (int i = 0; i < list.size(); i++) {
@@ -93,14 +88,13 @@ public class Handler implements Serializable {
 
 		// RENDER
 
-//		for(LinkedList<GameObject> list : all_game_objects) {
-//			for(GameObject object : list) {
-//				object.render(g);
-//			}
-//		}
-
 		for (int i=0; i < all_game_objects.size(); i++) {
-			LinkedList<GameObject> layer_game_objects = new LinkedList<>(all_game_objects.get(i));
+			LinkedList<GameObject> layer_game_objects = new LinkedList<>();
+
+			if(i == gameController.getPlayer().getZIndex()) {
+				layer_game_objects.add(gameController.getPlayer());
+			}
+
 			LinkedList<GameObject> y_sorted = new LinkedList<>();
 			while (layer_game_objects.size() > 0) {
 //				GameObject lowest = layer_game_objects.get(0);
