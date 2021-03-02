@@ -11,38 +11,18 @@ import java.util.Random;
 
 public class RoomSelector {
     private int level;
-    private HashMap<Point, String> mapping = new HashMap<>();
+    private LinkedList<Point> mapping = new LinkedList<>();
 
     public RoomSelector(int level) {
         this.level = level;
 
-        mapping.put(new Point(0, -1), "B");
-        mapping.put(new Point(1, 0), "L");
-        mapping.put(new Point(0, 1), "T");
-        mapping.put(new Point(-1, 0), "R");
+        mapping.add(new Point(0, -1));
+        mapping.add(new Point(1, 0));
+        mapping.add(new Point(0, 1));
+        mapping.add(new Point(-1, 0));
     }
 
-    public Room getRoom(RoomSpawner spawner, HashMap<Point, Room> rooms, Random rand) {
-        Room room_ret = null;
-        switch(level) {
-            case 1:
-                room_ret = new Room_Test(spawner.location, getRoomType(spawner, rand, rooms));
-                break;
-        }
-        return room_ret;
-    }
-
-    public Room getClosingRoom(RoomSpawner spawner, HashMap<Point, Room> rooms, Random rand) {
-        Room room_ret = null;
-        switch(level) {
-            case 1:
-                room_ret = new Room_Test(spawner.location, getClosingRoomType(spawner, rand, rooms));
-                break;
-        }
-        return room_ret;
-    }
-
-    private ROOM_TYPE getRoomType(RoomSpawner spawner, Random rand, HashMap<Point, Room> rooms) {
+    public ROOM_TYPE getRoomType(RoomSpawner spawner, Random rand, HashMap<Point, Room> rooms) {
         LinkedList<ROOM_TYPE> possible_room_types = new LinkedList<>();
 
         LinkedList<Point> blocked_offsets = getBlockedOffsets(spawner, rooms);
@@ -68,11 +48,11 @@ public class RoomSelector {
         return possible_room_types.get(rand.nextInt(possible_room_types.size()));
     }
 
-    private ROOM_TYPE getClosingRoomType(RoomSpawner spawner, Random rand, HashMap<Point, Room> rooms) {
+    public ROOM_TYPE getClosingRoomType(RoomSpawner spawner, HashMap<Point, Room> rooms) {
         LinkedList<Point> required_offsets = getRequiredOffsets(spawner, rooms);
         LinkedList<Point> other_offsets = new LinkedList<>();
 
-        for(Point offset : mapping.keySet()) {
+        for(Point offset : mapping) {
             boolean found = false;
             for(Point req_offset: required_offsets) {
                 if(offset.x == req_offset.x && offset.y == req_offset.y) {
@@ -93,7 +73,7 @@ public class RoomSelector {
 
     private LinkedList<Point> getBlockedOffsets(RoomSpawner spawner, HashMap<Point, Room> rooms) {
         LinkedList<Point> blocked_offsets = new LinkedList<>();
-        for(Point offset : mapping.keySet()) {
+        for(Point offset : mapping) {
             if(offset.x != spawner.door_direction.x && offset.y != spawner.door_direction.y) {
                 Point location = new Point(spawner.location.x + offset.x, spawner.location.y + offset.y);
                 if(rooms.containsKey(location)) {
@@ -110,7 +90,7 @@ public class RoomSelector {
 
     private LinkedList<Point> getRequiredOffsets(RoomSpawner spawner, HashMap<Point, Room> rooms) {
         LinkedList<Point> required_offsets = new LinkedList<>();
-        for(Point offset : mapping.keySet()) {
+        for(Point offset : mapping) {
             if(offset.x == spawner.door_direction.x && offset.y == spawner.door_direction.y) continue;
 
             Point location = new Point(spawner.location.x + offset.x, spawner.location.y + offset.y);
@@ -123,7 +103,6 @@ public class RoomSelector {
                 }
             }
         }
-        System.out.println("extra required offsets: " + required_offsets);
         return required_offsets;
     }
 

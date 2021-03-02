@@ -47,8 +47,10 @@ public class Level_1 extends Level {
                 RoomSpawner spawner = spawners.get(i);
 
                 if(!this.roomExists(spawner.location) && rooms.size() < room_count) {
-                    rooms.put(spawner.location, roomSelector.getRoom(spawner, rooms, rand));
+                    ROOM_TYPE room_type = roomSelector.getRoomType(spawner, rand, rooms);
+                    rooms.put(spawner.location, new Room_Test(spawner.location, room_type));
                     new_spawners.remove(spawner);
+
                     for(RoomSpawner room_spawner : rooms.get(spawner.location).getSpawners()) {
                         if(!roomExists(room_spawner.location)) {
                             new_spawners.add(room_spawner);
@@ -65,10 +67,9 @@ public class Level_1 extends Level {
          * Enclose dungeon rooms
          */
         for(RoomSpawner room_spawner : spawners) {
-            System.out.println(room_spawner.location);
-
             if(!this.roomExists(room_spawner.location)) {
-                rooms.put(room_spawner.location, roomSelector.getClosingRoom(room_spawner, rooms, rand));
+                ROOM_TYPE room_type = roomSelector.getClosingRoomType(room_spawner, rooms);
+                rooms.put(room_spawner.location, new Room_Test(room_spawner.location, room_type));
             }
         }
 
