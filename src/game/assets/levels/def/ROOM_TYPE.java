@@ -95,44 +95,44 @@ public enum ROOM_TYPE {
             spawners.add(new RoomSpawner(new Point(location.x + 1, location.y), new Point(1, 0)));
             return spawners;
         }
-    },;
+    },
 
-//    TBR {
-//        public LinkedList<RoomSpawner> getSpawners(Point location) {
-//            LinkedList<RoomSpawner> spawners = new LinkedList<>();
-//            spawners.add(new RoomSpawner(new Point(location.x, location.y - 1), new Point(0, -1)));
-//            spawners.add(new RoomSpawner(new Point(location.x, location.y + 1), new Point(0, 1)));
-//            spawners.add(new RoomSpawner(new Point(location.x + 1, location.y), new Point(1, 0)));
-//            return spawners;
-//        }
-//    },
-//    RBL {
-//        public LinkedList<RoomSpawner> getSpawners(Point location) {
-//            LinkedList<RoomSpawner> spawners = new LinkedList<>();
-//            spawners.add(new RoomSpawner(new Point(location.x + 1, location.y), new Point(1, 0)));
-//            spawners.add(new RoomSpawner(new Point(location.x, location.y + 1), new Point(0, 1)));
-//            spawners.add(new RoomSpawner(new Point(location.x-1, location.y), new Point(-1, 0)));
-//            return spawners;
-//        }
-//    },
-//    BLT {
-//        public LinkedList<RoomSpawner> getSpawners(Point location) {
-//            LinkedList<RoomSpawner> spawners = new LinkedList<>();
-//            spawners.add(new RoomSpawner(new Point(location.x, location.y + 1), new Point(0, 1)));
-//            spawners.add(new RoomSpawner(new Point(location.x-1, location.y), new Point(-1, 0)));
-//            spawners.add(new RoomSpawner(new Point(location.x, location.y - 1), new Point(0, -1)));
-//            return spawners;
-//        }
-//    },
-//    LTR {
-//        public LinkedList<RoomSpawner> getSpawners(Point location) {
-//            LinkedList<RoomSpawner> spawners = new LinkedList<>();
-//            spawners.add(new RoomSpawner(new Point(location.x-1, location.y), new Point(-1, 0)));
-//            spawners.add(new RoomSpawner(new Point(location.x, location.y - 1), new Point(0, -1)));
-//            spawners.add(new RoomSpawner(new Point(location.x + 1, location.y), new Point(1, 0)));
-//            return spawners;
-//        }
-//    };
+    TBR {
+        public LinkedList<RoomSpawner> getSpawners(Point location) {
+            LinkedList<RoomSpawner> spawners = new LinkedList<>();
+            spawners.add(new RoomSpawner(new Point(location.x, location.y - 1), new Point(0, -1)));
+            spawners.add(new RoomSpawner(new Point(location.x, location.y + 1), new Point(0, 1)));
+            spawners.add(new RoomSpawner(new Point(location.x + 1, location.y), new Point(1, 0)));
+            return spawners;
+        }
+    },
+    RBL {
+        public LinkedList<RoomSpawner> getSpawners(Point location) {
+            LinkedList<RoomSpawner> spawners = new LinkedList<>();
+            spawners.add(new RoomSpawner(new Point(location.x + 1, location.y), new Point(1, 0)));
+            spawners.add(new RoomSpawner(new Point(location.x, location.y + 1), new Point(0, 1)));
+            spawners.add(new RoomSpawner(new Point(location.x-1, location.y), new Point(-1, 0)));
+            return spawners;
+        }
+    },
+    BLT {
+        public LinkedList<RoomSpawner> getSpawners(Point location) {
+            LinkedList<RoomSpawner> spawners = new LinkedList<>();
+            spawners.add(new RoomSpawner(new Point(location.x, location.y + 1), new Point(0, 1)));
+            spawners.add(new RoomSpawner(new Point(location.x-1, location.y), new Point(-1, 0)));
+            spawners.add(new RoomSpawner(new Point(location.x, location.y - 1), new Point(0, -1)));
+            return spawners;
+        }
+    },
+    LTR {
+        public LinkedList<RoomSpawner> getSpawners(Point location) {
+            LinkedList<RoomSpawner> spawners = new LinkedList<>();
+            spawners.add(new RoomSpawner(new Point(location.x-1, location.y), new Point(-1, 0)));
+            spawners.add(new RoomSpawner(new Point(location.x, location.y - 1), new Point(0, -1)));
+            spawners.add(new RoomSpawner(new Point(location.x + 1, location.y), new Point(1, 0)));
+            return spawners;
+        }
+    };
 
     public abstract LinkedList<RoomSpawner> getSpawners(Point location);
 }

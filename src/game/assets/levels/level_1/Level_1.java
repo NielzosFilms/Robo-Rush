@@ -68,7 +68,7 @@ public class Level_1 extends Level {
             System.out.println(room_spawner.location);
 
             if(!this.roomExists(room_spawner.location)) {
-                //rooms.put(room_spawner.location, roomSelector.getClosingRoom(room_spawner, rooms, rand));
+                rooms.put(room_spawner.location, roomSelector.getClosingRoom(room_spawner, rooms, rand));
             }
         }
 
