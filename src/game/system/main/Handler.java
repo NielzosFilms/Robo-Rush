@@ -81,7 +81,7 @@ public class Handler implements Serializable {
 		// RENDER
 
 		for (int i=0; i < all_game_objects.size(); i++) {
-			LinkedList<GameObject> layer_game_objects = new LinkedList<>();
+			LinkedList<GameObject> layer_game_objects = new LinkedList<>(all_game_objects.get(i));
 
 			if(i == gameController.getPlayer().getZIndex()) {
 				layer_game_objects.add(gameController.getPlayer());

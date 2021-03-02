@@ -5,10 +5,13 @@ import game.assets.levels.def.ROOM_TYPE;
 import game.assets.levels.def.Room;
 import game.assets.levels.def.RoomSpawner;
 import game.assets.objects.tree.Tree;
+import game.assets.tiles.Tile_Static;
 import game.enums.BIOME;
 import game.enums.ID;
 import game.system.systems.gameObject.GameObject;
 import game.textures.Fonts;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -18,7 +21,8 @@ public class Room_Test extends Room {
     public Room_Test(Point location, ROOM_TYPE room_type) {
         super(location);
         this.room_type = room_type;
-        addObject(new Tree(0, 0, 10, ID.Tree, BIOME.Forest));
+        //addObject(new Tree(0, 0, 10, ID.Tree, BIOME.Forest));
+        //addObject(new Tile_Static(0, 0, 0, new Texture(TEXTURE_LIST.dungeon, 0, 0)));
     }
 
     @Override

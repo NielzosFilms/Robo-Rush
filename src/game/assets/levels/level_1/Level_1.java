@@ -12,7 +12,7 @@ public class Level_1 extends Level {
     private RoomSelector roomSelector;
 
     public Level_1() {
-        super(13);
+        super(5);
         this.roomSelector = new RoomSelector(1);
     }
 
@@ -32,6 +32,8 @@ public class Level_1 extends Level {
     public void generateRooms(Random rand) {
         rooms.put(new Point(0, 0), new Room_TRBL_Test(new Point(0, 0)));
         LinkedList<RoomSpawner> spawners = new LinkedList<>(rooms.get(new Point(0, 0)).getSpawners());
+
+        this.active_room = new Point(0, 0);
 
         while(rooms.size() < room_count) {
             LinkedList<RoomSpawner> new_spawners = new LinkedList<>(spawners);

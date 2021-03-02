@@ -61,7 +61,6 @@ public class Collision {
 		}*/
 
 		for(GameObject bullet : handler.getObjectsWithIds(ID.Bullet)) {
-			Logger.print("bullet collision");
 			Bullet bullet_cast = (Bullet) bullet;
 			for(GameObject entity : objects_w_bounds) {
 				if (!bullet_cast.getHitObjects().contains(entity)) {
