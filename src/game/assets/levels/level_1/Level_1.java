@@ -56,15 +56,20 @@ public class Level_1 extends Level {
                     }
                 }
             }
+            if(spawners == new_spawners) break;
             spawners = new_spawners;
             System.out.println("spawners left: " + spawners.size());
         }
 
-        /**
+        /*
          * Enclose dungeon rooms
          */
         for(RoomSpawner room_spawner : spawners) {
             System.out.println(room_spawner.location);
+
+            if(!this.roomExists(room_spawner.location)) {
+                //rooms.put(room_spawner.location, roomSelector.getClosingRoom(room_spawner, rooms, rand));
+            }
         }
 
         Logger.printRoomMatrix(rooms, room_count, spawners);
