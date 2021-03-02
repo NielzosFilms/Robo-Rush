@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import game.assets.entities.Player;
 import game.assets.entities.bullets.Bullet;
+import game.assets.levels.RoomDoorTrigger;
 import game.enums.DIRECTIONS;
 import game.enums.ID;
 import game.system.helpers.Helpers;
@@ -48,7 +49,14 @@ public class Collision {
 		}
 
 		for(GameObject entity : objects_w_bounds) {
+			if(entity instanceof RoomDoorTrigger) {
+				if (((RoomDoorTrigger) entity).getBounds().intersects(player.getBounds())) {
+					((RoomDoorTrigger) entity).triggered();
+				}
+				continue;
+			}
 			for (GameObject entity_2 : objects_w_bounds) {
+				if(entity_2 instanceof RoomDoorTrigger) continue;
 				checkCollisionFor2Entities(entity, entity_2);
 				//checkCollisionForMovingEntities(entity, entity_2);
 				// wierd stuff happens

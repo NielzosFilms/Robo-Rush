@@ -17,6 +17,7 @@ public class Room_TRBL_Test extends Room {
         this.room_type = ROOM_TYPE.TBLR;
         //addObject(new Tree(0, 0, 10, ID.Tree, BIOME.Forest));
         addObject(new Tile_Static(0, 0, 1, new Texture(TEXTURE_LIST.dungeon, 1, 0)));
+        addObject(new RoomDoorTrigger(64, 64, new Point(1, 0)));
     }
 
     @Override

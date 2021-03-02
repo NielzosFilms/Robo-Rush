@@ -279,4 +279,8 @@ public class GameController implements Serializable {
 //        }
         return new LinkedList<>();
     }
+
+    public Level getActiveLevel() {
+        return this.active_level;
+    }
 }

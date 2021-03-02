@@ -1,6 +1,7 @@
 package game.assets.levels.level_1;
 
 import game.assets.entities.TargetDummy;
+import game.assets.levels.RoomDoorTrigger;
 import game.assets.levels.def.ROOM_TYPE;
 import game.assets.levels.def.Room;
 import game.assets.levels.def.RoomSpawner;
@@ -22,7 +23,7 @@ public class Room_Test extends Room {
         super(location);
         this.room_type = room_type;
         //addObject(new Tree(0, 0, 10, ID.Tree, BIOME.Forest));
-        //addObject(new Tile_Static(0, 0, 0, new Texture(TEXTURE_LIST.dungeon, 0, 0)));
+        addObject(new Tile_Static(0, 0, 1, new Texture(TEXTURE_LIST.dungeon, 0, 0)));
     }
 
     @Override

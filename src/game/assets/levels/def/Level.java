@@ -34,6 +34,10 @@ public abstract class Level {
     }
     protected abstract void generateRooms(Random rand);
 
+    public void gotoRoom(Point door_direction) {
+        active_room = new Point(active_room.x + door_direction.x, active_room.y + door_direction.y);
+    }
+
     public void setActiveRoomKey(Point point) {
         this.active_room = point;
     }
