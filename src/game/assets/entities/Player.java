@@ -333,7 +333,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		g.drawImage(Textures.entity_shadow, getBounds().x-3, getBounds().y+2, 16, 16, null);
 
 		Point mouse = Game.mouseInput.getMouseWorldCoords();
-		boolean mirror = mouse.x < getBounds().getCenterX();
+		boolean mirror = mouse.x < this.x;//getBounds().getCenterX();
 
 		int cenX = (int)getBounds().getCenterX();
 		int cenY = (int)getBounds().getCenterY();
@@ -354,12 +354,12 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 
 		if(Game.DEBUG_MODE) {
 			g.setColor(new Color(255, 108, 252, 92));
-			Helpers.drawBounds(g, this);
+			//Helpers.drawBounds(g, this);
+			g.drawRect(x, y, 1, 1);
 		}
 	}
 
 	private void drawPlayerAnimations(Graphics g, boolean mirror) {
-
 		if(hurt_animation) {
 			if(mirror) {
 				hurt.drawAnimationMirroredH(g, x, y);

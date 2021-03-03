@@ -50,13 +50,19 @@ public class Collision {
 
 		for(GameObject entity : objects_w_bounds) {
 			if(entity instanceof RoomDoorTrigger) {
-				if (((RoomDoorTrigger) entity).getBounds().intersects(player.getBounds())) {
-					((RoomDoorTrigger) entity).triggered();
+				if(((RoomDoorTrigger) entity).isOpen()) {
+					if (((RoomDoorTrigger) entity).getBounds().intersects(player.getBounds())) {
+						((RoomDoorTrigger) entity).triggered();
+					}
+					continue;
 				}
-				continue;
 			}
 			for (GameObject entity_2 : objects_w_bounds) {
-				if(entity_2 instanceof RoomDoorTrigger) continue;
+				if(entity_2 instanceof RoomDoorTrigger) {
+					if(((RoomDoorTrigger) entity_2).isOpen()) {
+						continue;
+					}
+				}
 				checkCollisionFor2Entities(entity, entity_2);
 				//checkCollisionForMovingEntities(entity, entity_2);
 				// wierd stuff happens
@@ -97,19 +103,19 @@ public class Collision {
 						!ent_1.getRightBounds().intersects(ent_2_bounds)) {
 					if (ent_1.getTopBounds().intersects(ent_2_bounds)) {
 						entity_1.setY(entity_1.getY() + 1);
-						entity_1.setVelY(0);
+						//entity_1.setVelY(0);
 					}
 					if (ent_1.getBottomBounds().intersects(ent_2_bounds)) {
 						entity_1.setY(entity_1.getY() - 1);
-						entity_1.setVelY(0);
+						//entity_1.setVelY(0);
 					}
 					if (ent_1.getLeftBounds().intersects(ent_2_bounds)) {
 						entity_1.setX(entity_1.getX() + 1);
-						entity_1.setVelX(0);
+						//entity_1.setVelX(0);
 					}
 					if (ent_1.getRightBounds().intersects(ent_2_bounds)) {
 						entity_1.setX(entity_1.getX() - 1);
-						entity_1.setVelX(0);
+						//entity_1.setVelX(0);
 					}
 				}
 			}

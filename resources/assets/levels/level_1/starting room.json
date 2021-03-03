@@ -304,6 +304,38 @@
                  "width":112,
                  "x":144,
                  "y":240
+                }, 
+                {
+                 "height":16,
+                 "id":37,
+                 "name":"Empty_Crate",
+                 "properties":[
+                        {
+                         "name":"inv_x",
+                         "type":"string",
+                         "value":"3"
+                        }, 
+                        {
+                         "name":"inv_y",
+                         "type":"string",
+                         "value":"3"
+                        }, 
+                        {
+                         "name":"loot_table",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
+                         "name":"package",
+                         "type":"string",
+                         "value":"game.assets.objects.crate"
+                        }],
+                 "rotation":0,
+                 "type":"Crate",
+                 "visible":true,
+                 "width":16,
+                 "x":64,
+                 "y":176
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -330,7 +362,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":37,
+ "nextobjectid":42,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.3",

@@ -25,6 +25,8 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
 
     private Point door_direction;
 
+    private boolean open = false;
+
     public RoomDoorTrigger(int x, int y, Point door_direction) {
         super(x, y, 0, ID.RoomDoorTrigger);
         this.door_direction = door_direction;
@@ -116,5 +118,13 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
 
     public Point getDoorDirection() {
         return door_direction;
+    }
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
     }
 }

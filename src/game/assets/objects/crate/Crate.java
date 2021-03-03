@@ -9,6 +9,7 @@ import game.assets.items.item.Item;
 import game.audio.SoundEffect;
 import game.enums.DIRECTIONS;
 import game.enums.LOOT_TABLES;
+import game.system.helpers.JsonLoader;
 import game.system.helpers.Logger;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.systems.gameObject.*;
@@ -51,7 +52,7 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
         this.tex = new Texture(TEXTURE_LIST.wood_list, 1, 0);
     }
 
-    public Crate(JSONObject json, int z_index, int division, JsonStructureLoader loader) {
+    public Crate(JSONObject json, int z_index, int division, JsonLoader loader) {
         super(
                 StructureLoaderHelpers.getIntProp(json, "x") / division,
                 StructureLoaderHelpers.getIntProp(json, "y") / division,
