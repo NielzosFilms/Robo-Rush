@@ -24,6 +24,11 @@ public class Room_Test extends Room {
         this.room_type = room_type;
         //addObject(new Tree(0, 0, 10, ID.Tree, BIOME.Forest));
         addObject(new Tile_Static(0, 0, 1, new Texture(TEXTURE_LIST.dungeon, 0, 0)));
+
+        for(RoomSpawner spawner : room_type.getSpawners(location)) {
+            Point door_direction = spawner.door_direction;
+            addObject(new RoomDoorTrigger(door_direction.x*64 ,door_direction.y*64, door_direction));
+        }
     }
 
     @Override
