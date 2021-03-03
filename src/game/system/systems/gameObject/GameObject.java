@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.io.Serializable;
 
 import game.enums.ID;
+import game.system.helpers.JsonLoader;
 import game.system.world.JsonStructureLoader;
 import game.textures.Texture;
 import org.json.simple.JSONObject;
@@ -28,7 +29,7 @@ public abstract class GameObject implements Serializable {
 		this.z_index = z_index;
 	}
 
-	public GameObject(JSONObject json, int z_index, int division, JsonStructureLoader loader) {
+	public GameObject(JSONObject json, int z_index, int division, JsonLoader loader) {
 
 	}
 

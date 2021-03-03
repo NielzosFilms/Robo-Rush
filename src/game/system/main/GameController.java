@@ -258,7 +258,7 @@ public class GameController implements Serializable {
         this.ps = ps;
     }
 
-    private void updatePlayerPosition(int x, int y) {
+    public void updatePlayerPosition(int x, int y) {
         player.setX(x);
         player.setY(y);
         cam.setCoordsWithPlayerCoords(x, y);

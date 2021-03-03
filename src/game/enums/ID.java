@@ -10,5 +10,5 @@ public enum ID {
 
 	House, Crate,
 
-	Pebble, Branch, Waterfall, Button, Door, Skeleton, Dummy, Bullet, effect, Static_Tile, Animation_tile, RoomDoorTrigger;
+	Pebble, Branch, Waterfall, Button, Door, Skeleton, Dummy, Bullet, effect, Static_Tile, Animation_tile, RoomDoorTrigger, BoundsObject;
 }

@@ -6,16 +6,11 @@ import game.assets.levels.def.RoomSpawner;
 import game.system.main.Game;
 
 import java.awt.*;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -86,7 +81,7 @@ public class Logger {
                 if(rooms.containsKey(new Point(x, y))) {
                     if(x == 0 && y == 0) {
                         row.append(" x ");
-                    } else if(rooms.get(new Point(x, y)).getRoomType() == ROOM_TYPE.TBLR) {
+                    } else if(rooms.get(new Point(x, y)).getRoomType() == ROOM_TYPE.NESW) {
                         row.append(" O ");
                     } else {
                         row.append(room);

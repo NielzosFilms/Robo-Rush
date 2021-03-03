@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.LinkedList;
 
 public enum ROOM_TYPE {
-    TBLR {
+    NESW {
       public LinkedList<RoomSpawner> getSpawners(Point location) {
           LinkedList<RoomSpawner> spawners = new LinkedList<>();
           spawners.add(new RoomSpawner(new Point(location.x, location.y - 1), new Point(0, -1)));
@@ -17,28 +17,28 @@ public enum ROOM_TYPE {
       }
     },
 
-    T {
+    N {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x, location.y - 1), new Point(0, -1)));
             return spawners;
         }
     },
-    B {
+    S {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x, location.y + 1), new Point(0, 1)));
             return spawners;
         }
     },
-    L {
+    W {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x - 1, location.y), new Point(-1, 0)));
             return spawners;
         }
     },
-    R {
+    E {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x + 1, location.y), new Point(1, 0)));
@@ -46,7 +46,7 @@ public enum ROOM_TYPE {
         }
     },
 
-    TB {
+    NS {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x, location.y - 1), new Point(0, -1)));
@@ -54,7 +54,7 @@ public enum ROOM_TYPE {
             return spawners;
         }
     },
-    LR {
+    EW {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x - 1, location.y), new Point(-1, 0)));
@@ -63,7 +63,7 @@ public enum ROOM_TYPE {
         }
     },
 
-    TL {
+    NW {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x, location.y - 1), new Point(0, -1)));
@@ -71,7 +71,7 @@ public enum ROOM_TYPE {
             return spawners;
         }
     },
-    TR {
+    NE {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x, location.y - 1), new Point(0, -1)));
@@ -80,7 +80,7 @@ public enum ROOM_TYPE {
         }
     },
 
-    BL {
+    SW {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x, location.y + 1), new Point(0, 1)));
@@ -88,7 +88,7 @@ public enum ROOM_TYPE {
             return spawners;
         }
     },
-    BR {
+    SE {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x, location.y + 1), new Point(0, 1)));
@@ -97,7 +97,7 @@ public enum ROOM_TYPE {
         }
     },
 
-    TBR {
+    NES {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x, location.y - 1), new Point(0, -1)));
@@ -106,7 +106,7 @@ public enum ROOM_TYPE {
             return spawners;
         }
     },
-    RBL {
+    ESW {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x + 1, location.y), new Point(1, 0)));
@@ -115,7 +115,7 @@ public enum ROOM_TYPE {
             return spawners;
         }
     },
-    BLT {
+    NSW {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x, location.y + 1), new Point(0, 1)));
@@ -124,7 +124,7 @@ public enum ROOM_TYPE {
             return spawners;
         }
     },
-    LTR {
+    NEW {
         public LinkedList<RoomSpawner> getSpawners(Point location) {
             LinkedList<RoomSpawner> spawners = new LinkedList<>();
             spawners.add(new RoomSpawner(new Point(location.x-1, location.y), new Point(-1, 0)));

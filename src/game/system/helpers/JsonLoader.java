@@ -1,9 +1,11 @@
 package game.system.helpers;
 
+import game.assets.objects.BoundsObject;
 import game.assets.tiles.Tile_Animation;
 import game.assets.tiles.Tile_Static;
 import game.system.systems.gameObject.GameObject;
 import game.system.world.Chunk;
+import game.system.world.JsonStructureLoader;
 import game.textures.Animation;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
@@ -14,6 +16,8 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -90,7 +94,7 @@ public class JsonLoader {
                 if(layer.get("type").toString().equals("tilelayer")) {
                     decodeTileLayer(layer, layer_index);
                 } else if(layer.get("type").toString().equals("objectgroup")) {
-                    //decodeObjectLayer(layer, layer_index);
+                    decodeObjectLayer(layer, layer_index);
                 }
             }
             layer_index++;
@@ -124,6 +128,34 @@ public class JsonLoader {
                 x = 0;
                 y++;
             }
+        }
+    }
+
+    private void decodeObjectLayer(JSONObject layer, int layer_index) {
+        if(StructureLoaderHelpers.hasCustomProp(layer, "z_index")) {
+            layer_index = Integer.parseInt(StructureLoaderHelpers.getCustomProp(layer, "z_index"));
+        }
+        for(Object o : (JSONArray)layer.get("objects")) {
+            JSONObject object = (JSONObject) o;
+//            if(object.get("type").toString().equals("bounds")) {
+//                //this.bounds.add(getRectangle(object));
+//                addObject(new BoundsObject());
+//                addBoundToChunk(getRectangle(object));
+//            } else if(object.get("type").toString().equals("player_spawn")) {
+//                player_spawn = getRectangle(object);
+//            } else {
+                try {
+                    Class<?> clazz = Class.forName(StructureLoaderHelpers.getFullClassname(object));
+                    Constructor<?> ctor = clazz.getConstructor(JSONObject.class, int.class, int.class, JsonLoader.class);
+                    addObject((GameObject) ctor.newInstance(object, layer_index, division, this));
+                } catch (ClassNotFoundException | NoSuchMethodException e) {
+                    Logger.printError("Class not found: " + object.get("type").toString());
+                    e.printStackTrace();
+                } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                    Logger.printError("Class constructor not found: " + object.get("type").toString());
+                    e.printStackTrace();
+                }
+//            }
         }
     }
 

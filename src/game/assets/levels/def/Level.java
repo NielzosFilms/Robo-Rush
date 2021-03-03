@@ -64,4 +64,8 @@ public abstract class Level {
     protected Point invertOffset(Point offset) {
         return new Point(-offset.x, -offset.y);
     }
+
+    public HashMap<Point, Room> getRooms() {
+        return rooms;
+    }
 }

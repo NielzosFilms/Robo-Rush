@@ -2,6 +2,7 @@ package game.assets.entities.enemies;
 
 import game.assets.HealthBar;
 import game.enums.ID;
+import game.system.helpers.JsonLoader;
 import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
@@ -33,7 +34,7 @@ public class Golem_Stone extends GameObject implements Bounds, Hitable, Health {
         super(x, y, z_index, id);
     }
 
-    public Golem_Stone(JSONObject json, int z_index, int division, JsonStructureLoader loader) {
+    public Golem_Stone(JSONObject json, int z_index, int division, JsonLoader loader) {
         super(json, z_index, division, loader);
     }
 
