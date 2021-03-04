@@ -103,19 +103,19 @@ public class Collision {
 						!ent_1.getRightBounds().intersects(ent_2_bounds)) {
 					if (ent_1.getTopBounds().intersects(ent_2_bounds)) {
 						entity_1.setY(entity_1.getY() + 1);
-						//entity_1.setVelY(0);
+						entity_1.setVelY(0);
 					}
 					if (ent_1.getBottomBounds().intersects(ent_2_bounds)) {
 						entity_1.setY(entity_1.getY() - 1);
-						//entity_1.setVelY(0);
+						entity_1.setVelY(0);
 					}
 					if (ent_1.getLeftBounds().intersects(ent_2_bounds)) {
 						entity_1.setX(entity_1.getX() + 1);
-						//entity_1.setVelX(0);
+						entity_1.setVelX(0);
 					}
 					if (ent_1.getRightBounds().intersects(ent_2_bounds)) {
 						entity_1.setX(entity_1.getX() - 1);
-						//entity_1.setVelX(0);
+						entity_1.setVelX(0);
 					}
 				}
 			}
