@@ -45,7 +45,7 @@ public class Level_1 extends Level {
             for (RoomSpawner spawner : spawners) {
                 if (!this.roomExists(spawner.location) && rooms.size() < room_count) {
                     ROOM_TYPE room_type = roomSelector.getRoomType(spawner, rand, rooms);
-                    rooms.put(spawner.location, new Room_Test(spawner.location, room_type));
+                    rooms.put(spawner.location, new Room_Basic(spawner.location, room_type));
                     new_spawners.remove(spawner);
 
                     for (RoomSpawner room_spawner : rooms.get(spawner.location).getSpawners()) {
@@ -65,7 +65,7 @@ public class Level_1 extends Level {
         for(RoomSpawner room_spawner : spawners) {
             if(!this.roomExists(room_spawner.location)) {
                 ROOM_TYPE room_type = roomSelector.getClosingRoomType(room_spawner, rooms);
-                rooms.put(room_spawner.location, new Room_Test(room_spawner.location, room_type));
+                rooms.put(room_spawner.location, new Room_Basic(room_spawner.location, room_type));
             }
         }
 
@@ -84,7 +84,7 @@ public class Level_1 extends Level {
             Room room = rooms.get(room_key);
             if(room.getRoomType().toString().length() != 1) continue;
             double temp_dist = Helpers.getDistance(origin, room_key);
-            if(temp_dist > dist && room instanceof Room_Test) {
+            if(temp_dist > dist && room instanceof Room_Basic) {
                 dist = temp_dist;
                 best_boss_room_key = room_key;
             }
@@ -97,7 +97,7 @@ public class Level_1 extends Level {
         LinkedList<Point> single_door_keys = new LinkedList<>();
         for(Point room_key : rooms.keySet()) {
             Room room = rooms.get(room_key);
-            if(room.getRoomType().toString().length() == 1 && room instanceof Room_Test) {
+            if(room.getRoomType().toString().length() == 1 && room instanceof Room_Basic) {
                 single_door_keys.add(room_key);
             }
         }

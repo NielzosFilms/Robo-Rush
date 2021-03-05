@@ -17,9 +17,9 @@ import game.textures.Texture;
 import java.awt.*;
 import java.util.LinkedList;
 
-public class Room_Test extends Room {
+public class Room_Basic extends Room {
 
-    public Room_Test(Point location, ROOM_TYPE room_type) {
+    public Room_Basic(Point location, ROOM_TYPE room_type) {
         super(location);
         this.room_type = room_type;
         //addObject(new Tree(0, 0, 10, ID.Tree, BIOME.Forest));
