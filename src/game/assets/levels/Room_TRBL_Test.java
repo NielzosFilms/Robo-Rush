@@ -40,4 +40,16 @@ public class Room_TRBL_Test extends Room {
 //        g.setColor(Color.white);
 //        g.drawRect(center.x, center.y, 32, 32);
     }
+
+    @Override
+    public void drawRoomMiniMap(Graphics g, int x, int y, int room_size, boolean active) {
+        if(active) {
+            g.setColor(Color.yellow);
+        } else {
+            g.setColor(Color.orange);
+        }
+        g.fillRect(x, y, room_size, room_size);
+        g.setColor(Color.darkGray);
+        g.drawRect(x, y, room_size, room_size);
+    }
 }

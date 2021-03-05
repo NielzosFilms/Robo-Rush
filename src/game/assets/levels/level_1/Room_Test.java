@@ -53,4 +53,15 @@ public class Room_Test extends Room {
 //        g.setFont(Fonts.default_fonts.get(5));
 //        g.drawString(room_type.toString(), center.x, center.y);
     }
+
+    public void drawRoomMiniMap(Graphics g, int x, int y, int room_size, boolean active) {
+        if(active) {
+            g.setColor(Color.lightGray);
+        } else {
+            g.setColor(Color.gray);
+        }
+        g.fillRect(x, y, room_size, room_size);
+        g.setColor(Color.darkGray);
+        g.drawRect(x, y, room_size, room_size);
+    }
 }

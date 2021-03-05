@@ -110,14 +110,8 @@ public class HUD implements Serializable {
 			for(int x=-minimap_view_depth; x<=minimap_view_depth; x++) {
 				Point current_room = new Point(active_room.x + x, active_room.y + y);
 				if(active_level.getRooms().containsKey(current_room)) {
-					if (current_room.equals(active_room)) {
-						g.setColor(Color.lightGray);
-					} else {
-						g.setColor(Color.gray);
-					}
-					g.fillRect(draw_pos.x + x * room_size, draw_pos.y + y * room_size, room_size, room_size);
-					g.setColor(Color.darkGray);
-					g.drawRect(draw_pos.x + x * room_size, draw_pos.y + y * room_size, room_size, room_size);
+					active_level.getRooms().get(current_room)
+							.drawRoomMiniMap(g, draw_pos.x + x * room_size, draw_pos.y + y * room_size, room_size, active_room.equals(current_room));
 				}
 			}
 		}

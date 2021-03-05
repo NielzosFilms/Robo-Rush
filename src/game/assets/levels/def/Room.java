@@ -18,6 +18,7 @@ public abstract class Room {
 
     public abstract void tick();
     public abstract void render(Graphics g);
+    public abstract void drawRoomMiniMap(Graphics g, int x, int y, int room_size, boolean active);
 
     public LinkedList<LinkedList<GameObject>> getObjects(){
         return objects;
