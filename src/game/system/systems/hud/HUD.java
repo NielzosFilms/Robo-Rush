@@ -4,10 +4,14 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import game.assets.HealthBar;
 import game.assets.entities.Player;
+import game.assets.levels.def.Level;
+import game.assets.levels.def.Room;
+import game.assets.levels.def.RoomSpawner;
 import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
 import game.system.main.*;
@@ -77,6 +81,8 @@ public class HUD implements Serializable {
 		g2d.setFont(font);
 		FontMetrics fontMetrics = g2d.getFontMetrics(font);
 
+		drawMiniMap(g, new Point(350, 25));
+
 		String version = Game.VERSION;
 		String name = "NielzosFilms";
 
@@ -86,6 +92,35 @@ public class HUD implements Serializable {
 				fontMetrics.getHeight() + fontMetrics.getAscent());
 
 		if(Game.DEBUG_MODE) debugHUD.render(g, g2d);
+	}
+
+	private void drawMiniMap(Graphics g, Point draw_pos) {
+		Level active_level = Game.gameController.getActiveLevel();
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+		g.setColor(Color.black);
+		g.fillRect(draw_pos.x - 20, draw_pos.y - 20, 8*5 + 8, 8*5 + 8);
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		drawNeighbourRooms(g, draw_pos, active_level, 8, 2);
+	}
+
+	private void drawNeighbourRooms(Graphics g, Point draw_pos, Level active_level, int room_size, int minimap_view_depth) {
+		Point active_room = active_level.getActiveRoomKey();
+		for(int y=-minimap_view_depth; y<=minimap_view_depth; y++) {
+			for(int x=-minimap_view_depth; x<=minimap_view_depth; x++) {
+				Point current_room = new Point(active_room.x + x, active_room.y + y);
+				if(active_level.getRooms().containsKey(current_room)) {
+					if (current_room.equals(active_room)) {
+						g.setColor(Color.lightGray);
+					} else {
+						g.setColor(Color.gray);
+					}
+					g.fillRect(draw_pos.x + x * room_size, draw_pos.y + y * room_size, room_size, room_size);
+					g.setColor(Color.darkGray);
+					g.drawRect(draw_pos.x + x * room_size, draw_pos.y + y * room_size, room_size, room_size);
+				}
+			}
+		}
 	}
 
 	private int getWorldCoordX(int screen_x) {

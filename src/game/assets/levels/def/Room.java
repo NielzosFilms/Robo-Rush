@@ -1,5 +1,6 @@
 package game.assets.levels.def;
 
+import game.assets.levels.RoomDoorTrigger;
 import game.system.systems.gameObject.GameObject;
 
 import java.awt.*;
@@ -44,5 +45,26 @@ public abstract class Room {
 
     public void setRoomType(ROOM_TYPE room_type) {
         this.room_type = room_type;
+    }
+
+    public void openDoors() {
+        setDoors(true);
+    }
+
+    public void closeDoors() {
+        setDoors(false);
+    }
+
+    private void setDoors(boolean door_state) {
+        int door_count = 0;
+        for(LinkedList<GameObject> layer : objects) {
+            for(GameObject object : layer) {
+                if(object instanceof RoomDoorTrigger) {
+                    ((RoomDoorTrigger) object).setOpen(door_state);
+                    door_count++;
+                }
+                if(door_count >= room_type.toString().length()) return;
+            }
+        }
     }
 }

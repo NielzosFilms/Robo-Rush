@@ -68,4 +68,12 @@ public abstract class Level {
     public HashMap<Point, Room> getRooms() {
         return rooms;
     }
+
+    public void openDoors() {
+        this.getActiveRoom().openDoors();
+    }
+
+    public void closeDoors() {
+        this.getActiveRoom().closeDoors();
+    }
 }

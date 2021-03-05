@@ -1,5 +1,6 @@
 package game.assets.levels;
 
+import game.assets.entities.Player;
 import game.assets.levels.def.Room;
 import game.enums.ID;
 import game.system.helpers.JsonLoader;
@@ -8,6 +9,7 @@ import game.system.helpers.StructureLoaderHelpers;
 import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
+import game.textures.Fonts;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
@@ -25,7 +27,8 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
 
     private Point door_direction;
 
-    private boolean open = false;
+    private boolean open = true;
+    private boolean trigger_active = true;
 
     public RoomDoorTrigger(int x, int y, Point door_direction) {
         super(x, y, 0, ID.RoomDoorTrigger);
@@ -79,6 +82,8 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
     public void render(Graphics g) {
         g.setColor(Color.magenta);
         g.drawRect(this.x, this.y, this.width, this.height);
+        g.setFont(Fonts.default_fonts.get(5));
+        g.drawString(String.valueOf(open), this.x, this.y);
     }
 
     public void triggered() {
@@ -89,12 +94,13 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
         Room next_room = Game.gameController.getActiveLevel().getRooms().get(next_room_key);
 
         RoomDoorTrigger exit_door = getExitDoor(next_room);
-        Point offset = new Point(48*door_direction.x, 48*door_direction.y);
-        Point exit_position = new Point(
-                (int) exit_door.getBounds().getCenterX() + offset.x,
-                (int) exit_door.getBounds().getCenterY() + offset.y);
-        Game.gameController.updatePlayerPosition(exit_position.x, exit_position.y);
+        exit_door.setTriggerActive(false);
+        Point offset = new Point(16*door_direction.x - 8, 16*door_direction.y - 12);
+        //Point exit_position = getExitPosition(exit_door.getBounds(), offset);
 
+        Point exit_position = new Point((int)exit_door.getBounds().getCenterX() - 8, (int)exit_door.getBounds().getCenterY() - 12);
+
+        Game.gameController.updatePlayerPosition(exit_position.x, exit_position.y);
         Game.gameController.getActiveLevel().gotoRoom(this.door_direction);
     }
 
@@ -112,9 +118,24 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
         return this;
     }
 
-//    private Point getPlayerExitPosition() {
-//
-//    }
+    private Point getExitPosition(Rectangle exit_door_bounds, Point offset) {
+        int exit_x = 0;
+        int exit_y = 0;
+        if(new Point(0, -1).equals(door_direction)) {
+            exit_x = (int) exit_door_bounds.getCenterX() + offset.x;
+            exit_y = (int) (exit_door_bounds.getY() + offset.y);
+        } else if(new Point(0, 1).equals(door_direction)) {
+            exit_x = (int) exit_door_bounds.getCenterX() + offset.x;
+            exit_y = (int) (exit_door_bounds.getY() + exit_door_bounds.getHeight() + offset.y);
+        } else if(new Point(-1, 0).equals(door_direction)) {
+            exit_x = (int) exit_door_bounds.getX() + offset.x;
+            exit_y = (int) exit_door_bounds.getCenterY() + offset.y;
+        } else if(new Point(1, 0).equals(door_direction)) {
+            exit_x = (int) (exit_door_bounds.getX() + exit_door_bounds.getHeight() + offset.x);
+            exit_y = (int) exit_door_bounds.getCenterY() + offset.y;
+        }
+        return new Point(exit_x, exit_y);
+    }
 
     public Point getDoorDirection() {
         return door_direction;
@@ -126,5 +147,13 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
 
     public void setOpen(boolean open) {
         this.open = open;
+    }
+
+    public boolean canTrigger() {
+        return trigger_active;
+    }
+
+    public void setTriggerActive(boolean trigger_active) {
+        this.trigger_active = trigger_active;
     }
 }

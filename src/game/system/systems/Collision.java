@@ -52,7 +52,15 @@ public class Collision {
 			if(entity instanceof RoomDoorTrigger) {
 				if(((RoomDoorTrigger) entity).isOpen()) {
 					if (((RoomDoorTrigger) entity).getBounds().intersects(player.getBounds())) {
-						((RoomDoorTrigger) entity).triggered();
+						if(((RoomDoorTrigger) entity).canTrigger()) {
+							((RoomDoorTrigger) entity).triggered();
+							break;
+						}
+					} else {
+						if(!((RoomDoorTrigger) entity).canTrigger()) {
+							((RoomDoorTrigger) entity).setTriggerActive(true);
+							// gameController.getActiveLevel().closeDoors();
+						}
 					}
 					continue;
 				}

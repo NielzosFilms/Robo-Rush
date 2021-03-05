@@ -32,12 +32,12 @@ public class Room_TRBL_Test extends Room {
 
     @Override
     public void render(Graphics g) {
-        int factor = 64;
-        Point center = new Point(location.x*factor - (location.x*factor/2), location.y*factor - (location.y*factor/2));
-        g.setColor(Color.yellow);
-        g.fillRect(center.x+16, center.y+16, 2, 2);
-
-        g.setColor(Color.white);
-        g.drawRect(center.x, center.y, 32, 32);
+//        int factor = 64;
+//        Point center = new Point(location.x*factor - (location.x*factor/2), location.y*factor - (location.y*factor/2));
+//        g.setColor(Color.yellow);
+//        g.fillRect(center.x+16, center.y+16, 2, 2);
+//
+//        g.setColor(Color.white);
+//        g.drawRect(center.x, center.y, 32, 32);
     }
 }

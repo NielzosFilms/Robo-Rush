@@ -75,6 +75,12 @@ public class KeyInput extends KeyAdapter {
 							case KeyEvent.VK_R:
 								gameController.generate();
 								break;
+							case KeyEvent.VK_O:
+								gameController.getActiveLevel().openDoors();
+								break;
+							case KeyEvent.VK_P:
+								gameController.getActiveLevel().closeDoors();
+								break;
 						}
 						// inventory.pickupItem(handler, world);
 					}

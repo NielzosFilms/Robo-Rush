@@ -37,20 +37,20 @@ public class Room_Test extends Room {
     }
 
     public void render(Graphics g) {
-        int factor = 32;
-        Point coords = new Point(location.x*factor, location.y*factor);
-        Point center = new Point(coords.x + factor/2, coords.y + factor/2);
-        g.setColor(Color.white);
-        g.drawRect(coords.x, coords.y, 32, 32);
-
-        for(RoomSpawner spawner : room_type.getSpawners(location)) {
-            Point offset = spawner.door_direction;
-            g.setColor(Color.orange);
-            g.fillRect(center.x + offset.x*13, center.y + offset.y * 13, 2, 2);
-        }
-
-        g.setColor(Color.white);
-        g.setFont(Fonts.default_fonts.get(5));
-        g.drawString(room_type.toString(), center.x, center.y);
+//        int factor = 32;
+//        Point coords = new Point(location.x*factor, location.y*factor);
+//        Point center = new Point(coords.x + factor/2, coords.y + factor/2);
+//        g.setColor(Color.white);
+//        g.drawRect(coords.x, coords.y, 32, 32);
+//
+//        for(RoomSpawner spawner : room_type.getSpawners(location)) {
+//            Point offset = spawner.door_direction;
+//            g.setColor(Color.orange);
+//            g.fillRect(center.x + offset.x*13, center.y + offset.y * 13, 2, 2);
+//        }
+//
+//        g.setColor(Color.white);
+//        g.setFont(Fonts.default_fonts.get(5));
+//        g.drawString(room_type.toString(), center.x, center.y);
     }
 }

@@ -12,7 +12,7 @@ public class Level_1 extends Level {
     private RoomSelector roomSelector;
 
     public Level_1() {
-        super(2);
+        super(4);
         this.roomSelector = new RoomSelector(1);
     }
 
