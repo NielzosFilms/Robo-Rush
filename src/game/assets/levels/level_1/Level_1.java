@@ -2,6 +2,7 @@ package game.assets.levels.level_1;
 
 import game.assets.levels.Room_TRBL_Test;
 import game.assets.levels.def.*;
+import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
 
 import java.awt.*;
@@ -30,10 +31,11 @@ public class Level_1 extends Level {
 
     @Override
     public void generateRooms(Random rand) {
-        rooms.put(new Point(0, 0), new Room_TRBL_Test(new Point(0, 0)));
-        LinkedList<RoomSpawner> spawners = new LinkedList<>(rooms.get(new Point(0, 0)).getSpawners());
+        Point origin = new Point(0, 0);
+        rooms.put(origin, new Room_TRBL_Test(origin));
+        LinkedList<RoomSpawner> spawners = new LinkedList<>(rooms.get(origin).getSpawners());
 
-        this.active_room = new Point(0, 0);
+        this.active_room = origin;
 
         while(rooms.size() < room_count) {
             LinkedList<RoomSpawner> new_spawners = new LinkedList<>(spawners);
@@ -63,6 +65,20 @@ public class Level_1 extends Level {
                 rooms.put(room_spawner.location, new Room_Test(room_spawner.location, room_type));
             }
         }
+
+        Point best_boos_room_key = null;
+        double dist = 0;
+        for(Point room_key : rooms.keySet()) {
+            Room room = rooms.get(room_key);
+            if(room.getRoomType().toString().length() != 1) continue;
+            double temp_dist = Helpers.getDistance(origin, room_key);
+            if(temp_dist > dist) {
+                dist = temp_dist;
+                best_boos_room_key = room_key;
+            }
+        }
+        Room_Boss boss_room = new Room_Boss(best_boos_room_key, rooms.get(best_boos_room_key).getRoomType());
+        rooms.put(best_boos_room_key, boss_room);
 
         Logger.printRoomMatrix(rooms, room_count, spawners);
     }
