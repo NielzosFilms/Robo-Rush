@@ -49,7 +49,7 @@ public class HUD implements Serializable {
 	}
 
 	public void tick() {
-		objects_on_hud = gameController.getObjectsOnHud();
+		objects_on_hud = handler.getHudObjects();
 		if(Game.DEBUG_MODE) debugHUD.tick();
 		selection.tick();
 	}

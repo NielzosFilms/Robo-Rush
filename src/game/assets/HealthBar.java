@@ -27,7 +27,7 @@ public class HealthBar extends GameObject implements Serializable {
         this.min = min;
         this.max = max;
         this.health = max;
-        //Game.world.getHud().addHealthBar(this);
+        Game.gameController.getHandler().addHudObjects(this);
     }
 
     public void tick() {

@@ -19,7 +19,8 @@ public class Handler implements Serializable {
 	private transient Camera cam;
 	private transient ParticleSystem ps;
 
-	public LinkedList<LinkedList<GameObject>> object_entities = new LinkedList<LinkedList<GameObject>>();
+	public LinkedList<LinkedList<GameObject>> object_entities = new LinkedList<>();
+	public LinkedList<LinkedList<GameObject>> hud_objects = new LinkedList<>();
 
 	public Handler() {
 		for (int i = 0; i < 4; i++) {
@@ -135,6 +136,23 @@ public class Handler implements Serializable {
 
 	public void removeObject(GameObject object) {
 		this.object_entities.get(object.getZIndex()).remove(object);
+	}
+
+	public void addHudObjects(GameObject object) {
+		int z_index = object.getZIndex();
+		for(int i=hud_objects.size(); i<=z_index; i++) {
+			this.hud_objects.add(new LinkedList<>());
+		}
+
+		this.hud_objects.get(z_index).add(object);
+	}
+
+	public void removeHudObject(GameObject object) {
+		this.hud_objects.get(object.getZIndex()).remove(object);
+	}
+
+	public LinkedList<LinkedList<GameObject>> getHudObjects() {
+		return this.hud_objects;
 	}
 
 	/*public void removeTile(Tile tile) {
@@ -280,13 +298,9 @@ public class Handler implements Serializable {
 	public void findAndRemoveObject(GameObject object) {
 		LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
 
-		for (LinkedList<GameObject> list : object_entities) {
-			list.remove(object);
-		}
+		object_entities.get(object.getZIndex()).remove(object);
 
-		for (LinkedList<GameObject> list : all_game_objects) {
-			list.remove(object);
-		}
+		all_game_objects.get(object.getZIndex()).remove(object);
 
 		if(object instanceof Destroyable) {
 			((Destroyable) object).destroyed();

@@ -63,6 +63,11 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 	}
 
 	public void tick() {
+		if(health.dead()) {
+			Game.gameController.getHandler().removeHudObject(health);
+			Game.gameController.getHandler().findAndRemoveObject(this);
+		}
+
 		buffer_x += velX;
 		buffer_y += velY;
 		x = Math.round(buffer_x);

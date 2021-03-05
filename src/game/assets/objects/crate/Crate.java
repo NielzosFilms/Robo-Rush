@@ -99,6 +99,11 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
         if (dis > 50) {
             Game.gameController.getInventorySystem().removeOpenInventory(inv);
         }
+
+        if(healthBar.dead()) {
+            Game.gameController.getHandler().removeHudObject(healthBar);
+            Game.gameController.getHandler().findAndRemoveObject(this);
+        }
     }
 
     public void render(Graphics g) {
