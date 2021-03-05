@@ -12,9 +12,12 @@ import java.util.Random;
 public class Level_1 extends Level {
     private RoomSelector roomSelector;
 
+    private int room_count;
+
     public Level_1() {
-        super(4);
-        this.roomSelector = new RoomSelector(1);
+        this.room_count = 8;
+
+        this.roomSelector = new RoomSelector();
     }
 
     @Override
@@ -66,20 +69,40 @@ public class Level_1 extends Level {
             }
         }
 
-        Point best_boos_room_key = null;
+        createBossRoom(origin);
+
+        createTreasureRoom(origin);
+        createTreasureRoom(origin);
+
+        Logger.printRoomMatrix(rooms, room_count, spawners);
+    }
+
+    private void createBossRoom(Point origin) {
+        Point best_boss_room_key = null;
         double dist = 0;
         for(Point room_key : rooms.keySet()) {
             Room room = rooms.get(room_key);
             if(room.getRoomType().toString().length() != 1) continue;
             double temp_dist = Helpers.getDistance(origin, room_key);
-            if(temp_dist > dist) {
+            if(temp_dist > dist && room instanceof Room_Test) {
                 dist = temp_dist;
-                best_boos_room_key = room_key;
+                best_boss_room_key = room_key;
             }
         }
-        Room_Boss boss_room = new Room_Boss(best_boos_room_key, rooms.get(best_boos_room_key).getRoomType());
-        rooms.put(best_boos_room_key, boss_room);
+        Room_Boss boss_room = new Room_Boss(best_boss_room_key, rooms.get(best_boss_room_key).getRoomType());
+        rooms.put(best_boss_room_key, boss_room);
+    }
 
-        Logger.printRoomMatrix(rooms, room_count, spawners);
+    private void createTreasureRoom(Point origin) {
+        LinkedList<Point> single_door_keys = new LinkedList<>();
+        for(Point room_key : rooms.keySet()) {
+            Room room = rooms.get(room_key);
+            if(room.getRoomType().toString().length() == 1 && room instanceof Room_Test) {
+                single_door_keys.add(room_key);
+            }
+        }
+        Point room_key = single_door_keys.get(new Random().nextInt(single_door_keys.size()));
+        Room_Treasure treasure_room = new Room_Treasure(room_key, rooms.get(room_key).getRoomType());
+        rooms.put(room_key, treasure_room);
     }
 }

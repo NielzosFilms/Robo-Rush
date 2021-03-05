@@ -10,11 +10,9 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class RoomSelector {
-    private int level;
     private LinkedList<Point> mapping = new LinkedList<>();
 
-    public RoomSelector(int level) {
-        this.level = level;
+    public RoomSelector() {
 
         mapping.add(new Point(0, -1));
         mapping.add(new Point(1, 0));

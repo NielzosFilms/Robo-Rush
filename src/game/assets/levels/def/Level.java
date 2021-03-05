@@ -11,12 +11,10 @@ import java.util.Random;
 
 public abstract class Level {
     protected long level_seed;
-    protected int room_count;
     protected HashMap<Point, Room> rooms = new HashMap<>();
     protected Point active_room = new Point(0, 0);
 
-    public Level(int room_count) {
-        this.room_count = room_count;
+    public Level() {
     }
 
     public abstract void tick();
