@@ -6,6 +6,8 @@ import game.assets.levels.def.Room;
 import game.assets.levels.def.RoomSpawner;
 import game.assets.objects.crate.Crate;
 import game.enums.ID;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 
 import java.awt.*;
 
@@ -34,13 +36,12 @@ public class Room_Treasure extends Room {
 
     @Override
     public void drawRoomMiniMap(Graphics g, int x, int y, int room_size, boolean active) {
+        Texture marker = new Texture(TEXTURE_LIST.minimap, 3, 5);
+        Texture icon = new Texture(TEXTURE_LIST.minimap, 1, 5);
+        g.drawImage(room_type.getTexture().getTexure(), x, y, room_size, room_size, null);
+        g.drawImage(icon.getTexure(), x, y, room_size, room_size, null);
         if(active) {
-            g.setColor(Color.yellow);
-        } else {
-            g.setColor(Color.orange);
+            g.drawImage(marker.getTexure(), x, y, room_size, room_size, null);
         }
-        g.fillRect(x, y, room_size, room_size);
-        g.setColor(Color.darkGray);
-        g.drawRect(x, y, room_size, room_size);
     }
 }

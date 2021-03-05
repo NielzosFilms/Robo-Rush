@@ -5,6 +5,8 @@ import game.assets.levels.def.ROOM_TYPE;
 import game.assets.levels.def.Room;
 import game.enums.ID;
 import game.system.helpers.JsonLoader;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 
 import java.awt.*;
 
@@ -43,13 +45,12 @@ public class Room_TRBL_Test extends Room {
 
     @Override
     public void drawRoomMiniMap(Graphics g, int x, int y, int room_size, boolean active) {
+        Texture icon = new Texture(TEXTURE_LIST.minimap, 2, 5);
+        Texture marker = new Texture(TEXTURE_LIST.minimap, 3, 5);
+        g.drawImage(room_type.getTexture().getTexure(), x, y, room_size, room_size, null);
+        g.drawImage(icon.getTexure(), x, y, room_size, room_size, null);
         if(active) {
-            g.setColor(Color.CYAN);
-        } else {
-            g.setColor(Color.green);
+            g.drawImage(marker.getTexure(), x, y, room_size, room_size, null);
         }
-        g.fillRect(x, y, room_size, room_size);
-        g.setColor(Color.darkGray);
-        g.drawRect(x, y, room_size, room_size);
     }
 }
