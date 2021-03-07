@@ -16,7 +16,6 @@ import game.system.systems.Collision;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.hitbox.HitboxSystem;
 import game.system.systems.hud.HUD;
-import game.system.systems.inventory.InventorySystem;
 import game.system.systems.lighting.LightingSystem;
 import game.system.systems.particles.ParticleSystem;
 import game.system.world.Chunk;

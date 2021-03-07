@@ -2,6 +2,7 @@ package game.assets.items.item;
 
 import game.assets.items.Item_Ground;
 import game.enums.ITEM_ID;
+import game.system.systems.gameObject.GameObject;
 import game.textures.ImageFilters;
 import game.textures.Texture;
 
@@ -11,51 +12,21 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
-public abstract class Item implements Cloneable, Serializable {
-    protected int amount;
-    protected ITEM_ID itemType;
-    protected Texture tex;
-    protected Item_Ground itemGround;
-    protected int damage = 0;
-    protected boolean stackable = true;
+public class Item {
+    private Texture tex;
+    private ITEM_ID item_id;
 
-    public Item(int amount, ITEM_ID itemType) {
-        this.amount = amount;
-        this.itemType = itemType;
-        this.itemGround = null;
+    public Item(Texture tex, ITEM_ID item_id) {
+        this.tex = tex;
+        this.item_id = item_id;
     }
 
-    public void render(Graphics g, int x, int y) {
-        Font font = new Font("SansSerif", Font.PLAIN, 3);
-        g.setFont(font);
-        g.setColor(Color.WHITE);
-
-        g.drawImage(this.tex.getTexure(), x, y, 16, 16, null);
-        //ImageFilters.renderImageWithRotationFromCenter(g, tex.getTexure(), x, y, 16, 16, -45);
-
-        if(stackable) g.drawString("" + this.amount, x, y + 16);
-
-        g.drawString(this.itemType.toString(), x, y + 2);
+    public void drawItemForInventory(Graphics g, int x, int y) {
+        g.drawImage(this.tex.getTexure(), x, y, null);
     }
 
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
-    public int getAmount() {
-        return this.amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public ITEM_ID getItemType() {
-        return this.itemType;
-    }
-
-    public void setItemType(ITEM_ID itemType) {
-        this.itemType = itemType;
+    public void drawItemForGame(Graphics g, int x, int y) {
+        g.drawImage(this.tex.getTexure(), x, y, null);
     }
 
     public Texture getTexture() {
@@ -66,19 +37,11 @@ public abstract class Item implements Cloneable, Serializable {
         this.tex = tex;
     }
 
-    public Item_Ground getItemGround() {
-        return new Item_Ground(itemGround.getX(), itemGround.getY(), itemGround.getZIndex(), itemGround.getId(), this);
+    public ITEM_ID getItem_id() {
+        return item_id;
     }
 
-    public void setItemGround(Item_Ground itemGround) {
-        this.itemGround = itemGround;
-    }
-
-    public boolean isStackable() {
-        return stackable;
-    }
-
-    public void setStackable(boolean stackable) {
-        this.stackable = stackable;
+    public void setItem_id(ITEM_ID item_id) {
+        this.item_id = item_id;
     }
 }

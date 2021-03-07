@@ -4,18 +4,20 @@ import java.awt.*;
 import java.util.Random;
 
 import game.assets.items.item.Item;
+import game.audio.SoundEffect;
 import game.system.main.Game;
+import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.enums.ID;
 import game.system.systems.gameObject.HasItem;
 import game.system.systems.gameObject.Interactable;
 import game.textures.Textures;
 
-public class Item_Ground extends GameObject implements Interactable, HasItem {
+public class Item_Ground extends GameObject implements Bounds {
 
 	private Random r = new Random();
 
-	private game.assets.items.item.Item inventoryItem;
+	private Item inventoryItem;
 
 	private int x_diff, y_diff, timer;
 	private int lifeTimer = (60 * 60) * 5; // 5 mins till destroyed
@@ -23,7 +25,7 @@ public class Item_Ground extends GameObject implements Interactable, HasItem {
 
 	private double buffer_x, buffer_y;
 
-	public Item_Ground(int x, int y, int z_index, ID id, game.assets.items.item.Item inventoryItem) {
+	public Item_Ground(int x, int y, int z_index, ID id, Item inventoryItem) {
 		super(x, y, z_index, id);
 		this.inventoryItem = inventoryItem;
 		velY = (r.nextFloat() * 3) - 2;
@@ -70,16 +72,10 @@ public class Item_Ground extends GameObject implements Interactable, HasItem {
 		g.drawImage(inventoryItem.getTexture().getTexure(), x + x_diff, y + y_diff, 16, 16, null);
 	}
 
-	public Rectangle getSelectBounds() {
-		return new Rectangle(x, y, 16, 16);
-	}
-
-	public Item getItem() {
-		return this.inventoryItem;
-	}
-
-	public void interact() {
-//		Game.gameController.getInventorySystem().pickupItemToPlayerInv(this);
+	public void playerCollided() {
+		SoundEffect.inv_pickup_item.play();
+		Game.gameController.getPlayer().addItem(this.inventoryItem);
+		Game.gameController.getHandler().findAndRemoveObject(this);
 	}
 
 	public void setX(int x) {
@@ -90,5 +86,30 @@ public class Item_Ground extends GameObject implements Interactable, HasItem {
 	public void setY(int y) {
 		this.y = y;
 		buffer_y = y;
+	}
+
+	@Override
+	public Rectangle getBounds() {
+		return new Rectangle(this.x, this.y, 16, 16);
+	}
+
+	@Override
+	public Rectangle getTopBounds() {
+		return null;
+	}
+
+	@Override
+	public Rectangle getBottomBounds() {
+		return null;
+	}
+
+	@Override
+	public Rectangle getLeftBounds() {
+		return null;
+	}
+
+	@Override
+	public Rectangle getRightBounds() {
+		return null;
 	}
 }

@@ -1,8 +1,6 @@
 package game.enums;
 
 import game.assets.items.item.Item;
-import game.assets.objects.rock.Item_Rock;
-import game.assets.objects.stick.Item_Stick;
 
 import java.util.LinkedList;
 import java.util.Random;

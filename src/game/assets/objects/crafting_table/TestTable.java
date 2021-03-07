@@ -5,8 +5,6 @@ import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Interactable;
-import game.system.systems.inventory.Crafting_Inventory;
-import game.system.systems.inventory.crafting_enums.CraftingTableDefinitions;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 

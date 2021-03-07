@@ -114,6 +114,11 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
 
         Game.gameController.updatePlayerPosition(exit_position.x, exit_position.y);
         Game.gameController.getActiveLevel().gotoRoom(this.door_direction);
+
+        if(this.need_key) {
+            Game.gameController.getPlayer().removeItemKey(this.need_key_id);
+            this.need_key = false;
+        }
     }
 
     private RoomDoorTrigger getExitDoor(Room next_room) {

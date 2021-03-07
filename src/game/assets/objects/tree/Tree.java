@@ -9,7 +9,6 @@ import game.assets.HealthBar;
 import game.assets.entities.Player;
 import game.assets.items.Item_Ground;
 import game.assets.items.item.Item;
-import game.assets.objects.stick.Item_Stick;
 import game.audio.SoundEffect;
 import game.system.helpers.Logger;
 import game.system.main.Game;
@@ -75,8 +74,8 @@ public class Tree extends GameObject implements Bounds, Destroyable, Hitable, He
 	@Override
 	public void destroyed() {
 		SoundEffect.tree_broken.play();
-		Game.gameController.getHandler().addObject(new Item_Ground((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), 15, ID.Item, new Item_Stick(2)));
-		Game.gameController.getHandler().addObject(new Item_Ground((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), 15, ID.Item, new Item_Stick(2)));
+//		Game.gameController.getHandler().addObject(new Item_Ground((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), 15, ID.Item, new Item_Stick(2)));
+//		Game.gameController.getHandler().addObject(new Item_Ground((int)getBounds().getCenterX(), (int)getBounds().getCenterY(), 15, ID.Item, new Item_Stick(2)));
 		destroyedCalled = true;
 	}
 

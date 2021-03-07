@@ -8,6 +8,7 @@ import java.util.Random;
 import game.assets.entities.bullets.Bullet;
 import game.audio.SoundEffect;
 import game.enums.DIRECTIONS;
+import game.enums.ITEM_ID;
 import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
 import game.system.systems.gameObject.Bounds;
@@ -16,22 +17,17 @@ import game.system.systems.gameObject.Hitable;
 import game.system.systems.gameObject.Interactable;
 import game.system.systems.hitbox.Hitbox;
 import game.system.systems.hitbox.HitboxContainer;
-import game.system.systems.inventory.Inventory;
 import game.assets.items.item.Item;
-import game.assets.objects.rock.Item_Rock;
-import game.assets.objects.stick.Item_Stick;
-import game.system.systems.inventory.InventorySystem;
 import game.system.main.*;
 import game.enums.ID;
 import game.system.inputs.KeyInput;
 import game.enums.BIOME;
-import game.system.systems.inventory.inventoryDef.InventoryDef;
 import game.textures.*;
 
 import static java.lang.Math.pow;
 
 public class Player extends GameObject implements Bounds, Interactable, Hitable {
-	private static final int ATTACK_DELAY = 30;
+	private static final int ATTACK_DELAY = 1;
 	private static final int DEFAULT_ATTACK_DAMAGE = 1;
 	private float acceleration = 0.2f, deceleration = 0.3f;
 	public final int REACH = 50;
@@ -65,10 +61,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 
 	private Animation attack_slice;
 
-	public Inventory inventory;
-	public Inventory hotbar;
-
-	private LinkedList<Object> items = new LinkedList<>();
+	private LinkedList<Item> items = new LinkedList<>();
 
 	public Player(int x, int y, int z_index, ID id, KeyInput keyInput) {
 		super(x, y, z_index, id);
@@ -155,27 +148,6 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		buffer_y += velY;
 		x = Math.round(buffer_x);
 		y = Math.round(buffer_y);
-
-		attack_timer.tick();
-		if(attacking) {
-			//attack_slice.runAnimation();
-			attacking_item_rot += attacking_item_rot_vel;
-			if(attacking_item_rot >= 90) {
-				attacking_item_rot_vel -= 0.3f * (attacking_item_rot_vel+1);
-				if(attacking_item_rot_vel <= 0) {
-					attacking = false;
-					attacking_item_rot = 0;
-					attacking_item_rot_vel = 0;
-				}
-			} else {
-				attacking_item_rot_vel += 0.3f * (attacking_item_rot_vel+1);
-			}
-			/*if(attack_slice.animationEnded()) {
-				attacking = false;
-				attacking_item_rot = 0;
-				attack_slice.resetAnimation();
-			}*/
-		}
 
 		updateAnimations();
 
@@ -276,6 +248,11 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		}
 		dash.tick();
 		dash_cooldown.tick();
+
+		attack_timer.tick();
+		if(Game.mouseInput.leftMouseDown() && canAttack()) {
+			attack();
+		}
 	}
 
 	private void updateVelocity() {
@@ -350,6 +327,12 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 			g.setColor(new Color(255, 108, 252, 92));
 			//Helpers.drawBounds(g, this);
 			g.drawRect(x, y, 1, 1);
+		}
+
+		int offset_x = 0;
+		for(Item item : items) {
+			item.drawItemForInventory(g, x + offset_x, y);
+			offset_x += 8;
 		}
 	}
 
@@ -480,7 +463,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 //	}
 
 	public void interact() {
-		inventory.open();
+//		inventory.open();
 	}
 
 	public void attack() {
@@ -525,7 +508,10 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		int cenX = (int) getBounds().getCenterX();
 		int cenY = (int) getBounds().getCenterY();
 		int angle = (int) Helpers.getAngle(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
-		Bullet bullet = new Bullet(cenX, cenY, z_index, angle, this);
+
+		int spread_angle = new Random().nextInt(24) - 12;
+
+		Bullet bullet = new Bullet(cenX, cenY, z_index, angle + spread_angle, this);
 		Game.gameController.getHandler().addObject(bullet);
 	}
 
@@ -548,9 +534,9 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		return damage_output;
 	}
 
-	public InventoryDef getInventory() {
-		return inventory;
-	}
+//	public InventoryDef getInventory() {
+//		return inventory;
+//	}
 
 	public void setKeyInput(KeyInput keyInput) {
 		this.keyInput = keyInput;
@@ -569,6 +555,29 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	}
 
 	public boolean hasKey(int need_key_id) {
-		return true;
+		if(need_key_id == 0) {
+			for(Item item : items) {
+				if(item.getItem_id() == ITEM_ID.key) {
+					return true;
+				}
+			}
+		}
+		// test key ids
+		return false;
+	}
+
+	public void removeItemKey(int need_key_id) {
+		if(need_key_id == 0) {
+			for(Item item : items) {
+				if(item.getItem_id() == ITEM_ID.key) {
+					items.remove(item);
+					return;
+				}
+			}
+		}
+	}
+
+	public void addItem(Item item) {
+		this.items.add(item);
 	}
 }

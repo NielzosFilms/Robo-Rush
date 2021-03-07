@@ -5,7 +5,6 @@ import game.enums.DIRECTIONS;
 import game.system.main.Camera;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
-import game.system.systems.inventory.InventorySystem;
 
 import java.awt.*;
 import java.io.File;
@@ -54,8 +53,8 @@ public class Helpers {
     public static Point getTileCoords(Point world_coords, int item_w, int item_h) {
         int tile_x = Math.round(world_coords.x/item_w) * item_w;
         int tile_y = Math.round(world_coords.y/item_h) * item_h;
-        if(world_coords.x < 0) tile_x -= InventorySystem.item_w;
-        if(world_coords.y < 0) tile_y -= InventorySystem.item_h;
+//        if(world_coords.x < 0) tile_x -= InventorySystem.item_w;
+//        if(world_coords.y < 0) tile_y -= InventorySystem.item_h;
         return new Point(tile_x, tile_y);
     }
 

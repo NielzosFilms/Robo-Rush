@@ -12,7 +12,6 @@ import game.system.helpers.Helpers;
 import game.system.helpers.Settings;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Interactable;
-import game.system.systems.inventory.InventorySystem;
 import game.system.main.*;
 import game.enums.ID;
 import game.system.systems.menu.MenuSystem;

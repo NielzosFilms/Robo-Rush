@@ -26,7 +26,6 @@ import game.system.systems.hitbox.HitboxSystem;
 import game.system.systems.hud.HUD;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
-import game.system.systems.inventory.InventorySystem;
 import game.system.systems.lighting.Light;
 import game.system.systems.lighting.LightingSystem;
 import game.system.main.*;
@@ -54,7 +53,7 @@ public class World implements Serializable {
 
 	private HUD hud;
 
-	private InventorySystem inventorySystem;
+//	private InventorySystem inventorySystem;
 	private static LightingSystem lightingSystem;
 	private static ParticleSystem ps;
 
@@ -63,7 +62,7 @@ public class World implements Serializable {
 	public World() {
 		handler = new Handler();
 		cam = new Camera(0, 0);
-		inventorySystem = new InventorySystem();
+//		inventorySystem = new InventorySystem();
 
 		hud = new HUD();
 	}
@@ -113,7 +112,7 @@ public class World implements Serializable {
 		collision.tick();
 		hitboxSystem.tick();
 
-		inventorySystem.tick();
+//		inventorySystem.tick();
 		cam.tick(player);
 		hud.tick();
 	}
@@ -222,11 +221,11 @@ public class World implements Serializable {
 		Long finish = System.currentTimeMillis();
 		// System.out.println("Light System Render Time: " + (finish - start));
 
-		inventorySystem.renderCam(g);
+//		inventorySystem.renderCam(g);
 		hud.renderCam(g, g2d);
 		g2d.translate(-cam.getX(), -cam.getY()); // end of cam
 		hud.render(g, g2d);
-		inventorySystem.render(g);
+//		inventorySystem.render(g);
 	}
 
 	public boolean addEntityToChunk(GameObject entity) {
@@ -379,13 +378,13 @@ public class World implements Serializable {
 		this.hud = hud;
 	}
 
-	public InventorySystem getInventorySystem() {
-		return inventorySystem;
-	}
+//	public InventorySystem getInventorySystem() {
+//		return inventorySystem;
+//	}
 
-	public void setInventorySystem(InventorySystem inventorySystem) {
-		this.inventorySystem = inventorySystem;
-	}
+//	public void setInventorySystem(InventorySystem inventorySystem) {
+//		this.inventorySystem = inventorySystem;
+//	}
 
 	public LightingSystem getLightingSystem() {
 		return lightingSystem;

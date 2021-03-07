@@ -9,7 +9,6 @@ import java.awt.event.MouseWheelListener;
 
 import game.assets.entities.Player;
 import game.system.systems.hud.HUD;
-import game.system.systems.inventory.InventorySystem;
 import game.system.main.*;
 import game.system.systems.menu.MenuSystem;
 import game.system.world.World;
