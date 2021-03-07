@@ -1,6 +1,5 @@
 package game.assets.entities.bullets;
 
-import game.assets.items.item.CanAttack;
 import game.enums.ID;
 import game.system.helpers.Logger;
 import game.system.main.Game;

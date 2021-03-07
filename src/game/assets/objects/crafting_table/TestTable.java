@@ -13,11 +13,11 @@ import game.textures.Texture;
 import java.awt.*;
 
 public class TestTable extends GameObject implements Interactable, Bounds {
-    private Crafting_Inventory inventory;
+//    private Crafting_Inventory inventory;
     public TestTable(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
-        inventory = new Crafting_Inventory(3, 3, CraftingTableDefinitions.test_table);
-        inventory.setInitXY(200, 100);
+//        inventory = new Crafting_Inventory(3, 3, CraftingTableDefinitions.test_table);
+//        inventory.setInitXY(200, 100);
 
         this.tex = new Texture(TEXTURE_LIST.wood_list, 0, 0);
     }
@@ -30,7 +30,7 @@ public class TestTable extends GameObject implements Interactable, Bounds {
                 * (obj_bounds.getCenterX() - player_bounds.getCenterX())
                 + (obj_bounds.getCenterY() - player_bounds.getCenterY()) * (obj_bounds.getCenterY() - player_bounds.getCenterY()));
         if (dis > 50) {
-            Game.gameController.getInventorySystem().removeOpenInventory(inventory);
+//            Game.gameController.getInventorySystem().removeOpenInventory(inventory);
         }
     }
 
@@ -46,7 +46,7 @@ public class TestTable extends GameObject implements Interactable, Bounds {
 
     @Override
     public void interact() {
-        inventory.open();
+//        inventory.open();
     }
 
     @Override

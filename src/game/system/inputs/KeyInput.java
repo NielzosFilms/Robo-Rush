@@ -22,7 +22,7 @@ import game.textures.Textures;
 public class KeyInput extends KeyAdapter {
 
 	private Handler handler;
-	private InventorySystem inventorySystem;
+//	private InventorySystem inventorySystem;
 	private GameController gameController;
 	private MenuSystem menuSystem;
 
@@ -35,7 +35,7 @@ public class KeyInput extends KeyAdapter {
 
 	public void setRequirements(GameController gameController) {
 		this.handler = gameController.getHandler();
-		this.inventorySystem = gameController.getInventorySystem();
+//		this.inventorySystem = gameController.getInventorySystem();
 		this.gameController = gameController;
 		this.menuSystem = Game.menuSystem;
 	}
@@ -108,7 +108,7 @@ public class KeyInput extends KeyAdapter {
 //					world.getActive_structure().generate(world);
 //				}else world.generate();
 //			}
-			inventorySystem.keyPressed(e);
+//			inventorySystem.keyPressed(e);
 		} else {
 			menuSystem.keyPressed(e);
 		}
@@ -124,12 +124,8 @@ public class KeyInput extends KeyAdapter {
 
 			switch(Game.game_state) {
 				case Game:
-					if(inventorySystem.inventoryIsOpen()) {
-						inventorySystem.closeAll();
-					} else {
-						Game.game_state = GAMESTATES.Pauzed;
-						Game.menuSystem.setState(MENUSTATES.Pauzed);
-					}
+					Game.game_state = GAMESTATES.Pauzed;
+					Game.menuSystem.setState(MENUSTATES.Pauzed);
 					break;
 				case Pauzed:
 					Game.game_state = GAMESTATES.Game;

@@ -6,12 +6,6 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import game.assets.entities.bullets.Bullet;
-import game.assets.items.item.CanAttack;
-import game.assets.items.tools.iron.Tool_Iron_Axe;
-import game.assets.objects.crate.Item_Crate;
-import game.assets.items.tools.wood.Tool_WoodenAxe;
-import game.assets.items.tools.wood.Tool_WoodenPickaxe;
-import game.assets.items.tools.wood.Tool_WoodenSword;
 import game.audio.SoundEffect;
 import game.enums.DIRECTIONS;
 import game.system.helpers.Helpers;
@@ -81,20 +75,17 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		this.keyInput = keyInput;
 		this.direction = DIRECTIONS.down;
 
-		this.inventory = new Inventory(5, 5);
-		this.inventory.addItem(new Item_Rock(InventorySystem.stackSize));
-		this.inventory.addItem(new Item_Stick(InventorySystem.stackSize));
-		this.inventory.addItem(new Item_Crate(InventorySystem.stackSize));
+//		this.inventory = new Inventory(5, 5);
+//		this.inventory.addItem(new Item_Rock(InventorySystem.stackSize));
+//		this.inventory.addItem(new Item_Stick(InventorySystem.stackSize));
+//		this.inventory.addItem(new Item_Crate(InventorySystem.stackSize));
 
-		this.hotbar = new Inventory(5, 1);
-		this.hotbar.setHotbar(true);
-		hotbar.setMoveable(false);
-		int hotbar_x = Game.WIDTH / 2 - this.hotbar.getInventoryBounds().width / 2;
-		int hotbar_y = Game.HEIGHT - this.hotbar.getInventoryBounds().height;
-		this.hotbar.setXY(hotbar_x, hotbar_y);
-		this.hotbar.addItem(new Tool_WoodenAxe());
-		this.hotbar.addItem(new Tool_Iron_Axe());
-		this.hotbar.addItem(new Tool_WoodenSword());
+//		this.hotbar = new Inventory(5, 1);
+//		this.hotbar.setHotbar(true);
+//		hotbar.setMoveable(false);
+//		int hotbar_x = Game.WIDTH / 2 - this.hotbar.getInventoryBounds().width / 2;
+//		int hotbar_y = Game.HEIGHT - this.hotbar.getInventoryBounds().height;
+//		this.hotbar.setXY(hotbar_x, hotbar_y);
 
 		// default = 100
 		this.health = 75;
@@ -341,15 +332,15 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		int cenX = (int)getBounds().getCenterX();
 		int cenY = (int)getBounds().getCenterY();
 		int angle = Math.round(Helpers.getAngle(new Point(cenX, cenY), mouse));
-		Item holding = Game.gameController.getInventorySystem().getHotbarSelectedItem();
+//		Item holding = Game.gameController.getInventorySystem().getHotbarSelectedItem();
 
 		AffineTransform backup = g2d.getTransform();
 		AffineTransform rotation_transform = new AffineTransform(backup);
 		rotation_transform.rotate(Math.toRadians(angle), cenX, cenY);
 		g2d.setTransform(rotation_transform);
-		if(holding != null) {
-			g.drawImage(holding.getTexture().getTexure(), cenX + 6, cenY - 13, 16, 16, null);
-		}
+//		if(holding != null) {
+//			g.drawImage(holding.getTexture().getTexure(), cenX + 6, cenY - 13, 16, 16, null);
+//		}
 		g.drawImage(hand.getTexure(), cenX+8, cenY-2, 16, 24, null);
 		g2d.setTransform(backup);
 
@@ -421,26 +412,26 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	private void drawAttack(Graphics g) {
 		int cenX = (int) getBounds().getCenterX();
 		int cenY = (int) getBounds().getCenterY();
-		Item holding = Game.gameController.getInventorySystem().getHotbarSelectedItem();
-		if(holding != null) {
-			if(holding instanceof CanAttack) {
-				int direction_rotation = 0;
-				switch(attack_dir) {
-					case up:
-						direction_rotation = -90;
-						break;
-					case down:
-						direction_rotation = 90;
-						break;
-					case left:
-						direction_rotation = 180;
-						break;
-				}
-				//attack_slice.drawAnimationRotated(g, cenX-24, cenY-40, 64, 64, cenX, cenY, direction_rotation);
-				ImageFilters.renderImageWithRotation(g, holding.getTexture().getTexure(), cenX + 4, cenY - 20, 16, 16,
-						cenX, cenY, (int) (direction_rotation+90 + 45 + -attacking_item_rot));
-			}
-		}
+//		Item holding = Game.gameController.getInventorySystem().getHotbarSelectedItem();
+//		if(holding != null) {
+//			if(holding instanceof CanAttack) {
+//				int direction_rotation = 0;
+//				switch(attack_dir) {
+//					case up:
+//						direction_rotation = -90;
+//						break;
+//					case down:
+//						direction_rotation = 90;
+//						break;
+//					case left:
+//						direction_rotation = 180;
+//						break;
+//				}
+//				//attack_slice.drawAnimationRotated(g, cenX-24, cenY-40, 64, 64, cenX, cenY, direction_rotation);
+//				ImageFilters.renderImageWithRotation(g, holding.getTexture().getTexure(), cenX + 4, cenY - 20, 16, 16,
+//						cenX, cenY, (int) (direction_rotation+90 + 45 + -attacking_item_rot));
+//			}
+//		}
 	}
 
 	@Override
@@ -545,13 +536,13 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	public int getExpectedDamage() {
 		int damage_output = DEFAULT_ATTACK_DAMAGE;
 		int attack_delay = ATTACK_DELAY;
-		Item holding = Game.gameController.getInventorySystem().getHotbarSelectedItem();
-		if(holding != null) {
-			if(holding instanceof CanAttack) {
-				damage_output += ((CanAttack) holding).getDamage();
-				attack_delay += ((CanAttack) holding).getAttack_speed();
-			}
-		}
+//		Item holding = Game.gameController.getInventorySystem().getHotbarSelectedItem();
+//		if(holding != null) {
+//			if(holding instanceof CanAttack) {
+//				damage_output += ((CanAttack) holding).getDamage();
+//				attack_delay += ((CanAttack) holding).getAttack_speed();
+//			}
+//		}
 		attack_timer.setDelay(attack_delay);
 		attack_timer.resetTimer();
 		return damage_output;

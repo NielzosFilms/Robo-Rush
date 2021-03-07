@@ -16,7 +16,7 @@ import game.system.world.World;
 
 public class MouseInput extends MouseAdapter implements MouseMotionListener, MouseWheelListener {
 	private Game game;
-	private InventorySystem inventorySystem;
+//	private InventorySystem inventorySystem;
 	private MenuSystem menuSystem;
 	private Camera cam;
 	private HUD hud;
@@ -35,7 +35,7 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 
 	public void setRequirements(Game game, GameController gameController) {
 		this.game = game;
-		this.inventorySystem = gameController.getInventorySystem();
+//		this.inventorySystem = gameController.getInventorySystem();
 		this.menuSystem = Game.menuSystem;
 		this.cam = gameController.getCam();
 		this.hud = gameController.getHud();
@@ -54,7 +54,7 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 		switch(Game.game_state) {
 			case Game:
 				hud.mousePressed(e);
-				inventorySystem.mouseClicked(e);
+//				inventorySystem.mouseClicked(e);
 				break;
 			case Pauzed:
 			case Menu:
@@ -94,7 +94,7 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		inventorySystem.mouseWheelMoved(e);
+//		inventorySystem.mouseWheelMoved(e);
 	}
 
 	public boolean mouseOverLocalVar(int x, int y, int width, int height) {
@@ -124,7 +124,7 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	}
 
 	public void setGameController(GameController gameController) {
-		this.inventorySystem = gameController.getInventorySystem();
+//		this.inventorySystem = gameController.getInventorySystem();
 		this.cam = gameController.getCam();
 		this.hud = gameController.getHud();
 		this.handler = gameController.getHandler();

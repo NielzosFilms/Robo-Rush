@@ -25,22 +25,22 @@ public class Crafting_Inventory extends InventoryDef {
         this.tableDef = tableDef;
         this.size_x = size_x;
         this.size_y = size_y;
-        for(Map<Item, Item[]> page : tableDef.getPages()) {
-            LinkedList<InventorySlotDef> page_slots = new LinkedList<>();
-            //slots.add(new InventorySlot(this, x * slot_w, y * slot_h));
-            for(int y = 0; y < size_y; y++) {
-                for(int x = 0; x < size_x; x++) {
-                    // translate x, y to screen coords
-                    page_slots.add(new Crafting_Slot(this, x * slot_w, y * slot_h));
-                }
-            }
-            int i = 0;
-            for(Item key : page.keySet()) {
-                ((Crafting_Slot)page_slots.get(i)).setItems(key, page.get(key));
-                i++;
-            }
-            pages.add(page_slots);
-        }
+//        for(Map<Item, Item[]> page : tableDef.getPages()) {
+//            LinkedList<InventorySlotDef> page_slots = new LinkedList<>();
+//            //slots.add(new InventorySlot(this, x * slot_w, y * slot_h));
+//            for(int y = 0; y < size_y; y++) {
+//                for(int x = 0; x < size_x; x++) {
+//                    // translate x, y to screen coords
+//                    page_slots.add(new Crafting_Slot(this, x * slot_w, y * slot_h));
+//                }
+//            }
+//            int i = 0;
+//            for(Item key : page.keySet()) {
+//                ((Crafting_Slot)page_slots.get(i)).setItems(key, page.get(key));
+//                i++;
+//            }
+//            pages.add(page_slots);
+//        }
     }
 
     @Override

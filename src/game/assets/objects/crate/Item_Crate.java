@@ -2,7 +2,6 @@ package game.assets.objects.crate;
 
 import game.assets.items.item.Item;
 import game.assets.items.Item_Ground;
-import game.assets.items.item.Placeable;
 import game.enums.ID;
 import game.enums.ITEM_ID;
 import game.system.main.Game;
@@ -11,7 +10,7 @@ import game.textures.Texture;
 
 import java.awt.*;
 
-public class Item_Crate extends Item implements Placeable {
+public class Item_Crate extends Item {
 	public Item_Crate(int amount) {
 		super(amount, ITEM_ID.Crate);
 		this.tex = new Texture(TEXTURE_LIST.wood_list, 1, 0);

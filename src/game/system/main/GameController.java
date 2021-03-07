@@ -45,7 +45,7 @@ public class GameController implements Serializable {
 
     private HUD hud;
 
-    private InventorySystem inventorySystem;
+//    private InventorySystem inventorySystem;
     private static LightingSystem lightingSystem;
     private static ParticleSystem ps;
 
@@ -54,7 +54,7 @@ public class GameController implements Serializable {
     public GameController() {
         handler = new Handler();
         cam = new Camera(0, 0);
-        inventorySystem = new InventorySystem();
+//        inventorySystem = new InventorySystem();
 
         hud = new HUD();
     }
@@ -81,7 +81,7 @@ public class GameController implements Serializable {
         collision.setRequirements(handler, this, this.player);
         hitboxSystem.setRequirements(handler);
 
-        inventorySystem.setRequirements(handler, mouseInput, this, this.player, cam);
+//        inventorySystem.setRequirements(handler, mouseInput, this, this.player, cam);
         lightingSystem.setRequirements(handler, this, cam);
 
         hud.setRequirements(handler, this.player, mouseInput, this, cam);
@@ -109,7 +109,7 @@ public class GameController implements Serializable {
         collision.tick();
         hitboxSystem.tick();
 
-        inventorySystem.tick();
+//        inventorySystem.tick();
         cam.tick(player);
         hud.tick();
     }
@@ -140,11 +140,11 @@ public class GameController implements Serializable {
         Long finish = System.currentTimeMillis();
         // System.out.println("Light System Render Time: " + (finish - start));
 
-        inventorySystem.renderCam(g);
+//        inventorySystem.renderCam(g);
         hud.renderCam(g, g2d);
         g2d.translate(-cam.getX(), -cam.getY()); // end of cam
         hud.render(g, g2d);
-        inventorySystem.render(g);
+//        inventorySystem.render(g);
     }
 
     public void generate() {
@@ -234,13 +234,13 @@ public class GameController implements Serializable {
         this.hud = hud;
     }
 
-    public InventorySystem getInventorySystem() {
-        return inventorySystem;
-    }
-
-    public void setInventorySystem(InventorySystem inventorySystem) {
-        this.inventorySystem = inventorySystem;
-    }
+//    public InventorySystem getInventorySystem() {
+//        return inventorySystem;
+//    }
+//
+//    public void setInventorySystem(InventorySystem inventorySystem) {
+//        this.inventorySystem = inventorySystem;
+//    }
 
     public LightingSystem getLightingSystem() {
         return lightingSystem;

@@ -3,7 +3,6 @@ package game.system.systems.inventory;
 import game.assets.entities.Player;
 import game.assets.items.item.Item;
 import game.assets.items.Item_Ground;
-import game.assets.items.item.Placeable;
 import game.assets.tiles.tile.Tile;
 import game.audio.SoundEffect;
 import game.system.helpers.Helpers;
@@ -87,21 +86,21 @@ public class InventorySystem implements Serializable {
 
 	public void renderCam(Graphics g) {
 		if(isHolding()) {
-			if(holding instanceof Placeable) {
-				if(!mouseOverInventory()) {
-					Graphics2D g2d = (Graphics2D) g;
-					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
-					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
-					Rectangle bnds = new Rectangle(tile_coords.x, tile_coords.y, item_w, item_h);
-					if(Helpers.getDistanceBetweenBounds(Game.gameController.getPlayer().getBounds(), bnds) < Game.gameController.getPlayer().REACH) {
-						g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
-					} else {
-						g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
-					}
-					holding.render(g, tile_coords.x, tile_coords.y);
-					g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-				}
-			}
+//			if(holding instanceof Placeable) {
+//				if(!mouseOverInventory()) {
+//					Graphics2D g2d = (Graphics2D) g;
+//					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
+//					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
+//					Rectangle bnds = new Rectangle(tile_coords.x, tile_coords.y, item_w, item_h);
+//					if(Helpers.getDistanceBetweenBounds(Game.gameController.getPlayer().getBounds(), bnds) < Game.gameController.getPlayer().REACH) {
+//						g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
+//					} else {
+//						g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
+//					}
+//					holding.render(g, tile_coords.x, tile_coords.y);
+//					g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+//				}
+//			}
 		}
 	}
 
@@ -115,13 +114,13 @@ public class InventorySystem implements Serializable {
 			}
 		}
 		if(isHolding()) {
-			if(!(holding instanceof Placeable)) {
-				holding.render(g, mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2);
-			} else {
-				if(mouseOverInventory()) {
-					holding.render(g, mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2);
-				}
-			}
+//			if(!(holding instanceof Placeable)) {
+//				holding.render(g, mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2);
+//			} else {
+//				if(mouseOverInventory()) {
+//					holding.render(g, mouseInput.mouse_x - item_w / 2, mouseInput.mouse_y - item_h / 2);
+//				}
+//			}
 		}
 	}
 
@@ -136,20 +135,20 @@ public class InventorySystem implements Serializable {
 	public void mouseOutside() {
 		if(mouseInput.leftMouseDown()) {
 			if(isHolding()) {
-				if(holding instanceof Placeable && placeTimer.timerOver()) {
-					placeTimer.resetTimer();
-					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
-					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
-					Rectangle bnds = new Rectangle(tile_coords.x, tile_coords.y, item_w, item_h);
-					if(Helpers.getDistanceBetweenBounds(Game.gameController.getPlayer().getBounds(), bnds) < Game.gameController.getPlayer().REACH) {
-						if (((Placeable) holding).place(tile_coords.x, tile_coords.y)) {
-							holding.setAmount(holding.getAmount() - 1);
-							if (holding.getAmount() <= 0) clearHolding();
-						}
-					} else {
-						gameController.getPs().addParticle(new Particle_String(gameController.getPlayer().getX(), gameController.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));
-					}
-				}
+//				if(holding instanceof Placeable && placeTimer.timerOver()) {
+//					placeTimer.resetTimer();
+//					Point world_coords = Helpers.getWorldCoords(mouseInput.mouse_x, mouseInput.mouse_y, cam);
+//					Point tile_coords = Helpers.getTileCoords(world_coords, item_w, item_h);
+//					Rectangle bnds = new Rectangle(tile_coords.x, tile_coords.y, item_w, item_h);
+//					if(Helpers.getDistanceBetweenBounds(Game.gameController.getPlayer().getBounds(), bnds) < Game.gameController.getPlayer().REACH) {
+//						if (((Placeable) holding).place(tile_coords.x, tile_coords.y)) {
+//							holding.setAmount(holding.getAmount() - 1);
+//							if (holding.getAmount() <= 0) clearHolding();
+//						}
+//					} else {
+//						gameController.getPs().addParticle(new Particle_String(gameController.getPlayer().getX(), gameController.getPlayer().getY(), 0f, -0.5f, 30, "Cannot Reach!"));
+//					}
+//				}
 			} else {
 				if(Game.gameController.getPlayer().canAttack()) {
 					Game.gameController.getPlayer().attack();
@@ -380,7 +379,7 @@ public class InventorySystem implements Serializable {
 	}
 
 	public Item getHotbarSelectedItem() {
-		return this.player_hotbar.getSlots().get(hotbar_selected).getItem();
+		return null;
 	}
 
 	public void setHotbarSelectedItem(Item item) {

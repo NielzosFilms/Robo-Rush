@@ -79,7 +79,7 @@ public class Item_Ground extends GameObject implements Interactable, HasItem {
 	}
 
 	public void interact() {
-		Game.gameController.getInventorySystem().pickupItemToPlayerInv(this);
+//		Game.gameController.getInventorySystem().pickupItemToPlayerInv(this);
 	}
 
 	public void setX(int x) {

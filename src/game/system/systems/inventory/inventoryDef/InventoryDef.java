@@ -74,10 +74,10 @@ public abstract class InventoryDef {
 
     public void open() {
         this.setXY(init_x, init_y);
-        Game.gameController.getInventorySystem().addOpenInventory(this);
+//        Game.gameController.getInventorySystem().addOpenInventory(this);
     }
 
     public void close() {
-        Game.gameController.getInventorySystem().removeOpenInventory(this);
+//        Game.gameController.getInventorySystem().removeOpenInventory(this);
     }
 }

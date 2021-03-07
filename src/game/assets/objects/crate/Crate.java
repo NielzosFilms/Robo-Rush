@@ -33,7 +33,7 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
     private int regen_timer_after_hit = 0;
     private int regen_timer = 0;
 
-    private Inventory inv;
+//    private Inventory inv;
     private Random rand = new Random();
     private HealthBar healthBar;
 
@@ -43,9 +43,9 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
 
     public Crate(int x, int y, int z_index, ID id) {
         super(x, y, z_index, id);
-        inv = new Inventory(3, 2);
-        inv.setXY(300, 100);
-        inv.setInitXY(300, 100);
+//        inv = new Inventory(3, 2);
+//        inv.setXY(300, 100);
+//        inv.setInitXY(300, 100);
 
         healthBar = new HealthBar(0, 0, 0, 7, 1);
 
@@ -59,19 +59,19 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
                 z_index,
                 ID.Crate);
 
-        inv = new Inventory(
-                Integer.parseInt(StructureLoaderHelpers.getCustomProp(json, "inv_x")),
-                Integer.parseInt(StructureLoaderHelpers.getCustomProp(json, "inv_y")));
-        String loot_table = StructureLoaderHelpers.getCustomProp(json, "loot_table");
-        if(loot_table != null && !loot_table.equals("")) {
-            try {
-                inv.fillRandom(LOOT_TABLES.valueOf(loot_table).getGeneratedItems());
-            } catch(Exception e) {
-                Logger.printError("Loot table: [" + loot_table + "] not found, at: [" + x * division + "," + y* division + "]");
-            }
-        }
-        inv.setXY(300, 100);
-        inv.setInitXY(300, 100);
+//        inv = new Inventory(
+//                Integer.parseInt(StructureLoaderHelpers.getCustomProp(json, "inv_x")),
+//                Integer.parseInt(StructureLoaderHelpers.getCustomProp(json, "inv_y")));
+//        String loot_table = StructureLoaderHelpers.getCustomProp(json, "loot_table");
+//        if(loot_table != null && !loot_table.equals("")) {
+//            try {
+//                inv.fillRandom(LOOT_TABLES.valueOf(loot_table).getGeneratedItems());
+//            } catch(Exception e) {
+//                Logger.printError("Loot table: [" + loot_table + "] not found, at: [" + x * division + "," + y* division + "]");
+//            }
+//        }
+//        inv.setXY(300, 100);
+//        inv.setInitXY(300, 100);
 
         healthBar = new HealthBar(0, 0, 0, 7, 1);
 
@@ -97,7 +97,7 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
                 * (obj_bounds.getCenterX() - player_bounds.getCenterX())
                 + (obj_bounds.getCenterY() - player_bounds.getCenterY()) * (obj_bounds.getCenterY() - player_bounds.getCenterY()));
         if (dis > 50) {
-            Game.gameController.getInventorySystem().removeOpenInventory(inv);
+//            Game.gameController.getInventorySystem().removeOpenInventory(inv);
         }
 
         if(healthBar.dead()) {
@@ -108,9 +108,9 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
 
     public void render(Graphics g) {
         g.drawImage(this.tex.getTexure(), x, y, width, height, null);
-        if(Game.gameController.getInventorySystem().openInventoriesContains(this.inv)) {
-            selection.renderSelection(g, getSelectBounds(), 2);
-        }
+//        if(Game.gameController.getInventorySystem().openInventoriesContains(this.inv)) {
+//            selection.renderSelection(g, getSelectBounds(), 2);
+//        }
     }
 
     public Rectangle getBounds() {
@@ -143,21 +143,21 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
     }
 
     public void interact() {
-        inv.open();
+//        inv.open();
     }
 
     public void destroyed() {
         //Game.world.getHud().removeHealthBar(healthBar);
-        Game.gameController.getInventorySystem().removeOpenInventory(inv);
-        for(InventorySlotDef slot : inv.getSlots()) {
-            if(slot.hasItem()) {
-                game.assets.items.item.Item inv_item = slot.getItem();
-                Item_Ground gnd_item = inv_item.getItemGround();
-                gnd_item.setX(x);
-                gnd_item.setY(y);
-                Game.gameController.getHandler().addObject(gnd_item);
-            }
-        }
+//        Game.gameController.getInventorySystem().removeOpenInventory(inv);
+//        for(InventorySlotDef slot : inv.getSlots()) {
+//            if(slot.hasItem()) {
+//                game.assets.items.item.Item inv_item = slot.getItem();
+//                Item_Ground gnd_item = inv_item.getItemGround();
+//                gnd_item.setX(x);
+//                gnd_item.setY(y);
+//                Game.gameController.getHandler().addObject(gnd_item);
+//            }
+//        }
         SoundEffect.crate_destroy.play();
         destroyedCalled = true;
     }
@@ -180,7 +180,7 @@ public class Crate extends GameObject implements Bounds, Pushable, Interactable,
     }
 
     public void addItemToInv(Item item) {
-        this.inv.addItem(item);
+//        this.inv.addItem(item);
     }
 
     public void push(DIRECTIONS direction) {

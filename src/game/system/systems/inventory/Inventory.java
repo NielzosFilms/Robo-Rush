@@ -145,7 +145,7 @@ public class Inventory extends InventoryDef implements AcceptsItems {
                 Point new_coords = new Point(Game.gameController.getPlayer().getX(), Game.gameController.getPlayer().getY());
                 item_gnd.setX(new_coords.x);
                 item_gnd.setY(new_coords.y);
-                Game.gameController.getInventorySystem().dropItem(item_gnd);
+//                Game.gameController.getInventorySystem().dropItem(item_gnd);
             }
         }
     }

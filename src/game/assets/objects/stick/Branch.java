@@ -39,7 +39,7 @@ public class Branch extends GameObject implements Interactable, HasItem {
     }
 
     public void interact() {
-        Game.gameController.getInventorySystem().pickupItemToPlayerInv(this);
+//        Game.gameController.getInventorySystem().pickupItemToPlayerInv(this);
     }
 
 }
