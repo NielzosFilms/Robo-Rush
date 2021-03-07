@@ -34,6 +34,10 @@ public class Room_Boss extends Room {
         addEnemyToWave(1, new Enemy(0 ,0, 10, ID.Enemy));
         addEnemyToWave(1, new Enemy(-64 ,-64, 10, ID.Enemy));
 
+        addEnemyToWave(2, new Enemy(0 ,0, 10, ID.Enemy));
+        addEnemyToWave(2, new Enemy(-64 ,-64, 10, ID.Enemy));
+        addEnemyToWave(2, new Enemy(64 ,64, 10, ID.Enemy));
+
         spawnCurrentWave();
     }
 

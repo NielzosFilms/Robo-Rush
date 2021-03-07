@@ -578,6 +578,6 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 	}
 
 	public boolean hasKey(int need_key_id) {
-		return false;
+		return true;
 	}
 }
