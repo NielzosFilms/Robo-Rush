@@ -27,7 +27,7 @@ public class Room_Key extends Room {
 
         addObject(new Tile_Static(0, 0, 0, new Texture(TEXTURE_LIST.dungeon, 8, 1)));
 
-        this.key = new Item_Ground(0, 0, 10 , ID.Item, new Item(new Texture(TEXTURE_LIST.minimap, 0, 6), ITEM_ID.key));
+        this.key = new Item_Ground(0, 0, 10 , ID.Item, new Item(new Texture(TEXTURE_LIST.items, 0, 0), ITEM_ID.key, 0, 0));
         addObject(this.key);
 
         for(RoomSpawner spawner : room_type.getSpawners(location)) {

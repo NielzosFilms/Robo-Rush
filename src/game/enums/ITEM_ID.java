@@ -1,5 +1,5 @@
 package game.enums;
 
 public enum ITEM_ID {
-    NULL, key,
+    NULL, key, power_up,
 }

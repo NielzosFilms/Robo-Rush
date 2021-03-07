@@ -16,9 +16,13 @@ public class Item {
     private Texture tex;
     private ITEM_ID item_id;
 
-    public Item(Texture tex, ITEM_ID item_id) {
+    public int bullet_spread, rate_of_fire;
+
+    public Item(Texture tex, ITEM_ID item_id, int bullet_spread, int rate_of_fire) {
         this.tex = tex;
         this.item_id = item_id;
+        this.bullet_spread = bullet_spread;
+        this.rate_of_fire = rate_of_fire;
     }
 
     public void drawItemForInventory(Graphics g, int x, int y) {

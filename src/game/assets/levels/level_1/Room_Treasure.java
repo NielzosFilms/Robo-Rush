@@ -1,21 +1,32 @@
 package game.assets.levels.level_1;
 
+import game.assets.items.Item_Ground;
+import game.assets.items.item.Item;
 import game.assets.levels.RoomDoorTrigger;
 import game.assets.levels.def.ROOM_TYPE;
 import game.assets.levels.def.Room;
 import game.assets.levels.def.RoomSpawner;
 import game.assets.objects.crate.Crate;
 import game.enums.ID;
+import game.enums.ITEM_ID;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Room_Treasure extends Room {
     public Room_Treasure(Point location, ROOM_TYPE room_type) {
         super(location);
         this.room_type = room_type;
 
+        Item item;
+        if(new Random().nextInt(2) == 0) {
+            item = new Item(new Texture(TEXTURE_LIST.items, 1, 0), ITEM_ID.power_up, 20, 0);
+        } else {
+            item = new Item(new Texture(TEXTURE_LIST.items, 1, 0), ITEM_ID.power_up, 0, 20);
+        }
+        addObject(new Item_Ground(0, 0, 10, ID.Item, item));
         addObject(new Crate(0, 0, 10, ID.Crate));
 
         for(RoomSpawner spawner : room_type.getSpawners(location)) {

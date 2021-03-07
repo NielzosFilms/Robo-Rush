@@ -27,7 +27,7 @@ import game.textures.*;
 import static java.lang.Math.pow;
 
 public class Player extends GameObject implements Bounds, Interactable, Hitable {
-	private static final int ATTACK_DELAY = 1;
+	private static final int ATTACK_DELAY = 30;
 	private static final int DEFAULT_ATTACK_DAMAGE = 1;
 	private float acceleration = 0.2f, deceleration = 0.3f;
 	public final int REACH = 50;
@@ -509,7 +509,7 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 		int cenY = (int) getBounds().getCenterY();
 		int angle = (int) Helpers.getAngle(screenCoords, new Point(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y));
 
-		int spread_angle = new Random().nextInt(24) - 12;
+		int spread_angle = new Random().nextInt(getBulletSpread()) - getBulletSpread()/2;
 
 		Bullet bullet = new Bullet(cenX, cenY, z_index, angle + spread_angle, this);
 		Game.gameController.getHandler().addObject(bullet);
@@ -521,15 +521,8 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 
 	public int getExpectedDamage() {
 		int damage_output = DEFAULT_ATTACK_DAMAGE;
-		int attack_delay = ATTACK_DELAY;
-//		Item holding = Game.gameController.getInventorySystem().getHotbarSelectedItem();
-//		if(holding != null) {
-//			if(holding instanceof CanAttack) {
-//				damage_output += ((CanAttack) holding).getDamage();
-//				attack_delay += ((CanAttack) holding).getAttack_speed();
-//			}
-//		}
-		attack_timer.setDelay(attack_delay);
+
+		attack_timer.setDelay(getAttackDelay());
 		attack_timer.resetTimer();
 		return damage_output;
 	}
@@ -579,5 +572,22 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 
 	public void addItem(Item item) {
 		this.items.add(item);
+	}
+
+	private int getAttackDelay() {
+		int ret = ATTACK_DELAY;
+		for(Item item : items) {
+			ret -= item.rate_of_fire;
+		}
+		if(ret < 1) ret = 1;
+		return ret;
+	}
+
+	private int getBulletSpread() {
+		int spread = 12;
+		for(Item item : items) {
+			spread += item.bullet_spread;
+		}
+		return spread;
 	}
 }
