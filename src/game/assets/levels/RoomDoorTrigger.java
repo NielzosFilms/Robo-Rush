@@ -30,6 +30,9 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
     private boolean open = true;
     private boolean trigger_active = true;
 
+    private boolean need_key = false;
+    private int need_key_id = 0;
+
     public RoomDoorTrigger(int x, int y, Point door_direction) {
         super(x, y, 0, ID.RoomDoorTrigger);
         this.door_direction = door_direction;
@@ -43,6 +46,9 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
 
         this.width = StructureLoaderHelpers.getIntProp(json, "width") / division;
         this.height = StructureLoaderHelpers.getIntProp(json, "height") / division;
+
+        this.need_key = Boolean.parseBoolean(StructureLoaderHelpers.getCustomProp(json, "need_key"));
+        this.need_key_id = Integer.parseInt(StructureLoaderHelpers.getCustomProp(json, "need_key_id"));
 
         String direction = StructureLoaderHelpers.getCustomProp(json, "direction");
         this.door_direction = MAPPING.get(direction);
@@ -75,7 +81,9 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
 
     @Override
     public void tick() {
-
+        if(this.need_key) {
+            this.open = Game.gameController.getPlayer().hasKey(this.need_key_id);
+        }
     }
 
     @Override
@@ -87,7 +95,11 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
     }
 
     public void triggered() {
-        Logger.print("[DOOR TRIGGERED] >> " + door_direction);
+//        Logger.print("[DOOR TRIGGERED] >> " + door_direction);
+
+//        if(this.need_key) {
+//            if(!Game.gameController.getPlayer().hasKey(this.need_key_id)) return;
+//        }
 
         Point current_room = Game.gameController.getActiveLevel().getActiveRoomKey();
         Point next_room_key = new Point(current_room.x + door_direction.x, current_room.y + door_direction.y);
@@ -155,5 +167,13 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
 
     public void setTriggerActive(boolean trigger_active) {
         this.trigger_active = trigger_active;
+    }
+
+    public void setNeedsKey(boolean needs_key) {
+        this.need_key = needs_key;
+    }
+
+    public void setNeedsKeyId(int need_key_id) {
+        this.need_key_id = need_key_id;
     }
 }

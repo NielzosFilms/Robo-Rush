@@ -211,6 +211,16 @@
                          "value":"N"
                         }, 
                         {
+                         "name":"need_key",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"need_key_id",
+                         "type":"int",
+                         "value":8
+                        }, 
+                        {
                          "name":"package",
                          "type":"string",
                          "value":"game.assets.levels"
@@ -231,6 +241,16 @@
                          "name":"direction",
                          "type":"string",
                          "value":"S"
+                        }, 
+                        {
+                         "name":"need_key",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"need_key_id",
+                         "type":"int",
+                         "value":0
                         }, 
                         {
                          "name":"package",
@@ -255,6 +275,16 @@
                          "value":"W"
                         }, 
                         {
+                         "name":"need_key",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"need_key_id",
+                         "type":"int",
+                         "value":0
+                        }, 
+                        {
                          "name":"package",
                          "type":"string",
                          "value":"game.assets.levels"
@@ -275,6 +305,16 @@
                          "name":"direction",
                          "type":"string",
                          "value":"E"
+                        }, 
+                        {
+                         "name":"need_key",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"need_key_id",
+                         "type":"int",
+                         "value":0
                         }, 
                         {
                          "name":"package",

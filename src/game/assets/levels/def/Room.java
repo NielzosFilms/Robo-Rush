@@ -1,6 +1,7 @@
 package game.assets.levels.def;
 
 import game.assets.levels.RoomDoorTrigger;
+import game.enums.ID;
 import game.system.systems.gameObject.GameObject;
 
 import java.awt.*;
@@ -8,9 +9,11 @@ import java.util.LinkedList;
 
 public abstract class Room {
     protected LinkedList<LinkedList<GameObject>> objects = new LinkedList<>();
+    protected LinkedList<LinkedList<GameObject>> staged_waves = new LinkedList<>();
     protected Level parent_level;
     protected Point location;
     protected ROOM_TYPE room_type;
+    protected int current_wave = 0, next_wave_threshold = 1;
 
     public Room(Point location) {
         this.location = location;
@@ -19,6 +22,15 @@ public abstract class Room {
     public abstract void tick();
     public abstract void render(Graphics g);
     public abstract void drawRoomMiniMap(Graphics g, int x, int y, int room_size, boolean active);
+
+    public void spawnCurrentWave() {
+        if(current_wave < staged_waves.size()) {
+            for(GameObject enemy : staged_waves.get(current_wave)) {
+                addObject(enemy);
+            }
+            current_wave++;
+        }
+    }
 
     public LinkedList<LinkedList<GameObject>> getObjects(){
         return objects;
@@ -67,5 +79,23 @@ public abstract class Room {
                 if(door_count >= room_type.toString().length()) return;
             }
         }
+    }
+
+    public void addEnemyToWave(int wave, GameObject enemy) {
+        for(int i=staged_waves.size(); i<=wave; i++) {
+            this.staged_waves.add(new LinkedList<>());
+        }
+        this.staged_waves.get(wave).add(enemy);
+    }
+
+    public RoomDoorTrigger getDoor(Point door_direction) {
+        for(GameObject object : objects.get(0)) {
+            if(object instanceof RoomDoorTrigger) {
+                if(((RoomDoorTrigger) object).getDoorDirection().equals(door_direction)) {
+                    return (RoomDoorTrigger)object;
+                }
+            }
+        }
+        return null;
     }
 }

@@ -71,6 +71,8 @@ public class Level_1 extends Level {
 
         createBossRoom(origin);
 
+        createKeyRoom(origin);
+
         createTreasureRoom(origin);
         createTreasureRoom(origin);
 
@@ -91,9 +93,34 @@ public class Level_1 extends Level {
         }
         Room_Boss boss_room = new Room_Boss(best_boss_room_key, rooms.get(best_boss_room_key).getRoomType());
         rooms.put(best_boss_room_key, boss_room);
+
+        // update room before to use key
+        Point before_offset = boss_room.getRoomType().getSpawners(best_boss_room_key).get(0).door_direction;
+        Point room_before = new Point(best_boss_room_key.x + before_offset.x, best_boss_room_key.y + before_offset.y);
+        rooms.get(room_before).getDoor(new Point(-before_offset.x, -before_offset.y)).setNeedsKey(true);
     }
 
     private void createTreasureRoom(Point origin) {
+        LinkedList<Point> single_door_keys = new LinkedList<>();
+        for(Point room_key : rooms.keySet()) {
+            Room room = rooms.get(room_key);
+            if((room.getRoomType().toString().length() == 1 || room.getRoomType().toString().length() == 2) && room instanceof Room_Basic) {
+                if(room.getRoomType().toString().length() == 1) {
+                    single_door_keys.add(room_key);
+                    single_door_keys.add(room_key);
+                    single_door_keys.add(room_key);
+                    single_door_keys.add(room_key);
+                } else {
+                    single_door_keys.add(room_key);
+                }
+            }
+        }
+        Point room_key = single_door_keys.get(new Random().nextInt(single_door_keys.size()));
+        Room_Treasure treasure_room = new Room_Treasure(room_key, rooms.get(room_key).getRoomType());
+        rooms.put(room_key, treasure_room);
+    }
+
+    private void createKeyRoom(Point origin) {
         LinkedList<Point> single_door_keys = new LinkedList<>();
         for(Point room_key : rooms.keySet()) {
             Room room = rooms.get(room_key);
@@ -102,7 +129,7 @@ public class Level_1 extends Level {
             }
         }
         Point room_key = single_door_keys.get(new Random().nextInt(single_door_keys.size()));
-        Room_Treasure treasure_room = new Room_Treasure(room_key, rooms.get(room_key).getRoomType());
-        rooms.put(room_key, treasure_room);
+        Room_Key key_room = new Room_Key(room_key, rooms.get(room_key).getRoomType());
+        rooms.put(room_key, key_room);
     }
 }

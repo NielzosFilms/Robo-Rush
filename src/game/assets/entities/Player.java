@@ -2,6 +2,7 @@ package game.assets.entities;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.LinkedList;
 import java.util.Random;
 
 import game.assets.entities.bullets.Bullet;
@@ -72,6 +73,8 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 
 	public Inventory inventory;
 	public Inventory hotbar;
+
+	private LinkedList<Object> items = new LinkedList<>();
 
 	public Player(int x, int y, int z_index, ID id, KeyInput keyInput) {
 		super(x, y, z_index, id);
@@ -572,5 +575,9 @@ public class Player extends GameObject implements Bounds, Interactable, Hitable 
 			health -= damage;
 			hurt_animation = true;
 		}
+	}
+
+	public boolean hasKey(int need_key_id) {
+		return false;
 	}
 }
