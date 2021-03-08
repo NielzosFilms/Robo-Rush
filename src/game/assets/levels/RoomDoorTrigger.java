@@ -2,6 +2,7 @@ package game.assets.levels;
 
 import game.assets.levels.def.Room;
 import game.enums.ID;
+import game.enums.ITEM_ID;
 import game.system.helpers.JsonLoader;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.main.Game;
@@ -79,7 +80,7 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
     @Override
     public void tick() {
         if(this.need_key) {
-            this.open = Game.gameController.getPlayer().hasKey(this.need_key_id);
+            this.open = Game.gameController.getPlayer().hasItem(ITEM_ID.key);
         }
     }
 
