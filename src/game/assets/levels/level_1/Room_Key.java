@@ -1,5 +1,6 @@
 package game.assets.levels.level_1;
 
+import game.assets.entities.player.PLAYER_STAT;
 import game.assets.items.Item_Ground;
 import game.assets.items.item.Item;
 import game.assets.levels.RoomDoorTrigger;
@@ -15,6 +16,7 @@ import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Room_Key extends Room {
@@ -27,7 +29,7 @@ public class Room_Key extends Room {
 
         addObject(new Tile_Static(0, 0, 0, new Texture(TEXTURE_LIST.dungeon, 8, 1)));
 
-        this.key = new Item_Ground(0, 0, 10 , ID.Item, new Item(new Texture(TEXTURE_LIST.items, 0, 0), ITEM_ID.key, 0, 0));
+        this.key = new Item_Ground(0, 0, 10 , ID.Item, new Item(new Texture(TEXTURE_LIST.items, 0, 0), ITEM_ID.key, new HashMap<>()));
         addObject(this.key);
 
         for(RoomSpawner spawner : room_type.getSpawners(location)) {

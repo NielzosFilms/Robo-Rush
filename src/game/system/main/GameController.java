@@ -1,31 +1,23 @@
 package game.system.main;
 
-import game.assets.entities.Player;
-import game.assets.entities.enemies.Enemy;
+import game.assets.entities.player.Character_Robot;
+import game.assets.entities.player.Player;
 import game.assets.levels.def.Level;
 import game.assets.levels.level_1.Level_1;
-import game.assets.objects.tree.Tree;
-import game.assets.structures.Structure;
 import game.enums.ID;
 import game.system.helpers.Logger;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
-import game.system.main.Camera;
-import game.system.main.Handler;
 import game.system.systems.Collision;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.hitbox.HitboxSystem;
 import game.system.systems.hud.HUD;
 import game.system.systems.lighting.LightingSystem;
 import game.system.systems.particles.ParticleSystem;
-import game.system.world.Chunk;
-import game.system.world.Generation;
-import game.system.world.JsonStructureLoader;
 import game.textures.Textures;
 
 import java.awt.*;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -148,7 +140,7 @@ public class GameController implements Serializable {
 
     public void generate() {
         loaded = false;
-        setRequirements(new Player(0, 0, 10, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
+        setRequirements(new Character_Robot(0, 0, 10, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
 
         //Logger.print("[seed]: " + this.seed);
         Logger.print("World Generating...");

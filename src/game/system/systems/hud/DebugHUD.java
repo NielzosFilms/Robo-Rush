@@ -1,10 +1,9 @@
 package game.system.systems.hud;
 
-import game.assets.entities.Player;
+import game.assets.entities.player.Player;
 import game.system.inputs.MouseInput;
 import game.system.main.Game;
 import game.system.main.GameController;
-import game.system.world.World;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

@@ -7,11 +7,10 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import game.assets.entities.Player;
+import game.assets.entities.player.Player;
 import game.system.systems.hud.HUD;
 import game.system.main.*;
 import game.system.systems.menu.MenuSystem;
-import game.system.world.World;
 
 public class MouseInput extends MouseAdapter implements MouseMotionListener, MouseWheelListener {
 	private Game game;

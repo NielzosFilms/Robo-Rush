@@ -4,20 +4,11 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
-import game.assets.entities.Player;
-import game.assets.entities.TargetDummy;
+import game.assets.entities.player.Player;
 import game.assets.entities.enemies.Enemy;
-import game.assets.entities.enemies.Golem_Stone;
-import game.assets.entities.enemies.Skeleton;
-import game.assets.objects.crafting_table.TestTable;
 import game.assets.objects.tree.Tree;
 import game.assets.structures.Structure;
-import game.assets.structures.waterfall.Waterfall;
-import game.assets.tiles.*;
-import game.assets.tiles.tile.Tile;
-import game.enums.BIOME;
 import game.enums.ID;
-import game.enums.TILE_TYPE;
 import game.system.helpers.Logger;
 import game.system.helpers.Offsets;
 import game.system.systems.Collision;
@@ -30,7 +21,6 @@ import game.system.systems.lighting.Light;
 import game.system.systems.lighting.LightingSystem;
 import game.system.main.*;
 import game.system.systems.particles.ParticleSystem;
-import game.system.world.biome_groups.BiomeGroup_World;
 import game.textures.Textures;
 
 public class World implements Serializable {
@@ -281,7 +271,7 @@ public class World implements Serializable {
 	public void generate() {
 		loaded = false;
 		chunks.clear();
-		setRequirements(new Player(0, 0, 10, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
+//		setRequirements(new Player(0, 0, 10, ID.Player, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
 
 		//Logger.print("[seed]: " + this.seed);
 		Logger.print("World Generating...");

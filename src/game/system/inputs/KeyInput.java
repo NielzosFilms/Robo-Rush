@@ -69,7 +69,7 @@ public class KeyInput extends KeyAdapter {
 								keysDown[6] = true;
 								break;
 							case KeyEvent.VK_I:
-								((Interactable)tempObject).interact();
+//								((Interactable)tempObject).interact();
 								break;
 							case KeyEvent.VK_R:
 								gameController.generate();
@@ -93,10 +93,10 @@ public class KeyInput extends KeyAdapter {
 						Interactable object = (Interactable) obj;
 						if (Game.mouseInput.mouseOverWorldVar(object.getSelectBounds().x, object.getSelectBounds().y,
 								object.getSelectBounds().width, object.getSelectBounds().height)) {
-							if (Helpers.getDistanceBetweenBounds(Game.gameController.getPlayer().getBounds(), object.getSelectBounds()) < Game.gameController.getPlayer().REACH) {
-								object.interact();
-								return;
-							}
+//							if (Helpers.getDistanceBetweenBounds(Game.gameController.getPlayer().getBounds(), object.getSelectBounds()) < Game.gameController.getPlayer().REACH) {
+//								object.interact();
+//								return;
+//							}
 						}
 					}
 				}

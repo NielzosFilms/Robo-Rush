@@ -1,5 +1,6 @@
 package game.assets.levels.level_1;
 
+import game.assets.entities.player.PLAYER_STAT;
 import game.assets.items.Item_Ground;
 import game.assets.items.item.Item;
 import game.assets.levels.RoomDoorTrigger;
@@ -13,6 +14,7 @@ import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Room_Treasure extends Room {
@@ -22,9 +24,15 @@ public class Room_Treasure extends Room {
 
         Item item;
         if(new Random().nextInt(2) == 0) {
-            item = new Item(new Texture(TEXTURE_LIST.items, 1, 0), ITEM_ID.power_up, 20, 0);
+            item = new Item(new Texture(TEXTURE_LIST.items, 1, 0), ITEM_ID.power_up,
+                    new HashMap<PLAYER_STAT, Float>() {{
+                        put(PLAYER_STAT.move_speed, 0.5f);
+                    }});
         } else {
-            item = new Item(new Texture(TEXTURE_LIST.items, 1, 0), ITEM_ID.power_up, 0, 20);
+            item = new Item(new Texture(TEXTURE_LIST.items, 1, 0), ITEM_ID.power_up,
+                    new HashMap<PLAYER_STAT, Float>() {{
+                        put(PLAYER_STAT.rate_of_fire, -6f);
+                    }});
         }
         addObject(new Item_Ground(0, 0, 10, ID.Item, item));
         addObject(new Crate(0, 0, 10, ID.Crate));

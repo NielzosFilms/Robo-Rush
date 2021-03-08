@@ -1,10 +1,8 @@
 package game.system.helpers;
 
-import game.assets.entities.Player;
 import game.enums.DIRECTIONS;
 import game.system.main.Camera;
 import game.system.systems.gameObject.Bounds;
-import game.system.systems.gameObject.GameObject;
 
 import java.awt.*;
 import java.io.File;

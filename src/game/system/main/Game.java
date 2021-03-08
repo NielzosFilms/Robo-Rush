@@ -8,22 +8,19 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
+import game.assets.entities.player.Character_Robot;
 import game.audio.SoundEffect;
 import game.enums.GAMESTATES;
 import game.enums.ID;
-import game.assets.entities.Player;
-import game.system.helpers.Helpers;
+import game.assets.entities.player.Player;
 import game.system.helpers.Logger;
 import game.system.helpers.Settings;
 import game.system.main.postProcessing.PostProcessing;
-import game.system.main.postProcessing.filters.GaussianFilter;
-import game.system.main.postProcessing.filters.GlowFilter;
 import game.system.systems.menu.elements.LoadingAnimation;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
 import game.system.systems.menu.MenuSystem;
 import game.textures.*;
-import game.system.world.World;
 
 public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 852753996046178928L;
@@ -91,7 +88,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void setRequirements() {
-		gameController.setRequirements(new Player(0, 0, 2, ID.Player, null), textures, keyInput, mouseInput);
+		gameController.setRequirements(new Character_Robot(0, 0, 2, null), textures, keyInput, mouseInput);
 
 		keyInput.setRequirements(gameController);
 		mouseInput.setRequirements(this, gameController);

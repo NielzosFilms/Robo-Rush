@@ -2,21 +2,14 @@ package game.assets.objects.tree;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.Random;
 
 import game.assets.HealthBar;
-import game.assets.entities.Player;
-import game.assets.items.Item_Ground;
-import game.assets.items.item.Item;
+import game.assets.entities.player.Player;
 import game.audio.SoundEffect;
-import game.system.helpers.Logger;
 import game.system.main.Game;
 import game.system.systems.gameObject.*;
 import game.enums.ID;
-import game.system.systems.hitbox.HitboxContainer;
-import game.textures.TEXTURE_LIST;
-import game.textures.Texture;
 import game.enums.BIOME;
 import game.textures.Textures;
 

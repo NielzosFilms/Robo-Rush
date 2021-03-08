@@ -1,10 +1,8 @@
 package game.assets.levels;
 
-import game.assets.entities.Player;
 import game.assets.levels.def.Room;
 import game.enums.ID;
 import game.system.helpers.JsonLoader;
-import game.system.helpers.Logger;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
@@ -13,7 +11,6 @@ import game.textures.Fonts;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 

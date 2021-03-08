@@ -1,5 +1,6 @@
 package game.assets.items.item;
 
+import game.assets.entities.player.PLAYER_STAT;
 import game.assets.items.Item_Ground;
 import game.enums.ITEM_ID;
 import game.system.systems.gameObject.GameObject;
@@ -11,18 +12,19 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Item {
     private Texture tex;
     private ITEM_ID item_id;
 
-    public int bullet_spread, rate_of_fire;
+    public HashMap<PLAYER_STAT, Float> item_stats;
 
-    public Item(Texture tex, ITEM_ID item_id, int bullet_spread, int rate_of_fire) {
+    public Item(Texture tex, ITEM_ID item_id, HashMap<PLAYER_STAT, Float> item_stats) {
         this.tex = tex;
         this.item_id = item_id;
-        this.bullet_spread = bullet_spread;
-        this.rate_of_fire = rate_of_fire;
+        this.item_stats = item_stats;
     }
 
     public void drawItemForInventory(Graphics g, int x, int y) {

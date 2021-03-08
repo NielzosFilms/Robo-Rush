@@ -3,22 +3,17 @@ package game.system.systems;
 import java.awt.*;
 import java.util.LinkedList;
 
-import game.assets.entities.Player;
+import game.assets.entities.player.Player;
 import game.assets.entities.bullets.Bullet;
 import game.assets.items.Item_Ground;
 import game.assets.levels.RoomDoorTrigger;
-import game.enums.DIRECTIONS;
 import game.enums.ID;
-import game.system.helpers.Helpers;
-import game.system.helpers.Logger;
 import game.system.main.GameController;
 import game.system.main.Handler;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Hitable;
 import game.system.systems.gameObject.Pushable;
-import game.system.world.Chunk;
-import game.system.world.World;
 
 public class Collision {
 

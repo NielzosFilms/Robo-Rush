@@ -3,24 +3,15 @@ package game.system.systems.hud;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 
-import game.assets.HealthBar;
-import game.assets.entities.Player;
+import game.assets.entities.player.Player;
 import game.assets.levels.def.Level;
-import game.assets.levels.def.Room;
-import game.assets.levels.def.RoomSpawner;
 import game.system.helpers.Helpers;
-import game.system.helpers.Timer;
 import game.system.main.*;
 import game.system.inputs.MouseInput;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Interactable;
-import game.system.world.World;
-import game.textures.TEXTURE_LIST;
-import game.textures.Texture;
 
 public class HUD implements Serializable {
 	private DebugHUD debugHUD;
@@ -66,10 +57,10 @@ public class HUD implements Serializable {
 			if (((Interactable)obj).getSelectBounds() != null) {
 				if (mouseInput.mouseOverWorldVar(((Interactable)obj).getSelectBounds().x, ((Interactable)obj).getSelectBounds().y,
 						((Interactable)obj).getSelectBounds().width, ((Interactable)obj).getSelectBounds().height)) {
-					if (Helpers.getDistanceBetweenBounds(Game.gameController.getPlayer().getBounds(), ((Interactable)obj).getSelectBounds()) < Game.gameController.getPlayer().REACH) {
-						selection.renderSelection(g, ((Interactable) obj).getSelectBounds(), 2);
-						break;
-					}
+//					if (Helpers.getDistanceBetweenBounds(Game.gameController.getPlayer().getBounds(), ((Interactable)obj).getSelectBounds()) < Game.gameController.getPlayer().REACH) {
+//						selection.renderSelection(g, ((Interactable) obj).getSelectBounds(), 2);
+//						break;
+//					}
 				}
 			}
 		}
