@@ -369,6 +369,8 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 
 		Bullet bullet = new Bullet(cenX, cenY, z_index, angle + spread_angle, this);
 		Game.gameController.getHandler().addObject(bullet);
+		attack_timer.setDelay(Math.round(player_stats.get(PLAYER_STAT.rate_of_fire)));
+		attack_timer.resetTimer();
 	}
 
 	public boolean canAttack() {
