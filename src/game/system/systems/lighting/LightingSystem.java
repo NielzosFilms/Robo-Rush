@@ -17,8 +17,6 @@ import game.system.main.GameController;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.main.Handler;
-import game.system.systems.gameObject.Interactable;
-import game.system.world.World;
 
 public class LightingSystem {
 

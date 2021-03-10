@@ -2,15 +2,11 @@ package game.system.systems.menu;
 
 import game.audio.SoundEffect;
 import game.enums.GAMESTATES;
-import game.enums.MENUSTATES;
 import game.system.main.Game;
 import game.system.main.GameController;
 import game.system.systems.menu.buttons.Button;
-import game.system.world.World;
-import game.textures.TEXTURE_LIST;
 import game.system.inputs.MouseInput;
 import game.textures.Fonts;
-import game.textures.Textures;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

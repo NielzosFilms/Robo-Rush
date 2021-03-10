@@ -1,9 +1,7 @@
 package game.assets.tiles;
 
-import game.assets.items.item.Item;
 import game.assets.tiles.tile.Tile;
 import game.enums.ID;
-import game.system.world.Chunk;
 import game.textures.Texture;
 
 import java.awt.*;

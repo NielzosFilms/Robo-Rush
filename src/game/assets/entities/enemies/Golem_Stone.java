@@ -8,8 +8,6 @@ import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Health;
 import game.system.systems.gameObject.Hitable;
-import game.system.systems.hitbox.HitboxContainer;
-import game.system.world.JsonStructureLoader;
 import game.textures.Animation;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;

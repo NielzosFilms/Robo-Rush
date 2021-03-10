@@ -1,11 +1,8 @@
 package game.system.helpers;
 
-import game.assets.objects.BoundsObject;
 import game.assets.tiles.Tile_Animation;
 import game.assets.tiles.Tile_Static;
 import game.system.systems.gameObject.GameObject;
-import game.system.world.Chunk;
-import game.system.world.JsonStructureLoader;
 import game.textures.Animation;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;

@@ -6,7 +6,6 @@ import game.system.helpers.StructureLoaderHelpers;
 import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
-import game.system.world.JsonStructureLoader;
 import org.json.simple.JSONObject;
 
 import java.awt.*;

@@ -18,7 +18,6 @@ import game.system.systems.gameObject.*;
 import game.enums.ID;
 import game.system.systems.hitbox.Hitbox;
 import game.system.systems.hitbox.HitboxContainer;
-import game.system.world.Chunk;
 import game.textures.*;
 
 enum Decision {

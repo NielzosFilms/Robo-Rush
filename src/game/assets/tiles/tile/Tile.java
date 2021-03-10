@@ -1,15 +1,10 @@
 package game.assets.tiles.tile;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.io.Serializable;
 
-import game.assets.items.item.Item;
-import game.enums.BIOME;
 import game.enums.ID;
-import game.enums.TILE_TYPE;
 import game.system.systems.gameObject.GameObject;
-import game.system.world.Chunk;
 import game.textures.Texture;
 
 public abstract class Tile extends GameObject implements Serializable {

@@ -6,8 +6,6 @@ import game.system.helpers.Logger;
 import game.system.systems.gameObject.*;
 import game.system.systems.lighting.Light;
 import game.system.systems.particles.ParticleSystem;
-import game.system.world.Chunk;
-import game.system.world.World;
 
 import java.awt.*;
 import java.io.Serializable;

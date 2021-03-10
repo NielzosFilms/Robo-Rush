@@ -1,18 +1,13 @@
 package game.assets.entities.enemies;
 
-import game.assets.HealthBar;
-import game.enums.DIRECTIONS;
 import game.enums.ID;
 import game.system.helpers.Helpers;
-import game.system.helpers.Logger;
+import game.system.helpers.JsonLoader;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Hitable;
-import game.system.systems.hitbox.HitboxContainer;
-import game.system.systems.particles.Particle_String;
-import game.system.world.JsonStructureLoader;
 import game.textures.Animation;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
@@ -38,7 +33,7 @@ public class Skeleton extends GameObject implements Bounds, Hitable {
         super(x, y, z_index, ID.Skeleton);
     }
 
-    public Skeleton(JSONObject json, int z_index, int division, JsonStructureLoader loader) {
+    public Skeleton(JSONObject json, int z_index, int division, JsonLoader loader) {
         super(
                 StructureLoaderHelpers.getIntProp(json, "x") / division,
                 StructureLoaderHelpers.getIntProp(json, "y") / division,

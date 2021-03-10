@@ -3,19 +3,16 @@ package game.system.inputs;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
-import java.util.Random;
 
 import game.assets.entities.enemies.Enemy;
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
 import game.system.helpers.Helpers;
-import game.system.helpers.Settings;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Interactable;
 import game.system.main.*;
 import game.enums.ID;
 import game.system.systems.menu.MenuSystem;
-import game.system.world.World;
 import game.textures.Textures;
 
 public class KeyInput extends KeyAdapter {

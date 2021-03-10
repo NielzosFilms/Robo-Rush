@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 import game.enums.ID;
 import game.system.helpers.JsonLoader;
-import game.system.world.JsonStructureLoader;
 import game.textures.Texture;
 import org.json.simple.JSONObject;
 

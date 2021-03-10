@@ -1,10 +1,10 @@
 package game.assets.objects.puzzle_objects;
 
 import game.enums.ID;
+import game.system.helpers.JsonLoader;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Interactable;
-import game.system.world.JsonStructureLoader;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
@@ -16,7 +16,7 @@ public class Button extends GameObject implements PuzzleTrigger, Interactable {
         super(x, y, z_index, ID.Button);
     }
 
-    public Button(JSONObject json, int z_index, int division, JsonStructureLoader loader) {
+    public Button(JSONObject json, int z_index, int division, JsonLoader loader) {
         super(StructureLoaderHelpers.getIntProp(json, "x") / division,
                 StructureLoaderHelpers.getIntProp(json, "y") / division,
                 z_index,
