@@ -55,7 +55,7 @@ public class PauzedMenu extends Menu {
 
     public void renderBefore(Graphics g, Graphics2D g2d) {
         g.setColor(new Color(24, 20, 37, 128));
-        g.fillRect(0, 0, screenWidth, screenHeight);
+        g.fillRect(0, 0, Game.getGameSize().x, Game.getGameSize().y);
     }
 
     public void renderAfter(Graphics g, Graphics2D g2d) {
@@ -64,8 +64,8 @@ public class PauzedMenu extends Menu {
         Rectangle2D bounds = fm.getStringBounds("Pauzed", g2d);
 
         g.setColor(new Color(38, 43, 68));
-        g2d.drawString("Pauzed", (int)(screenWidth / 2 - bounds.getWidth() / 2)+1, 21);
+        g2d.drawString("Pauzed", (int)(Game.getGameSize().x / 2 - bounds.getWidth() / 2)+1, 21);
         g.setColor(new Color(192, 203, 220));
-        g2d.drawString("Pauzed", (int)(screenWidth / 2 - bounds.getWidth() / 2), 20);
+        g2d.drawString("Pauzed", (int)(Game.getGameSize().x / 2 - bounds.getWidth() / 2), 20);
     }
 }

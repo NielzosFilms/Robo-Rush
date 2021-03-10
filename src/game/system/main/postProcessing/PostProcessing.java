@@ -33,10 +33,10 @@ public class PostProcessing {
 		blur.setRadius(3f);
 		BufferedImage blur_3 = blur.filter(blur_2, null);
 
-		g.drawImage(glow.filter(blur_3, null), 0, 0, Game.NEW_WIDTH, Game.NEW_HEIGHT, null);
+		g.drawImage(glow.filter(blur_3, null), 0, 0, Game.SCREEN_SIZE.width, Game.SCREEN_SIZE.height, null);
 
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
-		g.drawImage(game_image, 0, 0, Game.NEW_WIDTH, Game.NEW_HEIGHT, null);
+		g.drawImage(game_image, 0, 0, Game.SCREEN_SIZE.width, Game.SCREEN_SIZE.height, null);
 
 
 

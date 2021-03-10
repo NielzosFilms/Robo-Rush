@@ -146,6 +146,13 @@ public class KeyInput extends KeyAdapter {
 			gameController.getPlayer().setY(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, gameController.getCam()).y);
 		}
 
+		if(key == KeyEvent.VK_F11) {
+			if(Game.window.isFullscreen()) {
+				Game.window.setWindowed();
+			} else {
+				Game.window.setFullscreen();
+			}
+		}
 	}
 
 	public void keyReleased(KeyEvent e) {

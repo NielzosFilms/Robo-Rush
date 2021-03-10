@@ -11,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
 public class MenuSystem {
-	private static final int screenWidth = Game.WIDTH, screenHeight = Game.HEIGHT;
 	public MENUSTATES state;
 	public MENUSTATES previous_state;
 	private MouseInput mouse;

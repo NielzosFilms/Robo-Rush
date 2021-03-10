@@ -33,10 +33,10 @@ public class Camera implements Serializable {
 		Point target = new Point(((mouse.x + player_coords.x*3) / 4), ((mouse.y + player_coords.y*3) / 4));
 
 
-		float xTarg = -target.x + Game.WIDTH/2-16;
+		float xTarg = -target.x + Game.getGameSize().x/2-16;
 		buffer_x += (xTarg - buffer_x) * (0.1f);
 
-		float yTarg = -target.y + Game.HEIGHT/2-16;
+		float yTarg = -target.y + Game.getGameSize().y/2-16;
 		buffer_y += (yTarg - buffer_y) * (0.1f);
 
 		x = buffer_x;
@@ -74,8 +74,8 @@ public class Camera implements Serializable {
 	}
 
 	public void setCoordsWithPlayerCoords(int x, int y) {
-		this.x = -x + Game.WIDTH/2-16;
-		this.y = -y + Game.HEIGHT/2-16;
+		this.x = -x + Game.getGameSize().x/2-16;
+		this.y = -y + Game.getGameSize().y/2-16;
 		this.buffer_x = this.x;
 		this.buffer_y = this.y;
 	}

@@ -24,16 +24,19 @@ import game.textures.*;
 
 public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 852753996046178928L;
-	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	public static final int NEW_WIDTH = (int) screenSize.getWidth(), NEW_HEIGHT = (int) screenSize.getHeight();
-	public static final float RATIO = (float) NEW_WIDTH / NEW_HEIGHT;
-	public static int WIDTH = 384, HEIGHT = 216;//(int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
+	public static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
+	public static final float RATIO = (float) SCREEN_SIZE.width / SCREEN_SIZE.height;
+//	public static int WIDTH = 384, HEIGHT = 216;//(int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
 	//public static int WIDTH = 360, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
-	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
+//	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
+	public static final float SCALE = 6.7f;
 	public static final String TITLE = "Top Down Java Game";
 	public static final String VERSION = "ALPHA V 3.80.0 COMBAT";
 
-	public static BufferedImage game_image = new BufferedImage(NEW_WIDTH, NEW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+	public static Window window;
+	public static Point windowSize = new Point(SCREEN_SIZE.width, SCREEN_SIZE.height);
+
+	public static BufferedImage game_image = new BufferedImage(SCREEN_SIZE.width, SCREEN_SIZE.height, BufferedImage.TYPE_INT_ARGB);
 
 	public static GAMESTATES game_state = GAMESTATES.Menu;
 	public static boolean DEBUG_MODE = false;
@@ -84,7 +87,7 @@ public class Game extends Canvas implements Runnable {
 		this.addMouseListener(mouseInput);
 		this.addMouseMotionListener(mouseInput);
 		this.addMouseWheelListener(mouseInput);
-		new Window(NEW_WIDTH, NEW_HEIGHT, TITLE, this);
+		window = new Window(SCREEN_SIZE.width, SCREEN_SIZE.height, 1000, RATIO, TITLE, this);
 	}
 
 	public void setRequirements() {
@@ -144,6 +147,9 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
+		Rectangle window_bounds = window.f.getBounds();
+		windowSize = new Point(window_bounds.width, window_bounds.height);
+
 		if (game_state == GAMESTATES.Game && GameController.loaded) {
 			gameController.tick();
 
@@ -176,10 +182,10 @@ public class Game extends Canvas implements Runnable {
 		 * AffineTransform.getScaleInstance(SCALE_WIDTH,SCALE_HEIGHT);
 		 * g2d.transform(scalingTransform);
 		 */
-		g2d.scale(SCALE_WIDTH, SCALE_HEIGHT);
+		g2d.scale(SCALE, SCALE);
 		//g.setColor(new Color(217, 247, 255));
 		g.setColor(new Color(24, 20, 37));
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.fillRect(0, 0, windowSize.x, windowSize.y);
 
 		if (game_state == GAMESTATES.Menu) {
 			menuSystem.render(g, g2d);
@@ -266,7 +272,7 @@ public class Game extends Canvas implements Runnable {
 			if(arg.equals("no-load")) NO_LOAD = true;
 			if(arg.equals("windowed")) {
 				WINDOWED = true;
-				HEIGHT -= 20;
+				//HEIGHT -= 20;
 			}
 			if(arg.equals("dev")) DEV_MODE = true;
 		}
@@ -275,6 +281,10 @@ public class Game extends Canvas implements Runnable {
 		Logger.print("Game starting...");
 		System.setProperty("sun.java2d.opengl", "True");
 		canvas = new Game();
+	}
+
+	public static Point getGameSize() {
+		return new Point(Math.round(windowSize.x / SCALE), Math.round(windowSize.y / SCALE));
 	}
 
 }

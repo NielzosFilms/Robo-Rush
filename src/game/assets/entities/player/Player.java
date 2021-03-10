@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Random;
 
 import game.assets.entities.Effect_Texture;
@@ -29,7 +28,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 		put(PLAYER_STAT.move_speed, 1f);
 		put(PLAYER_STAT.damage, 1f);
 		put(PLAYER_STAT.health, 100f);
-		put(PLAYER_STAT.rate_of_fire, 20f);
+		put(PLAYER_STAT.rate_of_fire, 30f);
 		put(PLAYER_STAT.dash_speed, 8f);
 		put(PLAYER_STAT.dash_duration, 20f);
 		put(PLAYER_STAT.dash_cooldown, 60f);
@@ -441,5 +440,9 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 				}
 			}
 		}
+	}
+
+	public HashMap<PLAYER_STAT, Float> getPlayerStats() {
+		return this.player_stats;
 	}
 }

@@ -1,41 +1,77 @@
 package game.system.main;
 
-import game.textures.*;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 
 import javax.swing.JFrame;
 
 public class Window extends Canvas {
 
 	private static final long serialVersionUID = 492636734070584756L;
-	
-	public Window(int width, int height, String title, Game game) {
-		/*BufferedImage cursor = new BufferedImageLoader().loadImage("assets/main/hud/cursor.png");
-		Cursor woodCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-				cursor, new Point(10, 10), "wood cursor");*/
 
+	private int width, height, min_width;
+	private float screen_ratio;
+	private String title;
+	private Game game;
+
+	private boolean fullscreen = true;
+
+	public JFrame f;
+	
+	public Window(int width, int height, int min_width, float screen_ratio, String title, Game game) {
+		this.width = width;
+		this.height = height;
+		this.min_width = min_width;
+		this.screen_ratio = screen_ratio;
+		this.title = title;
+		this.game = game;
+
+		this.f = new JFrame(title);
+		createWindow();
+		game.start();
+	}
+
+	private void createWindow() {
 		Cursor transp_cursor = Toolkit.getDefaultToolkit().createCustomCursor(
 				new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "transp cursor");
-
-		JFrame f = new JFrame(title);
+		this.f = new JFrame(title);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setPreferredSize(new Dimension(width, height));
+		f.setMinimumSize(new Dimension(min_width, Math.round(min_width / screen_ratio)));
 		f.setMaximumSize(new Dimension(width, height));
-		f.setMinimumSize(new Dimension(width, height));
-		if(!Game.WINDOWED) {
+
+		if(fullscreen) {
+			f.setPreferredSize(new Dimension(width, height));
 			f.setResizable(false);
 			f.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			f.setUndecorated(true);
+		} else {
+			f.setPreferredSize(new Dimension(Math.round(width / 1.2f), Math.round(height / 1.2f)));
+			f.setResizable(true);
+			f.setUndecorated(false);
 		}
-		f.setLocationRelativeTo(null);
+
 		f.add(game);
 		f.getContentPane().setCursor(transp_cursor);
 		f.pack();
 		f.setVisible(true);
-		game.start();
+		f.toFront();
+		f.requestFocus();
+	}
+
+	public void setWindowed() {
+		this.fullscreen = false;
+		f.dispose();
+		createWindow();
+	}
+
+	public void setFullscreen(){
+		this.fullscreen = true;
+		f.dispose();
+		createWindow();
+	}
+
+	public boolean isFullscreen() {
+		return fullscreen;
 	}
 
 }

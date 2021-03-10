@@ -55,9 +55,9 @@ public class MainMenu extends Menu {
         Rectangle2D bounds = fm.getStringBounds("Main Menu", g2d);
 
         g.setColor(new Color(38, 43, 68));
-        g2d.drawString("Main Menu", (int)(screenWidth / 2 - bounds.getWidth() / 2)+1, 21);
+        g2d.drawString("Main Menu", (int)(Game.getGameSize().x / 2 - bounds.getWidth() / 2)+1, 21);
         g.setColor(new Color(192, 203, 220));
-        g2d.drawString("Main Menu", (int)(screenWidth / 2 - bounds.getWidth() / 2), 20);
+        g2d.drawString("Main Menu", (int)(Game.getGameSize().x / 2 - bounds.getWidth() / 2), 20);
     }
 
 }

@@ -42,18 +42,18 @@ public class SettingsMenu extends Menu {
 
 		//textFields.add(new TextField(new Rectangle(50, 50, 50, 50), 10, 25));
 		SliderInput soundSlider = new SliderInput(48, 48, 96, mouse, Game.settings.getSound_vol());
-		soundSlider.alignCenterX(screenWidth);
+		soundSlider.alignCenterX(Game.getGameSize().x);
 		texts.put(new Point(soundSlider.getX(), 44), "Sound Volume");
 		this.sliders.add(soundSlider);
 
 		SliderInput musicSlider = new SliderInput(48, 80, 96, mouse, Game.settings.getMusic_vol());
-		musicSlider.alignCenterX(screenWidth);
+		musicSlider.alignCenterX(Game.getGameSize().x);
 		texts.put(new Point(musicSlider.getX(), 76), "Music Volume");
 		this.sliders.add(musicSlider);
 
 		int listSize = Textures.texture_lists.get(TEXTURE_LIST.cursors).size();
 		texts.put(new Point(musicSlider.getX(), 156), "Cursor");
-		int cursors_x = screenWidth/2-((24*listSize)/2);
+		int cursors_x = Game.getGameSize().x/2-((24*listSize)/2);
 		for(int i=0; i<listSize; i++) {
 			buttons.add(new ImageButton(cursors_x + i*24, 160, 16, 16, new Texture(TEXTURE_LIST.cursors, i)) {
 				public void renderAfter(Graphics g) {
@@ -89,8 +89,8 @@ public class SettingsMenu extends Menu {
 		FontMetrics fm = g2d.getFontMetrics(Fonts.default_fonts.get(20));
 		Rectangle2D bounds = fm.getStringBounds("Settings", g2d);
 		g.setColor(new Color(38, 43, 68));
-		g2d.drawString("Settings", (int)(screenWidth / 2 - bounds.getWidth() / 2)+1, 21);
+		g2d.drawString("Settings", (int)(Game.getGameSize().x / 2 - bounds.getWidth() / 2)+1, 21);
 		g.setColor(new Color(192, 203, 220));
-		g2d.drawString("Settings", (int)(screenWidth / 2 - bounds.getWidth() / 2), 20);
+		g2d.drawString("Settings", (int)(Game.getGameSize().x / 2 - bounds.getWidth() / 2), 20);
 	}
 }

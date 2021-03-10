@@ -16,7 +16,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public abstract class Menu {
-    protected static final int screenWidth = Game.WIDTH, screenHeight = Game.HEIGHT;
     protected MouseInput mouse;
 
     protected ArrayList<Button> buttons = new ArrayList<>();
@@ -58,10 +57,10 @@ public abstract class Menu {
     }
 
     protected void renderBgTiles(Graphics g) {
-        int right = Helpers.getTileCoords(new Point(screenWidth, 0), 16, 16).x;
-        int bottom = Helpers.getTileCoords(new Point(0, screenHeight), 16, 16).y;
-        for(int y = 0;y < screenHeight;y+=16) {
-            for(int x = 0;x < screenWidth;x+=16) {
+        int right = Helpers.getTileCoords(new Point(Game.windowSize.x, 0), 16, 16).x;
+        int bottom = Helpers.getTileCoords(new Point(0, Game.windowSize.y), 16, 16).y;
+        for(int y = 0;y < Game.windowSize.y;y+=16) {
+            for(int x = 0;x < Game.windowSize.x;x+=16) {
                 Texture texture = new Texture(TEXTURE_LIST.grass, 1, 1);
                 if(y == 0 && x != 0) {
                     texture = new Texture(TEXTURE_LIST.grass, 1, 7);
@@ -90,7 +89,7 @@ public abstract class Menu {
             }
         }
         g.setColor(new Color(25, 60, 62, 50));
-        g.fillRect(0, 0, screenWidth, screenHeight);
+        g.fillRect(0, 0, Game.windowSize.x, Game.windowSize.y);
     }
 
     public abstract void renderBefore(Graphics g, Graphics2D g2d);
