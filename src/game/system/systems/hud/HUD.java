@@ -68,19 +68,7 @@ public class HUD implements Serializable {
 	}
 
 	public void render(Graphics g, Graphics2D g2d) {
-		Font font = new Font("SansSerif", Font.PLAIN, 3);
-		g2d.setFont(font);
-		FontMetrics fontMetrics = g2d.getFontMetrics(font);
-
 		drawMiniMap(g, new Point(Game.getGameSize().x - 8*4, 25));
-
-		String version = Game.VERSION;
-		String name = "NielzosFilms";
-
-		g.setColor(Color.black);
-		g2d.drawString(version, (Game.getGameSize().x - fontMetrics.stringWidth(version)), fontMetrics.getAscent());
-		g2d.drawString(name, (Game.getGameSize().x - fontMetrics.stringWidth(name)),
-				fontMetrics.getHeight() + fontMetrics.getAscent());
 
 		if(Game.DEBUG_MODE) debugHUD.render(g, g2d);
 	}

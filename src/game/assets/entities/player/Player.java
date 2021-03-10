@@ -63,6 +63,15 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 		this.original_stats = new HashMap<>(this.player_stats);
 
 		initAnimations();
+
+		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
+		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
+		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
+		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
+		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
+		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
+		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
+
 	}
 
 	protected abstract void initAnimations();
@@ -247,12 +256,6 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 			g.setColor(new Color(255, 108, 252, 92));
 			Helpers.drawBounds(g, this);
 		}
-
-		int offset_x = 0;
-		for(Item item : items) {
-			item.drawItemForInventory(g, x + offset_x, y);
-			offset_x += 8;
-		}
 		renderAbstract(g);
 	}
 
@@ -429,6 +432,10 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 		this.items.add(item);
 	}
 
+	public LinkedList<Item> getItems() {
+		return this.items;
+	}
+
 	protected void updatePlayerStats() {
 		player_stats = new HashMap<>(original_stats);
 		for(Item item : items) {
@@ -444,5 +451,9 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 
 	public HashMap<PLAYER_STAT, Float> getPlayerStats() {
 		return this.player_stats;
+	}
+
+	public HashMap<PLAYER_STAT, Float> getBasePlayerStats() {
+		return this.original_stats;
 	}
 }

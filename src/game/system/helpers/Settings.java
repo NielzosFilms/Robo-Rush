@@ -79,6 +79,7 @@ public class Settings {
 
     public void setCursor(Texture cursor) {
         this.cursor = cursor;
+        this.settings.put(SETTING.cursor, (float)cursor.getIndex());
     }
 
     public Texture getCursor() {

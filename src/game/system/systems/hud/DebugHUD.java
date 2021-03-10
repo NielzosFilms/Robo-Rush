@@ -47,7 +47,7 @@ public class DebugHUD implements Serializable {
 		HashMap<PLAYER_STAT, Float> player_stats = player.getPlayerStats();
 		int index = 0;
 		for(PLAYER_STAT stat_name : player_stats.keySet()) {
-			g.drawString(stat_name.toString(), x, y + lineHeight*index);
+			g.drawString(stat_name.displayName, x, y + lineHeight*index);
 			g.drawString(player_stats.get(stat_name).toString(), x + x_valueOffset, y + lineHeight*index);
 			index++;
 		}

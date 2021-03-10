@@ -28,6 +28,7 @@ public class Item {
     }
 
     public void drawItemForInventory(Graphics g, int x, int y) {
+        g.drawString(this.item_id.displayName, x, y);
         g.drawImage(this.tex.getTexure(), x, y, null);
     }
 

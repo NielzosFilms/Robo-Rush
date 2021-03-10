@@ -57,10 +57,10 @@ public abstract class Menu {
     }
 
     protected void renderBgTiles(Graphics g) {
-        int right = Helpers.getTileCoords(new Point(Game.windowSize.x, 0), 16, 16).x;
-        int bottom = Helpers.getTileCoords(new Point(0, Game.windowSize.y), 16, 16).y;
-        for(int y = 0;y < Game.windowSize.y;y+=16) {
-            for(int x = 0;x < Game.windowSize.x;x+=16) {
+        int right = Helpers.getTileCoords(new Point(Game.getGameSize().x-16, 0), 16, 16).x;
+        int bottom = Helpers.getTileCoords(new Point(0, Game.getGameSize().y), 16, 16).y;
+        for(int y = 0;y < Game.getGameSize().y;y+=16) {
+            for(int x = 0;x < Game.getGameSize().x;x+=16) {
                 Texture texture = new Texture(TEXTURE_LIST.grass, 1, 1);
                 if(y == 0 && x != 0) {
                     texture = new Texture(TEXTURE_LIST.grass, 1, 7);

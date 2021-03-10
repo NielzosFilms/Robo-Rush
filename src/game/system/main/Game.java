@@ -26,7 +26,7 @@ public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 852753996046178928L;
 	public static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final float RATIO = (float) SCREEN_SIZE.width / SCREEN_SIZE.height;
-	public static final int GAME_WIDTH = 360;
+	public static final int GAME_WIDTH = 16*24;
 //	public static int WIDTH = 384, HEIGHT = 216;//(int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
 	//public static int WIDTH = 360, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
 //	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
@@ -68,10 +68,9 @@ public class Game extends Canvas implements Runnable {
 	public static LoadingAnimation loadingAnimation = new LoadingAnimation(16, 16, 16, 16);
 
 	public Game() {
-
+		settings = new Settings();
 		keyInput = new KeyInput();
 		mouseInput = new MouseInput();
-		loadSettings();
 		SoundEffect.init();
 		postProcessing = new PostProcessing();
 
@@ -202,6 +201,8 @@ public class Game extends Canvas implements Runnable {
 
 		g.drawImage(settings.getCursor().getTexure(), mouseInput.mouse_x, mouseInput.mouse_y, 8, 8, null);
 
+		drawVersion(g, g2d);
+
 		/*postProcessing.render(g_bs, game_image);
 		g_bs.drawImage(game_image, 0, 0, null);*/
 
@@ -211,61 +212,17 @@ public class Game extends Canvas implements Runnable {
 		bs.show();
 	}
 
-//	public static void saveChunks() {
-//		loadingAnimation.setLoading(true);
-//		if(!NO_SAVE) {
-//			Helpers.createDirIfNotExisting(SAVES_DIRECTORY);
-//			try {
-//				FileOutputStream fos = new FileOutputStream(SAVES_DIRECTORY + "/save_slot.data");
-//				ObjectOutputStream oos = new ObjectOutputStream(fos);
-//				oos.writeObject(world);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		loadingAnimation.setLoading(false);
-//	}
+	private void drawVersion(Graphics g, Graphics2D g2d) {
+		Font font = Fonts.default_fonts.get(3);
+		g2d.setFont(font);
+		FontMetrics fontMetrics = g2d.getFontMetrics(font);
+		String version = Game.VERSION;
+		String name = "NielzosFilms";
 
-//	public static void loadChunks() {
-//		loadingAnimation.setLoading(true);
-//		if(!NO_LOAD) {
-//			try {
-//				FileInputStream fis = new FileInputStream(SAVES_DIRECTORY + "save_slot.data");
-//				ObjectInputStream ois = new ObjectInputStream(fis);
-//
-//				World loaded_world = (World) ois.readObject();
-//				world = loaded_world;
-//				world.setRequirements(loaded_world.getPlayer(), textures, keyInput, mouseInput);
-//
-//				ois.close();
-//				fis.close();
-//			} catch (IOException | ClassNotFoundException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		loadingAnimation.setLoading(false);
-//	}
-
-	public static void loadSettings() {
-		loadingAnimation.setLoading(true);
-		if(!NO_LOAD) {
-			if(Files.exists(Paths.get("gameSettings.data"))) {
-				Logger.print("settings found");
-				try {
-					FileInputStream fis = new FileInputStream("gameSettings.data");
-					ObjectInputStream ois = new ObjectInputStream(fis);
-
-					settings = (Settings) ois.readObject();
-					System.out.println(settings);
-
-					ois.close();
-					fis.close();
-				} catch (IOException | ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-			} else settings = new Settings();
-		} else settings = new Settings();
-		loadingAnimation.setLoading(false);
+		g.setColor(Color.white);
+		g2d.drawString(version, (Game.getGameSize().x - fontMetrics.stringWidth(version)), fontMetrics.getAscent());
+		g2d.drawString(name, (Game.getGameSize().x - fontMetrics.stringWidth(name)),
+				fontMetrics.getHeight() + fontMetrics.getAscent());
 	}
 
 	public static void main(String[] args) {

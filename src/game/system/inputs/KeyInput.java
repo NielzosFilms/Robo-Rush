@@ -8,6 +8,7 @@ import game.assets.entities.enemies.Enemy;
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
 import game.system.helpers.Helpers;
+import game.system.helpers.Logger;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Interactable;
 import game.system.main.*;
@@ -107,6 +108,15 @@ public class KeyInput extends KeyAdapter {
 //			inventorySystem.keyPressed(e);
 		} else {
 			menuSystem.keyPressed(e);
+		}
+		if(key == KeyEvent.VK_B) {
+			Logger.print("Tab");
+			if(Game.game_state == GAMESTATES.Game) {
+				Game.game_state = GAMESTATES.Pauzed;
+				menuSystem.setState(MENUSTATES.Inventory);
+			} else {
+				Game.game_state = GAMESTATES.Game;
+			}
 		}
 		if (key == KeyEvent.VK_ESCAPE) {
 			// saving

@@ -31,6 +31,7 @@ public class MenuSystem {
 		menus.put(MENUSTATES.Pauzed, new PauzedMenu(mouse));
 		menus.put(MENUSTATES.Settings, new SettingsMenu(mouse));
 		menus.put(MENUSTATES.SaveSlotSelect, new MenuWorldSelect(mouse));
+		menus.put(MENUSTATES.Inventory, new MenuInventory(mouse));
 	}
 
 	public void tick() {

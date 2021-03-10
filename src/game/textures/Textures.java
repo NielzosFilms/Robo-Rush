@@ -24,7 +24,8 @@ public class Textures {
 			default_btn,
 			healthbar,
 			mushroom,
-			tree = loader.loadImage("assets/main/tree.png");
+			tree = loader.loadImage("assets/main/tree.png"),
+			inventory_mockup = loader.loadImage("assets/main/hud/inventory_mockup.png");
 
 	public Textures() {
 		for(TEXTURE_LIST list_name : TEXTURE_LIST.values()) {
