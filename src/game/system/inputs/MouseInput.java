@@ -80,15 +80,15 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener, Mou
 	public void mouseMoved(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1) mouseDown_left = false;
 		if(e.getButton() == MouseEvent.BUTTON3) mouseDown_right = false;
-		this.mouse_x = (int) (e.getX() / Game.SCALE);
-		this.mouse_y = (int) (e.getY() / Game.SCALE);
+		this.mouse_x = (int) (e.getX() / Game.scale);
+		this.mouse_y = (int) (e.getY() / Game.scale);
 	}
 
 	public void mouseDragged(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1) mouseDown_left = true;
 		if(e.getButton() == MouseEvent.BUTTON3) mouseDown_right = true;
-		this.mouse_x = (int) (e.getX() / Game.SCALE);
-		this.mouse_y = (int) (e.getY() / Game.SCALE);
+		this.mouse_x = (int) (e.getX() / Game.scale);
+		this.mouse_y = (int) (e.getY() / Game.scale);
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {

@@ -1,5 +1,6 @@
 package game.audio;
 
+import game.enums.SETTING;
 import game.system.helpers.Logger;
 import game.system.main.Game;
 
@@ -44,7 +45,7 @@ public enum SoundEffect {
 	public void play() {
 		if (clip.isRunning()) clip.stop();
 		clip.setFramePosition(0);
-		setVol(Game.settings.getSound_vol(), clip);
+		setVol(Game.settings.getSetting(SETTING.sound_vol), clip);
 		clip.start();
 	}
 

@@ -26,10 +26,12 @@ public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 852753996046178928L;
 	public static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final float RATIO = (float) SCREEN_SIZE.width / SCREEN_SIZE.height;
+	public static final int GAME_WIDTH = 360;
 //	public static int WIDTH = 384, HEIGHT = 216;//(int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
 	//public static int WIDTH = 360, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
 //	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
-	public static final float SCALE = 6.7f;
+	public static final float SCALE_FINAL = 6.7f;
+	public static float scale = SCALE_FINAL;
 	public static final String TITLE = "Top Down Java Game";
 	public static final String VERSION = "ALPHA V 3.80.0 COMBAT";
 
@@ -149,6 +151,7 @@ public class Game extends Canvas implements Runnable {
 	private void tick() {
 		Rectangle window_bounds = window.f.getBounds();
 		windowSize = new Point(window_bounds.width, window_bounds.height);
+		scale = (float)windowSize.x / (float)GAME_WIDTH;
 
 		if (game_state == GAMESTATES.Game && GameController.loaded) {
 			gameController.tick();
@@ -182,7 +185,7 @@ public class Game extends Canvas implements Runnable {
 		 * AffineTransform.getScaleInstance(SCALE_WIDTH,SCALE_HEIGHT);
 		 * g2d.transform(scalingTransform);
 		 */
-		g2d.scale(SCALE, SCALE);
+		g2d.scale(scale, scale);
 		//g.setColor(new Color(217, 247, 255));
 		g.setColor(new Color(24, 20, 37));
 		g.fillRect(0, 0, windowSize.x, windowSize.y);
@@ -284,7 +287,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public static Point getGameSize() {
-		return new Point(Math.round(windowSize.x / SCALE), Math.round(windowSize.y / SCALE));
+		return new Point(Math.round(windowSize.x / scale), Math.round(windowSize.y / scale));
 	}
 
 }

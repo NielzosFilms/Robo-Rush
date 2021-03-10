@@ -1,0 +1,3 @@
+music_vol=0.3
+cursor=2.0
+sound_vol=0.3

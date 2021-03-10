@@ -2,6 +2,7 @@ package game.system.systems.menu;
 
 import game.audio.SoundEffect;
 import game.enums.MENUSTATES;
+import game.enums.SETTING;
 import game.system.main.Game;
 import game.system.systems.menu.buttons.Button;
 import game.system.systems.menu.buttons.ImageButton;
@@ -27,7 +28,7 @@ public class SettingsMenu extends Menu {
 			@Override
 			public void handleClick(MouseEvent e) {
 				SoundEffect.menu_forward.play();
-				Game.settings.save();
+				Game.settings.saveSettings();
 				Game.menuSystem.setState(Game.menuSystem.getPreviousState());
 			}
 		});
@@ -41,12 +42,12 @@ public class SettingsMenu extends Menu {
 		});
 
 		//textFields.add(new TextField(new Rectangle(50, 50, 50, 50), 10, 25));
-		SliderInput soundSlider = new SliderInput(48, 48, 96, mouse, Game.settings.getSound_vol());
+		SliderInput soundSlider = new SliderInput(48, 48, 96, mouse, Game.settings.getSetting(SETTING.sound_vol));
 		soundSlider.alignCenterX(Game.getGameSize().x);
 		texts.put(new Point(soundSlider.getX(), 44), "Sound Volume");
 		this.sliders.add(soundSlider);
 
-		SliderInput musicSlider = new SliderInput(48, 80, 96, mouse, Game.settings.getMusic_vol());
+		SliderInput musicSlider = new SliderInput(48, 80, 96, mouse, Game.settings.getSetting(SETTING.music_vol));
 		musicSlider.alignCenterX(Game.getGameSize().x);
 		texts.put(new Point(musicSlider.getX(), 76), "Music Volume");
 		this.sliders.add(musicSlider);
@@ -68,8 +69,8 @@ public class SettingsMenu extends Menu {
 	}
 
 	public void tickAbs() {
-		Game.settings.setSoundVolFloat(this.sliders.get(0).getValue());
-		Game.settings.setMusicVolFloat(this.sliders.get(1).getValue());
+		Game.settings.setSetting(SETTING.sound_vol, this.sliders.get(0).getValue());
+		Game.settings.setSetting(SETTING.music_vol, this.sliders.get(1).getValue());
 	}
 
 	public void renderBefore(Graphics g, Graphics2D g2d) {
