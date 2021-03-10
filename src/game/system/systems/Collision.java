@@ -13,7 +13,7 @@ import game.system.main.Handler;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Hitable;
-import game.system.systems.gameObject.Pushable;
+import game.system.systems.gameObject.Trigger;
 
 public class Collision {
 
@@ -31,63 +31,39 @@ public class Collision {
 
 	public void tick() {
 		LinkedList<GameObject> objects_w_bounds = handler.getBoundsObjects();
-		/*for(GameObject entity : objects_w_bounds) {
-			//if(entity instanceof Pushable) continue;
-			//all_bounds.add(((game.system.systems.gameObject.Collision)entity).getBounds());
-		}*/
+
+		LinkedList<GameObject> triggers = handler.getTriggerObjects();
 
 		for(GameObject entity : objects_w_bounds) {
-			if(entity instanceof Pushable) {
-				if(player.getBounds().intersects(((Bounds)entity).getBounds())) {
-					//((Pushable) entity).push(DIRECTIONS.down);
+			for(GameObject trigger_object : triggers) {
+				Trigger trigger = (Trigger) trigger_object;
+				Bounds trigger_bounds = (Bounds) trigger_object;
+				if(trigger.triggerCollision()) {
+					checkCollisionFor2Entities(entity, trigger_object);
 				}
-			}
-		}
-
-		for(GameObject entity : objects_w_bounds) {
-			if(entity instanceof RoomDoorTrigger) {
-				if(((RoomDoorTrigger) entity).isOpen()) {
-					if (((RoomDoorTrigger) entity).getBounds().intersects(player.getBounds())) {
-						if(((RoomDoorTrigger) entity).canTrigger()) {
-							((RoomDoorTrigger) entity).triggered();
-							break;
-						}
-					} else {
-						if(!((RoomDoorTrigger) entity).canTrigger()) {
-							((RoomDoorTrigger) entity).setTriggerActive(true);
-							// gameController.getActiveLevel().closeDoors();
-						}
+				if(trigger_bounds.getBounds().intersects(player.getBounds())) {
+					if(trigger.canTrigger() && !trigger.triggerCollision()) {
+						trigger.triggered();
+						trigger.setTriggerActive(false);
+						break;
 					}
-					continue;
+				} else if(!trigger.canTrigger()) {
+					trigger.setTriggerActive(true);
 				}
-			}
-			if(entity instanceof Item_Ground) {
-				if(((Item_Ground) entity).getBounds().intersects(player.getBounds())) {
-					((Item_Ground) entity).playerCollided();
-				}
-				continue;
 			}
 			for (GameObject entity_2 : objects_w_bounds) {
-				if(entity_2 instanceof RoomDoorTrigger) {
-					if(((RoomDoorTrigger) entity_2).isOpen()) {
-						continue;
-					}
-				}
-				if(entity_2 instanceof Item_Ground) continue;
 				checkCollisionFor2Entities(entity, entity_2);
-				//checkCollisionForMovingEntities(entity, entity_2);
-				// wierd stuff happens
-				//checkCollisionForGameObject(bounds, entity);
 			}
 		}
-/*
-		for (Rectangle bounds : all_bounds) {
-			checkBoundWithPlayer(bounds);
-		}*/
 
+		checkBulletCollision(objects_w_bounds, triggers);
+
+	}
+
+	private void checkBulletCollision(LinkedList<GameObject> objects, LinkedList<GameObject> triggers) {
 		for(GameObject bullet : handler.getObjectsWithIds(ID.Bullet)) {
 			Bullet bullet_cast = (Bullet) bullet;
-			for(GameObject entity : objects_w_bounds) {
+			for(GameObject entity : objects) {
 				if (!bullet_cast.getHitObjects().contains(entity)) {
 					if (bullet_cast.getBounds().intersects(((Bounds) entity).getBounds())) {
 						if (entity instanceof Hitable) {
@@ -97,8 +73,20 @@ public class Collision {
 					}
 				}
 			}
-		}
 
+			for(GameObject trigger : triggers) {
+				if(((Trigger)trigger).triggerCollision()) {
+					if (!bullet_cast.getHitObjects().contains(trigger)) {
+						if (bullet_cast.getBounds().intersects(((Bounds) trigger).getBounds())) {
+							if (trigger instanceof Hitable) {
+								((Hitable) trigger).hit(bullet_cast.getDamage(), 0, 0f, bullet_cast.getCreatedBy());
+							}
+							bullet_cast.destroy();
+						}
+					}
+				}
+			}
+		}
 	}
 
 	private void checkCollisionFor2Entities(GameObject entity_1, GameObject entity_2) {
@@ -132,38 +120,4 @@ public class Collision {
 			}
 		}
 	}
-
-	private void checkCollisionForRectangle(GameObject entity_1, Rectangle bounds) {
-		Rectangle ent_1_bounds = ((Bounds)entity_1).getBounds();
-		if(ent_1_bounds == bounds) return;
-		if(bounds == null || ent_1_bounds == null) return;
-		if(bounds.x == ent_1_bounds.x && bounds.y == ent_1_bounds.y && bounds.width == ent_1_bounds.width && bounds.height == ent_1_bounds.height) return;
-		if(ent_1_bounds.intersects(bounds)) {
-			Bounds ent_1 = (Bounds) entity_1;
-			if(ent_1.getTopBounds() != null && ent_1.getBottomBounds() != null && ent_1.getLeftBounds() != null && ent_1.getRightBounds() != null) {
-				if(!ent_1.getTopBounds().intersects(bounds) ||
-						!ent_1.getBottomBounds().intersects(bounds) ||
-						!ent_1.getLeftBounds().intersects(bounds) ||
-						!ent_1.getRightBounds().intersects(bounds)) {
-					if(ent_1.getTopBounds().intersects(bounds)) {
-						entity_1.setY(entity_1.getY() + 1);
-						entity_1.setVelY(0);
-					}
-					if(ent_1.getBottomBounds().intersects(bounds)) {
-						entity_1.setY(entity_1.getY() - 1);
-						entity_1.setVelY(0);
-					}
-					if(ent_1.getLeftBounds().intersects(bounds)) {
-						entity_1.setX(entity_1.getX() + 1);
-						entity_1.setVelX(0);
-					}
-					if(ent_1.getRightBounds().intersects(bounds)) {
-						entity_1.setX(entity_1.getX() - 1);
-						entity_1.setVelX(0);
-					}
-				}
-			}
-		}
-	}
-
 }

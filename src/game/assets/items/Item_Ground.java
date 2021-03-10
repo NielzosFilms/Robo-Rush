@@ -5,15 +5,15 @@ import java.util.Random;
 
 import game.assets.items.item.Item;
 import game.audio.SoundEffect;
+import game.system.helpers.Logger;
 import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.enums.ID;
-import game.system.systems.gameObject.HasItem;
-import game.system.systems.gameObject.Interactable;
+import game.system.systems.gameObject.Trigger;
 import game.textures.Textures;
 
-public class Item_Ground extends GameObject implements Bounds {
+public class Item_Ground extends GameObject implements Bounds, Trigger {
 
 	private Random r = new Random();
 
@@ -24,6 +24,8 @@ public class Item_Ground extends GameObject implements Bounds {
 	private boolean direction = false;
 
 	private double buffer_x, buffer_y;
+
+	private boolean can_trigger = true;
 
 	public Item_Ground(int x, int y, int z_index, ID id, Item inventoryItem) {
 		super(x, y, z_index, id);
@@ -72,12 +74,6 @@ public class Item_Ground extends GameObject implements Bounds {
 		g.drawImage(inventoryItem.getTexture().getTexure(), x + x_diff, y + y_diff, 16, 16, null);
 	}
 
-	public void playerCollided() {
-		SoundEffect.inv_pickup_item.play();
-		Game.gameController.getPlayer().addItem(this.inventoryItem);
-		Game.gameController.getHandler().findAndRemoveObject(this);
-	}
-
 	public void setX(int x) {
 		this.x = x;
 		buffer_x = x;
@@ -111,5 +107,29 @@ public class Item_Ground extends GameObject implements Bounds {
 	@Override
 	public Rectangle getRightBounds() {
 		return null;
+	}
+
+	@Override
+	public boolean canTrigger() {
+		return can_trigger;
+	}
+
+	@Override
+	public void setTriggerActive(boolean triggerActive) {
+
+	}
+
+	@Override
+	public boolean triggerCollision() {
+		return false;
+	}
+
+	@Override
+	public void triggered() {
+		Logger.printStackStrace();
+		can_trigger = false;
+		SoundEffect.inv_pickup_item.play();
+		Game.gameController.getPlayer().addItem(this.inventoryItem);
+		Game.gameController.getHandler().findAndRemoveObject(this);
 	}
 }

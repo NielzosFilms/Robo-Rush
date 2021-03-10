@@ -8,6 +8,7 @@ import game.system.helpers.StructureLoaderHelpers;
 import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.Trigger;
 import game.textures.Fonts;
 import org.json.simple.JSONObject;
 
@@ -15,7 +16,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class RoomDoorTrigger extends GameObject implements Bounds {
+public class RoomDoorTrigger extends GameObject implements Bounds, Trigger {
     private static final HashMap<String, Point> MAPPING = new HashMap<String, Point>() {{
         put("N", new Point(0, -1));
         put("E", new Point(1, 0));
@@ -92,6 +93,7 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
         g.drawString(String.valueOf(open), this.x, this.y);
     }
 
+    @Override
     public void triggered() {
 //        Logger.print("[DOOR TRIGGERED] >> " + door_direction);
 
@@ -164,12 +166,19 @@ public class RoomDoorTrigger extends GameObject implements Bounds {
         this.open = open;
     }
 
+    @Override
     public boolean canTrigger() {
         return trigger_active;
     }
 
+    @Override
     public void setTriggerActive(boolean trigger_active) {
         this.trigger_active = trigger_active;
+    }
+
+    @Override
+    public boolean triggerCollision() {
+        return !open;
     }
 
     public void setNeedsKey(boolean needs_key) {

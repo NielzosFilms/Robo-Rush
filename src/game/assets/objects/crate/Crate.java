@@ -17,7 +17,7 @@ import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 import org.json.simple.JSONObject;
 
-public class Crate extends GameObject implements Bounds, Pushable, Interactable, Hitable, Destroyable, Health {
+public class Crate extends GameObject implements Bounds, Interactable, Hitable, Destroyable, Health {
     private final int REGEN_DELAY_AFTER_HIT = 60*10;
     private final int REGEN_DELAY = 30;
     private final int REGEN_AMOUNT = 1;

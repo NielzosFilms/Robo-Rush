@@ -164,7 +164,7 @@ public class Handler implements Serializable {
 		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
-				if (tempObject instanceof Bounds) {
+				if (tempObject instanceof Bounds && !(tempObject instanceof Trigger)) {
 					if(((Bounds) tempObject).getBounds() != null) {
 						ret.add(tempObject);
 					}
@@ -175,7 +175,36 @@ public class Handler implements Serializable {
 		for (LinkedList<GameObject> layer_game_objects : all_game_objects) {
 			for (int i = 0; i < layer_game_objects.size(); i++) {
 				GameObject tempObject = layer_game_objects.get(i);
-				if (tempObject instanceof Bounds) {
+				if (tempObject instanceof Bounds && !(tempObject instanceof Trigger)) {
+					if(((Bounds) tempObject).getBounds() != null) {
+						ret.add(tempObject);
+					}
+				}
+			}
+		}
+
+		return ret;
+	}
+
+	public LinkedList<GameObject> getTriggerObjects() {
+		LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
+		LinkedList<GameObject> ret = new LinkedList<>();
+
+		for (LinkedList<GameObject> list : object_entities) {
+			for (int i = 0; i < list.size(); i++) {
+				GameObject tempObject = list.get(i);
+				if (tempObject instanceof Bounds && tempObject instanceof Trigger) {
+					if(((Bounds) tempObject).getBounds() != null) {
+						ret.add(tempObject);
+					}
+				}
+			}
+		}
+
+		for (LinkedList<GameObject> layer_game_objects : all_game_objects) {
+			for (int i = 0; i < layer_game_objects.size(); i++) {
+				GameObject tempObject = layer_game_objects.get(i);
+				if (tempObject instanceof Bounds && tempObject instanceof Trigger) {
 					if(((Bounds) tempObject).getBounds() != null) {
 						ret.add(tempObject);
 					}
