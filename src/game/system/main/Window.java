@@ -58,14 +58,8 @@ public class Window extends Canvas {
 		f.requestFocus();
 	}
 
-	public void setWindowed() {
-		this.fullscreen = false;
-		f.dispose();
-		createWindow();
-	}
-
-	public void setFullscreen(){
-		this.fullscreen = true;
+	public void setFullscreen(boolean fullscreen) {
+		this.fullscreen = fullscreen;
 		f.dispose();
 		createWindow();
 	}

@@ -147,11 +147,7 @@ public class KeyInput extends KeyAdapter {
 		}
 
 		if(key == KeyEvent.VK_F11) {
-			if(Game.window.isFullscreen()) {
-				Game.window.setWindowed();
-			} else {
-				Game.window.setFullscreen();
-			}
+			Game.window.setFullscreen(!Game.window.isFullscreen());
 		}
 	}
 
