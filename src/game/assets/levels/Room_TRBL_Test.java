@@ -1,6 +1,7 @@
 package game.assets.levels;
 
-import game.assets.entities.enemies.Enemy;
+import game.assets.entities.enemies.Shooting_Enemy;
+import game.assets.entities.enemies.Test_Enemy;
 import game.assets.levels.def.ROOM_TYPE;
 import game.assets.levels.def.Room;
 import game.enums.ID;
@@ -25,7 +26,8 @@ public class Room_TRBL_Test extends Room {
 //        addObject(new RoomDoorTrigger(0, 64, new Point(0, -1)));
 //        addObject(new RoomDoorTrigger(0, -64, new Point(0, 1)));
 
-        addObject(new Enemy(0 ,0, 10, ID.Enemy));
+        addObject(new Test_Enemy(0 ,0, 10, ID.Enemy));
+        addObject(new Shooting_Enemy(64, 64));
     }
 
     @Override

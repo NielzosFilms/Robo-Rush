@@ -1,19 +1,17 @@
 package game.assets.levels.level_1;
 
-import game.assets.entities.enemies.Enemy;
+import game.assets.entities.enemies.Test_Enemy;
 import game.assets.levels.RoomDoorTrigger;
 import game.assets.levels.def.ROOM_TYPE;
 import game.assets.levels.def.Room;
 import game.assets.levels.def.RoomSpawner;
 import game.enums.ID;
-import game.system.helpers.JsonLoader;
 import game.system.main.Game;
 import game.system.systems.gameObject.GameObject;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 import java.awt.*;
-import java.util.LinkedList;
 
 public class Room_Boss extends Room {
     public Room_Boss(Point location, ROOM_TYPE room_type) {
@@ -29,14 +27,14 @@ public class Room_Boss extends Room {
             addObject(doorTrigger);
         }
 
-        addEnemyToWave(0, new Enemy(0 ,0, 10, ID.Enemy));
+        addEnemyToWave(0, new Test_Enemy(0 ,0, 10, ID.Enemy));
 
-        addEnemyToWave(1, new Enemy(0 ,0, 10, ID.Enemy));
-        addEnemyToWave(1, new Enemy(-64 ,-64, 10, ID.Enemy));
+        addEnemyToWave(1, new Test_Enemy(0 ,0, 10, ID.Enemy));
+        addEnemyToWave(1, new Test_Enemy(-64 ,-64, 10, ID.Enemy));
 
-        addEnemyToWave(2, new Enemy(0 ,0, 10, ID.Enemy));
-        addEnemyToWave(2, new Enemy(-64 ,-64, 10, ID.Enemy));
-        addEnemyToWave(2, new Enemy(64 ,64, 10, ID.Enemy));
+        addEnemyToWave(2, new Test_Enemy(0 ,0, 10, ID.Enemy));
+        addEnemyToWave(2, new Test_Enemy(-64 ,-64, 10, ID.Enemy));
+        addEnemyToWave(2, new Test_Enemy(64 ,64, 10, ID.Enemy));
 
         spawnCurrentWave();
     }
