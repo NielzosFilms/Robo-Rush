@@ -28,6 +28,7 @@ public class Room_TRBL_Test extends Room {
 
         addObject(new Test_Enemy(0 ,0, 10, ID.Enemy));
         addObject(new Shooting_Enemy(64, 64));
+        closeDoors();
     }
 
     @Override
