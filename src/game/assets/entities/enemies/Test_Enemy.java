@@ -2,7 +2,6 @@ package game.assets.entities.enemies;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
@@ -11,7 +10,6 @@ import game.assets.HealthBar;
 import game.audio.SoundEffect;
 import game.enums.DIRECTIONS;
 import game.system.helpers.Helpers;
-import game.system.helpers.Logger;
 import game.system.helpers.Timer;
 import game.system.main.Game;
 import game.system.systems.gameObject.*;
@@ -28,7 +26,7 @@ enum Decision {
 	attack_target,
 }
 
-public class Enemy extends GameObject implements Bounds, Hitable, Health, Destroyable {
+public class Test_Enemy extends GameObject implements Bounds, Hitable, Health, Destroyable {
 	float max_vel = 1f; //0.8
 	float wander_vel = 0.5f;
 	float acceleration = 0.05f;
@@ -52,7 +50,7 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 	private HealthBar health = new HealthBar(0, 0, 0, 8, 1);
 	private boolean destroyed = false;
 
-	public Enemy(int x, int y, int z_index, ID id) {
+	public Test_Enemy(int x, int y, int z_index, ID id) {
 		super(x, y, z_index, id);
 		for(int i=0; i<360; i+=30) {
 			angles.put(i, 0.5f);
@@ -423,7 +421,7 @@ public class Enemy extends GameObject implements Bounds, Hitable, Health, Destro
 		for(GameObject mate : Game.gameController.getHandler().getObjectsWithIds(this.id)) {
 			int mate_dist = (int) Helpers.getDistance(new Point(x, y), new Point(mate.getX(), mate.getY()));
 			try {
-				Enemy mate_e = (Enemy) mate;
+				Test_Enemy mate_e = (Test_Enemy) mate;
 				if (mate_dist < wonderAreaSize * 2) {
 					if (mate_e.getAction() == Decision.wander) {
 						mate_e.setTarget(hit_by);
