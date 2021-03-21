@@ -233,7 +233,7 @@
                  "y":0
                 }, 
                 {
-                 "height":32,
+                 "height":16,
                  "id":27,
                  "name":"Door_South",
                  "properties":[
@@ -262,7 +262,7 @@
                  "visible":true,
                  "width":32,
                  "x":112,
-                 "y":224
+                 "y":240
                 }, 
                 {
                  "height":32,
@@ -347,35 +347,71 @@
                 }, 
                 {
                  "height":16,
-                 "id":37,
-                 "name":"Empty_Crate",
+                 "id":42,
+                 "name":"",
                  "properties":[
-                        {
-                         "name":"inv_x",
-                         "type":"string",
-                         "value":"3"
-                        }, 
-                        {
-                         "name":"inv_y",
-                         "type":"string",
-                         "value":"3"
-                        }, 
-                        {
-                         "name":"loot_table",
-                         "type":"string",
-                         "value":""
-                        }, 
                         {
                          "name":"package",
                          "type":"string",
-                         "value":"game.assets.objects.crate"
+                         "value":"game.assets.objects"
                         }],
                  "rotation":0,
-                 "type":"Crate",
+                 "type":"BoundsObject",
+                 "visible":true,
+                 "width":32,
+                 "x":112,
+                 "y":256
+                }, 
+                {
+                 "height":32,
+                 "id":43,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"package",
+                         "type":"string",
+                         "value":"game.assets.objects"
+                        }],
+                 "rotation":0,
+                 "type":"BoundsObject",
                  "visible":true,
                  "width":16,
-                 "x":64,
-                 "y":176
+                 "x":256,
+                 "y":96
+                }, 
+                {
+                 "height":16,
+                 "id":44,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"package",
+                         "type":"string",
+                         "value":"game.assets.objects"
+                        }],
+                 "rotation":0,
+                 "type":"BoundsObject",
+                 "visible":true,
+                 "width":32,
+                 "x":112,
+                 "y":-16
+                }, 
+                {
+                 "height":32,
+                 "id":45,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"package",
+                         "type":"string",
+                         "value":"game.assets.objects"
+                        }],
+                 "rotation":0,
+                 "type":"BoundsObject",
+                 "visible":true,
+                 "width":16,
+                 "x":-16,
+                 "y":96
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -402,7 +438,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":42,
+ "nextobjectid":46,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.3",

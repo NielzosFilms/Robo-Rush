@@ -258,7 +258,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 		drawPlayerAnimations(g, mirror);
 
 		if(Game.DEBUG_MODE) {
-			g.setColor(new Color(255, 108, 252, 92));
+			g.setColor(COLOR_PALETTE.salmon.color);
 			Helpers.drawBounds(g, this);
 		}
 		renderAbstract(g);

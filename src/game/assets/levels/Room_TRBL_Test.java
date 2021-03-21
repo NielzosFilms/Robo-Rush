@@ -28,17 +28,17 @@ public class Room_TRBL_Test extends Room {
 //        addObject(new RoomDoorTrigger(0, 64, new Point(0, -1)));
 //        addObject(new RoomDoorTrigger(0, -64, new Point(0, 1)));
 
-        addEnemyToWave(0, new Shooting_Enemy(64, 64));
-        addEnemyToWave(0, new Shooting_Enemy(100, 64));
-        addEnemyToWave(0, new Shooting_Enemy(64, 100));
-        addEnemyToWave(0, new Shooting_Enemy(100, 100));
-
-        addEnemyToWave(1, new Shooting_Enemy(64, 64));
-        addEnemyToWave(1, new Shooting_Enemy(100, 64));
-        addEnemyToWave(1, new Shooting_Enemy(64, 100));
-
-        addEnemyToWave(2, new Shooting_Enemy(64, 64));
-        addEnemyToWave(2, new Shooting_Enemy(100, 100));
+//        addEnemyToWave(0, new Shooting_Enemy(64, 64));
+//        addEnemyToWave(0, new Shooting_Enemy(100, 64));
+//        addEnemyToWave(0, new Shooting_Enemy(64, 100));
+//        addEnemyToWave(0, new Shooting_Enemy(100, 100));
+//
+//        addEnemyToWave(1, new Shooting_Enemy(64, 64));
+//        addEnemyToWave(1, new Shooting_Enemy(100, 64));
+//        addEnemyToWave(1, new Shooting_Enemy(64, 100));
+//
+//        addEnemyToWave(2, new Shooting_Enemy(64, 64));
+//        addEnemyToWave(2, new Shooting_Enemy(100, 100));
 
 
         closeDoors();
