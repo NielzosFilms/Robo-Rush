@@ -19,6 +19,8 @@ public class Room_TRBL_Test extends Room {
         JsonLoader loader = new JsonLoader("assets/levels/level_1/starting room.json");
         this.objects = loader.getLoadedObjects();
 
+        this.next_wave_threshold = 2;
+
         //addObject(new Tree(0, 0, 10, ID.Tree, BIOME.Forest));
 //        addObject(new Tile_Static(0, 0, 1, new Texture(TEXTURE_LIST.dungeon, 1, 0)));
 //        addObject(new RoomDoorTrigger(64, 0, new Point(1, 0)));
@@ -26,13 +28,33 @@ public class Room_TRBL_Test extends Room {
 //        addObject(new RoomDoorTrigger(0, 64, new Point(0, -1)));
 //        addObject(new RoomDoorTrigger(0, -64, new Point(0, 1)));
 
-        addObject(new Test_Enemy(0 ,0, 10, ID.Enemy));
-        addObject(new Shooting_Enemy(64, 64));
+        addEnemyToWave(0, new Shooting_Enemy(64, 64));
+        addEnemyToWave(0, new Shooting_Enemy(100, 64));
+        addEnemyToWave(0, new Shooting_Enemy(64, 100));
+        addEnemyToWave(0, new Shooting_Enemy(100, 100));
+
+        addEnemyToWave(1, new Shooting_Enemy(64, 64));
+        addEnemyToWave(1, new Shooting_Enemy(100, 64));
+        addEnemyToWave(1, new Shooting_Enemy(64, 100));
+
+        addEnemyToWave(2, new Shooting_Enemy(64, 64));
+        addEnemyToWave(2, new Shooting_Enemy(100, 100));
+
+
         closeDoors();
     }
 
     @Override
     public void tick() {
+        if(this.currentEnemyCount() < this.next_wave_threshold) {
+            if(nextWaveExists()) {
+                spawnNextWave();
+            } else {
+                if(currentEnemyCount() == 0) {
+                    openDoors();
+                }
+            }
+        }
     }
 
     @Override

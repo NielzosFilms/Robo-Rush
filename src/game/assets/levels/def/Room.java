@@ -23,7 +23,7 @@ public abstract class Room {
     public abstract void render(Graphics g);
     public abstract void drawRoomMiniMap(Graphics g, int x, int y, int room_size, boolean active);
 
-    public void spawnCurrentWave() {
+    public void spawnNextWave() {
         if(current_wave < staged_waves.size()) {
             for(GameObject enemy : staged_waves.get(current_wave)) {
                 addObject(enemy);
@@ -97,5 +97,19 @@ public abstract class Room {
             }
         }
         return null;
+    }
+
+    public int currentEnemyCount() {
+        int count = 0;
+        for(LinkedList<GameObject> layer : objects) {
+            for (GameObject object : layer) {
+                if(object.getId() == ID.Enemy) count++;
+            }
+        }
+        return count;
+    }
+
+    public boolean nextWaveExists() {
+        return current_wave + 1 < staged_waves.size();
     }
 }

@@ -3,11 +3,13 @@ package game.system.systems;
 import java.awt.*;
 import java.util.LinkedList;
 
+import game.assets.entities.bullets.EnemyBullet;
 import game.assets.entities.player.Player;
 import game.assets.entities.bullets.Bullet;
 import game.assets.items.Item_Ground;
 import game.assets.levels.RoomDoorTrigger;
 import game.enums.ID;
+import game.system.helpers.Helpers;
 import game.system.main.GameController;
 import game.system.main.Handler;
 import game.system.systems.gameObject.Bounds;
@@ -68,14 +70,18 @@ public class Collision {
 					if (bullet_cast.getBounds().intersects(((Bounds) entity).getBounds())) {
 						if(entity instanceof Player) {
 							if(((Player) entity).canBeHit()) {
-								((Player) entity).hit(bullet_cast.getDamage(), 0, 0f, bullet_cast.getCreatedBy());
+								int angle = (int) Helpers.getAngle(new Point(bullet.getX(), bullet.getY()), new Point(entity.getX(), entity.getY()));
+								((Player) entity).hit(bullet_cast.getDamage(), angle, 1f, bullet_cast.getCreatedBy());
 								bullet_cast.destroy();
 							}
 						} else {
-							if (entity instanceof Hitable) {
-								((Hitable) entity).hit(bullet_cast.getDamage(), 0, 0f, bullet_cast.getCreatedBy());
+							if(!(bullet instanceof EnemyBullet && entity.getId() == ID.Enemy)) {
+								if (entity instanceof Hitable) {
+									int angle = (int) Helpers.getAngle(new Point(bullet.getX(), bullet.getY()), new Point(entity.getX(), entity.getY()));
+									((Hitable) entity).hit(bullet_cast.getDamage(), angle, 1f, bullet_cast.getCreatedBy());
+								}
+								bullet_cast.destroy();
 							}
-							bullet_cast.destroy();
 						}
 					}
 				}
@@ -110,18 +116,22 @@ public class Collision {
 					if (ent_1.getTopBounds().intersects(ent_2_bounds)) {
 						entity_1.setY(entity_1.getY() + 1);
 						entity_1.setVelY(0);
+						entity_2.setVelY(0);
 					}
 					if (ent_1.getBottomBounds().intersects(ent_2_bounds)) {
 						entity_1.setY(entity_1.getY() - 1);
 						entity_1.setVelY(0);
+						entity_2.setVelY(0);
 					}
 					if (ent_1.getLeftBounds().intersects(ent_2_bounds)) {
 						entity_1.setX(entity_1.getX() + 1);
 						entity_1.setVelX(0);
+						entity_2.setVelX(0);
 					}
 					if (ent_1.getRightBounds().intersects(ent_2_bounds)) {
 						entity_1.setX(entity_1.getX() - 1);
 						entity_1.setVelX(0);
+						entity_2.setVelX(0);
 					}
 				}
 			}

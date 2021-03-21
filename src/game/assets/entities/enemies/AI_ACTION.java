@@ -5,4 +5,5 @@ public enum AI_ACTION {
     goto_target,
     avoid_target,
     circle_target,
+    stand_still,
 }

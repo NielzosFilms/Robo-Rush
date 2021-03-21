@@ -81,4 +81,8 @@ public class HealthBar extends GameObject implements Serializable {
         this.x = x;
         this.y = y;
     }
+
+    public void destroy() {
+        Game.gameController.getHandler().removeHudObject(this);
+    }
 }

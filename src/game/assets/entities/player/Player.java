@@ -391,8 +391,8 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 		invincible_timer.setDelay(50);
 		Game.gameController.getCam().screenShake(2f, 6);
 		SoundEffect.hurt_2.play();
-		velX = (float) -(knockback*Math.cos(Math.toRadians(knockback_angle)));
-		velY = (float) -(knockback*Math.sin(Math.toRadians(knockback_angle)));
+		velX = (float) (knockback*Math.cos(Math.toRadians(knockback_angle)));
+		velY = (float) (knockback*Math.sin(Math.toRadians(knockback_angle)));
 		//health -= damage;
 		hurt_animation = true;
 	}

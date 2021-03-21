@@ -36,13 +36,13 @@ public class Room_Boss extends Room {
         addEnemyToWave(2, new Test_Enemy(-64 ,-64, 10, ID.Enemy));
         addEnemyToWave(2, new Test_Enemy(64 ,64, 10, ID.Enemy));
 
-        spawnCurrentWave();
+        spawnNextWave();
     }
 
     @Override
     public void tick() {
-        if(getEnemyCount() == 0) {
-            spawnCurrentWave();
+        if(currentEnemyCount() == 0) {
+            spawnNextWave();
         }
     }
 
@@ -60,14 +60,5 @@ public class Room_Boss extends Room {
         if(active) {
             g.drawImage(marker.getTexure(), x, y, room_size, room_size, null);
         }
-    }
-
-    private int getEnemyCount() {
-        if(this.objects.size() < Game.gameController.getPlayer().getZIndex()) return -1;
-        int enemy_count = 0;
-        for(GameObject entity : this.objects.get(Game.gameController.getPlayer().getZIndex())) {
-            if(entity.getId() == ID.Enemy) enemy_count++;
-        }
-        return enemy_count;
     }
 }

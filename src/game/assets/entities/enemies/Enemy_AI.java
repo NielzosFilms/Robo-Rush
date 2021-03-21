@@ -29,12 +29,13 @@ public class Enemy_AI {
     // Own variables
     private HashMap<Integer, Float> angles = new HashMap<>();
     private boolean move = true;
-    private AI_ACTION action = AI_ACTION.circle_target;
+    private AI_ACTION action = AI_ACTION.goto_target;
     private Timer decide = new Timer(120),
-            decide_action = new Timer(120);
+            decide_action = new Timer(120),
+            decide_stuck_timer = new Timer(240);
     private Random r = new Random();
     private GameObject target, parent;
-    private int wonderAreaSize = 75, circle_offset = 60, folow_time = 0;
+    private int wonderAreaSize = 75, circle_offset = 60, folow_time = 0, circle_radius = 70, chosen_circle_radius = 70, avoid_final_radius = 80;
     private String circle_direction = "right";
 
     // return variables
@@ -108,34 +109,88 @@ public class Enemy_AI {
     }
 
     private void runDecision() {
-        if(decide_action.timerOver()) {
-            decide_action.resetTimer();
-            decide_action.setDelay(r.nextInt(240)*2);
+        switch (action) {
+            case goto_target:
+                if(getTargetDistance() < circle_radius) {
+                    chosen_circle_radius = getTargetDistance();
+                    action = AI_ACTION.circle_target;
+                    decide_stuck_timer.resetTimer();
+                }
+                if(decide_stuck_timer.timerOver()) {
+                    decide_stuck_timer.resetTimer();
+                    decide_stuck_timer.setDelay(r.nextInt(240)*2);
+                    chosen_circle_radius = getTargetDistance();
+                    action = AI_ACTION.circle_target;
+                }
+                decide_stuck_timer.tick();
+                break;
+            case avoid_target:
+                if(getTargetDistance() > avoid_final_radius) {
+                    decide_action.resetTimer();
+                    action = AI_ACTION.stand_still;
+                    decide_stuck_timer.resetTimer();
+                }
+                if(decide_stuck_timer.timerOver()) {
+                    decide_stuck_timer.resetTimer();
+                    decide_stuck_timer.setDelay(r.nextInt(240)*2);
+                    chosen_circle_radius = getTargetDistance();
+                    action = AI_ACTION.circle_target;
+                    decide_action.resetTimer();
+                }
+                decide_stuck_timer.tick();
+                break;
+            case stand_still:
+                if(getTargetDistance() < avoid_radius) {
+                    chosen_circle_radius = circle_radius;
+                    action = AI_ACTION.circle_target;
+                    decide_stuck_timer.resetTimer();
+                }
+                if(decide_action.timerOver()) {
+                    decide_action.setDelay(r.nextInt(240)*2);
+                    decide_action.resetTimer();
+                    if(r.nextInt(2) == 0) {
+                        chosen_circle_radius = getTargetDistance();
+                        action = AI_ACTION.circle_target;
+                    } else {
+                        action = AI_ACTION.goto_target;
+                    }
+                    decide_stuck_timer.resetTimer();
+                }
+                decide_action.tick();
+                break;
+            case circle_target:
+                if(decide_action.timerOver()) {
+                    decide_action.setDelay(r.nextInt(240)*2);
+                    decide_action.resetTimer();
+                    if(r.nextInt(2) == 0) {
+                        action = AI_ACTION.avoid_target;
+                    }
+                    decide_stuck_timer.resetTimer();
+                }
+                decide_action.tick();
+                break;
 
-//            if(r.nextInt(2) == 0) {
-//                action = Action.wander;
-//            } else {
-//                action = Action.circle_target;
-//            }
         }
-        decide_action.tick();
     }
 
     private void setGotoAngles() {
-        int target_angle = getClosestAngle((int) Helpers.getAngle(new Point(parent.getX(), parent.getY()), new Point(target.getX(), target.getY())));
-        int target_dist = (int) Helpers.getDistance(new Point(parent.getX(), parent.getY()), new Point(target.getX(), target.getY()));
+        int target_angle = getClosestAngle(getTargetAngle());
+        int target_dist = getTargetDistance();
         switch (action){
             case wander:
                 wander();
                 break;
             case circle_target:
-                circleTarget(target_dist, target_angle, 100);
+                circleTarget(target_dist, target_angle, chosen_circle_radius);
                 break;
             case goto_target:
                 gotoTarget(target_angle, target_dist);
                 break;
             case avoid_target:
                 avoidTarget(target_angle);
+                break;
+            case stand_still:
+                move = false;
                 break;
         }
     }
@@ -296,8 +351,16 @@ public class Enemy_AI {
         return this.velX;
     }
 
+    public void setVelX(float velX) {
+        this.velX = velX;
+    }
+
     public float getVelY() {
         return this.velY;
+    }
+
+    public void setVelY(float velY) {
+        this.velY = velY;
     }
 
     public void drawAi(Graphics g, int x, int y) {
@@ -328,7 +391,19 @@ public class Enemy_AI {
         return (int) Helpers.getAngle(new Point(parent.getX(), parent.getY()), new Point(target.getX(), target.getY()));
     }
 
+    public int getTargetDistance() {
+        return (int) Helpers.getDistance(new Point(parent.getX(), parent.getY()), new Point(target.getX(), target.getY()));
+    }
+
     public AI_ACTION getAction() {
         return this.action;
+    }
+
+    public void setAction(AI_ACTION action) {
+        this.action = action;
+    }
+
+    public boolean inCombat() {
+        return action != AI_ACTION.wander;
     }
 }
