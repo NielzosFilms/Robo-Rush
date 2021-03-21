@@ -22,7 +22,7 @@ public class LoadingAnimation {
         this.y = y;
         this.w = w;
         this.h = h;
-        this.loading_animation = new Animation(100,
+        this.loading_animation = new Animation(6,
                 new Texture(TEXTURE_LIST.loading_list, 0, 1),
                 new Texture(TEXTURE_LIST.loading_list, 1, 1),
                 new Texture(TEXTURE_LIST.loading_list, 2, 1),
@@ -43,7 +43,7 @@ public class LoadingAnimation {
 
                 new Texture(TEXTURE_LIST.loading_list, 0, 4));
 
-        this.loading_start_animation = new Animation(100,
+        this.loading_start_animation = new Animation(6,
                 new Texture(TEXTURE_LIST.loading_list, 0, 0),
                 new Texture(TEXTURE_LIST.loading_list, 1, 0),
                 new Texture(TEXTURE_LIST.loading_list, 2, 0),
@@ -53,7 +53,7 @@ public class LoadingAnimation {
                 new Texture(TEXTURE_LIST.loading_list, 0, 1),
                 new Texture(TEXTURE_LIST.loading_list, 0, 1));
 
-        this.loading_end_animation = new Animation(100,
+        this.loading_end_animation = new Animation(6,
                 new Texture(TEXTURE_LIST.loading_list, 0, 1),
                 new Texture(TEXTURE_LIST.loading_list, 4, 0),
                 new Texture(TEXTURE_LIST.loading_list, 3, 0),

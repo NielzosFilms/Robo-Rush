@@ -48,6 +48,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 	protected Animation idle, run, blink, hurt, dash_start, dash_end;
 	protected Timer idle_timer = new Timer(300);
 	protected boolean hurt_animation = false;
+	protected Timer invincible_timer = new Timer(50);
 
 	protected final float dash_speed = player_stats.get(PLAYER_STAT.dash_speed);
 	protected boolean dashing = false;
@@ -91,6 +92,8 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 		tickAttack();
 
 		updatePlayerStats();
+
+		invincible_timer.tick();
 	}
 
 	protected void tickWalking() {
@@ -151,6 +154,8 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 				dashing = true;
 				dash_cooldown.resetTimer();
 				dash.resetTimer();
+				invincible_timer.setDelay(20);
+				invincible_timer.resetTimer();
 			}
 		}
 		if(!dash.timerOver()) {
@@ -382,14 +387,18 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 
 	@Override
 	public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
-		if(!hurt_animation) {
-			Game.gameController.getCam().screenShake(2f, 6);
-			SoundEffect.hurt_2.play();
-			velX = (float) -(knockback*Math.cos(Math.toRadians(knockback_angle)));
-			velY = (float) -(knockback*Math.sin(Math.toRadians(knockback_angle)));
-			//health -= damage;
-			hurt_animation = true;
-		}
+		invincible_timer.resetTimer();
+		invincible_timer.setDelay(50);
+		Game.gameController.getCam().screenShake(2f, 6);
+		SoundEffect.hurt_2.play();
+		velX = (float) -(knockback*Math.cos(Math.toRadians(knockback_angle)));
+		velY = (float) -(knockback*Math.sin(Math.toRadians(knockback_angle)));
+		//health -= damage;
+		hurt_animation = true;
+	}
+
+	public boolean canBeHit() {
+		return invincible_timer.timerOver();
 	}
 
 	public void setKeyInput(KeyInput keyInput) {

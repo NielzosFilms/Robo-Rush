@@ -1,10 +1,14 @@
 package game.assets.entities.enemies;
 
 import game.assets.HealthBar;
+import game.assets.entities.bullets.Bullet;
+import game.assets.entities.bullets.EnemyBullet;
 import game.enums.ID;
 import game.system.helpers.Helpers;
+import game.system.helpers.Logger;
 import game.system.helpers.Timer;
 import game.system.main.Game;
+import game.system.systems.gameObject.Attack;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 
@@ -13,17 +17,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 
-enum Action {
-    wander,
-    goto_target,
-    avoid_target,
-    circle_target,
-    attack_target,
-}
-
 public class Enemy_AI {
     float max_vel = 1f; //0.8
     float wander_vel = 0.2f;
+    float combat_vel = 0.6f;
     float acceleration = 0.05f;
     float deceleration = 0.1f;
 
@@ -32,11 +29,13 @@ public class Enemy_AI {
     // Own variables
     private HashMap<Integer, Float> angles = new HashMap<>();
     private boolean move = true;
-    private Action action = Action.wander;
-    private Timer decide = new Timer(120);
+    private AI_ACTION action = AI_ACTION.circle_target;
+    private Timer decide = new Timer(120),
+            decide_action = new Timer(120);
     private Random r = new Random();
     private GameObject target, parent;
     private int wonderAreaSize = 75, circle_offset = 60, folow_time = 0;
+    private String circle_direction = "right";
 
     // return variables
     private float velX = 0f, velY = 0f;
@@ -47,15 +46,11 @@ public class Enemy_AI {
         decide.resetTimer();
 
         resetAngles();
-
-        int random_angle = getClosestAngle(r.nextInt(360));
-        System.out.println(random_angle);
-        if(angles.containsKey(random_angle)) angles.put(random_angle, 1f);
     }
 
     public void tick() {
-        float new_velX = getNewVelX(wander_vel);
-        float new_velY = getNewVelY(wander_vel);
+        float new_velX = getNewVelX(combat_vel);
+        float new_velY = getNewVelY(combat_vel);
 
         if(move) {
             velX += (new_velX - velX) * acceleration;
@@ -68,6 +63,8 @@ public class Enemy_AI {
         clampVelocity();
 
         runDecision();
+
+        setGotoAngles();
 
         setAnglesToAvoid();
     }
@@ -111,24 +108,93 @@ public class Enemy_AI {
     }
 
     private void runDecision() {
-        if(decide.timerOver()) {
-            decide.resetTimer();
-            decide.setDelay(r.nextInt(120)*2);
-            resetAngles();
+        if(decide_action.timerOver()) {
+            decide_action.resetTimer();
+            decide_action.setDelay(r.nextInt(240)*2);
 
-            wander();
+//            if(r.nextInt(2) == 0) {
+//                action = Action.wander;
+//            } else {
+//                action = Action.circle_target;
+//            }
+        }
+        decide_action.tick();
+    }
+
+    private void setGotoAngles() {
+        int target_angle = getClosestAngle((int) Helpers.getAngle(new Point(parent.getX(), parent.getY()), new Point(target.getX(), target.getY())));
+        int target_dist = (int) Helpers.getDistance(new Point(parent.getX(), parent.getY()), new Point(target.getX(), target.getY()));
+        switch (action){
+            case wander:
+                wander();
+                break;
+            case circle_target:
+                circleTarget(target_dist, target_angle, 100);
+                break;
+            case goto_target:
+                gotoTarget(target_angle, target_dist);
+                break;
+            case avoid_target:
+                avoidTarget(target_angle);
+                break;
+        }
+    }
+
+    private void wander() {
+        if(decide.timerOver()) {
+            decide.setDelay(r.nextInt(120)*2);
+            decide.resetTimer();
+            resetAngles();
+            if (r.nextInt(2) == 0) {
+                move = true;
+                int random_angle = getClosestAngle(r.nextInt(360));
+                if (angles.containsKey(random_angle)) angles.put(random_angle, 1f);
+            } else {
+                move = false;
+            }
         }
         decide.tick();
     }
 
-    private void wander() {
-        if(r.nextInt(2) == 0) {
-            move = true;
-            int random_angle = getClosestAngle(r.nextInt(360));
-            if(angles.containsKey(random_angle)) angles.put(random_angle, 1f);
-        } else {
-            move = false;
+    private void circleTarget(int target_dist, int target_angle, int circle_radius) {
+        resetAngles();
+        move = true;
+        if(decide.timerOver()) {
+            decide.setDelay(r.nextInt(120)*2);
+            decide.resetTimer();
+            if(r.nextInt(2) == 0) {
+                circle_direction = "right";
+            } else {
+                circle_direction = "left";
+            }
         }
+        decide.tick();
+        if(target_dist < circle_radius) {
+            angles.put(target_angle, -0.3f);
+
+        } else {
+            angles.put(target_angle, 1f);
+        }
+
+        if(circle_direction.equals("right")) {
+            angles.put(getOffsetAngle(target_angle, circle_offset), 1f);
+        } else {
+            angles.put(getOffsetAngle(target_angle, -circle_offset), 1f);
+        }
+    }
+
+    private void gotoTarget(int target_angle, int target_dist) {
+        resetAngles();
+        move = true;
+        if(target_dist > this.avoid_radius) {
+            angles.put(target_angle, 1f);
+        }
+    }
+
+    private void avoidTarget(int target_angle) {
+        resetAngles();
+        move = true;
+        angles.put(getOffsetAngle(target_angle, 180), 1f);
     }
 
     private void setAnglesToAvoid() {
@@ -152,7 +218,9 @@ public class Enemy_AI {
         LinkedList<Rectangle> all_bounds = new LinkedList<>();
 
         for(GameObject object : objects) {
-//            if(object == target) continue;
+//            if(action == Action.goto_target || action == Action.wander) {
+//                if(object == target) continue;
+//            }
             if(object == parent) continue;
             if(object instanceof Bounds) {
                 if(((Bounds) object).getBounds() != null) {
@@ -216,6 +284,14 @@ public class Enemy_AI {
         return closest;
     }
 
+    private int getOffsetAngle(int angle, int offset) {
+        int ret = angle + offset;
+        if(ret < 0) ret += 360;
+        if(ret >= 360) ret -= 360;
+        //if(ret == 360) ret = 0;
+        return ret;
+    }
+
     public float getVelX() {
         return this.velX;
     }
@@ -246,5 +322,13 @@ public class Enemy_AI {
         g.drawArc(x-10, y-10, 20, 20, 0, 360);
         g.setColor(new Color(99, 199, 77));
         g.drawString(action.name(), x, y);
+    }
+
+    public int getTargetAngle() {
+        return (int) Helpers.getAngle(new Point(parent.getX(), parent.getY()), new Point(target.getX(), target.getY()));
+    }
+
+    public AI_ACTION getAction() {
+        return this.action;
     }
 }

@@ -15,18 +15,17 @@ import java.awt.*;
 import java.util.LinkedList;
 
 public class Bullet extends GameObject implements game.system.systems.gameObject.Bullet {
-    private final float max_vel = 4f;
-    private int lifeTime = 300;
-    private int angle;
-    private LinkedList<GameObject> hit_objects = new LinkedList<>();
-    private GameObject created_by;
+    protected float max_vel = 4f;
+    protected int lifeTime = 300;
+    protected int angle;
+    protected LinkedList<GameObject> hit_objects = new LinkedList<>();
+    protected GameObject created_by;
 
     public Bullet(int x, int y, int z_index, int angle, GameObject created_by) {
         super(x, y, z_index, ID.Bullet);
         this.tex = new Texture(TEXTURE_LIST.bullets, 1, 0);
         this.angle = angle;
-        velX = (float) (max_vel*Math.cos(Math.toRadians(angle)));
-        velY = (float) (max_vel*Math.sin(Math.toRadians(angle)));
+        updateVelocity();
         this.created_by = created_by;
         hit_objects.add(created_by);
     }
@@ -49,6 +48,9 @@ public class Bullet extends GameObject implements game.system.systems.gameObject
     @Override
     public void render(Graphics g) {
         g.drawImage(tex.getTexure(), x-8, y-8, null);
+        Rectangle b = getBounds();
+//        g.setColor(Color.white);
+//        g.drawRect(b.x, b.y, b.width, b.height);
     }
 
     @Override
@@ -80,5 +82,10 @@ public class Bullet extends GameObject implements game.system.systems.gameObject
     public void destroy() {
         //Logger.print("destroy");
         Game.gameController.getHandler().removeObject(this);
+    }
+
+    protected void updateVelocity() {
+        velX = (float) (max_vel*Math.cos(Math.toRadians(angle)));
+        velY = (float) (max_vel*Math.sin(Math.toRadians(angle)));
     }
 }

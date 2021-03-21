@@ -66,10 +66,17 @@ public class Collision {
 			for(GameObject entity : objects) {
 				if (!bullet_cast.getHitObjects().contains(entity)) {
 					if (bullet_cast.getBounds().intersects(((Bounds) entity).getBounds())) {
-						if (entity instanceof Hitable) {
-							((Hitable) entity).hit(bullet_cast.getDamage(), 0, 0f, bullet_cast.getCreatedBy());
+						if(entity instanceof Player) {
+							if(((Player) entity).canBeHit()) {
+								((Player) entity).hit(bullet_cast.getDamage(), 0, 0f, bullet_cast.getCreatedBy());
+								bullet_cast.destroy();
+							}
+						} else {
+							if (entity instanceof Hitable) {
+								((Hitable) entity).hit(bullet_cast.getDamage(), 0, 0f, bullet_cast.getCreatedBy());
+							}
+							bullet_cast.destroy();
 						}
-						bullet_cast.destroy();
 					}
 				}
 			}
