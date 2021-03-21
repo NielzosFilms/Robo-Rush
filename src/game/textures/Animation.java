@@ -8,10 +8,10 @@ import java.io.Serializable;
 
 public class Animation implements Serializable {
 
-	private long last_frame_time;
-	private long frame_duration;
+	private int speed;
 	private int frames;
 	private int count = 0;
+	private int index = 0;
 	
 	private boolean mirrorW;
 	private boolean ended = false;
@@ -19,8 +19,8 @@ public class Animation implements Serializable {
 	private Texture[] images;
 	private Texture currentImg;
 	
-	public Animation(long frame_duration, Texture... args) {
-		this.frame_duration = frame_duration;
+	public Animation(int speed, Texture... args) {
+		this.speed = speed;
 		this.mirrorW = false;
 		images = new Texture[args.length];
 		for(int i = 0; i < args.length; i++) {
@@ -31,16 +31,15 @@ public class Animation implements Serializable {
 	}
 	
 	public void runAnimation() {
-		long now = System.currentTimeMillis();
-		long diff = now - last_frame_time;
-		if(diff >= frame_duration) {
-			last_frame_time = now;
+		index++;
+		if(index > speed) {
+			index = 0;
 			nextFrame();
 		}
 	}
 	
 	public void resetAnimation() {
-		last_frame_time = System.currentTimeMillis();
+		index = 0;
 		count = 0;
 		currentImg = images[0];
 		ended = false;

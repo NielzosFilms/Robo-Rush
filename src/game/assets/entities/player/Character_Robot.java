@@ -17,13 +17,13 @@ public class Character_Robot extends Player {
     protected void initAnimations() {
     	hand = new Texture(TEXTURE_LIST.player_list, 4, 0);
     	dash_idle = new Texture(TEXTURE_LIST.player_list, 4, 4);
-        idle = new Animation(100,
+        idle = new Animation(6,
 				new Texture(TEXTURE_LIST.player_list, 0, 0),
 				new Texture(TEXTURE_LIST.player_list, 1, 0),
 				new Texture(TEXTURE_LIST.player_list, 2, 0),
 				new Texture(TEXTURE_LIST.player_list, 3, 0));
 
-		blink = new Animation(200,
+		blink = new Animation(12,
 				new Texture(TEXTURE_LIST.player_list, 0, 0),
 				new Texture(TEXTURE_LIST.player_list, 0, 1),
 				new Texture(TEXTURE_LIST.player_list, 1, 1),
@@ -32,7 +32,7 @@ public class Character_Robot extends Player {
 				new Texture(TEXTURE_LIST.player_list, 0, 0),
 				new Texture(TEXTURE_LIST.player_list, 0, 0));
 
-		run = new Animation(100,
+		run = new Animation(6,
 				new Texture(TEXTURE_LIST.player_list, 0, 2),
 				new Texture(TEXTURE_LIST.player_list, 1, 2),
 				new Texture(TEXTURE_LIST.player_list, 2, 2),
@@ -40,7 +40,7 @@ public class Character_Robot extends Player {
 				new Texture(TEXTURE_LIST.player_list, 4, 2),
 				new Texture(TEXTURE_LIST.player_list, 5, 2));
 
-		hurt = new Animation(100,
+		hurt = new Animation(6,
 				//new Texture(TEXTURE_LIST.player_list, 0, 3),
 				new Texture(TEXTURE_LIST.player_list, 1, 3),
 				new Texture(TEXTURE_LIST.player_list, 2, 3),
@@ -49,12 +49,12 @@ public class Character_Robot extends Player {
 				new Texture(TEXTURE_LIST.player_list, 3, 3),
 				new Texture(TEXTURE_LIST.player_list, 0, 3));
 
-		dash_start = new Animation(50,
+		dash_start = new Animation(3,
 				new Texture(TEXTURE_LIST.player_list, 1, 4),
 				new Texture(TEXTURE_LIST.player_list, 2, 4),
 				new Texture(TEXTURE_LIST.player_list, 3, 4));
 
-		dash_end = new Animation(100,
+		dash_end = new Animation(6,
 				//new Texture(TEXTURE_LIST.player_list, 5, 4),
 				new Texture(TEXTURE_LIST.player_list, 6, 4),
 				new Texture(TEXTURE_LIST.player_list, 7, 4),
