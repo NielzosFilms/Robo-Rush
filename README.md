@@ -1,4 +1,5 @@
 # Top Down Java Game
+# THIS README IS DEPRECATED
 
 [Game Developer Info](GAME_DEVELOPER_INFO.md)
 
@@ -41,6 +42,8 @@ Game Version: `ALPHA V 2.21.0 INFDEV`<br>
 ##### Game Artists
 - [TimoTie02](https://github.com/TimoTie02)
 - [Sploem](https://github.com/Sploem)
+##### Moral Support
+- [Joris](https://github.com/JoristerWolbeek/)
 
 ------------------------------------------------------------------------
 
