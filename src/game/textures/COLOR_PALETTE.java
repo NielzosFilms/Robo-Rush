@@ -41,9 +41,6 @@ public enum COLOR_PALETTE {
     desert_sand(Color.decode("#e8b796")),
     desert(Color.decode("#c28569"));
 
-    /**
-     * Yeet
-     */
     public Color color;
 
     COLOR_PALETTE(Color color) {
