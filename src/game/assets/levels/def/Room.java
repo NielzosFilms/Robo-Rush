@@ -3,6 +3,7 @@ package game.assets.levels.def;
 import game.assets.levels.RoomDoorTrigger;
 import game.enums.ID;
 import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.Trigger;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -41,7 +42,12 @@ public abstract class Room {
         for(int i=objects.size(); i<=z_index; i++) {
             this.objects.add(new LinkedList<>());
         }
-        this.objects.get(z_index).add(object);
+        try {
+            if(z_index == 0 && !(object instanceof Trigger)) throw new Exception("The z_index 0 in rooms is meant for trigger objects.");
+            this.objects.get(z_index).add(object);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void removeObject(GameObject object) {
@@ -70,14 +76,14 @@ public abstract class Room {
 
     private void setDoors(boolean door_state) {
         int door_count = 0;
-        for(LinkedList<GameObject> layer : objects) {
-            for(GameObject object : layer) {
-                if(object instanceof RoomDoorTrigger) {
+        for(GameObject object : objects.get(0)) {
+            if(object instanceof RoomDoorTrigger) {
+                if(!((RoomDoorTrigger) object).needsKey()) {
                     ((RoomDoorTrigger) object).setOpen(door_state);
-                    door_count++;
                 }
-                if(door_count >= room_type.toString().length()) return;
+                door_count++;
             }
+            if(door_count >= room_type.toString().length()) return;
         }
     }
 
@@ -103,7 +109,7 @@ public abstract class Room {
         int count = 0;
         for(LinkedList<GameObject> layer : objects) {
             for (GameObject object : layer) {
-                if(object.getId() == ID.Enemy) count++;
+                if(object.getId() == ID.Enemy || object.getId() == ID.Boss) count++;
             }
         }
         return count;

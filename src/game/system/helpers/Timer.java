@@ -8,7 +8,6 @@ public class Timer implements Serializable {
 
     public Timer(int delay) {
         this.delay = delay;
-        this.resetTimer();
     }
 
     public void tick() {

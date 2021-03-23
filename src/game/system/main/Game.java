@@ -27,13 +27,10 @@ public class Game extends Canvas implements Runnable {
 	public static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final float RATIO = (float) SCREEN_SIZE.width / SCREEN_SIZE.height;
 	public static final int GAME_WIDTH = 16*24;
-//	public static int WIDTH = 384, HEIGHT = 216;//(int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
-	//public static int WIDTH = 360, HEIGHT = (int) Math.round(WIDTH / RATIO); // 640 480 360 idk which is better
-//	public static final float SCALE_WIDTH = ((float) NEW_WIDTH) / WIDTH, SCALE_HEIGHT = ((float) NEW_HEIGHT) / HEIGHT;
 	public static final float SCALE_FINAL = 6.7f;
 	public static float scale = SCALE_FINAL;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 3.90.0 COMBAT & AI";
+	public static final String VERSION = "ALPHA V 3.91 COMBAT & AI";
 
 	public static Window window;
 	public static Point windowSize = new Point(SCREEN_SIZE.width, SCREEN_SIZE.height);

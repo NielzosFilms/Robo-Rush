@@ -4,6 +4,7 @@ import game.assets.levels.def.Room;
 import game.enums.ID;
 import game.enums.ITEM_ID;
 import game.system.helpers.JsonLoader;
+import game.system.helpers.Logger;
 import game.system.helpers.StructureLoaderHelpers;
 import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
@@ -41,7 +42,7 @@ public class RoomDoorTrigger extends GameObject implements Bounds, Trigger {
         super(
                 StructureLoaderHelpers.getIntProp(json, "x") / division,
                 StructureLoaderHelpers.getIntProp(json, "y") / division,
-                z_index, ID.RoomDoorTrigger);
+                0, ID.RoomDoorTrigger);
 
         this.width = StructureLoaderHelpers.getIntProp(json, "width") / division;
         this.height = StructureLoaderHelpers.getIntProp(json, "height") / division;
@@ -90,7 +91,7 @@ public class RoomDoorTrigger extends GameObject implements Bounds, Trigger {
         g.setColor(Color.magenta);
         g.drawRect(this.x, this.y, this.width, this.height);
         g.setFont(Fonts.default_fonts.get(5));
-        g.drawString(String.valueOf(open), this.x, this.y);
+        g.drawString(String.valueOf(open), this.x, this.y + 8);
     }
 
     @Override
@@ -181,7 +182,12 @@ public class RoomDoorTrigger extends GameObject implements Bounds, Trigger {
         return !open;
     }
 
+    public boolean needsKey() {
+        return need_key;
+    }
+
     public void setNeedsKey(boolean needs_key) {
+        Logger.printStackStrace();
         this.need_key = needs_key;
     }
 

@@ -50,6 +50,8 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
         ai.setWander_vel(0.2f);
         ai.setAcceleration(0.05f);
         ai.setDeceleration(0.1f);
+
+        attack_timer.resetTimer();
     }
 
     @Override

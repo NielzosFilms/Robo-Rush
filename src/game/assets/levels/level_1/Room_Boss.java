@@ -6,6 +6,7 @@ import game.assets.levels.RoomDoorTrigger;
 import game.assets.levels.def.ROOM_TYPE;
 import game.assets.levels.def.Room;
 import game.assets.levels.def.RoomSpawner;
+import game.assets.objects.BoundsObject;
 import game.enums.ID;
 import game.system.main.Game;
 import game.system.systems.gameObject.GameObject;
@@ -23,20 +24,37 @@ public class Room_Boss extends Room {
 
         for(RoomSpawner spawner : room_type.getSpawners(location)) {
             Point door_direction = spawner.door_direction;
-            RoomDoorTrigger doorTrigger = new RoomDoorTrigger(door_direction.x*64 ,door_direction.y*64, door_direction);
-            //doorTrigger.setNeedsKey(true);
-            addObject(doorTrigger);
+            addObject(new RoomDoorTrigger(door_direction.x*128 ,door_direction.y*128, spawner.door_direction));
         }
+
+        addObject(new BoundsObject(-128, -128, 128, 16));
+        addObject(new BoundsObject(-128, -128, 16, 128));
+
+        addObject(new BoundsObject(16, -128, 128, 16));
+        addObject(new BoundsObject(128, -128, 16, 128));
+
+        addObject(new BoundsObject(-128, 16, 16, 128));
+        addObject(new BoundsObject(-128, 128, 128, 16));
+
+        addObject(new BoundsObject(128, 16, 16, 128));
+        addObject(new BoundsObject(16, 128, 128, 16));
+
+        addObject(new BoundsObject(0, -144, 16, 16));
+        addObject(new BoundsObject(0, 144, 16, 16));
+        addObject(new BoundsObject(-144, 0, 16, 16));
+        addObject(new BoundsObject(144, 0, 16, 16));
 
         addEnemyToWave(0, new Boss_Enemy(0, 0));
 
         spawnNextWave();
+
+        closeDoors();
     }
 
     @Override
     public void tick() {
         if(currentEnemyCount() == 0) {
-            spawnNextWave();
+            openDoors();
         }
     }
 

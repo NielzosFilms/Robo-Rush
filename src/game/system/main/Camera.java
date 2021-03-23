@@ -74,8 +74,10 @@ public class Camera implements Serializable {
 	}
 
 	public void setCoordsWithPlayerCoords(int x, int y) {
-		this.x = -x + Game.getGameSize().x/2-16;
-		this.y = -y + Game.getGameSize().y/2-16;
+		Point mouse = Game.mouseInput.getMouseWorldCoords();
+		Point target = new Point(((mouse.x + x*3) / 4), ((mouse.y + y*3) / 4));
+		this.x = -target.x + Game.getGameSize().x/2-16;
+		this.y = -target.y + Game.getGameSize().y/2-16;
 		this.buffer_x = this.x;
 		this.buffer_y = this.y;
 	}

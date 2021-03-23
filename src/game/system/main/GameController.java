@@ -140,7 +140,7 @@ public class GameController implements Serializable {
 
     public void generate() {
         loaded = false;
-        setRequirements(new Character_Robot(64, 64, 10, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
+        setRequirements(new Character_Robot(0, 0, 10, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
 
         //Logger.print("[seed]: " + this.seed);
         Logger.print("World Generating...");
@@ -152,7 +152,7 @@ public class GameController implements Serializable {
 //        }
 
         active_level = new Level_1();
-        active_level.generate(6092317668945018905L);
+        active_level.generate();//6092317668945018905L);
 
         //handler.addObject(new Enemy(80, 64, 10, ID.Enemy));
         //handler.addObject(new Tree(64, 64, 10, ID.Tree, null));

@@ -1,6 +1,5 @@
 package game.assets.levels.level_1;
 
-import game.assets.levels.Room_TRBL_Test;
 import game.assets.levels.def.*;
 import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
@@ -35,7 +34,7 @@ public class Level_1 extends Level {
     @Override
     public void generateRooms(Random rand) {
         Point origin = new Point(0, 0);
-        rooms.put(origin, new Room_TRBL_Test(origin));
+        rooms.put(origin, new Room_Spawn(origin));
         LinkedList<RoomSpawner> spawners = new LinkedList<>(rooms.get(origin).getSpawners());
 
         this.active_room = origin;

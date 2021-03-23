@@ -47,9 +47,9 @@ public class Collision {
 					if(trigger.canTrigger() && !trigger.triggerCollision()) {
 						trigger.triggered();
 						trigger.setTriggerActive(false);
-						break;
+						return;
 					}
-				} else if(!trigger.canTrigger()) {
+				} else if(!trigger.canTrigger() && !trigger.triggerCollision()) {
 					trigger.setTriggerActive(true);
 				}
 			}

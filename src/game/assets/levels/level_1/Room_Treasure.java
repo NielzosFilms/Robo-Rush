@@ -7,6 +7,7 @@ import game.assets.levels.RoomDoorTrigger;
 import game.assets.levels.def.ROOM_TYPE;
 import game.assets.levels.def.Room;
 import game.assets.levels.def.RoomSpawner;
+import game.assets.objects.BoundsObject;
 import game.assets.objects.crate.Crate;
 import game.enums.ID;
 import game.enums.ITEM_ID;
@@ -35,11 +36,27 @@ public class Room_Treasure extends Room {
                     }});
         }
         addObject(new Item_Ground(0, 0, 10, ID.Item, item));
-        addObject(new Crate(0, 0, 10, ID.Crate));
+
+        addObject(new BoundsObject(-128, -128, 128, 16));
+        addObject(new BoundsObject(-128, -128, 16, 128));
+
+        addObject(new BoundsObject(16, -128, 128, 16));
+        addObject(new BoundsObject(128, -128, 16, 128));
+
+        addObject(new BoundsObject(-128, 16, 16, 128));
+        addObject(new BoundsObject(-128, 128, 128, 16));
+
+        addObject(new BoundsObject(128, 16, 16, 128));
+        addObject(new BoundsObject(16, 128, 128, 16));
+
+        addObject(new BoundsObject(0, -144, 16, 16));
+        addObject(new BoundsObject(0, 144, 16, 16));
+        addObject(new BoundsObject(-144, 0, 16, 16));
+        addObject(new BoundsObject(144, 0, 16, 16));
 
         for(RoomSpawner spawner : room_type.getSpawners(location)) {
             Point door_direction = spawner.door_direction;
-            addObject(new RoomDoorTrigger(door_direction.x*64 ,door_direction.y*64, door_direction));
+            addObject(new RoomDoorTrigger(door_direction.x*128 ,door_direction.y*128, spawner.door_direction));
         }
     }
 

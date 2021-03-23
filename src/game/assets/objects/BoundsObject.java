@@ -6,13 +6,14 @@ import game.system.helpers.StructureLoaderHelpers;
 import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
+import game.textures.COLOR_PALETTE;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
 
 public class BoundsObject extends GameObject implements Bounds {
     public BoundsObject(int x, int y, int width, int height) {
-        super(x, y, 0, ID.BoundsObject);
+        super(x, y, 1, ID.BoundsObject);
         this.width = width;
         this.height = height;
     }
@@ -21,7 +22,7 @@ public class BoundsObject extends GameObject implements Bounds {
         super(
                 StructureLoaderHelpers.getIntProp(json, "x") / division,
                 StructureLoaderHelpers.getIntProp(json, "y") / division,
-                z_index, ID.BoundsObject);
+                1, ID.BoundsObject);
 
         this.width = StructureLoaderHelpers.getIntProp(json, "width") / division;
         this.height = StructureLoaderHelpers.getIntProp(json, "height") / division;
@@ -59,6 +60,8 @@ public class BoundsObject extends GameObject implements Bounds {
 
     @Override
     public void render(Graphics g) {
+        g.setColor(COLOR_PALETTE.gray_2.color);
+        g.fillRect(this.x, this.y, this.width, this.height);
         if(Game.DEBUG_MODE) {
             g.setColor(Color.decode("#c0cbdc"));
             g.drawRect(this.x, this.y, this.width, this.height);

@@ -22,6 +22,7 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable {
 
     public Shooting_Enemy(int x, int y) {
         super(x, y, Game.gameController.getPlayer().getZIndex(), ID.Enemy);
+        attack_timer.resetTimer();
     }
 
     @Override
