@@ -24,6 +24,7 @@ enum AttackType {
     predict,
     shotgun,
     homing,
+    spawn_enemies,
 }
 
 public class Boss_Enemy extends GameObject implements Bounds, Hitable {
@@ -38,7 +39,8 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
     private Timer attack_timer = new Timer(120),
             circle_attack_timer = new Timer(20),
             normal_attack_timer = new Timer(20),
-            attack_cooldown = new Timer(30);
+            attack_cooldown = new Timer(30),
+            can_spawn_enemies_timer = new Timer(300);
     private HealthBar health = new HealthBar(0, 0, 0, 100, 1);
     private AttackType attack_type = AttackType.normal;
     private boolean circle_attack_state = false;
@@ -62,6 +64,7 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
         x = Math.round(buffer_x);
         y = Math.round(buffer_y);
 
+        can_spawn_enemies_timer.tick();
         attack();
 
         health.tick();
@@ -119,6 +122,11 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
                     attackHoming();
                     chooseNewAttack();
                     break;
+                case spawn_enemies:
+                    can_spawn_enemies_timer.resetTimer();
+                    spawnEnemies();
+                    chooseNewAttack();
+                    break;
             }
         } else {
             attack_cooldown.tick();
@@ -172,12 +180,22 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
         Game.gameController.getHandler().addObject(bullet);
     }
 
+    private void spawnEnemies() {
+        Game.gameController.getActiveLevel().getActiveRoom().addObject(new Shooting_Enemy(new Random().nextInt(200)-100, new Random().nextInt(200)-100));
+    }
+
     private void chooseNewAttack() {
         attack_cooldown.resetTimer();
         LinkedList<AttackType> types = new LinkedList<>();
         for(AttackType attackType : AttackType.values()) {
             if(attackType != attack_type) {
-                types.add(attackType);
+                if(attackType == AttackType.spawn_enemies) {
+                    if(can_spawn_enemies_timer.timerOver()) {
+                        types.add(attackType);
+                    }
+                } else {
+                    types.add(attackType);
+                }
             }
         }
         this.attack_type = types.get(new Random().nextInt(types.size()));

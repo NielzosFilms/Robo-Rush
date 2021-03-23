@@ -10,6 +10,7 @@ import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Hitable;
+import game.textures.COLOR_PALETTE;
 
 import java.awt.*;
 import java.util.Random;
@@ -19,6 +20,7 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable {
 
     private Timer attack_timer = new Timer(60 + new Random().nextInt(4) * 20);
     private HealthBar health = new HealthBar(0, 0, 0, 8, 1);
+    private int spawn_timer = 0, spawn_threshold = 90;
 
     public Shooting_Enemy(int x, int y) {
         super(x, y, Game.gameController.getPlayer().getZIndex(), ID.Enemy);
@@ -27,40 +29,48 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable {
 
     @Override
     public void tick() {
-        ai.tick();
-        this.velX = ai.getVelX();
-        this.velY = ai.getVelY();
+        if(spawn_timer >= spawn_threshold) {
+            ai.tick();
+            this.velX = ai.getVelX();
+            this.velY = ai.getVelY();
 
-        buffer_x += velX;
-        buffer_y += velY;
-        x = Math.round(buffer_x);
-        y = Math.round(buffer_y);
+            buffer_x += velX;
+            buffer_y += velY;
+            x = Math.round(buffer_x);
+            y = Math.round(buffer_y);
 
-        if(ai.inCombat()) {
-            attack_timer.tick();
-            if(attack_timer.timerOver()) {
-                attack();
+            if (ai.inCombat()) {
+                attack_timer.tick();
+                if (attack_timer.timerOver()) {
+                    attack();
+                    attack_timer.resetTimer();
+                    attack_timer.setDelay(160);
+                }
+            } else {
                 attack_timer.resetTimer();
-                attack_timer.setDelay(160);
             }
-        } else {
-            attack_timer.resetTimer();
-        }
 
-        health.tick();
-        if(health.dead()) {
-            health.destroy();
-            Game.gameController.getHandler().findAndRemoveObject(this);
+            health.tick();
+            if (health.dead()) {
+                health.destroy();
+                Game.gameController.getHandler().findAndRemoveObject(this);
+            }
+            health.setXY(x, y);
+        } else {
+            spawn_timer++;
         }
-        health.setXY(x, y);
     }
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.RED);
-        g.drawRect(x, y, 16, 16);
+        g.setColor(COLOR_PALETTE.red.color);
+        if(spawn_timer >= spawn_threshold) {
+            g.drawRect(x, y, 16, 16);
 
-        ai.drawAi(g, x + 8, y + 8);
+            ai.drawAi(g, x + 8, y + 8);
+        } else {
+            g.drawArc(x, y, 16, 16, 0, Math.round((float)spawn_timer / spawn_threshold * 360));
+        }
     }
 
     @Override
@@ -108,11 +118,13 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable {
 
     @Override
     public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
-        health.subtractHealth(damage);
-        ai.setVelX((float) (knockback*Math.cos(Math.toRadians(knockback_angle))));
-        ai.setVelY((float) (knockback*Math.sin(Math.toRadians(knockback_angle))));
-        if(ai.getAction() == AI_ACTION.stand_still) {
-            ai.setAction(AI_ACTION.circle_target);
+        if(spawn_timer >= spawn_threshold) {
+            health.subtractHealth(damage);
+            ai.setVelX((float) (knockback * Math.cos(Math.toRadians(knockback_angle))));
+            ai.setVelY((float) (knockback * Math.sin(Math.toRadians(knockback_angle))));
+            if (ai.getAction() == AI_ACTION.stand_still) {
+                ai.setAction(AI_ACTION.circle_target);
+            }
         }
     }
 }

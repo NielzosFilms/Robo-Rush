@@ -14,7 +14,7 @@ public class Level_1 extends Level {
     private int room_count;
 
     public Level_1() {
-        this.room_count = 4;
+        this.room_count = 8;
 
         this.roomSelector = new RoomSelector();
     }
@@ -68,12 +68,13 @@ public class Level_1 extends Level {
             }
         }
 
-        createBossRoom(origin);
 
         createKeyRoom(origin);
 
         createTreasureRoom(origin);
         createTreasureRoom(origin);
+
+        createBossRoom(origin);
 
         Logger.printRoomMatrix(rooms, room_count, spawners);
     }
