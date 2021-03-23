@@ -16,5 +16,5 @@ public enum TEXTURE_LIST {
 
 	walls_list,
 
-	loading_list, lil_skeleton_list, bullets, minimap, items, spider,
+	loading_list, lil_skeleton_list, bullets, minimap, items, spider, joris_mage,
 }

@@ -1,7 +1,7 @@
 package game.assets.levels;
 
+import game.assets.entities.enemies.Boss_Enemy;
 import game.assets.entities.enemies.Shooting_Enemy;
-import game.assets.entities.enemies.Test_Enemy;
 import game.assets.levels.def.ROOM_TYPE;
 import game.assets.levels.def.Room;
 import game.enums.ID;
@@ -19,7 +19,7 @@ public class Room_TRBL_Test extends Room {
         JsonLoader loader = new JsonLoader("assets/levels/level_1/starting room.json");
         this.objects = loader.getLoadedObjects();
 
-        this.next_wave_threshold = 2;
+        this.next_wave_threshold = 1;
 
         //addObject(new Tree(0, 0, 10, ID.Tree, BIOME.Forest));
 //        addObject(new Tile_Static(0, 0, 1, new Texture(TEXTURE_LIST.dungeon, 1, 0)));
@@ -28,7 +28,8 @@ public class Room_TRBL_Test extends Room {
 //        addObject(new RoomDoorTrigger(0, 64, new Point(0, -1)));
 //        addObject(new RoomDoorTrigger(0, -64, new Point(0, 1)));
 
-//        addEnemyToWave(0, new Shooting_Enemy(64, 64));
+//        addEnemyToWave(0, new Boss_Enemy(64, 64));
+//        spawnNextWave();
 //        addEnemyToWave(0, new Shooting_Enemy(100, 64));
 //        addEnemyToWave(0, new Shooting_Enemy(64, 100));
 //        addEnemyToWave(0, new Shooting_Enemy(100, 100));

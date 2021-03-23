@@ -1,6 +1,7 @@
 package game.assets.levels.level_1;
 
-import game.assets.entities.enemies.Test_Enemy;
+import game.assets.entities.enemies.Boss_Enemy;
+import game.assets.entities.enemies.Shooting_Enemy;
 import game.assets.levels.RoomDoorTrigger;
 import game.assets.levels.def.ROOM_TYPE;
 import game.assets.levels.def.Room;
@@ -27,14 +28,7 @@ public class Room_Boss extends Room {
             addObject(doorTrigger);
         }
 
-        addEnemyToWave(0, new Test_Enemy(0 ,0, 10, ID.Enemy));
-
-        addEnemyToWave(1, new Test_Enemy(0 ,0, 10, ID.Enemy));
-        addEnemyToWave(1, new Test_Enemy(-64 ,-64, 10, ID.Enemy));
-
-        addEnemyToWave(2, new Test_Enemy(0 ,0, 10, ID.Enemy));
-        addEnemyToWave(2, new Test_Enemy(-64 ,-64, 10, ID.Enemy));
-        addEnemyToWave(2, new Test_Enemy(64 ,64, 10, ID.Enemy));
+        addEnemyToWave(0, new Boss_Enemy(0, 0));
 
         spawnNextWave();
     }

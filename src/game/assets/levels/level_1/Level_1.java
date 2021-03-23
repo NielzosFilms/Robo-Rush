@@ -15,7 +15,7 @@ public class Level_1 extends Level {
     private int room_count;
 
     public Level_1() {
-        this.room_count = 8;
+        this.room_count = 4;
 
         this.roomSelector = new RoomSelector();
     }

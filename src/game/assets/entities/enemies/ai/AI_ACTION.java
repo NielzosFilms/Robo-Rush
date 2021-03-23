@@ -1,4 +1,4 @@
-package game.assets.entities.enemies;
+package game.assets.entities.enemies.ai;
 
 public enum AI_ACTION {
     wander,

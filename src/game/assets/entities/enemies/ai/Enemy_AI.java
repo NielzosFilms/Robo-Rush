@@ -1,14 +1,10 @@
-package game.assets.entities.enemies;
+package game.assets.entities.enemies.ai;
 
-import game.assets.HealthBar;
-import game.assets.entities.bullets.Bullet;
-import game.assets.entities.bullets.EnemyBullet;
+import game.assets.entities.enemies.ai.AI_ACTION;
 import game.enums.ID;
 import game.system.helpers.Helpers;
-import game.system.helpers.Logger;
 import game.system.helpers.Timer;
 import game.system.main.Game;
-import game.system.systems.gameObject.Attack;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 
@@ -405,5 +401,51 @@ public class Enemy_AI {
 
     public boolean inCombat() {
         return action != AI_ACTION.wander;
+    }
+
+    public GameObject getTarget() {
+        return this.target;
+    }
+
+    /**
+     * Predict bullet path with target.
+     * @param bullet_speed
+     * @return integer angle for the bullet to travel to hit the target
+     */
+    public int predictBulletDirection(float bullet_speed) {
+        Point target_center = new Point(new Point((int)((Bounds)target).getBounds().getCenterX(), (int)((Bounds)target).getBounds().getCenterY()));
+        Point origin = new Point(new Point((int)((Bounds)parent).getBounds().getCenterX(), (int)((Bounds)parent).getBounds().getCenterY()));
+
+        double distance_to_target = Helpers.getDistance(origin, target_center);
+        double travel_time = Math.round(distance_to_target / bullet_speed);
+
+        Point target_location = new Point(
+                (int)Math.round(target.getX() + target.getVelX() * travel_time),
+                (int)Math.round(target.getY() + target.getVelY() * travel_time));
+        return (int) Helpers.getAngle(origin, target_location);
+    }
+
+    public void setMax_vel(float max_vel) {
+        this.max_vel = max_vel;
+    }
+
+    public void setWander_vel(float wander_vel) {
+        this.wander_vel = wander_vel;
+    }
+
+    public void setCombat_vel(float combat_vel) {
+        this.combat_vel = combat_vel;
+    }
+
+    public void setAcceleration(float acceleration) {
+        this.acceleration = acceleration;
+    }
+
+    public void setDeceleration(float deceleration) {
+        this.deceleration = deceleration;
+    }
+
+    public void setAvoid_radius(int avoid_radius) {
+        this.avoid_radius = avoid_radius;
     }
 }

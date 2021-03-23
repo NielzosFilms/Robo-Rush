@@ -4,7 +4,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
-import game.assets.entities.enemies.Test_Enemy;
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
 import game.system.helpers.Helpers;
@@ -150,7 +149,7 @@ public class KeyInput extends KeyAdapter {
 			}
 			Game.settings.getCursor().setIndex(current_cursor);
 		}
-		if(key == KeyEvent.VK_R) handler.addObject( new Test_Enemy(80, 64, 10, ID.Enemy));
+		//if(key == KeyEvent.VK_R) handler.addObject( new Test_Enemy(80, 64, 10, ID.Enemy));
 		if(key == KeyEvent.VK_T) {
 			gameController.getPlayer().setX(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, gameController.getCam()).x);
 			gameController.getPlayer().setY(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, gameController.getCam()).y);

@@ -80,6 +80,7 @@ public class Textures {
 		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/minimap.png"), 8, 8, texture_lists.get(TEXTURE_LIST.minimap));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/items.png"), 16, 16, texture_lists.get(TEXTURE_LIST.items));
 		fillListWithSpriteSheet(loader.loadImage("assets/entities/spider_chip.png"), 16, 16, texture_lists.get(TEXTURE_LIST.spider));
+		fillListWithSpriteSheet(loader.loadImage("assets/entities/joris_mage.png"), 32, 32, texture_lists.get(TEXTURE_LIST.joris_mage));
 	}
 
 	private static void fillListWithSpriteSheet(BufferedImage sheet, int width, int height, HashMap<Point, BufferedImage> list) {

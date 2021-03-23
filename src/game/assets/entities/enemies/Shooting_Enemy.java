@@ -2,11 +2,11 @@ package game.assets.entities.enemies;
 
 import game.assets.HealthBar;
 import game.assets.entities.bullets.EnemyBullet;
+import game.assets.entities.enemies.ai.AI_ACTION;
+import game.assets.entities.enemies.ai.Enemy_AI;
 import game.enums.ID;
-import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
 import game.system.main.Game;
-import game.system.systems.gameObject.Attack;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.Hitable;
@@ -17,7 +17,7 @@ import java.util.Random;
 public class Shooting_Enemy extends GameObject implements Bounds, Hitable {
     Enemy_AI ai = new Enemy_AI(Game.gameController.getPlayer(), this);
 
-    private Timer attack_timer = new Timer(100);
+    private Timer attack_timer = new Timer(60 + new Random().nextInt(4) * 20);
     private HealthBar health = new HealthBar(0, 0, 0, 8, 1);
 
     public Shooting_Enemy(int x, int y) {
@@ -38,9 +38,9 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable {
         if(ai.inCombat()) {
             attack_timer.tick();
             if(attack_timer.timerOver()) {
-                attack_timer.resetTimer();
-                attack_timer.setDelay(new Random().nextInt(4) * 50);
                 attack();
+                attack_timer.resetTimer();
+                attack_timer.setDelay(160);
             }
         } else {
             attack_timer.resetTimer();

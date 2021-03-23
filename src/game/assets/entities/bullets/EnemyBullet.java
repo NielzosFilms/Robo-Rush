@@ -10,7 +10,7 @@ public class EnemyBullet extends Bullet {
     public EnemyBullet(int x, int y, int z_index, int angle, GameObject created_by) {
         super(x, y, z_index, angle, created_by);
         this.tex = new Texture(TEXTURE_LIST.bullets, 0, 2);
-        this.max_vel = 1.5f;
+        this.max_vel = 1.7f;
         updateVelocity();
     }
 
