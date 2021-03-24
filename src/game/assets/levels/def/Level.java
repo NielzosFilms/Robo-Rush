@@ -74,4 +74,12 @@ public abstract class Level {
     public void closeDoors() {
         this.getActiveRoom().closeDoors();
     }
+
+    public int getDiscoveredRoomCount() {
+        int count = 0;
+        for(Point key : rooms.keySet()) {
+            if(rooms.get(key).isDiscovered()) count++;
+        }
+        return count;
+    }
 }

@@ -4,6 +4,7 @@ import game.assets.HealthBar;
 import game.assets.entities.bullets.EnemyBullet;
 import game.assets.entities.enemies.ai.AI_ACTION;
 import game.assets.entities.enemies.ai.Enemy_AI;
+import game.audio.SoundEffect;
 import game.enums.ID;
 import game.system.helpers.Timer;
 import game.system.main.Game;
@@ -20,7 +21,6 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable {
 
     private Timer attack_timer = new Timer(60 + new Random().nextInt(4) * 20);
     private HealthBar health = new HealthBar(0, 0, 0, 8, 1);
-    private int spawn_timer = 0, spawn_threshold = 90;
 
     public Shooting_Enemy(int x, int y) {
         super(x, y, Game.gameController.getPlayer().getZIndex(), ID.Enemy);
@@ -29,48 +29,40 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable {
 
     @Override
     public void tick() {
-        if(spawn_timer >= spawn_threshold) {
-            ai.tick();
-            this.velX = ai.getVelX();
-            this.velY = ai.getVelY();
+        ai.tick();
+        this.velX = ai.getVelX();
+        this.velY = ai.getVelY();
 
-            buffer_x += velX;
-            buffer_y += velY;
-            x = Math.round(buffer_x);
-            y = Math.round(buffer_y);
+        buffer_x += velX;
+        buffer_y += velY;
+        x = Math.round(buffer_x);
+        y = Math.round(buffer_y);
 
-            if (ai.inCombat()) {
-                attack_timer.tick();
-                if (attack_timer.timerOver()) {
-                    attack();
-                    attack_timer.resetTimer();
-                    attack_timer.setDelay(160);
-                }
-            } else {
+        if (ai.inCombat()) {
+            attack_timer.tick();
+            if (attack_timer.timerOver()) {
+                attack();
                 attack_timer.resetTimer();
+                attack_timer.setDelay(160);
             }
-
-            health.tick();
-            if (health.dead()) {
-                health.destroy();
-                Game.gameController.getHandler().findAndRemoveObject(this);
-            }
-            health.setXY(x, y);
         } else {
-            spawn_timer++;
+            attack_timer.resetTimer();
         }
+
+        health.tick();
+        if (health.dead()) {
+            health.destroy();
+            Game.gameController.getHandler().findAndRemoveObject(this);
+        }
+        health.setXY(x, y);
     }
 
     @Override
     public void render(Graphics g) {
         g.setColor(COLOR_PALETTE.red.color);
-        if(spawn_timer >= spawn_threshold) {
-            g.drawRect(x, y, 16, 16);
+        g.drawRect(x, y, 16, 16);
 
-            ai.drawAi(g, x + 8, y + 8);
-        } else {
-            g.drawArc(x, y, 16, 16, 0, Math.round((float)spawn_timer / spawn_threshold * 360));
-        }
+        ai.drawAi(g, x + 8, y + 8);
     }
 
     @Override
@@ -99,6 +91,7 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable {
     }
 
     public void attack() {
+        SoundEffect.enemy_attack.play();
         int target_angle = ai.getTargetAngle();
         Game.gameController.getHandler().addObject(new EnemyBullet(x+8, y+8, z_index, target_angle, this));
 //        Game.gameController.getHandler().addObject(new EnemyBullet(x+8, y+8, z_index, target_angle - 24, this));
@@ -118,13 +111,12 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable {
 
     @Override
     public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
-        if(spawn_timer >= spawn_threshold) {
-            health.subtractHealth(damage);
-            ai.setVelX((float) (knockback * Math.cos(Math.toRadians(knockback_angle))));
-            ai.setVelY((float) (knockback * Math.sin(Math.toRadians(knockback_angle))));
-            if (ai.getAction() == AI_ACTION.stand_still) {
-                ai.setAction(AI_ACTION.circle_target);
-            }
+        health.subtractHealth(damage);
+        SoundEffect.enemy_hurt.play();
+        ai.setVelX((float) (knockback * Math.cos(Math.toRadians(knockback_angle))));
+        ai.setVelY((float) (knockback * Math.sin(Math.toRadians(knockback_angle))));
+        if (ai.getAction() == AI_ACTION.stand_still) {
+            ai.setAction(AI_ACTION.circle_target);
         }
     }
 }

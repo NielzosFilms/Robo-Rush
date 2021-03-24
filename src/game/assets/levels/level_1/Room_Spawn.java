@@ -14,6 +14,7 @@ public class Room_Spawn extends Room {
     public Room_Spawn(Point location) {
         super(location);
         this.room_type = ROOM_TYPE.NESW;
+        this.discovered = true;
 
         for(RoomSpawner spawner : room_type.getSpawners(location)) {
             Point door_direction = spawner.door_direction;

@@ -67,11 +67,13 @@ public class Collision {
 			Bullet bullet_cast = (Bullet) bullet;
 			for(GameObject entity : objects) {
 				if (!bullet_cast.getHitObjects().contains(entity)) {
+					if(bullet_cast.getBounds() == null) continue;
 					if (bullet_cast.getBounds().intersects(((Bounds) entity).getBounds())) {
 						if(entity instanceof Player) {
 							if(((Player) entity).canBeHit()) {
 								int angle = (int) Helpers.getAngle(new Point(bullet.getX(), bullet.getY()), new Point(entity.getX(), entity.getY()));
 								((Player) entity).hit(bullet_cast.getDamage(), angle, 1f, bullet_cast.getCreatedBy());
+								bullet_cast.addHitObject(entity);
 								bullet_cast.destroy();
 							}
 						} else {
@@ -80,6 +82,7 @@ public class Collision {
 									int angle = (int) Helpers.getAngle(new Point(bullet.getX(), bullet.getY()), new Point(entity.getX(), entity.getY()));
 									((Hitable) entity).hit(bullet_cast.getDamage(), angle, 1f, bullet_cast.getCreatedBy());
 								}
+								bullet_cast.addHitObject(entity);
 								bullet_cast.destroy();
 							}
 						}
@@ -90,10 +93,12 @@ public class Collision {
 			for(GameObject trigger : triggers) {
 				if(((Trigger)trigger).triggerCollision()) {
 					if (!bullet_cast.getHitObjects().contains(trigger)) {
+						if(bullet_cast.getBounds() == null) continue;
 						if (bullet_cast.getBounds().intersects(((Bounds) trigger).getBounds())) {
 							if (trigger instanceof Hitable) {
 								((Hitable) trigger).hit(bullet_cast.getDamage(), 0, 0f, bullet_cast.getCreatedBy());
 							}
+							bullet_cast.addHitObject(trigger);
 							bullet_cast.destroy();
 						}
 					}

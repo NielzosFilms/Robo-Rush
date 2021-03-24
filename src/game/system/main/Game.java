@@ -30,7 +30,7 @@ public class Game extends Canvas implements Runnable {
 	public static final float SCALE_FINAL = 6.7f;
 	public static float scale = SCALE_FINAL;
 	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 3.91 COMBAT & AI";
+	public static final String VERSION = "ALPHA V 3.94 COMBAT & AI";
 
 	public static Window window;
 	public static Point windowSize = new Point(SCREEN_SIZE.width, SCREEN_SIZE.height);

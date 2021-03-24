@@ -96,10 +96,12 @@ public class Room_Basic extends Room {
     }
 
     public void drawRoomMiniMap(Graphics g, int x, int y, int room_size, boolean active) {
-        Texture marker = new Texture(TEXTURE_LIST.minimap, 3, 5);
-        g.drawImage(room_type.getTexture().getTexure(), x, y, room_size, room_size, null);
-        if(active) {
-            g.drawImage(marker.getTexure(), x, y, room_size, room_size, null);
+        if(discovered) {
+            Texture marker = new Texture(TEXTURE_LIST.minimap, 3, 5);
+            g.drawImage(room_type.getTexture().getTexure(), x, y, room_size, room_size, null);
+            if (active) {
+                g.drawImage(marker.getTexure(), x, y, room_size, room_size, null);
+            }
         }
     }
 }

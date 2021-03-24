@@ -8,6 +8,7 @@ import java.util.Random;
 
 import game.assets.entities.Effect_Texture;
 import game.assets.entities.bullets.Bullet;
+import game.assets.entities.bullets.PlayerBullet;
 import game.audio.SoundEffect;
 import game.enums.DIRECTIONS;
 import game.enums.ITEM_ID;
@@ -365,7 +366,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 
 	public void attack() {
 		attacking = true;
-		SoundEffect.swing.play();
+		SoundEffect.player_attack.play();
 		Point screenCoords = Helpers.getScreenCoords((int) getBounds().getCenterX(), (int) getBounds().getCenterY(), Game.gameController.getCam());
 
 		int cenX = (int) getBounds().getCenterX();
@@ -374,7 +375,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 
 		int spread_angle = new Random().nextInt(12) - 6;
 
-		Bullet bullet = new Bullet(cenX, cenY, z_index, angle + spread_angle, this);
+		PlayerBullet bullet = new PlayerBullet(cenX, cenY, angle + spread_angle, this);
 		Game.gameController.getHandler().addObject(bullet);
 		attack_timer.setDelay(Math.round(player_stats.get(PLAYER_STAT.rate_of_fire)));
 		attack_timer.resetTimer();

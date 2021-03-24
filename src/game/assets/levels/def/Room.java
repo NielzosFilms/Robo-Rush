@@ -15,6 +15,7 @@ public abstract class Room {
     protected Point location;
     protected ROOM_TYPE room_type;
     protected int current_wave = 0, next_wave_threshold = 1;
+    protected boolean discovered = false;
 
     public Room(Point location) {
         this.location = location;
@@ -117,5 +118,13 @@ public abstract class Room {
 
     public boolean nextWaveExists() {
         return current_wave + 1 < staged_waves.size();
+    }
+
+    public boolean isDiscovered() {
+        return discovered;
+    }
+
+    public void setDiscovered(boolean discovered) {
+        this.discovered = discovered;
     }
 }

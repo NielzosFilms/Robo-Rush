@@ -22,6 +22,9 @@ public class Level_1 extends Level {
     @Override
     public void tick() {
         getActiveRoom().tick();
+//        if(rooms.size() == getDiscoveredRoomCount()) {
+//            System.out.println("Level discovered!");
+//        }
     }
 
     @Override

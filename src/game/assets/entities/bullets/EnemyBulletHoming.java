@@ -21,16 +21,17 @@ public class EnemyBulletHoming extends Bullet {
 
     @Override
     public void tick() {
-        this.angle = (int)Helpers.getAngle(new Point(x, y), new Point((int)((Bounds)target).getBounds().getCenterX(), (int)((Bounds)target).getBounds().getCenterY()));
-        this.updateVelocity();
-        buffer_x += velX;
-        buffer_y += velY;
-
-        x = Math.round(buffer_x);
-        y = Math.round(buffer_y);
-
         if(lifeTime <= 0) {
             destroy();
+        } else {
+            this.angle = (int)Helpers.getAngle(new Point(x, y), new Point((int)((Bounds)target).getBounds().getCenterX(), (int)((Bounds)target).getBounds().getCenterY()));
+            this.updateVelocity();
+
+            buffer_x += velX;
+            buffer_y += velY;
+
+            x = Math.round(buffer_x);
+            y = Math.round(buffer_y);
         }
 
         lifeTime--;

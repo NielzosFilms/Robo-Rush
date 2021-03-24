@@ -14,7 +14,7 @@ public class Animation implements Serializable {
 	private int index = 0;
 	
 	private boolean mirrorW;
-	private boolean ended = false;
+	private boolean ended = false, last_frame = false;
 	
 	private Texture[] images;
 	private Texture currentImg;
@@ -32,8 +32,11 @@ public class Animation implements Serializable {
 	
 	public void runAnimation() {
 		index++;
-		if(index > speed) {
+		if(index >= speed) {
 			index = 0;
+			if(last_frame) {
+				ended = true;
+			}
 			nextFrame();
 		}
 	}
@@ -43,6 +46,7 @@ public class Animation implements Serializable {
 		count = 0;
 		currentImg = images[0];
 		ended = false;
+		last_frame = false;
 	}
 	
 	public void mirrorAnimationW(boolean temp) {
@@ -57,7 +61,9 @@ public class Animation implements Serializable {
 		count++;
 		if(count >= frames){
 			count = 0;
-			ended = true;
+			last_frame = true;
+		} else {
+			last_frame = false;
 		}
 	}
 	

@@ -5,6 +5,7 @@ import game.assets.entities.bullets.EnemyBullet;
 import game.assets.entities.bullets.EnemyBulletHoming;
 import game.assets.entities.enemies.ai.AI_ACTION;
 import game.assets.entities.enemies.ai.Enemy_AI;
+import game.audio.SoundEffect;
 import game.enums.ID;
 import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
@@ -54,6 +55,10 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
         ai.setDeceleration(0.1f);
 
         attack_timer.resetTimer();
+        circle_attack_timer.resetTimer();
+        normal_attack_timer.resetTimer();
+        attack_cooldown.resetTimer();
+        can_spawn_enemies_timer.resetTimer();
     }
 
     @Override
@@ -70,9 +75,9 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
         health.tick();
         if(health.dead()) {
             health.destroy();
-            for(GameObject bullet : Game.gameController.getHandler().getObjectsWithIds(ID.Bullet)) {
-                Game.gameController.getHandler().removeObject(bullet);
-            }
+//            for(GameObject bullet : Game.gameController.getHandler().getObjectsWithIds(ID.Bullet)) {
+//                Game.gameController.getHandler().removeObject(bullet);
+//            }
             Game.gameController.getHandler().findAndRemoveObject(this);
         }
         health.setXY(x-2, y-16);
@@ -138,16 +143,19 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
         if(normal_attack_timer.timerOver()) {
             normal_attack_timer.resetTimer();
             int target_angle = ai.getTargetAngle();
+            SoundEffect.boss_attack.play();
             Game.gameController.getHandler().addObject(new EnemyBullet(x+8, y+8, z_index, target_angle, this));
         }
     }
 
     private void attackPredict() {
         EnemyBullet bullet = new EnemyBullet(x + 8, y + 8, z_index, ai.predictBulletDirection(1.5f), this);
+        SoundEffect.boss_attack.play();
         Game.gameController.getHandler().addObject(bullet);
     }
 
     private void attackShotgun() {
+        SoundEffect.boss_shotgun.play();
         int target_angle = ai.getTargetAngle();
         Game.gameController.getHandler().addObject(new EnemyBullet(x+8, y+8, z_index, target_angle, this));
         Game.gameController.getHandler().addObject(new EnemyBullet(x+8, y+8, z_index, target_angle-8, this));
@@ -161,6 +169,7 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
             for(int i=0; i<360; i+= 30) {
                 Game.gameController.getHandler().addObject(new EnemyBullet(x+8, y+8, z_index, i, this));
             }
+            SoundEffect.boss_circle.play();
             circle_attack_state = true;
         } else {
             circle_attack_timer.tick();
@@ -176,6 +185,7 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
     }
 
     private void attackHoming() {
+        SoundEffect.boss_homing.play();
         EnemyBulletHoming bullet = new EnemyBulletHoming(x + 8, y + 8, z_index, ai.getTargetAngle(), this, ai.getTarget());
         Game.gameController.getHandler().addObject(bullet);
     }
@@ -204,6 +214,7 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
     @Override
     public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
         health.subtractHealth(damage);
+        SoundEffect.enemy_hurt.play();
         ai.setVelX(0);
         ai.setVelY(0);
         if(ai.getAction() == AI_ACTION.stand_still) {
