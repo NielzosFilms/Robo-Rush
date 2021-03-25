@@ -54,6 +54,7 @@ This can change.
 | `S` | Move down |
 | `D` | Move right|
 | `SHIFT` | Dash |
+| `Left Click` | Shoot |
 | `B` | Open inventory |
 | `ESC` | Pause game |
 | `F4` | Debug mode |
