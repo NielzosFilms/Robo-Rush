@@ -1,4 +1,5 @@
 # Game Developer Info
+# THIS IS DEPRICATED
 
 On this page is some more in depth info about the game.
 
