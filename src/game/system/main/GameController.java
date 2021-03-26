@@ -76,7 +76,7 @@ public class GameController implements Serializable {
         lightingSystem.setRequirements(handler, this, cam);
 
         hud.setRequirements(handler, this.player, mouseInput, this, cam);
-        handler.addObject(this.player);
+//        handler.addObject(this.player);
     }
 
     public void tick() {
@@ -160,14 +160,22 @@ public class GameController implements Serializable {
     }
 
     public LinkedList<LinkedList<GameObject>> getAllGameObjects() {
-        LinkedList<LinkedList<GameObject>> ret = active_level.getObjects();
+        LinkedList<LinkedList<GameObject>> ret = new LinkedList<>();
+
+        int index = 0;
+        for(LinkedList<GameObject> layer : active_level.getObjects()) {
+            ret.add(new LinkedList<>());
+            for(GameObject object : layer) {
+                ret.get(index).add(object);
+            }
+            index++;
+        }
 
         int player_z_index = player.getZIndex();
         for(int i=ret.size(); i<=player_z_index; i++) {
             ret.add(new LinkedList<>());
         }
-//        if(!ret.get(player_z_index).contains(player))
-//            ret.get(player_z_index).add(player);
+        ret.get(player_z_index).add(player);
 
         return ret;
     }

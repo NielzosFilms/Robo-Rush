@@ -82,7 +82,7 @@ public class Handler implements Serializable {
 			LinkedList<GameObject> layer_game_objects = new LinkedList<>(all_game_objects.get(i));
 
 			if(i == gameController.getPlayer().getZIndex()) {
-				layer_game_objects.add(gameController.getPlayer());
+				//layer_game_objects.add(gameController.getPlayer());
 			}
 
 			if(i < object_entities.size()) {

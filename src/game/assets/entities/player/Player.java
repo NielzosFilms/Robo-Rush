@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 
+import game.assets.HealthBar_Player;
 import game.assets.entities.Effect_Texture;
 import game.assets.entities.bullets.Bullet;
 import game.assets.entities.bullets.PlayerBullet;
@@ -17,6 +18,7 @@ import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.HUD_Rendering;
 import game.system.systems.gameObject.Hitable;
 import game.assets.items.item.Item;
 import game.system.main.*;
@@ -24,7 +26,7 @@ import game.enums.ID;
 import game.system.inputs.KeyInput;
 import game.textures.*;
 
-public abstract class Player extends GameObject implements Bounds, Hitable {
+public abstract class Player extends GameObject implements Bounds, Hitable, HUD_Rendering {
 	protected LinkedList<Item> items = new LinkedList<>();
 	protected HashMap<PLAYER_STAT, Float> player_stats = new HashMap<PLAYER_STAT, Float>(){{
 		put(PLAYER_STAT.move_speed, 1f);
@@ -466,5 +468,11 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 
 	public HashMap<PLAYER_STAT, Float> getBasePlayerStats() {
 		return this.original_stats;
+	}
+
+	public LinkedList<GameObject> getHudObjects() {
+		LinkedList<GameObject> ret = new LinkedList<>();
+		ret.add(new HealthBar_Player(0, 0, 0, 10, 1));
+		return ret;
 	}
 }

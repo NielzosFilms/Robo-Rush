@@ -1,12 +1,15 @@
 package game.assets.entities.player;
 
+import game.assets.HealthBar_Player;
 import game.system.inputs.KeyInput;
+import game.system.systems.gameObject.GameObject;
 import game.textures.Animation;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Character_Robot extends Player {
     public Character_Robot(int x, int y, int z_index, KeyInput keyInput) {
