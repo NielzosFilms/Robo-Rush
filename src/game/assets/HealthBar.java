@@ -87,4 +87,8 @@ public class HealthBar extends GameObject implements HUD_Component {
     public boolean isStatic() {
         return false;
     }
+
+    public void setMax(int max) {
+        this.max = max;
+    }
 }

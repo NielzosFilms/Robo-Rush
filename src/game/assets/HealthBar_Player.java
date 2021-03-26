@@ -14,9 +14,9 @@ public class HealthBar_Player extends HealthBar implements HUD_Component {
     public void render(Graphics g) {
         int health_perc = getHealthPercent();
         g.setColor(COLOR_PALETTE.gray_0.color);
-        g.fillRect(0, 100, 80, 16);
+        g.fillRect(x, y, 80, 16);
         g.setColor(COLOR_PALETTE.red.color);
-        g.fillRect(1, 99,  Math.round((float)78 / 100 * health_perc), 14);
+        g.fillRect(x+1, y+1,  Math.round((float)78 / 100 * health_perc), 14);
     }
 
     @Override

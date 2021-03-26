@@ -31,12 +31,13 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 	protected HashMap<PLAYER_STAT, Float> player_stats = new HashMap<PLAYER_STAT, Float>(){{
 		put(PLAYER_STAT.move_speed, 1f);
 		put(PLAYER_STAT.damage, 1f);
-		put(PLAYER_STAT.health, 100f);
+		put(PLAYER_STAT.health, 8f);
 		put(PLAYER_STAT.rate_of_fire, 30f);
 		put(PLAYER_STAT.dash_speed, 8f);
 		put(PLAYER_STAT.dash_duration, 20f);
 		put(PLAYER_STAT.dash_cooldown, 60f);
 	}}, original_stats;
+	protected HealthBar_Player health_player = new HealthBar_Player(64, 200, 0, Math.round(player_stats.get(PLAYER_STAT.health)), 1);
 
 	protected float acceleration = 0.2f, deceleration = 0.3f;
 	protected DIRECTIONS direction;
@@ -98,6 +99,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 		updatePlayerStats();
 
 		invincible_timer.tick();
+		health_player.tick();
 	}
 
 	protected void tickWalking() {
@@ -391,6 +393,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 
 	@Override
 	public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
+		health_player.subtractHealth(damage);
 		invincible_timer.resetTimer();
 		invincible_timer.setDelay(50);
 		Game.gameController.getCam().screenShake(2f, 6);
@@ -460,6 +463,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 				}
 			}
 		}
+		health_player.setMax(Math.round(player_stats.get(PLAYER_STAT.health)));
 	}
 
 	public HashMap<PLAYER_STAT, Float> getPlayerStats() {
@@ -472,7 +476,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 
 	public LinkedList<GameObject> getHudObjects() {
 		LinkedList<GameObject> ret = new LinkedList<>();
-		ret.add(new HealthBar_Player(0, 0, 0, 10, 1));
+		ret.add(health_player);
 		return ret;
 	}
 }

@@ -307,9 +307,13 @@ public class Handler implements Serializable {
 	public void findAndRemoveObject(GameObject object) {
 		LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
 
-		object_entities.get(object.getZIndex()).remove(object);
+		if(object.getZIndex() < object_entities.size()) {
+			object_entities.get(object.getZIndex()).remove(object);
+		}
 
-		all_game_objects.get(object.getZIndex()).remove(object);
+		if(object.getZIndex() < all_game_objects.size()) {
+			all_game_objects.get(object.getZIndex()).remove(object);
+		}
 
 		if(object instanceof Destroyable) {
 			((Destroyable) object).destroyed();
