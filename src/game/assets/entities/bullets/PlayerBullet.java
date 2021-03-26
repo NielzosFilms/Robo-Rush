@@ -9,7 +9,6 @@ public class PlayerBullet extends Bullet {
     public PlayerBullet(int x, int y, int angle, GameObject created_by) {
         super(x, y, Game.gameController.getPlayer().getZIndex(), angle, created_by);
         updateVelocity();
-        this.damage = 8;
     }
 
     @Override

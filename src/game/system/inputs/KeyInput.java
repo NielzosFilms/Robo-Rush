@@ -68,15 +68,15 @@ public class KeyInput extends KeyAdapter {
 							case KeyEvent.VK_I:
 //								((Interactable)tempObject).interact();
 								break;
-							case KeyEvent.VK_R:
-								gameController.generate();
-								break;
-							case KeyEvent.VK_O:
-								gameController.getActiveLevel().openDoors();
-								break;
-							case KeyEvent.VK_P:
-								gameController.getActiveLevel().closeDoors();
-								break;
+//							case KeyEvent.VK_R:
+//								gameController.generate();
+//								break;
+//							case KeyEvent.VK_O:
+//								gameController.getActiveLevel().openDoors();
+//								break;
+//							case KeyEvent.VK_P:
+//								gameController.getActiveLevel().closeDoors();
+//								break;
 						}
 						// inventory.pickupItem(handler, world);
 					}
@@ -118,15 +118,6 @@ public class KeyInput extends KeyAdapter {
 			}
 		}
 		if (key == KeyEvent.VK_ESCAPE) {
-			// saving
-			// try {
-			// // saving a world
-			// Game.world.saveChunks("saves/test_save.txt");
-			// } catch (FileNotFoundException e1) {
-			// // TODO Auto-generated catch block
-			// e1.printStackTrace();
-			// }
-
 			switch(Game.game_state) {
 				case Game:
 					Game.game_state = GAMESTATES.Pauzed;
@@ -140,16 +131,6 @@ public class KeyInput extends KeyAdapter {
 					break;
 			}
 		}
-		if(key == KeyEvent.VK_F1) {
-			int current_cursor = Game.settings.getCursor().getIndex();
-			if(current_cursor + 1 >= Textures.texture_lists.get(Game.settings.getCursor().getTexture_list()).size()) {
-				current_cursor = 0;
-			} else {
-				current_cursor += 1;
-			}
-			Game.settings.getCursor().setIndex(current_cursor);
-		}
-		//if(key == KeyEvent.VK_R) handler.addObject( new Test_Enemy(80, 64, 10, ID.Enemy));
 		if(key == KeyEvent.VK_T) {
 			gameController.getPlayer().setX(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, gameController.getCam()).x);
 			gameController.getPlayer().setY(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, gameController.getCam()).y);
