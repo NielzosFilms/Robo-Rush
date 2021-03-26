@@ -89,7 +89,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void setRequirements() {
-		gameController.setRequirements(new Character_Robot(0, 0, 2, null), textures, keyInput, mouseInput);
+		gameController.setRequirements(textures, keyInput, mouseInput);
 
 		keyInput.setRequirements(gameController);
 		mouseInput.setRequirements(this, gameController);

@@ -50,7 +50,7 @@ public class GameController implements Serializable {
         hud = new HUD();
     }
 
-    public void setRequirements(Player player, Textures textures, KeyInput keyInput, MouseInput mouseInput) {
+    public void setRequirements(Textures textures, KeyInput keyInput, MouseInput mouseInput) {
         collision = new Collision();
         hitboxSystem = new HitboxSystem();
 
@@ -59,17 +59,13 @@ public class GameController implements Serializable {
 
         this.textures = textures;
         this.keyInput = keyInput;
-        if(this.player != null) handler.removeObject(this.player);
-        this.player = player;
-        this.player.setKeyInput(keyInput);
-        this.player.setId(ID.Player);
 
         this.keyInput = keyInput;
         keyInput.setRequirements(this);
         mouseInput.setGameController(this);
 
         handler.setRequirements(this, cam, ps);
-        collision.setRequirements(handler, this, this.player);
+        collision.setRequirements(handler, this);
         hitboxSystem.setRequirements(handler);
 
 //        inventorySystem.setRequirements(handler, mouseInput, this, this.player, cam);
@@ -140,7 +136,9 @@ public class GameController implements Serializable {
 
     public void generate() {
         loaded = false;
-        setRequirements(new Character_Robot(0, 0, 10, keyInput), Game.textures, Game.keyInput, Game.mouseInput);
+        this.player = new Character_Robot(0, 0, 10);
+        this.handler.object_entities.clear();
+        setRequirements(Game.textures, Game.keyInput, Game.mouseInput);
 
         //Logger.print("[seed]: " + this.seed);
         Logger.print("World Generating...");

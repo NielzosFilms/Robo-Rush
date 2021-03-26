@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Character_Robot extends Player {
-    public Character_Robot(int x, int y, int z_index, KeyInput keyInput) {
-        super(x, y, z_index, keyInput);
+    public Character_Robot(int x, int y, int z_index) {
+        super(x, y, z_index);
     }
 
     @Override

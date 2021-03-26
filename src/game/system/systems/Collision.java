@@ -10,6 +10,7 @@ import game.assets.items.Item_Ground;
 import game.assets.levels.RoomDoorTrigger;
 import game.enums.ID;
 import game.system.helpers.Helpers;
+import game.system.main.Game;
 import game.system.main.GameController;
 import game.system.main.Handler;
 import game.system.systems.gameObject.Bounds;
@@ -25,10 +26,9 @@ public class Collision {
 
 	public Collision() {}
 
-	public void setRequirements(Handler handler, GameController gameController, Player player) {
+	public void setRequirements(Handler handler, GameController gameController) {
 		this.handler = handler;
 		this.gameController = gameController;
-		this.player = player;
 	}
 
 	public void tick() {
@@ -43,7 +43,7 @@ public class Collision {
 				if(trigger.triggerCollision()) {
 					checkCollisionFor2Entities(entity, trigger_object);
 				}
-				if(trigger_bounds.getBounds().intersects(player.getBounds())) {
+				if(trigger_bounds.getBounds().intersects(Game.gameController.getPlayer().getBounds())) {
 					if(trigger.canTrigger() && !trigger.triggerCollision()) {
 						trigger.triggered();
 						trigger.setTriggerActive(false);

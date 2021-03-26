@@ -1,5 +1,7 @@
 package game.enums;
 
 public enum MENUSTATES {
-	Main, Pauzed, Settings, SaveSlotSelect, Inventory
+	Main, Pauzed, Settings, SaveSlotSelect, Inventory,
+
+	GameOver
 }

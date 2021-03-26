@@ -12,8 +12,7 @@ import game.assets.entities.Effect_Texture;
 import game.assets.entities.bullets.Bullet;
 import game.assets.entities.bullets.PlayerBullet;
 import game.audio.SoundEffect;
-import game.enums.DIRECTIONS;
-import game.enums.ITEM_ID;
+import game.enums.*;
 import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
 import game.system.systems.gameObject.Bounds;
@@ -22,7 +21,6 @@ import game.system.systems.gameObject.HUD_Rendering;
 import game.system.systems.gameObject.Hitable;
 import game.assets.items.item.Item;
 import game.system.main.*;
-import game.enums.ID;
 import game.system.inputs.KeyInput;
 import game.textures.*;
 
@@ -42,7 +40,6 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 	protected float acceleration = 0.2f, deceleration = 0.3f;
 	protected DIRECTIONS direction;
 
-	protected KeyInput keyInput;
 	protected Random rand = new Random();
 
 	protected Timer attack_timer = new Timer(Math.round(player_stats.get(PLAYER_STAT.rate_of_fire)));
@@ -62,17 +59,19 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 	protected Timer dash = new Timer(Math.round(player_stats.get(PLAYER_STAT.dash_duration)));
 	protected Timer particle_timer = new Timer(5);
 
-	public Player(int x, int y, int z_index, KeyInput keyInput) {
+	public Player(int x, int y, int z_index) {
 		super(x, y, z_index, ID.Player);
-		this.keyInput = keyInput;
 		this.direction = DIRECTIONS.down;
 		this.original_stats = new HashMap<>(this.player_stats);
 
+		dash_cooldown.resetTimer();
+		particle_timer.resetTimer();
+		idle_timer.resetTimer();
+		invincible_timer.resetTimer();
+		attack_timer.resetTimer();
+
 		initAnimations();
 
-		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
-		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
-		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
 		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
 		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
 		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
@@ -100,6 +99,10 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 
 		invincible_timer.tick();
 		health_player.tick();
+		if(health_player.dead()) {
+			Game.game_state = GAMESTATES.Pauzed;
+			Game.menuSystem.setState(MENUSTATES.GameOver);
+		}
 	}
 
 	protected void tickWalking() {
@@ -406,10 +409,6 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 
 	public boolean canBeHit() {
 		return invincible_timer.timerOver();
-	}
-
-	public void setKeyInput(KeyInput keyInput) {
-		this.keyInput = keyInput;
 	}
 
 	public boolean hasItem(ITEM_ID item_id) {
