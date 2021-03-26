@@ -2,6 +2,7 @@ package game.system.inputs;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import game.enums.GAMESTATES;
@@ -17,17 +18,22 @@ import game.textures.Textures;
 
 public class KeyInput extends KeyAdapter {
 
+	public static HashMap<Integer, Boolean> keys_down = new HashMap<>();
+
 	private Handler handler;
-//	private InventorySystem inventorySystem;
 	private GameController gameController;
 	private MenuSystem menuSystem;
 
-	public KeyInput() {}
-
-	/*
-	 * 0 = W 1 = S 2 = A 3 = D 4 = Space 5 = Shift 6 = Ctrl 7 = Tab
-	 */
-	public boolean[] keysDown = { false, false, false, false, false, false, false, false };
+	public KeyInput() {
+		keys_down.put(KeyEvent.VK_W, false);
+		keys_down.put(KeyEvent.VK_S, false);
+		keys_down.put(KeyEvent.VK_A, false);
+		keys_down.put(KeyEvent.VK_D, false);
+		keys_down.put(KeyEvent.VK_SPACE, false);
+		keys_down.put(KeyEvent.VK_SHIFT, false);
+		keys_down.put(KeyEvent.VK_CONTROL, false);
+		keys_down.put(KeyEvent.VK_TAB, false);
+	}
 
 	public void setRequirements(GameController gameController) {
 		this.handler = gameController.getHandler();
@@ -39,75 +45,21 @@ public class KeyInput extends KeyAdapter {
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 
-		if(Game.game_state == GAMESTATES.Game) {
-			for (LinkedList<GameObject> list : handler.object_entities) {
-				for (GameObject tempObject : list) {
-					if (tempObject.getId() == ID.Player) {
-						switch (key) {
-							case KeyEvent.VK_W:
-								keysDown[0] = true;
-								break;
-							case KeyEvent.VK_S:
-								keysDown[1] = true;
-								break;
-							case KeyEvent.VK_A:
-								keysDown[2] = true;
-								break;
-							case KeyEvent.VK_D:
-								keysDown[3] = true;
-								break;
-							case KeyEvent.VK_SPACE:
-								keysDown[4] = true;
-								break;
-							case KeyEvent.VK_SHIFT:
-								keysDown[5] = true;
-								break;
-							case KeyEvent.VK_CONTROL:
-								keysDown[6] = true;
-								break;
-							case KeyEvent.VK_I:
-//								((Interactable)tempObject).interact();
-								break;
-//							case KeyEvent.VK_R:
-//								gameController.generate();
-//								break;
-//							case KeyEvent.VK_O:
-//								gameController.getActiveLevel().openDoors();
-//								break;
-//							case KeyEvent.VK_P:
-//								gameController.getActiveLevel().closeDoors();
-//								break;
-						}
-						// inventory.pickupItem(handler, world);
-					}
-				}
-			}
+		keys_down.put(key, true);
 
-			if (key == KeyEvent.VK_E) {
-				LinkedList<GameObject> objs = handler.getSelectableObjects();
-				for (GameObject obj : objs) {
-					if(obj instanceof Interactable) {
-						Interactable object = (Interactable) obj;
-						if (Game.mouseInput.mouseOverWorldVar(object.getSelectBounds().x, object.getSelectBounds().y,
-								object.getSelectBounds().width, object.getSelectBounds().height)) {
-//							if (Helpers.getDistanceBetweenBounds(Game.gameController.getPlayer().getBounds(), object.getSelectBounds()) < Game.gameController.getPlayer().REACH) {
-//								object.interact();
-//								return;
-//							}
-						}
-					}
-				}
-			}
-//			if(key == KeyEvent.VK_N) {
-//				if(world.structureActive()) {
-//					world.getGeneration().setNewSeed(world.getNextSeed());
-//					world.getActive_structure().generate(world);
-//				}else world.generate();
-//			}
-//			inventorySystem.keyPressed(e);
-		} else {
-			menuSystem.keyPressed(e);
+		menuSystem.keyPressed(e);
+		if(key == KeyEvent.VK_T) {
+			gameController.getPlayer().setX(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, gameController.getCam()).x);
+			gameController.getPlayer().setY(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, gameController.getCam()).y);
 		}
+	}
+
+	public void keyReleased(KeyEvent e) {
+		int key = e.getKeyCode();
+		keys_down.put(key, false);
+
+		if (key == KeyEvent.VK_F4) Game.DEBUG_MODE = !Game.DEBUG_MODE;
+		if(key == KeyEvent.VK_F11) Game.window.setFullscreen(!Game.window.isFullscreen());
 		if(key == KeyEvent.VK_B) {
 			Logger.print("Tab");
 			if(Game.game_state == GAMESTATES.Game) {
@@ -131,50 +83,6 @@ public class KeyInput extends KeyAdapter {
 					break;
 			}
 		}
-		if(key == KeyEvent.VK_T) {
-			gameController.getPlayer().setX(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, gameController.getCam()).x);
-			gameController.getPlayer().setY(Helpers.getWorldCoords(Game.mouseInput.mouse_x, Game.mouseInput.mouse_y, gameController.getCam()).y);
-		}
-
-		if(key == KeyEvent.VK_F11) {
-			Game.window.setFullscreen(!Game.window.isFullscreen());
-		}
-	}
-
-	public void keyReleased(KeyEvent e) {
-		int key = e.getKeyCode();
-
-		for (LinkedList<GameObject> list : handler.object_entities) {
-			for (GameObject tempObject : list) {
-				if (tempObject.getId() == ID.Player) {
-					switch (key) {
-						case KeyEvent.VK_W:
-							keysDown[0] = false;
-							break;
-						case KeyEvent.VK_S:
-							keysDown[1] = false;
-							break;
-						case KeyEvent.VK_A:
-							keysDown[2] = false;
-							break;
-						case KeyEvent.VK_D:
-							keysDown[3] = false;
-							break;
-						case KeyEvent.VK_SPACE:
-							keysDown[4] = false;
-							break;
-						case KeyEvent.VK_SHIFT:
-							keysDown[5] = false;
-							break;
-						case KeyEvent.VK_CONTROL:
-							keysDown[6] = false;
-							break;
-					}
-				}
-			}
-		}
-
-		if (key == KeyEvent.VK_F4) Game.DEBUG_MODE = !Game.DEBUG_MODE;
 	}
 
 	public void tick() {}

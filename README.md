@@ -37,9 +37,9 @@ This can change.
 ## Game Default Key Bindings
 | Key | Action |
 | --- | ------ |
-| `W A S D` | Movement |
+| `W,A,S,D` | Movement |
 | `SHIFT` | Dash |
-| `Left Click` | Shoot |
+| `Left Click, Space` | Shoot |
 | `B` | Open inventory |
 | `ESC` | Pause game |
 | `F4` | Debug mode |

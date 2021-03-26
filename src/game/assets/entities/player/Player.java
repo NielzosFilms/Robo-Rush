@@ -1,6 +1,7 @@
 package game.assets.entities.player;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -100,10 +101,10 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 	protected void tickWalking() {
 		if(dash.timerOver()) {
 			float walk_speed = player_stats.get(PLAYER_STAT.move_speed);
-			if (keyInput.keysDown[0] && !keyInput.keysDown[1]) {
+			if (KeyInput.keys_down.get(KeyEvent.VK_W) && !KeyInput.keys_down.get(KeyEvent.VK_S)) {
 				velY += (-walk_speed - velY) * acceleration;
 				direction = DIRECTIONS.up;
-			} else if (keyInput.keysDown[1] && !keyInput.keysDown[0]) {
+			} else if (KeyInput.keys_down.get(KeyEvent.VK_S) && !KeyInput.keys_down.get(KeyEvent.VK_W)) {
 				velY += (walk_speed - velY) * acceleration;
 				direction = DIRECTIONS.down;
 			} else {
@@ -111,10 +112,10 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 				if (velY < 0.01f && velY > -0.01f) velY = 0;
 			}
 
-			if (keyInput.keysDown[2] && !keyInput.keysDown[3]) {
+			if (KeyInput.keys_down.get(KeyEvent.VK_A) && !KeyInput.keys_down.get(KeyEvent.VK_D)) {
 				velX += (-walk_speed - velX) * acceleration;
 				direction = DIRECTIONS.left;
-			} else if (keyInput.keysDown[3] && !keyInput.keysDown[2]) {
+			} else if (KeyInput.keys_down.get(KeyEvent.VK_D) && !KeyInput.keys_down.get(KeyEvent.VK_A)) {
 				velX += (walk_speed - velX) * acceleration;
 				direction = DIRECTIONS.right;
 			} else {
@@ -131,26 +132,26 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 
 	protected void tickDash() {
 		if(dash.timerOver()) {
-			if(keyInput.keysDown[0] && keyInput.keysDown[2]) {
+			if(KeyInput.keys_down.get(KeyEvent.VK_W) && KeyInput.keys_down.get(KeyEvent.VK_A)) {
 				dash_direction = DIRECTIONS.up_left;
-			} else if(keyInput.keysDown[0] && keyInput.keysDown[3]) {
+			} else if(KeyInput.keys_down.get(KeyEvent.VK_W) && KeyInput.keys_down.get(KeyEvent.VK_D)) {
 				dash_direction = DIRECTIONS.up_right;
-			} else if(keyInput.keysDown[1] && keyInput.keysDown[2]) {
+			} else if(KeyInput.keys_down.get(KeyEvent.VK_S) && KeyInput.keys_down.get(KeyEvent.VK_A)) {
 				dash_direction = DIRECTIONS.down_left;
-			} else if(keyInput.keysDown[1] && keyInput.keysDown[3]) {
+			} else if(KeyInput.keys_down.get(KeyEvent.VK_S) && KeyInput.keys_down.get(KeyEvent.VK_D)) {
 				dash_direction = DIRECTIONS.down_right;
-			} else if(keyInput.keysDown[0]) {
+			} else if(KeyInput.keys_down.get(KeyEvent.VK_W)) {
 				dash_direction = DIRECTIONS.up;
-			} else if(keyInput.keysDown[1]) {
+			} else if(KeyInput.keys_down.get(KeyEvent.VK_S)) {
 				dash_direction = DIRECTIONS.down;
-			} else if(keyInput.keysDown[2]) {
+			} else if(KeyInput.keys_down.get(KeyEvent.VK_A)) {
 				dash_direction = DIRECTIONS.left;
-			} else if(keyInput.keysDown[3]) {
+			} else if(KeyInput.keys_down.get(KeyEvent.VK_D)) {
 				dash_direction = DIRECTIONS.right;
 			}
 		}
 
-		if (keyInput.keysDown[5]) {
+		if (KeyInput.keys_down.get(KeyEvent.VK_SHIFT)) {
 			if(dash_cooldown.timerOver()) {
 				dashing = true;
 				dash_cooldown.resetTimer();
@@ -242,7 +243,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable {
 
 	protected void tickAttack() {
 		attack_timer.tick();
-		if(Game.mouseInput.leftMouseDown() && canAttack()) {
+		if((Game.mouseInput.leftMouseDown() || KeyInput.keys_down.get(KeyEvent.VK_SPACE)) && canAttack()) {
 			attack();
 		}
 	}
