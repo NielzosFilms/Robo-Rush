@@ -1,6 +1,7 @@
 package game.assets.entities.enemies;
 
 import game.assets.HealthBar;
+import game.assets.HealthBar_Boss;
 import game.assets.entities.bullets.EnemyBullet;
 import game.assets.entities.bullets.EnemyBulletHoming;
 import game.assets.entities.enemies.ai.AI_ACTION;
@@ -12,6 +13,7 @@ import game.system.helpers.Timer;
 import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.HUD_Rendering;
 import game.system.systems.gameObject.Hitable;
 import game.textures.*;
 
@@ -28,7 +30,7 @@ enum AttackType {
     spawn_enemies,
 }
 
-public class Boss_Enemy extends GameObject implements Bounds, Hitable {
+public class Boss_Enemy extends GameObject implements Bounds, Hitable, HUD_Rendering {
     Enemy_AI ai = new Enemy_AI(Game.gameController.getPlayer(), this);
 
     Animation walking = new Animation(6,
@@ -42,7 +44,7 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
             normal_attack_timer = new Timer(20),
             attack_cooldown = new Timer(30),
             can_spawn_enemies_timer = new Timer(300);
-    private HealthBar health = new HealthBar(0, 0, 0, 100, 1);
+    private HealthBar_Boss health = new HealthBar_Boss(0, 0, 0, 100, 1);
     private AttackType attack_type = AttackType.normal;
     private boolean circle_attack_state = false;
 
@@ -74,7 +76,6 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
 
         health.tick();
         if(health.dead()) {
-            health.destroy();
 //            for(GameObject bullet : Game.gameController.getHandler().getObjectsWithIds(ID.Bullet)) {
 //                Game.gameController.getHandler().removeObject(bullet);
 //            }
@@ -245,5 +246,12 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable {
     @Override
     public Rectangle getRightBounds() {
         return new Rectangle(x+14, y+2, 2, 12);
+    }
+
+    @Override
+    public LinkedList<GameObject> getHudObjects() {
+        LinkedList<GameObject> ret = new LinkedList<>();
+        ret.add(health);
+        return ret;
     }
 }

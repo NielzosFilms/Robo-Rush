@@ -10,13 +10,15 @@ import game.system.helpers.Timer;
 import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.HUD_Rendering;
 import game.system.systems.gameObject.Hitable;
 import game.textures.COLOR_PALETTE;
 
 import java.awt.*;
+import java.util.LinkedList;
 import java.util.Random;
 
-public class Shooting_Enemy extends GameObject implements Bounds, Hitable {
+public class Shooting_Enemy extends GameObject implements Bounds, Hitable, HUD_Rendering {
     Enemy_AI ai = new Enemy_AI(Game.gameController.getPlayer(), this);
 
     private Timer attack_timer = new Timer(60 + new Random().nextInt(4) * 20);
@@ -51,7 +53,6 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable {
 
         health.tick();
         if (health.dead()) {
-            health.destroy();
             Game.gameController.getHandler().findAndRemoveObject(this);
         }
         health.setXY(x, y);
@@ -118,5 +119,12 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable {
         if (ai.getAction() == AI_ACTION.stand_still) {
             ai.setAction(AI_ACTION.circle_target);
         }
+    }
+
+    @Override
+    public LinkedList<GameObject> getHudObjects() {
+        LinkedList<GameObject> ret = new LinkedList<>();
+        ret.add(health);
+        return ret;
     }
 }

@@ -2,6 +2,8 @@ package game.assets;
 
 import game.system.helpers.Logger;
 import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.HUD_Component;
+import game.textures.COLOR_PALETTE;
 import game.textures.TEXTURE_LIST;
 import game.system.main.Game;
 import game.system.helpers.Helpers;
@@ -10,15 +12,15 @@ import game.textures.Textures;
 import java.awt.*;
 import java.io.Serializable;
 
-public class HealthBar extends GameObject implements Serializable {
-    private static final Color background = new Color(0, 0, 0, 127);
-    private static final int HIDE_DELAY = 60*5;
-    private int hide_timer = HIDE_DELAY;
-    private Color healthBar_color = new Color(205,0,0);
-    private int min = 0, max = 100;
-    private int w = 24, h = 4;
-    private int health;
-    private int x, y;
+public class HealthBar extends GameObject implements HUD_Component {
+    protected static final Color background = COLOR_PALETTE.black.color;
+    protected static final int HIDE_DELAY = 60*5;
+    protected int hide_timer = HIDE_DELAY;
+    protected Color healthBar_color = COLOR_PALETTE.red.color;
+    protected int min = 0, max = 100;
+    protected int w = 24, h = 4;
+    protected int health;
+    protected int x, y;
 
     public HealthBar(int x, int y, int min, int max, int hud_z_index) {
         super(x, y, hud_z_index, null);
@@ -27,7 +29,6 @@ public class HealthBar extends GameObject implements Serializable {
         this.min = min;
         this.max = max;
         this.health = max;
-        Game.gameController.getHandler().addHudObjects(this);
     }
 
     public void tick() {
@@ -82,7 +83,8 @@ public class HealthBar extends GameObject implements Serializable {
         this.y = y;
     }
 
-    public void destroy() {
-        Game.gameController.getHandler().removeHudObject(this);
+    @Override
+    public boolean isStatic() {
+        return false;
     }
 }

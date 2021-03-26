@@ -11,6 +11,8 @@ import game.system.helpers.Helpers;
 import game.system.main.*;
 import game.system.inputs.MouseInput;
 import game.system.systems.gameObject.GameObject;
+import game.system.systems.gameObject.HUD_Component;
+import game.system.systems.gameObject.HUD_Rendering;
 import game.system.systems.gameObject.Interactable;
 
 public class HUD implements Serializable {
@@ -23,6 +25,7 @@ public class HUD implements Serializable {
 	private transient Camera cam;
 
 	private LinkedList<LinkedList<GameObject>> objects_on_hud = new LinkedList<>();
+	private LinkedList<LinkedList<GameObject>> objects_on_hud_static = new LinkedList<>();
 
 	private Selection selection = new Selection();
 
@@ -40,7 +43,21 @@ public class HUD implements Serializable {
 	}
 
 	public void tick() {
-		objects_on_hud = handler.getHudObjects();
+		objects_on_hud = new LinkedList<>();
+		objects_on_hud_static = new LinkedList<>();
+		for(LinkedList<GameObject> layer : gameController.getAllGameObjects()) {
+			for(GameObject object : layer) {
+				if(object instanceof HUD_Rendering) {
+					for(GameObject hud_object : ((HUD_Rendering) object).getHudObjects()) {
+						if(((HUD_Component)hud_object).isStatic()) {
+							addHudObjectStatic(hud_object);
+						} else {
+							addHudObject(hud_object);
+						}
+					}
+				}
+			}
+		}
 		if(Game.DEBUG_MODE) debugHUD.tick();
 		selection.tick();
 	}
@@ -68,6 +85,12 @@ public class HUD implements Serializable {
 	}
 
 	public void render(Graphics g, Graphics2D g2d) {
+		for(LinkedList<GameObject> layer : objects_on_hud_static) {
+			for(GameObject object : layer) {
+				object.render(g);
+			}
+		}
+
 		drawMiniMap(g, new Point(Game.getGameSize().x - 8*4, 25));
 
 		if(Game.DEBUG_MODE) debugHUD.render(g, g2d);
@@ -109,6 +132,24 @@ public class HUD implements Serializable {
 	}
 	public void mouseReleased(MouseEvent e) {
 		debugHUD.mouseReleased(e);
+	}
+
+	private void addHudObject(GameObject object) {
+		int z_index = object.getZIndex();
+		for(int i=objects_on_hud.size(); i<=z_index; i++) {
+			this.objects_on_hud.add(new LinkedList<GameObject>());
+		}
+
+		this.objects_on_hud.get(z_index).add(object);
+	}
+
+	private void addHudObjectStatic(GameObject object) {
+		int z_index = object.getZIndex();
+		for(int i=objects_on_hud_static.size(); i<=z_index; i++) {
+			this.objects_on_hud_static.add(new LinkedList<GameObject>());
+		}
+
+		this.objects_on_hud_static.get(z_index).add(object);
 	}
 
 }

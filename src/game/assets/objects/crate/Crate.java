@@ -92,7 +92,6 @@ public class Crate extends GameObject implements Bounds, Interactable, Hitable, 
         }
 
         if(healthBar.dead()) {
-            Game.gameController.getHandler().removeHudObject(healthBar);
             Game.gameController.getHandler().findAndRemoveObject(this);
         }
     }
