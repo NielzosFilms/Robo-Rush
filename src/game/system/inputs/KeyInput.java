@@ -1,10 +1,12 @@
 package game.system.inputs;
 
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import game.assets.levels.def.Room;
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
 import game.system.helpers.Helpers;
@@ -81,6 +83,17 @@ public class KeyInput extends KeyAdapter {
 				case Menu:
 					System.exit(1);
 					break;
+			}
+		}
+
+		devKeyActions(key);
+	}
+
+	private void devKeyActions(int keycode) {
+		if(keycode == KeyEvent.VK_F5) {
+			for(Point roomkey : Game.gameController.getActiveLevel().getRooms().keySet()) {
+				Room room = Game.gameController.getActiveLevel().getRooms().get(roomkey);
+				room.setDiscovered(true);
 			}
 		}
 	}

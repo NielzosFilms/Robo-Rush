@@ -135,11 +135,13 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable, HUD_Rende
                     break;
             }
         } else {
+            ai.setAction(AI_ACTION.stand_still);
             attack_cooldown.tick();
         }
     }
 
     private void attackNormal() {
+        if(ai.getAction() == AI_ACTION.stand_still) ai.setAction(AI_ACTION.goto_target);
         normal_attack_timer.tick();
         if(normal_attack_timer.timerOver()) {
             normal_attack_timer.resetTimer();
@@ -166,6 +168,7 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable, HUD_Rende
     }
 
     private void attackCircle() {
+        ai.setAction(AI_ACTION.stand_still);
         if(!circle_attack_state) {
             for(int i=0; i<360; i+= 30) {
                 Game.gameController.getHandler().addObject(new EnemyBullet(x+8, y+8, z_index, i, this));
@@ -205,6 +208,10 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable, HUD_Rende
                         types.add(attackType);
                     }
                 } else {
+                    if(attackType == AttackType.normal) {
+                        types.add(attackType);
+                        types.add(attackType);
+                    }
                     types.add(attackType);
                 }
             }

@@ -26,6 +26,7 @@ public enum SoundEffect {
 	boss_circle("combat/boss_circle.wav"),
 	boss_homing("combat/boss_homing.wav"),
 	boss_shotgun("combat/boss_shotgun.wav"),
+	boss_dead("combat/boss_dead.wav"),
 
 	menu_back("menu/click_back.wav"),
 	menu_forward("menu/click_forward.wav"),

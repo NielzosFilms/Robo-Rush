@@ -63,7 +63,7 @@ public class Collision {
 	}
 
 	private void checkBulletCollision(LinkedList<GameObject> objects, LinkedList<GameObject> triggers) {
-		for(GameObject bullet : handler.getObjectsWithIds(ID.Bullet)) {
+		for(GameObject bullet : handler.getObjectsWithIds(ID.Bullet, ID.EnemyBullet)) {
 			Bullet bullet_cast = (Bullet) bullet;
 			for(GameObject entity : objects) {
 				if (!bullet_cast.getHitObjects().contains(entity)) {
@@ -77,7 +77,7 @@ public class Collision {
 								bullet_cast.destroy();
 							}
 						} else {
-							if(!(bullet instanceof EnemyBullet && entity.getId() == ID.Enemy)) {
+							if(bullet.getId() != ID.EnemyBullet || (entity.getId() != ID.Enemy && entity.getId() != ID.Boss)) {
 								if (entity instanceof Hitable) {
 									int angle = (int) Helpers.getAngle(new Point(bullet.getX(), bullet.getY()), new Point(entity.getX(), entity.getY()));
 									((Hitable) entity).hit(bullet_cast.getDamage(), angle, 1f, bullet_cast.getCreatedBy());

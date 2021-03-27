@@ -7,15 +7,20 @@ import game.assets.levels.def.ROOM_TYPE;
 import game.assets.levels.def.Room;
 import game.assets.levels.def.RoomSpawner;
 import game.assets.objects.BoundsObject;
+import game.audio.SoundEffect;
 import game.enums.ID;
 import game.system.main.Game;
+import game.system.systems.gameObject.Bullet;
 import game.system.systems.gameObject.GameObject;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 import java.awt.*;
+import java.util.LinkedList;
 
 public class Room_Boss extends Room {
+    private boolean boss_dead_triggered = false;
+
     public Room_Boss(Point location, ROOM_TYPE room_type) {
         super(location);
         this.room_type = room_type;
@@ -53,8 +58,12 @@ public class Room_Boss extends Room {
 
     @Override
     public void tick() {
-        if(currentEnemyCount() == 0) {
+        if(isBossDead() && !boss_dead_triggered) {
+            SoundEffect.boss_dead.play();
+            killAllEnemies();
+            killAllBullets();
             openDoors();
+            boss_dead_triggered = true;
         }
     }
 
@@ -73,6 +82,46 @@ public class Room_Boss extends Room {
             if (active) {
                 g.drawImage(marker.getTexure(), x, y, room_size, room_size, null);
             }
+        }
+    }
+
+    private boolean isBossDead() {
+        int bossCount = 0;
+        for(LinkedList<GameObject> layer : this.objects) {
+            for(GameObject object : layer) {
+                if(object.getId() == ID.Boss) {
+                    bossCount++;
+                }
+            }
+        }
+        return bossCount == 0;
+    }
+
+    private void killAllEnemies() {
+        LinkedList<GameObject> to_remove = new LinkedList<>();
+        for(LinkedList<GameObject> layer : this.objects) {
+            for(GameObject object : layer) {
+                if(object.getId() == ID.Enemy) {
+                    to_remove.add(object);
+                }
+            }
+        }
+        for(GameObject enemy : to_remove) {
+            this.removeObject(enemy);
+        }
+    }
+
+    private void killAllBullets() {
+        LinkedList<GameObject> to_remove = new LinkedList<>();
+        for(LinkedList<GameObject> layer : Game.gameController.getHandler().object_entities) {
+            for(GameObject object : layer) {
+                if(object.getId() == ID.EnemyBullet) {
+                    to_remove.add(object);
+                }
+            }
+        }
+        for(GameObject bullet : to_remove) {
+            ((Bullet)bullet).destroy();
         }
     }
 }

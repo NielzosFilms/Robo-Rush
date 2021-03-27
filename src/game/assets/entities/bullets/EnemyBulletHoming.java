@@ -1,5 +1,6 @@
 package game.assets.entities.bullets;
 
+import game.enums.ID;
 import game.system.helpers.Helpers;
 import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
@@ -12,6 +13,7 @@ public class EnemyBulletHoming extends Bullet {
     private GameObject target;
     public EnemyBulletHoming(int x, int y, int z_index, int angle, GameObject created_by, GameObject target) {
         super(x, y, z_index, angle, created_by);
+        this.id = ID.EnemyBullet;
         this.target = target;
         this.tex = new Texture(TEXTURE_LIST.bullets, 1, 2);
         this.max_vel = 1f;
