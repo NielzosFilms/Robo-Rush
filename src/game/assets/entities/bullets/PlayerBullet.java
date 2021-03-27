@@ -6,9 +6,10 @@ import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
 public class PlayerBullet extends Bullet {
-    public PlayerBullet(int x, int y, int angle, GameObject created_by) {
+    public PlayerBullet(int x, int y, int angle, GameObject created_by, int damage) {
         super(x, y, Game.gameController.getPlayer().getZIndex(), angle, created_by);
         updateVelocity();
+        this.damage = damage;
     }
 
     @Override

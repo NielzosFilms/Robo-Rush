@@ -22,7 +22,7 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable, HUD_R
     Enemy_AI ai = new Enemy_AI(Game.gameController.getPlayer(), this);
 
     private Timer attack_timer = new Timer(60 + new Random().nextInt(4) * 20);
-    private HealthBar health = new HealthBar(0, 0, 0, 8, 1);
+    private HealthBar health = new HealthBar(0, 0, 0, 3, 1);
 
     public Shooting_Enemy(int x, int y) {
         super(x, y, Game.gameController.getPlayer().getZIndex(), ID.Enemy);
@@ -55,7 +55,7 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable, HUD_R
         if (health.dead()) {
             Game.gameController.getHandler().findAndRemoveObject(this);
         }
-        health.setXY(x, y);
+        health.setXY(x-4, y-4);
     }
 
     @Override

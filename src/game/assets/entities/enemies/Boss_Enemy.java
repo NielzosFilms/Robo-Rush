@@ -44,7 +44,7 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable, HUD_Rende
             normal_attack_timer = new Timer(20),
             attack_cooldown = new Timer(30),
             can_spawn_enemies_timer = new Timer(300);
-    private HealthBar_Boss health = new HealthBar_Boss(0, 0, 0, 100, 1);
+    private HealthBar_Boss health = new HealthBar_Boss(0, 0, 0, 60, 1);
     private AttackType attack_type = AttackType.normal;
     private boolean circle_attack_state = false;
 

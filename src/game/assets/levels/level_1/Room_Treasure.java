@@ -24,16 +24,31 @@ public class Room_Treasure extends Room {
         this.room_type = room_type;
 
         Item item;
-        if(new Random().nextInt(2) == 0) {
-            item = new Item(new Texture(TEXTURE_LIST.items, 1, 0), ITEM_ID.power_up,
-                    new HashMap<PLAYER_STAT, Float>() {{
-                        put(PLAYER_STAT.move_speed, 0.5f);
-                    }});
-        } else {
-            item = new Item(new Texture(TEXTURE_LIST.items, 1, 0), ITEM_ID.power_up,
-                    new HashMap<PLAYER_STAT, Float>() {{
-                        put(PLAYER_STAT.rate_of_fire, -6f);
-                    }});
+        switch (new Random().nextInt(3)) {
+            case 0:
+                item = new Item(new Texture(TEXTURE_LIST.items, 1, 0), ITEM_ID.power_up,
+                        new HashMap<PLAYER_STAT, Float>() {{
+                            put(PLAYER_STAT.move_speed, 0.2f);
+                        }});
+                break;
+            case 1:
+                item = new Item(new Texture(TEXTURE_LIST.items, 1, 0), ITEM_ID.power_up,
+                        new HashMap<PLAYER_STAT, Float>() {{
+                            put(PLAYER_STAT.rate_of_fire, -4f);
+                        }});
+                break;
+            case 2:
+                item = new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up,
+                        new HashMap<PLAYER_STAT, Float>() {{
+                            put(PLAYER_STAT.damage, 1f);
+                        }});
+                break;
+            default:
+                item = new Item(new Texture(TEXTURE_LIST.items, 1, 0), ITEM_ID.power_up,
+                        new HashMap<PLAYER_STAT, Float>() {{
+                            put(PLAYER_STAT.move_speed, 0.2f);
+                        }});
+                break;
         }
         addObject(new Item_Ground(0, 0, 10, ID.Item, item));
 
