@@ -5,6 +5,8 @@ import game.assets.levels.def.ROOM_TYPE;
 import game.assets.levels.def.Room;
 import game.assets.levels.def.RoomSpawner;
 import game.assets.objects.BoundsObject;
+import game.assets.objects.EnergyRefill;
+import game.enums.ID;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
 
@@ -20,6 +22,8 @@ public class Room_Spawn extends Room {
             Point door_direction = spawner.door_direction;
             addObject(new RoomDoorTrigger(door_direction.x*128 ,door_direction.y*128, spawner.door_direction));
         }
+
+        addObject(new EnergyRefill(60, 60, 1, ID.NULL));
 
         addObject(new BoundsObject(-128, -128, 128, 16));
         addObject(new BoundsObject(-128, -128, 16, 128));

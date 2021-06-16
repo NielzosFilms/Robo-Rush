@@ -30,12 +30,12 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 		put(PLAYER_STAT.move_speed, 1f);
 		put(PLAYER_STAT.damage, 1f);
 		put(PLAYER_STAT.health, 8f);
-		put(PLAYER_STAT.rate_of_fire, 5f);
+		put(PLAYER_STAT.rate_of_fire, 15f);
 		put(PLAYER_STAT.dash_speed, 8f);
 		put(PLAYER_STAT.dash_duration, 20f);
 		put(PLAYER_STAT.dash_cooldown, 60f);
 	}}, original_stats;
-	protected HealthBar_Player health_player = new HealthBar_Player(64, 200, 0, Math.round(player_stats.get(PLAYER_STAT.health)), 1);
+	protected HealthBar_Player health_player = new HealthBar_Player(0, Game.getGameSize().y - 16, 0, Math.round(player_stats.get(PLAYER_STAT.health)), 1);
 
 	protected float acceleration = 0.2f, deceleration = 0.3f;
 	protected DIRECTIONS direction;
@@ -96,6 +96,8 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 		tickAttack();
 
 		updatePlayerStats();
+
+		tickAbstract();
 
 		invincible_timer.tick();
 		health_player.tick();
@@ -158,13 +160,16 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 			}
 		}
 
-		if (KeyInput.keys_down.get(KeyEvent.VK_SHIFT)) {
+		if (KeyInput.keys_down.get(KeyEvent.VK_SPACE)) {
 			if(dash_cooldown.timerOver()) {
 				dashing = true;
 				dash_cooldown.resetTimer();
 				dash.resetTimer();
 				invincible_timer.setDelay(20);
 				invincible_timer.resetTimer();
+				if(this instanceof Character_Robot) {
+					((Character_Robot)this).addEnergy(-5);
+				}
 			}
 		}
 		if(!dash.timerOver()) {
@@ -250,7 +255,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 
 	protected void tickAttack() {
 		attack_timer.tick();
-		if((Game.mouseInput.leftMouseDown() || KeyInput.keys_down.get(KeyEvent.VK_SPACE)) && canAttack()) {
+		if((Game.mouseInput.leftMouseDown()) && canAttack()) {
 			attack();
 		}
 	}
@@ -477,5 +482,9 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 		LinkedList<GameObject> ret = new LinkedList<>();
 		ret.add(health_player);
 		return ret;
+	}
+
+	public HealthBar_Player getHealth_player() {
+		return this.health_player;
 	}
 }

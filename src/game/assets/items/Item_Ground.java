@@ -3,6 +3,7 @@ package game.assets.items;
 import java.awt.*;
 import java.util.Random;
 
+import game.assets.entities.player.Player;
 import game.assets.items.item.Item;
 import game.audio.SoundEffect;
 import game.system.helpers.Logger;
@@ -125,7 +126,7 @@ public class Item_Ground extends GameObject implements Bounds, Trigger {
 	}
 
 	@Override
-	public void triggered() {
+	public void triggered(Player player) {
 		Logger.printStackStrace();
 		can_trigger = false;
 		SoundEffect.inv_pickup_item.play();

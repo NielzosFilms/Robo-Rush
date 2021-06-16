@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import game.assets.entities.player.Character_Robot;
 import game.assets.entities.player.Player;
 import game.assets.levels.def.Level;
 import game.system.helpers.Helpers;
@@ -14,6 +15,7 @@ import game.system.systems.gameObject.GameObject;
 import game.system.systems.gameObject.HUD_Component;
 import game.system.systems.gameObject.HUD_Rendering;
 import game.system.systems.gameObject.Interactable;
+import game.textures.COLOR_PALETTE;
 
 public class HUD implements Serializable {
 	private DebugHUD debugHUD;
@@ -91,9 +93,22 @@ public class HUD implements Serializable {
 			}
 		}
 
+		drawPlayerHud(g, this.player, new Point(0, Game.getGameSize().y - 20));
 		drawMiniMap(g, new Point(Game.getGameSize().x - 8*4, 25));
 
 		if(Game.DEBUG_MODE) debugHUD.render(g, g2d);
+	}
+
+	private void drawPlayerHud(Graphics g, Player player, Point drawPos) {
+		if(player instanceof Character_Robot) {
+			Character_Robot robot = (Character_Robot) player;
+			g.setColor(COLOR_PALETTE.oak.color);
+			g.fillRect(drawPos.x, drawPos.y, 50, 4);
+			g.setColor(COLOR_PALETTE.yellow.color);
+			g.fillRect(drawPos.x, drawPos.y, (int) (50 * robot.getEnergyPercent()), 4);
+			g.setColor(COLOR_PALETTE.dark_oak.color);
+			g.drawRect(drawPos.x, drawPos.y, 50, 4);
+		}
 	}
 
 	private void drawMiniMap(Graphics g, Point draw_pos) {

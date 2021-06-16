@@ -4,6 +4,8 @@ import game.assets.HealthBar;
 import game.assets.entities.bullets.EnemyBullet;
 import game.assets.entities.enemies.ai.AI_ACTION;
 import game.assets.entities.enemies.ai.Enemy_AI;
+import game.assets.entities.orbs.EnergyOrb;
+import game.assets.entities.orbs.Orb;
 import game.audio.SoundEffect;
 import game.enums.ID;
 import game.system.helpers.Timer;
@@ -54,6 +56,9 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable, HUD_R
         health.tick();
         if (health.dead()) {
             Game.gameController.getHandler().findAndRemoveObject(this);
+            for(Orb orb : EnemyDrops.getSimpleDrops(x, y, 1, ID.Orb)) {
+                Game.gameController.getActiveLevel().getActiveRoom().addObject(orb);
+            }
         }
         health.setXY(x-4, y-4);
     }

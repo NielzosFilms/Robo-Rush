@@ -1,5 +1,6 @@
 package game.assets.levels;
 
+import game.assets.entities.player.Player;
 import game.assets.levels.def.Room;
 import game.enums.ID;
 import game.enums.ITEM_ID;
@@ -95,7 +96,7 @@ public class RoomDoorTrigger extends GameObject implements Bounds, Trigger {
     }
 
     @Override
-    public void triggered() {
+    public void triggered(Player player) {
 //        Logger.print("[DOOR TRIGGERED] >> " + door_direction);
 
 //        if(this.need_key) {

@@ -45,7 +45,7 @@ public class Collision {
 				}
 				if(trigger_bounds.getBounds().intersects(Game.gameController.getPlayer().getBounds())) {
 					if(trigger.canTrigger() && !trigger.triggerCollision()) {
-						trigger.triggered();
+						trigger.triggered(Game.gameController.getPlayer());
 						trigger.setTriggerActive(false);
 						return;
 					}
