@@ -4,6 +4,7 @@ import game.audio.SoundEffect;
 import game.enums.GAMESTATES;
 import game.system.main.Game;
 import game.system.main.GameController;
+import game.system.systems.cutscene.cutscenes.TestCutscene;
 import game.system.systems.menu.buttons.Button;
 import game.system.inputs.MouseInput;
 import game.textures.Fonts;
@@ -42,7 +43,8 @@ public class MenuWorldSelect extends Menu {
 					SoundEffect.menu_forward.play();
 //					Game.gameController.setActiveStructure(null);
 					Game.gameController.generate();
-					Game.game_state = GAMESTATES.Game;
+					Game.game_state = GAMESTATES.CutScene;
+					Game.cutsceneEngine.playCutscene(new TestCutscene());
 				}
 			});
 		}

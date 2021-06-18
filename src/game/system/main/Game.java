@@ -16,6 +16,7 @@ import game.assets.entities.player.Player;
 import game.system.helpers.Logger;
 import game.system.helpers.Settings;
 import game.system.main.postProcessing.PostProcessing;
+import game.system.systems.cutscene.CutsceneEngine;
 import game.system.systems.menu.elements.LoadingAnimation;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
@@ -58,6 +59,7 @@ public class Game extends Canvas implements Runnable {
 	public static PostProcessing postProcessing;
 
 	public static MenuSystem menuSystem;
+	public static CutsceneEngine cutsceneEngine;
 
 	//public static World world;
 	public static GameController gameController;
@@ -75,6 +77,7 @@ public class Game extends Canvas implements Runnable {
 		fonts = new Fonts();
 
 		menuSystem = new MenuSystem();
+		cutsceneEngine = new CutsceneEngine();
 
 		gameController = new GameController();
 		setRequirements();
@@ -157,6 +160,8 @@ public class Game extends Canvas implements Runnable {
 			 * AudioPlayer.stopSound(audioFiles.futureopolis); }
 			 */
 
+		} else if(game_state == GAMESTATES.CutScene) {
+			cutsceneEngine.tick();
 		} else if ((game_state == GAMESTATES.Pauzed) || game_state == GAMESTATES.Menu) {
 			menuSystem.tick();
 		}
@@ -188,6 +193,8 @@ public class Game extends Canvas implements Runnable {
 
 		if (game_state == GAMESTATES.Menu) {
 			menuSystem.render(g, g2d);
+		} else if(game_state == GAMESTATES.CutScene) {
+			cutsceneEngine.render(g, g2d);
 		} else if ((game_state == GAMESTATES.Game || game_state == GAMESTATES.Pauzed) && GameController.loaded) {
 			gameController.render(g, g2d);
 			if (game_state == GAMESTATES.Pauzed) {
@@ -196,7 +203,7 @@ public class Game extends Canvas implements Runnable {
 		}
 		loadingAnimation.render(g);
 
-		g.drawImage(settings.getCursor().getTexure(), mouseInput.mouse_x, mouseInput.mouse_y, 8, 8, null);
+		if(game_state != GAMESTATES.CutScene) g.drawImage(settings.getCursor().getTexure(), mouseInput.mouse_x, mouseInput.mouse_y, 8, 8, null);
 
 		drawVersion(g, g2d);
 

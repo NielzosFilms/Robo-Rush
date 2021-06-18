@@ -49,7 +49,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 	protected Texture hand, dash_idle;
 	protected Animation idle, run, blink, hurt, dash_start, dash_end;
 	protected Timer idle_timer = new Timer(300);
-	protected boolean hurt_animation = false;
+	protected boolean hurt_animation = false, mirror = false;
 	protected Timer invincible_timer = new Timer(50);
 
 	protected final float dash_speed = player_stats.get(PLAYER_STAT.dash_speed);
@@ -89,21 +89,23 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 
 		updateAnimations();
 
-		tickWalking();
+		if(Game.game_state == GAMESTATES.Game) {
+			tickWalking();
 
-		tickDash();
+			tickDash();
 
-		tickAttack();
+			tickAttack();
 
-		updatePlayerStats();
+			updatePlayerStats();
 
-		tickAbstract();
+			tickAbstract();
 
-		invincible_timer.tick();
-		health_player.tick();
-		if(health_player.dead()) {
-			Game.game_state = GAMESTATES.Pauzed;
-			Game.menuSystem.setState(MENUSTATES.GameOver);
+			invincible_timer.tick();
+			health_player.tick();
+			if (health_player.dead()) {
+				Game.game_state = GAMESTATES.Pauzed;
+				Game.menuSystem.setState(MENUSTATES.GameOver);
+			}
 		}
 	}
 
@@ -265,10 +267,11 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 	public void render(Graphics g) {
 		g.drawImage(Textures.entity_shadow, getBounds().x-3, getBounds().y+2, 16, 16, null);
 
-		Point mouse = Game.mouseInput.getMouseWorldCoords();
-		renderHolding(g, mouse);
-
-		boolean mirror = mouse.x < this.x;
+		if(Game.game_state == GAMESTATES.Game) {
+			Point mouse = Game.mouseInput.getMouseWorldCoords();
+			renderHolding(g, mouse);
+			mirror = mouse.x < this.x;
+		}
 		drawPlayerAnimations(g, mirror);
 
 		if(Game.DEBUG_MODE) {
@@ -486,5 +489,13 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 
 	public HealthBar_Player getHealth_player() {
 		return this.health_player;
+	}
+
+	public void setMirror(boolean mirror) {
+		this.mirror = mirror;
+	}
+
+	public boolean isMirrored() {
+		return this.mirror;
 	}
 }

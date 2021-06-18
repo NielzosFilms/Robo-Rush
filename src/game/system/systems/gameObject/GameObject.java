@@ -62,19 +62,19 @@ public abstract class GameObject implements Serializable {
 		return id;
 	}
 
-	public void setVelX(int velX) {
+	public void setVelX(float velX) {
 		this.velX = velX;
 	}
 
-	public void setVelY(int velY) {
+	public void setVelY(float velY) {
 		this.velY = velY;
 	}
 
-	public double getVelX() {
+	public float getVelX() {
 		return velX;
 	}
 
-	public double getVelY() {
+	public float getVelY() {
 		return velY;
 	}
 
