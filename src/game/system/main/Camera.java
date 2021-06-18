@@ -1,5 +1,6 @@
 package game.system.main;
 
+import game.enums.GAMESTATES;
 import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
 import game.system.systems.gameObject.GameObject;
@@ -18,6 +19,8 @@ public class Camera implements Serializable {
 	private float shake_x = 0f, shake_y = 0f;
 	private float screenShake = 0f;
 	private Timer shakeTimer = new Timer(4);
+
+	private Point cutsceneTarget = new Point(0, 0);
 	
 	public Camera(float x, float y) {
 		this.x = x;
@@ -27,17 +30,25 @@ public class Camera implements Serializable {
 	}
 	
 	public void tick(GameObject player) {
-		Point mouse = Game.mouseInput.getMouseWorldCoords();
-		Point player_coords = new Point(player.getX(), player.getY());
+		if(Game.game_state == GAMESTATES.Game) {
+			Point mouse = Game.mouseInput.getMouseWorldCoords();
+			Point player_coords = new Point(player.getX(), player.getY());
 
-		Point target = new Point(((mouse.x + player_coords.x*3) / 4), ((mouse.y + player_coords.y*3) / 4));
+			Point target = new Point(((mouse.x + player_coords.x * 3) / 4), ((mouse.y + player_coords.y * 3) / 4));
 
 
-		float xTarg = -target.x + Game.getGameSize().x/2-16;
-		buffer_x += (xTarg - buffer_x) * (0.1f);
+			float xTarg = -target.x + Game.getGameSize().x / 2 - 16;
+			buffer_x += (xTarg - buffer_x) * (0.1f);
 
-		float yTarg = -target.y + Game.getGameSize().y/2-16;
-		buffer_y += (yTarg - buffer_y) * (0.1f);
+			float yTarg = -target.y + Game.getGameSize().y / 2 - 16;
+			buffer_y += (yTarg - buffer_y) * (0.1f);
+		} else {
+			float xTarg = -cutsceneTarget.x + Game.getGameSize().x / 2 - 16;
+			buffer_x += (xTarg - buffer_x) * (0.1f);
+
+			float yTarg = -cutsceneTarget.y + Game.getGameSize().y / 2 - 16;
+			buffer_y += (yTarg - buffer_y) * (0.1f);
+		}
 
 		x = buffer_x;
 		y = buffer_y;
@@ -86,6 +97,10 @@ public class Camera implements Serializable {
 		this.screenShake = amount;
 		shakeTimer.setDelay(speed);
 		shakeTimer.resetTimer();
+	}
+
+	public void moveCamera(Point target) {
+		this.cutsceneTarget = target;
 	}
 	
 }

@@ -15,7 +15,7 @@ public class TestCutscene extends Cutscene {
 
     public TestCutscene() {
         this.scripts.add(new CutsceneScript() {
-            GameObject robot = new Character_Robot(100, 100, 1);
+            GameObject robot = new Character_Robot(0, 0, 1);
             int timer = 120, walkDuration = 60 * 4, mirror1Duration = 60, mirror2Duration = 60;
             @Override
             public void tick() {
@@ -31,6 +31,7 @@ public class TestCutscene extends Cutscene {
                         mirror1Duration--;
                     } else {
                         ((Player)robot).setMirror(true);
+                        Game.cutsceneEngine.cam.moveCamera(new Point(100, 0));
                         if(mirror2Duration > 0) {
                             mirror2Duration--;
                         } else {
