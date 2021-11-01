@@ -52,6 +52,11 @@ public class SettingsMenu extends Menu {
 		texts.put(new Point(musicSlider.getX(), 76), "Music Volume");
 		this.sliders.add(musicSlider);
 
+//		SliderInput frameRateCapSlider = new SliderInput(48, 120, 96, mouse, (1f / (144f - 30f) * (Game.settings.getSetting(SETTING.framerate_cap) - 30f)) * 100f);
+//		frameRateCapSlider.alignCenterX(Game.getGameSize().x);
+//		texts.put(new Point(frameRateCapSlider.getX(), 116), "Frame Rate Cap");
+//		this.sliders.add(frameRateCapSlider);
+
 		int listSize = Textures.texture_lists.get(TEXTURE_LIST.cursors).size();
 		texts.put(new Point(musicSlider.getX(), 156), "Cursor");
 		int cursors_x = Game.getGameSize().x/2-((24*listSize)/2);

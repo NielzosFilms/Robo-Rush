@@ -13,6 +13,7 @@ import game.audio.SoundEffect;
 import game.enums.GAMESTATES;
 import game.enums.ID;
 import game.assets.entities.player.Player;
+import game.enums.SETTING;
 import game.system.helpers.Logger;
 import game.system.helpers.Settings;
 import game.system.main.postProcessing.PostProcessing;
@@ -122,21 +123,26 @@ public class Game extends Canvas implements Runnable {
 		this.requestFocus();
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;
-		double ns = 1000000000 / amountOfTicks;
-		double delta = 0;
+		double tick_ns = 1000000000 / amountOfTicks;
+		double frames_ns = 1000000000 / (double)settings.getSetting(SETTING.framerate_cap);
+		double tick_delta = 0;
+		double frames_delta = 0;
 		long timer = System.currentTimeMillis();
 		int frames = 0;
 		while (running) {
 			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;
+			tick_delta += (now - lastTime) / tick_ns;
+			frames_delta += (now - lastTime) / frames_ns;
 			lastTime = now;
-			while (delta >= 1) {
+			while (tick_delta >= 1) {
 				tick();
-				delta--;
+				tick_delta--;
 			}
-			if (running)
+			if (running && frames_delta >= 1) {
 				render();
-			frames++;
+				frames++;
+				frames_delta--;
+			}
 
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;

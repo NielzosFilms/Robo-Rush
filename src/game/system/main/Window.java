@@ -3,9 +3,9 @@ package game.system.main;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
-public class Window extends Canvas {
+public class Window extends JApplet {
 
 	private static final long serialVersionUID = 492636734070584756L;
 
@@ -44,12 +44,18 @@ public class Window extends Canvas {
 			f.setResizable(false);
 			f.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			f.setUndecorated(true);
+
+			// Fix for ubuntu not fullscreen
+			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			GraphicsDevice device = env.getDefaultScreenDevice();
+			device.setFullScreenWindow(f);
 		} else {
 			f.setPreferredSize(new Dimension(Math.round(width / 1.2f), Math.round(height / 1.2f)));
 			f.setResizable(true);
 			f.setUndecorated(false);
 		}
 
+		this.add(game);
 		f.add(game);
 		f.getContentPane().setCursor(transp_cursor);
 		f.pack();

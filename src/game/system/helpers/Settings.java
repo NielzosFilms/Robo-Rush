@@ -18,6 +18,7 @@ public class Settings {
         put(SETTING.sound_vol, 1f);
         put(SETTING.music_vol, 1f);
         put(SETTING.cursor, 2f);
+        put(SETTING.framerate_cap, 60f);
     }};
 
     public Settings() {
