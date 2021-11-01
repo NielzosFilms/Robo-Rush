@@ -21,6 +21,7 @@ public class HealthBar extends GameObject implements HUD_Component {
     protected int w = 24, h = 4;
     protected int health;
     protected int x, y;
+    protected boolean hide = false;
 
     public HealthBar(int x, int y, int min, int max, int hud_z_index) {
         super(x, y, hud_z_index, null);
@@ -36,7 +37,7 @@ public class HealthBar extends GameObject implements HUD_Component {
     }
 
     public void render(Graphics g) {
-        if(health != max && hide_timer != 0) {
+        if(health != max && hide_timer != 0 && !hide) {
             g.drawImage(Textures.healthbar, x, y, 24, 4, null);
             int health_perc = getHealthPercent();
             float div = (float)Textures.texture_lists.get(TEXTURE_LIST.healthbar_list).size() / 100;
@@ -90,5 +91,9 @@ public class HealthBar extends GameObject implements HUD_Component {
 
     public void setMax(int max) {
         this.max = max;
+    }
+
+    public void setHidden(boolean hide) {
+        this.hide = hide;
     }
 }
