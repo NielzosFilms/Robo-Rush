@@ -1,4 +1,4 @@
-# Top Down Java Game
+# Robo Rush
 
 This is a game i'm making in my free time.<br>
 Its made purely with Java.
