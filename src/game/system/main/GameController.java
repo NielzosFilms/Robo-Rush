@@ -12,6 +12,7 @@ import game.system.systems.Collision;
 import game.system.systems.gameObject.GameObject;
 import game.system.systems.hitbox.HitboxSystem;
 import game.system.systems.hud.HUD;
+import game.system.systems.levelGeneration.LevelGenerator;
 import game.system.systems.lighting.LightingSystem;
 import game.system.systems.particles.ParticleSystem;
 import game.textures.Textures;
@@ -22,7 +23,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class GameController implements Serializable {
-//    public HashMap<Point, Chunk> chunks = new HashMap<Point, Chunk>();
+    //    public HashMap<Point, Chunk> chunks = new HashMap<Point, Chunk>();
     public static boolean loaded = false;
     private transient Textures textures;
     private transient KeyInput keyInput;
@@ -36,11 +37,13 @@ public class GameController implements Serializable {
 
     private HUD hud;
 
-//    private InventorySystem inventorySystem;
+    //    private InventorySystem inventorySystem;
     private static LightingSystem lightingSystem;
     private static ParticleSystem ps;
 
     private Level active_level;
+
+    private LevelGenerator gen;
 
     public GameController() {
         handler = new Handler();
@@ -76,7 +79,7 @@ public class GameController implements Serializable {
     }
 
     public void tick() {
-        if(!loaded) return;
+        if (!loaded) return;
         int camX = (Math.round(-cam.getX() / 16));
         int camY = (Math.round(-cam.getY() / 16));
         int camW = (Math.round(Game.WIDTH / 16));
@@ -85,8 +88,8 @@ public class GameController implements Serializable {
         handler.tick();
         ps.tick();
 
-        if(active_level != null)
-            active_level.tick();
+//        if(active_level != null)
+//            active_level.tick();
 
         runWaterAnimations();
 //        player.tick();
@@ -102,10 +105,10 @@ public class GameController implements Serializable {
     }
 
     private void runWaterAnimations() {
-        for(int key : Textures.water_red.keySet()) {
+        for (int key : Textures.water_red.keySet()) {
             Textures.water_red.get(key).runAnimation();
         }
-        for(int key : Textures.generated_animations.keySet()) {
+        for (int key : Textures.generated_animations.keySet()) {
             Textures.generated_animations.get(key).runAnimation();
         }
     }
@@ -117,9 +120,12 @@ public class GameController implements Serializable {
         ps.render(g);
         hitboxSystem.render(g);
 
-        if(active_level != null)
-            active_level.render(g);
+//        if(active_level != null)
+//            active_level.render(g);
 //        player.render(g);
+
+        this.gen.render(g);
+
 
         // ongeveer 30-35 ms
         Long start = System.currentTimeMillis();
@@ -149,8 +155,12 @@ public class GameController implements Serializable {
 //            getPlayer().setY(jsonLoader.getPlayerSpawn().y);
 //        }
 
-        active_level = new Level_1();
-        active_level.generate();//6092317668945018905L);
+//        active_level = new Level_1();
+//        active_level.generate();//6092317668945018905L);
+
+
+        this.gen = new LevelGenerator();
+        this.gen.generate();
 
         //handler.addObject(new Enemy(80, 64, 10, ID.Enemy));
         //handler.addObject(new Tree(64, 64, 10, ID.Tree, null));
@@ -158,13 +168,14 @@ public class GameController implements Serializable {
     }
 
     public LinkedList<LinkedList<GameObject>> getAllGameObjects() {
-        LinkedList<LinkedList<GameObject>> ret = active_level.getObjects();
+//        LinkedList<LinkedList<GameObject>> ret = active_level.getObjects();
+        LinkedList<LinkedList<GameObject>> ret = new LinkedList<LinkedList<GameObject>>();
 
         int player_z_index = player.getZIndex();
-        for(int i=ret.size(); i<=player_z_index; i++) {
+        for (int i = ret.size(); i <= player_z_index; i++) {
             ret.add(new LinkedList<>());
         }
-        if(!ret.get(player_z_index).contains(player))
+        if (!ret.get(player_z_index).contains(player))
             ret.get(player_z_index).add(player);
 
         return ret;

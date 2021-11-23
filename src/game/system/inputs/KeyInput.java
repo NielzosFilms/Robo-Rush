@@ -85,6 +85,9 @@ public class KeyInput extends KeyAdapter {
 					break;
 			}
 		}
+		if (key == KeyEvent.VK_R) {
+			Game.gameController.generate();
+		}
 
 		devKeyActions(key);
 	}

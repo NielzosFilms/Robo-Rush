@@ -94,7 +94,7 @@ public class HUD implements Serializable {
 		}
 
 		drawPlayerHud(g, this.player, new Point(0, Game.getGameSize().y - 20));
-		drawMiniMap(g, new Point(Game.getGameSize().x - 8*4, 25));
+//		drawMiniMap(g, new Point(Game.getGameSize().x - 8*4, 25));
 
 		if(Game.DEBUG_MODE) debugHUD.render(g, g2d);
 	}
