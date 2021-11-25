@@ -54,10 +54,6 @@ public class LevelGenerator {
         createRooms();
 
         createHallways();
-
-        System.out.println(splitRectangles);
-        System.out.println(rooms);
-        // visualizeRooms();
     }
 
     private void splitRectangles(int currentDepth, Rectangle rect, UUID parentUuid) {
@@ -75,7 +71,6 @@ public class LevelGenerator {
     private void createRooms() {
         for (SplitRectangle splitRect : this.splitRectangles) {
             if (splitRect.depth == DEPTH - 1) {
-                // System.out.println(splitRect);
                 Rectangle rect = splitRect.rect;
                 int x = getRandNumBetw(rect.x + ROOM_MARGIN, rect.x + (rect.width - ROOM_MARGIN) / 2);
                 int y = getRandNumBetw(rect.y + ROOM_MARGIN, rect.y + (rect.height - ROOM_MARGIN) / 2);
@@ -143,41 +138,33 @@ public class LevelGenerator {
                     }
                 }
 
-                System.out.println("depthRooms");
-                System.out.println(depthRooms);
-
                 LinkedList<UUID> connected = new LinkedList<>();
 
-                for (SplitRectangle depthRoom : depthRooms) {
-                    if(connected.contains(depthRoom.uuid)) continue;
-                    SplitRectangle parent1 = depthRoom;
-                    SplitRectangle parent2 = null;
-                    for (SplitRectangle rm : splitRectangles) {
-                        if (rm.parentUuid == depthRoom.parentUuid) {
-                            parent2 = rm;
-                            break;
+                int hallwayCount = 1;
+                if(currDepth == 0) hallwayCount = 2;
+                for(int i = 0; i < hallwayCount; i++) {
+                    for (SplitRectangle depthRoom : depthRooms) {
+                        if (connected.contains(depthRoom.uuid)) continue;
+                        SplitRectangle parent1 = depthRoom;
+                        SplitRectangle parent2 = null;
+                        for (SplitRectangle rm : splitRectangles) {
+                            if (rm.parentUuid == depthRoom.parentUuid) {
+                                parent2 = rm;
+                                break;
+                            }
                         }
+                        LinkedList<SplitRectangle> group1 = getMaxDepthChildren(parent1);
+                        LinkedList<SplitRectangle> group2 = getMaxDepthChildren(parent2);
+                        connected.add(parent1.uuid);
+                        connected.add(parent2.uuid);
+
+                        SplitRectangle newRoom1 = getClosestRoom(group1, new Point((int) parent2.rect.getCenterX(), (int) parent2.rect.getCenterY()));
+                        SplitRectangle newRoom2 = getClosestRoom(group2, new Point((int) newRoom1.rect.getCenterX(), (int) newRoom1.rect.getCenterY()));
+                        connectedRooms.add(newRoom1.uuid);
+                        connectedRooms.add(newRoom2.uuid);
+
+                        connectRooms(newRoom1, newRoom2, currDepth);
                     }
-                    LinkedList<SplitRectangle> group1 = getMaxDepthChildren(parent1);
-                    LinkedList<SplitRectangle> group2 = getMaxDepthChildren(parent2);
-                    connected.add(parent1.uuid);
-                    connected.add(parent2.uuid);
-
-                    System.out.println("group1");
-                    System.out.println(group1);
-                    System.out.println("group2");
-                    System.out.println(group2);
-
-
-                    SplitRectangle newRoom1 = getClosestRoom(group1, new Point((int)parent2.rect.getCenterX(), (int)parent2.rect.getCenterY()));
-                    SplitRectangle newRoom2 = getClosestRoom(group2, new Point((int)parent1.rect.getCenterX(), (int)parent1.rect.getCenterY()));
-
-                    System.out.println("newRoom1");
-                    System.out.println(newRoom1);
-                    System.out.println("newRoom2");
-                    System.out.println(newRoom2);
-
-                    connectRooms(newRoom1, newRoom2, currDepth);
                 }
             }
         }
@@ -240,7 +227,7 @@ public class LevelGenerator {
         LinkedList<SplitRectangle> ret = new LinkedList<>();
         for(SplitRectangle rm : parentRooms) {
             for(SplitRectangle rm2 : rooms) {
-                if(rm.uuid == rm2.uuid) {
+                if(rm.uuid.equals(rm2.uuid)) {
                     ret.add(rm2);
                 }
             }
@@ -249,11 +236,13 @@ public class LevelGenerator {
     }
 
     public void render(Graphics g) {
-        g.setColor(COLOR_PALETTE.cherry_red.color);
-        for (SplitRectangle splitRect : this.splitRectangles) {
-            if (splitRect.depth == DEPTH - 1) {
-                Rectangle rect = splitRect.rect;
-                g.drawRect(rect.x, rect.y, rect.width, rect.height);
+        if(Game.DEBUG_MODE) {
+            g.setColor(COLOR_PALETTE.cherry_red.color);
+            for (SplitRectangle splitRect : this.splitRectangles) {
+                if (splitRect.depth == DEPTH - 1) {
+                    Rectangle rect = splitRect.rect;
+                    g.drawRect(rect.x, rect.y, rect.width, rect.height);
+                }
             }
         }
 
