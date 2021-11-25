@@ -1,9 +1,12 @@
 package game.system.systems.levelGeneration;
 
+import game.system.helpers.Helpers;
+import game.system.main.Game;
 import game.textures.COLOR_PALETTE;
 import game.textures.Fonts;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,7 +26,7 @@ public class LevelGenerator {
 
     LinkedList<SplitRectangle> splitRectangles;
     LinkedList<SplitRectangle> rooms;
-    LinkedList<Rectangle> hallways;
+    LinkedList<LinkedList<Line>> hallways;
 
     private Random r = new Random();
     private DirectionGenerator dirGen = new DirectionGenerator(2);
@@ -32,8 +35,8 @@ public class LevelGenerator {
         this.splitRectangles = new LinkedList<>();
         this.rooms = new LinkedList<>();
         this.hallways = new LinkedList<>();
-        // this.seed = new Random().nextLong();
-        this.seed = -7022676857325916674L;
+         this.seed = new Random().nextLong();
+//        this.seed = -7022676857325916674L;
         if (seed != null) {
             setSeed(this.seed);
         }
@@ -114,49 +117,135 @@ public class LevelGenerator {
 
     private void createHallways() {
         for (int currDepth = DEPTH - 1; currDepth >= 0; currDepth--) {
+            LinkedList<UUID> connectedRooms = new LinkedList<>();
             if (currDepth == DEPTH - 1) {
-                LinkedList<UUID> connectedUuids = new LinkedList<>();
-                // for(SplitRectangle splitRect : rooms) {
-                SplitRectangle splitRect = rooms.get(0);
-                if (!connectedUuids.contains(splitRect.uuid)) {
-                    for (SplitRectangle splitRect2 : rooms) {
-                        if (splitRect2.parentUuid == splitRect.parentUuid && splitRect2.uuid != splitRect.uuid) {
-                            // create hallway between 2 sides of the rooms
-                            Rectangle rect1 = splitRect.rect;
-                            Rectangle rect2 = splitRect2.rect;
-
-                            int x1 = rect1.x + rect1.width / 2;
-                            int y1 = rect1.y + rect1.height / 2;
-                            int x2 = rect2.x + rect2.width / 2;
-                            int y2 = rect2.y + rect2.height / 2;
-
-                            int xDiff = Math.abs(x1 - x2);
-                            int yDiff = Math.abs(y1 - y2);
-
-                            int x = x1 < x2 ? x1 : x2;
-                            int y = y1 < y2 ? y1 : y2;
-
-                            int width = xDiff;
-                            int height = yDiff;
-
-                            if (xDiff > yDiff) {
-                                height = Math.round(width / 2);
-                            } else {
-                                width = Math.round(height / 2);
+                for (SplitRectangle room1 : rooms) {
+                    if (!connectedRooms.contains(room1.uuid)) {
+                        SplitRectangle room2 = null;
+                        for (SplitRectangle rm : rooms) {
+                            if (rm.parentUuid == room1.parentUuid && rm.uuid != room1.uuid) {
+                                room2 = rm;
+                                break;
                             }
-
-                            Rectangle hallway = new Rectangle(x, y, width, height);
-                            hallways.add(hallway);
-                            connectedUuids.add(splitRect.uuid);
-                            connectedUuids.add(splitRect2.uuid);
-
-                            // get the center of the two rooms
                         }
+
+                        connectedRooms.add(room1.uuid);
+                        connectedRooms.add(room2.uuid);
+                        connectRooms(room1, room2, currDepth);
                     }
                 }
-                // }
+            } else {
+//                if(currDepth <= 0) return;
+                LinkedList<SplitRectangle> depthRooms = new LinkedList<>();
+                for (SplitRectangle rm : splitRectangles) {
+                    if (rm.depth == currDepth) {
+                        depthRooms.add(rm);
+                    }
+                }
+
+                System.out.println("depthRooms");
+                System.out.println(depthRooms);
+
+                LinkedList<UUID> connected = new LinkedList<>();
+
+                for (SplitRectangle depthRoom : depthRooms) {
+                    if(connected.contains(depthRoom.uuid)) continue;
+                    SplitRectangle parent1 = depthRoom;
+                    SplitRectangle parent2 = null;
+                    for (SplitRectangle rm : splitRectangles) {
+                        if (rm.parentUuid == depthRoom.parentUuid) {
+                            parent2 = rm;
+                            break;
+                        }
+                    }
+                    LinkedList<SplitRectangle> group1 = getMaxDepthChildren(parent1);
+                    LinkedList<SplitRectangle> group2 = getMaxDepthChildren(parent2);
+                    connected.add(parent1.uuid);
+                    connected.add(parent2.uuid);
+
+                    System.out.println("group1");
+                    System.out.println(group1);
+                    System.out.println("group2");
+                    System.out.println(group2);
+
+
+                    SplitRectangle newRoom1 = getClosestRoom(group1, new Point((int)parent2.rect.getCenterX(), (int)parent2.rect.getCenterY()));
+                    SplitRectangle newRoom2 = getClosestRoom(group2, new Point((int)parent1.rect.getCenterX(), (int)parent1.rect.getCenterY()));
+
+                    System.out.println("newRoom1");
+                    System.out.println(newRoom1);
+                    System.out.println("newRoom2");
+                    System.out.println(newRoom2);
+
+                    connectRooms(newRoom1, newRoom2, currDepth);
+                }
             }
         }
+    }
+
+    private void connectRooms(SplitRectangle room1, SplitRectangle room2, int depth) {
+        room1.setConnectedTo(room2.uuid);
+        room2.setConnectedTo(room1.uuid);
+
+        int room1CenX = (int) room1.rect.getCenterX();
+        int room1CenY = (int) room1.rect.getCenterY();
+
+        int room2CenX = (int) room2.rect.getCenterX();
+        int room2CenY = (int) room2.rect.getCenterY();
+
+        LinkedList<Line> hallwayPath = new LinkedList();
+        if (r.nextBoolean()) {
+            hallwayPath.add(new Line(room1CenX, room1CenY, room2CenX, room1CenY, depth)); // horizontal
+            hallwayPath.add(new Line(room2CenX, room1CenY, room2CenX, room2CenY, depth)); // vertical
+        } else {
+            hallwayPath.add(new Line(room1CenX, room1CenY, room1CenX, room2CenY, depth)); // vertical
+            hallwayPath.add(new Line(room1CenX, room2CenY, room2CenX, room2CenY, depth)); // horizontal
+        }
+
+        hallways.add(hallwayPath);
+    }
+
+    private SplitRectangle getClosestRoom(LinkedList<SplitRectangle> rooms, Point coord) {
+        SplitRectangle ret = null;
+        double dist = -1;
+
+        for(SplitRectangle room : rooms) {
+            double cenX = room.rect.getCenterX();
+            double cenY = room.rect.getCenterY();
+            double calcDist = Helpers.getDistance(new Point((int)cenX, (int)cenY), coord);
+            if(dist == -1 || calcDist < dist) {
+                dist = calcDist;
+                ret = room;
+            }
+        }
+        return ret;
+    }
+
+    private LinkedList<SplitRectangle> getMaxDepthChildren(SplitRectangle splitParent) {
+        LinkedList<SplitRectangle> parentRooms = new LinkedList<>();
+        parentRooms.add(splitParent);
+        int parentDepth = splitParent.depth;
+        while (parentDepth < DEPTH - 1) {
+            LinkedList<SplitRectangle> newParents = new LinkedList<>();
+            for (SplitRectangle parent : parentRooms) {
+                for (SplitRectangle rect : splitRectangles) {
+                    if (rect.parentUuid == parent.uuid) {
+                        newParents.add(rect);
+                    }
+                }
+            }
+            parentRooms = newParents;
+            parentDepth++;
+        }
+        LinkedList<SplitRectangle> ret = new LinkedList<>();
+        for(SplitRectangle rm : parentRooms) {
+            for(SplitRectangle rm2 : rooms) {
+                if(rm.uuid == rm2.uuid) {
+                    ret.add(rm2);
+                }
+            }
+        }
+        return ret;
     }
 
     public void render(Graphics g) {
@@ -172,14 +261,31 @@ public class LevelGenerator {
         g.setColor(COLOR_PALETTE.light_green.color);
         for (SplitRectangle splitRect : this.rooms) {
             Rectangle rect = splitRect.rect;
-            g.drawString(splitRect.toString(), rect.x, rect.y);
-            g.drawString(splitRect.rect.toString(), rect.x, rect.y + 5);
+            if (Game.DEBUG_MODE) {
+                g.drawString(splitRect.toString(), rect.x, rect.y);
+                g.drawString(splitRect.rect.toString(), rect.x, rect.y + 5);
+            }
             g.drawRect(rect.x, rect.y, rect.width, rect.height);
         }
 
-        g.setColor(COLOR_PALETTE.orange.color);
-        for (Rectangle hallway : this.hallways) {
-            g.drawRect(hallway.x, hallway.y, hallway.width, hallway.height);
+        for (LinkedList<Line> hallway : this.hallways) {
+            for (Line path : hallway) {
+                switch (path.depth) {
+                    case 3:
+                        g.setColor(COLOR_PALETTE.red.color);
+                        break;
+                    case 2:
+                        g.setColor(COLOR_PALETTE.orange.color);
+                        break;
+                    case 1:
+                        g.setColor(COLOR_PALETTE.green.color);
+                        break;
+                    default:
+                        g.setColor(COLOR_PALETTE.white.color);
+                        break;
+                }
+                g.drawLine(path.x1, path.y1, path.x2, path.y2);
+            }
         }
     }
 

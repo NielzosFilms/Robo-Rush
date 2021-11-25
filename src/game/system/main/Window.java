@@ -43,7 +43,7 @@ public class Window extends JApplet {
 			f.setPreferredSize(new Dimension(width, height));
 			f.setResizable(false);
 			f.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//			f.setUndecorated(true);
+			f.setUndecorated(true);
 
 			// Fix for ubuntu not fullscreen
 			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();

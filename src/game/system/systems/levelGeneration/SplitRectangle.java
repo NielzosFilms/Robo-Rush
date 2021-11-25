@@ -6,7 +6,7 @@ import java.util.UUID;
 public class SplitRectangle {
     public Rectangle rect;
     public int depth;
-    public UUID uuid, parentUuid;
+    public UUID uuid, parentUuid, connectedTo;
 
     public SplitRectangle(int depth, UUID parentUuid, Rectangle rect) {
         this.depth = depth;
@@ -19,8 +19,10 @@ public class SplitRectangle {
         this.uuid = uuid;
     }
 
+    public void setConnectedTo(UUID uuid) { this.connectedTo = uuid; }
+
     @Override
     public String toString() {
-        return "depth:" + depth + " & uuid:" + uuid.toString().substring(0, 8) + " & parentUuid:" + parentUuid.toString().substring(0, 8);
+        return "depth:" + depth + " & uuid:" + uuid.toString().substring(0, 8) + " & parentUuid:" + parentUuid.toString().substring(0, 8) + " & rect:" + rect.toString();
     }
 }
