@@ -25,11 +25,26 @@ public class LevelGenerator {
     LinkedList<Rectangle> rooms;
     LinkedList<LinkedList<Line>> hallways;
 
+    /**
+     * Integer is the state of the tile
+     * 0 = open
+     * 1 = wall
+     */
+    HashMap<Point, Integer> generatedTiles;
+
     private Random r = new Random();
 
     public LevelGenerator() {
         this.rooms = new LinkedList<>();
         this.hallways = new LinkedList<>();
+        this.generatedTiles = new HashMap<>();
+
+        for(int y = 0; y < GEN_HEIGHT; y++) {
+            for(int x = 0; x < GEN_WIDTH; x++) {
+                generatedTiles.put(new Point(x, y), 1);
+            }
+        }
+
         this.seed = new Random().nextLong();
 //        this.seed = -7022676857325916674L;
         if (seed != null) {
@@ -43,7 +58,10 @@ public class LevelGenerator {
     }
 
     public void generate() {
-        createRooms();
+//        createRooms();
+//        carveRoomsInTiles();
+
+        carveMaze();
     }
 
     private void createRooms() {
@@ -60,21 +78,90 @@ public class LevelGenerator {
         }
     }
 
+    private void carveRoomsInTiles() {
+        for(Point coord : this.generatedTiles.keySet()) {
+            for(Rectangle room : this.rooms) {
+                if(room.contains(coord)) {
+                    this.generatedTiles.put(coord, 0);
+                }
+            }
+        }
+    }
+
+    private void carveMaze() {
+        LinkedList<Point> stack = new LinkedList<>();
+        stack.add(new Point(1, 1));
+
+        while(!stack.isEmpty()) {
+            Point tile = stack.pop();
+            LinkedList<Point> unvisitedNeighbours = getUnvisitedNeighbours(tile);
+            if(!unvisitedNeighbours.isEmpty()) {
+                stack.add(tile);
+                Point neighbourTile = null;
+                if(unvisitedNeighbours.size() > 1) {
+                    neighbourTile = unvisitedNeighbours.get(getRandNumBetw(0, unvisitedNeighbours.size()));
+                } else {
+                    neighbourTile = unvisitedNeighbours.get(0);
+                }
+                int xOffset = neighbourTile.x - tile.x;
+                int yOffset = neighbourTile.y - tile.y;
+
+                if(xOffset > 0) {
+                    this.generatedTiles.put(new Point(tile.x + 1, tile.y), 0);
+                } else if(xOffset < 0) {
+                    this.generatedTiles.put(new Point(tile.x - 1, tile.y), 0);
+                } else if(yOffset > 0) {
+                    this.generatedTiles.put(new Point(tile.x, tile.y + 1), 0);
+                } else if(yOffset < 0) {
+                    this.generatedTiles.put(new Point(tile.x, tile.y - 1), 0);
+                }
+                this.generatedTiles.put(neighbourTile, 0);
+                stack.add(neighbourTile);
+            }
+        }
+    }
+
+    private LinkedList<Point> getUnvisitedNeighbours(Point coord) {
+        Point[] directions = {
+                new Point(0, -2),
+                new Point(2, 0),
+                new Point(0, 2),
+                new Point(-2, 0),
+        };
+        LinkedList<Point> ret = new LinkedList<>();
+
+        for(Point dirOffset : directions) {
+            Point offsetCoord = new Point(coord.x + dirOffset.x, coord.y + dirOffset.y);
+            if(this.generatedTiles.containsKey(offsetCoord)) {
+                if(this.generatedTiles.get(offsetCoord) == 1) {
+                    ret.add(offsetCoord);
+                }
+            }
+        }
+        return ret;
+    }
+
     public void render(Graphics g) {
         g.setFont(Fonts.default_fonts.get(4));
         g.setColor(COLOR_PALETTE.light_green.color);
-        for (Rectangle room : this.rooms) {
-            if (Game.DEBUG_MODE) {
-                g.drawString(room.toString(), room.x, room.y);
-            }
-            g.drawRect(room.x, room.y, room.width, room.height);
-        }
+//        for (Rectangle room : this.rooms) {
+//            if (Game.DEBUG_MODE) {
+//                g.drawString(room.toString(), room.x, room.y);
+//            }
+//            g.drawRect(room.x, room.y, room.width, room.height);
+//        }
 //        for (Rectangle room : this.rooms) {
 //            if (Game.DEBUG_MODE) {
 //                g.drawString(room.toString(), room.x * 16, room.y * 16);
 //            }
 //            g.drawRect(room.x * 16, room.y * 16, room.width * 16, room.height * 16);
 //        }
+
+        for(Point coord : this.generatedTiles.keySet()) {
+            if(this.generatedTiles.get(coord) == 1) {
+                g.drawLine(coord.x, coord.y, coord.x, coord.y);
+            }
+        }
 
         for (LinkedList<Line> hallway : this.hallways) {
             for (Line path : hallway) {
