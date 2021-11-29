@@ -1,15 +1,9 @@
 package game.system.systems.levelGeneration;
 
-import game.system.helpers.Helpers;
-import game.system.main.Game;
 import game.textures.COLOR_PALETTE;
 import game.textures.Fonts;
 
 import java.awt.*;
-import java.awt.geom.Line2D;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 public class LevelGenerator {
@@ -29,17 +23,17 @@ public class LevelGenerator {
      * 0 = open
      * 1 = wall
      */
-    HashMap<Point, Integer> generatedTiles;
+    HashMap<Point, Integer> cells;
 
     private Random r = new Random();
 
     public LevelGenerator() {
         this.rooms = new LinkedList<>();
-        this.generatedTiles = new HashMap<>();
+        this.cells = new HashMap<>();
 
-        for(int y = 0; y < GEN_HEIGHT; y++) {
-            for(int x = 0; x < GEN_WIDTH; x++) {
-                generatedTiles.put(new Point(x, y), 1);
+        for (int y = 0; y < GEN_HEIGHT; y++) {
+            for (int x = 0; x < GEN_WIDTH; x++) {
+                cells.put(new Point(x, y), 1);
             }
         }
 
@@ -59,61 +53,65 @@ public class LevelGenerator {
         createRooms();
         carveRoomsInTiles();
 
-        carveMaze();
+        for (int y = 1; y < GEN_HEIGHT; y += 2) {
+            for (int x = 1; x < GEN_WIDTH; x += 2) {
+                carveMaze(new Point(x, y));
+            }
+        }
     }
 
     private void createRooms() {
-        for(int i = 0; i < ROOM_ATTEMPTS; i++) {
+        for (int i = 0; i < ROOM_ATTEMPTS; i++) {
             int randW = getRandNumBetw(ROOM_MIN_SIZE, ROOM_MAX_SIZE - 1);
             int randH = getRandNumBetw(ROOM_MIN_SIZE, ROOM_MAX_SIZE - 1);
             int randX = getRandNumBetw(0, GEN_WIDTH - randW - 1);
             int randY = getRandNumBetw(0, GEN_WIDTH - randH - 1);
             // Values need to be all odd for maze to be valid
-            if(randW % 2 == 0) randW += 1;
-            if(randH % 2 == 0) randH += 1;
-            if(randX % 2 == 0) randX += 1;
-            if(randY % 2 == 0) randY += 1;
+            if (randW % 2 == 0) randW += 1;
+            if (randH % 2 == 0) randH += 1;
+            if (randX % 2 == 0) randX += 1;
+            if (randY % 2 == 0) randY += 1;
             Rectangle room = new Rectangle(randX, randY, randW, randH);
 
-            if(isInsideGeneration(room) && !isOverlapping(room)) {
+            if (isInsideGeneration(room) && !isOverlapping(room)) {
                 this.rooms.add(room);
             }
         }
     }
 
     private void carveRoomsInTiles() {
-        for(Point coord : this.generatedTiles.keySet()) {
-            for(Rectangle room : this.rooms) {
-                if(room.contains(coord)) {
-                    this.generatedTiles.put(coord, 0);
+        for (Point coord : this.cells.keySet()) {
+            for (Rectangle room : this.rooms) {
+                if (room.contains(coord)) {
+                    this.cells.put(coord, 0);
                 }
             }
         }
     }
 
-    private void carveMaze() {
+    private void carveMaze(Point startingCell) {
         LinkedList<Point> stack = new LinkedList<>();
-        stack.add(new Point(1, 1));
+        stack.add(startingCell);
 
-        while(!stack.isEmpty()) {
+        while (!stack.isEmpty()) {
             Point tile = stack.pop();
             LinkedList<Point> unvisitedNeighbours = getUnvisitedNeighbours(tile);
-            if(!unvisitedNeighbours.isEmpty()) {
+            if (!unvisitedNeighbours.isEmpty()) {
                 stack.add(tile);
                 Point neighbourTile = unvisitedNeighbours.get(getRandNumBetw(0, unvisitedNeighbours.size()));
                 int xOffset = neighbourTile.x - tile.x;
                 int yOffset = neighbourTile.y - tile.y;
 
-                if(xOffset > 0) {
-                    this.generatedTiles.put(new Point(tile.x + 1, tile.y), 0);
-                } else if(xOffset < 0) {
-                    this.generatedTiles.put(new Point(tile.x - 1, tile.y), 0);
-                } else if(yOffset > 0) {
-                    this.generatedTiles.put(new Point(tile.x, tile.y + 1), 0);
-                } else if(yOffset < 0) {
-                    this.generatedTiles.put(new Point(tile.x, tile.y - 1), 0);
+                if (xOffset > 0) {
+                    this.cells.put(new Point(tile.x + 1, tile.y), 0);
+                } else if (xOffset < 0) {
+                    this.cells.put(new Point(tile.x - 1, tile.y), 0);
+                } else if (yOffset > 0) {
+                    this.cells.put(new Point(tile.x, tile.y + 1), 0);
+                } else if (yOffset < 0) {
+                    this.cells.put(new Point(tile.x, tile.y - 1), 0);
                 }
-                this.generatedTiles.put(neighbourTile, 0);
+                this.cells.put(neighbourTile, 0);
                 stack.add(neighbourTile);
             }
         }
@@ -128,10 +126,10 @@ public class LevelGenerator {
         };
         LinkedList<Point> ret = new LinkedList<>();
 
-        for(Point dirOffset : directions) {
+        for (Point dirOffset : directions) {
             Point offsetCoord = new Point(coord.x + dirOffset.x, coord.y + dirOffset.y);
-            if(this.generatedTiles.containsKey(offsetCoord)) {
-                if(this.generatedTiles.get(offsetCoord) == 1) {
+            if (this.cells.containsKey(offsetCoord)) {
+                if (this.cells.get(offsetCoord) == 1) {
                     ret.add(offsetCoord);
                 }
             }
@@ -155,8 +153,8 @@ public class LevelGenerator {
 //            g.drawRect(room.x * 16, room.y * 16, room.width * 16, room.height * 16);
 //        }
 
-        for(Point coord : this.generatedTiles.keySet()) {
-            if(this.generatedTiles.get(coord) == 1) {
+        for (Point coord : this.cells.keySet()) {
+            if (this.cells.get(coord) == 1) {
                 g.drawLine(coord.x, coord.y, coord.x, coord.y);
             }
         }
@@ -167,8 +165,8 @@ public class LevelGenerator {
     }
 
     private boolean isOverlapping(Rectangle rect) {
-        for(Rectangle room : this.rooms) {
-            if(room.intersects(rect)) return true;
+        for (Rectangle room : this.rooms) {
+            if (room.intersects(rect)) return true;
         }
         return false;
     }
