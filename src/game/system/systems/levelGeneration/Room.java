@@ -17,6 +17,10 @@ public class Room {
         this.connectors = connectors;
     }
 
+    public void clearConnectors() {
+        this.connectors = new LinkedList<>();
+    }
+
     public void addConnector(Point connector) {
         this.connectors.push(connector);
     }

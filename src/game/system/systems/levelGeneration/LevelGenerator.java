@@ -14,7 +14,7 @@ public class LevelGenerator {
     private static final Integer GEN_WIDTH = 71; // needs to be odd
     private static final Integer GEN_HEIGHT = 71; // needs to be odd
 
-    private static final Integer ROOM_MIN_SIZE = 11, ROOM_MAX_SIZE = 31, ROOM_ATTEMPTS = 1000;
+    private static final Integer ROOM_MIN_SIZE = 11, ROOM_MAX_SIZE = 25, ROOM_ATTEMPTS = 2000;
 
     private static final Point[] DIRECTIONS = {
             new Point(0, -1),
@@ -69,14 +69,14 @@ public class LevelGenerator {
         for (int y = 1; y < GEN_HEIGHT; y += 2) {
             for (int x = 1; x < GEN_WIDTH; x += 2) {
                 Point cell = new Point(x, y);
-                if(wallsOnAllSides(cell)) carveMaze(new Point(x, y));
+                if (wallsOnAllSides(cell)) carveMaze(new Point(x, y));
             }
         }
 
         findAllConnectors();
         makeConnections();
 
-//        removeDeadEnds();
+        removeDeadEnds();
     }
 
     private void createRooms() {
@@ -152,12 +152,12 @@ public class LevelGenerator {
     }
 
     private boolean wallsOnAllSides(Point p) {
-        for(Point dir : DIRECTIONS) {
+        for (Point dir : DIRECTIONS) {
             Point offsetCoord = new Point(p.x + dir.x, p.y + dir.y);
-            if(this.cells.containsKey(offsetCoord) && this.cells.get(offsetCoord) == 0) {
+            if (this.cells.containsKey(offsetCoord) && this.cells.get(offsetCoord) == 0) {
                 return false;
             }
-            if(!this.cells.containsKey(offsetCoord)) {
+            if (!this.cells.containsKey(offsetCoord)) {
                 return false;
             }
         }
@@ -172,19 +172,19 @@ public class LevelGenerator {
     }
 
     private void findAllConnectors() {
-        for(Room rm : this.rooms) {
+        for (Room rm : this.rooms) {
             Rectangle room = rm.rect;
-            for(int x = room.x - 1; x < room.x + room.width; x++){
+            for (int x = room.x - 1; x < room.x + room.width; x++) {
                 Point top = new Point(x, room.y - 1);
                 Point bottom = new Point(x, room.y + room.height);
-                if(isPossibleConnection(top) && !isCorner(room, top)) rm.addConnector(top);
-                if(isPossibleConnection(bottom) && !isCorner(room, bottom)) rm.addConnector(bottom);
+                if (isPossibleConnection(top) && !isCorner(room, top)) rm.addConnector(top);
+                if (isPossibleConnection(bottom) && !isCorner(room, bottom)) rm.addConnector(bottom);
             }
-            for(int y = room.y - 1; y < room.y + room.height; y++){
+            for (int y = room.y - 1; y < room.y + room.height; y++) {
                 Point left = new Point(room.x - 1, y);
                 Point right = new Point(room.x + room.width, y);
-                if(isPossibleConnection(left) && !isCorner(room, left)) rm.addConnector(left);
-                if(isPossibleConnection(right) && !isCorner(room, right)) rm.addConnector(right);
+                if (isPossibleConnection(left) && !isCorner(room, left)) rm.addConnector(left);
+                if (isPossibleConnection(right) && !isCorner(room, right)) rm.addConnector(right);
             }
         }
     }
@@ -205,10 +205,10 @@ public class LevelGenerator {
     }
 
     private boolean isCorner(Rectangle rect, Point p) {
-        return (p.x == rect.x-1 && p.y == rect.y-1) ||
-                (p.x == rect.x + rect.width && p.y == rect.y-1) ||
+        return (p.x == rect.x - 1 && p.y == rect.y - 1) ||
+                (p.x == rect.x + rect.width && p.y == rect.y - 1) ||
                 (p.x == rect.x + rect.width && p.y == rect.y + rect.height) ||
-                (p.x == rect.x-1 && p.y == rect.y + rect.height);
+                (p.x == rect.x - 1 && p.y == rect.y + rect.height);
     }
 
     private void makeConnections() {
@@ -217,38 +217,54 @@ public class LevelGenerator {
 
         mainRoom.setConnectors(new LinkedList<>());
         mainRoom.setConnector(connector);
+
+        this.mainRegion.add(connector);
         this.cells.put(connector, 0);
-//        this.mainRegion.add(connector);
 
-        LinkedList<Point> stack = new LinkedList<>();
-        stack.add(connector);
+        LinkedList<Point> connectors = getAllConnectorsTouchingMainRegion();
 
-        while(!stack.isEmpty()) {
-            System.out.println(stack.size());
-            Point currentCell = stack.pop();
-            if(this.cells.get(currentCell) == 0) this.mainRegion.add(currentCell);
-            LinkedList<Point> neighbours = getAllWalkableNeighbours(currentCell, stack);
-            if(!neighbours.isEmpty()) {
-                stack.addAll(neighbours);
+        boolean firstIteration = true;
+
+        while (!connectors.isEmpty() || firstIteration) {
+            if(!firstIteration) {
+                this.cells.put(connector, 0);
+                Room room = getRoomWithConnector(connector);
+                if(room != null) {
+                    room.setConnector(connector);
+                    LinkedList<Point> newConnectors = new LinkedList<>();
+                    for(Point roomConnector : room.connectors) {
+                        if(!isTouchingMainRegion(roomConnector)) newConnectors.add(roomConnector);
+                    }
+                    room.setConnectors(newConnectors);
+                }
             }
+
+            LinkedList<Point> stack = new LinkedList<>();
+            stack.add(connector);
+
+            while (!stack.isEmpty()) {
+                Point currentCell = stack.pop();
+                if (this.cells.get(currentCell) == 0 && !this.mainRegion.contains(currentCell))
+                    this.mainRegion.add(currentCell);
+                LinkedList<Point> neighbours = getAllWalkableNeighbours(currentCell, stack);
+                if (!neighbours.isEmpty()) {
+                    stack.addAll(neighbours);
+                }
+            }
+
+            connectors = getAllConnectorsTouchingMainRegion();
+            if(!connectors.isEmpty())connector = connectors.get(r.nextInt(connectors.size()));
+
+            if (firstIteration) firstIteration = false;
         }
-
-//        LinkedList<Point> connectors = getAllConnectorsTouchingMainRegion();
-//        Point connector
-
-        // TODO: OLD CODE
-//        for(Room room : this.rooms) {
-//            Point connector = room.connectors.get(getRandNumBetw(0, room.connectors.size()));
-//            this.cells.put(connector, 0);
-//        }
 
     }
 
     private LinkedList<Point> getAllWalkableNeighbours(Point cell, LinkedList<Point> stack) {
         LinkedList<Point> neighbours = new LinkedList<>();
-        for(Point dir : DIRECTIONS) {
+        for (Point dir : DIRECTIONS) {
             Point offsetCoord = new Point(cell.x + dir.x, cell.y + dir.y);
-            if(this.cells.containsKey(offsetCoord) && this.cells.get(offsetCoord) == 0 && !this.mainRegion.contains(offsetCoord) && !stack.contains(offsetCoord)) {
+            if (this.cells.containsKey(offsetCoord) && this.cells.get(offsetCoord) == 0 && !this.mainRegion.contains(offsetCoord) && !stack.contains(offsetCoord)) {
                 neighbours.add(offsetCoord);
             }
         }
@@ -257,24 +273,24 @@ public class LevelGenerator {
 
     private LinkedList<Point> getAllConnectorsTouchingMainRegion() {
         LinkedList<Point> connectors = new LinkedList<>();
-        for(Room room : this.rooms) {
+        for (Room room : this.rooms) {
             connectors.addAll(room.connectors);
         }
 
         LinkedList<Point> ret = new LinkedList<>();
-        for(Point connector : connectors) {
-            if(isTouchingMainRegion(connector)) ret.add(connector);
+        for (Point connector : connectors) {
+            if (isTouchingMainRegion(connector)) ret.add(connector);
         }
         return ret;
     }
 
     private boolean isTouchingMainRegion(Point cell) {
-        for(Point regionCell : this.mainRegion) {
+        for (Point regionCell : this.mainRegion) {
             int xDiff = Math.abs(cell.x - regionCell.x);
             int yDiff = Math.abs(cell.y - regionCell.y);
-            if(
+            if (
                     (xDiff == 1 && yDiff == 0) ||
-                    (yDiff == 1 && xDiff == 0)
+                            (yDiff == 1 && xDiff == 0)
             ) {
                 return true;
             }
@@ -282,13 +298,20 @@ public class LevelGenerator {
         return false;
     }
 
+    private Room getRoomWithConnector(Point connector) {
+        for (Room room : this.rooms) {
+            if (room.connectors.contains(connector)) return room;
+        }
+        return null;
+    }
+
     private void removeDeadEnds() {
-        while(deadEndsExist()) {
+        while (deadEndsExist()) {
             for (int y = 1; y < GEN_HEIGHT; y += 1) {
                 for (int x = 1; x < GEN_WIDTH; x += 1) {
                     Point p = new Point(x, y);
-                    if(this.cells.get(p) == 0) {
-                        if(isDeadEnd(p)) this.cells.put(p, 1);
+                    if (this.cells.get(p) == 0) {
+                        if (isDeadEnd(p)) this.cells.put(p, 1);
                     }
                 }
             }
@@ -299,7 +322,7 @@ public class LevelGenerator {
         for (int y = 1; y < GEN_HEIGHT; y += 1) {
             for (int x = 1; x < GEN_WIDTH; x += 1) {
                 Point p = new Point(x, y);
-                if(isDeadEnd(p)) return true;
+                if (isDeadEnd(p)) return true;
             }
         }
         return false;
@@ -327,9 +350,9 @@ public class LevelGenerator {
 //                g.drawLine(connection.x, connection.y, connection.x, connection.y);
 //            }
 //        }
-        for(Point p : this.mainRegion) {
-            g.drawLine(p.x, p.y, p.x, p.y);
-        }
+//        for (Point p : this.mainRegion) {
+//            g.drawLine(p.x, p.y, p.x, p.y);
+//        }
 
         g.setFont(Fonts.default_fonts.get(4));
         g.setColor(COLOR_PALETTE.light_green.color);
@@ -348,6 +371,7 @@ public class LevelGenerator {
 
         for (Point coord : this.cells.keySet()) {
             if (this.cells.get(coord) == 1) {
+//                g.drawRect(coord.x * 16, coord.y * 16, 16, 16);
                 g.drawLine(coord.x, coord.y, coord.x, coord.y);
             }
         }
