@@ -11,8 +11,8 @@ public class LevelGenerator {
     private Long seed;
 
     // sizes in tiles = 16
-    private static final Integer GEN_WIDTH = 101; // needs to be odd
-    private static final Integer GEN_HEIGHT = 101; // needs to be odd
+    private static final Integer GEN_WIDTH = 71; // needs to be odd
+    private static final Integer GEN_HEIGHT = 71; // needs to be odd
 
     private static final Integer ROOM_MIN_SIZE = 11, ROOM_MAX_SIZE = 31, ROOM_ATTEMPTS = 1000;
 
@@ -34,11 +34,15 @@ public class LevelGenerator {
 
     HashMap<Room[], Point> connections;
 
+    Room mainRoom;
+    LinkedList<Point> mainRegion;
+
     private Random r = new Random();
 
     public LevelGenerator() {
         this.rooms = new LinkedList<>();
         this.cells = new HashMap<>();
+        this.mainRegion = new LinkedList<>();
 
         for (int y = 0; y < GEN_HEIGHT; y++) {
             for (int x = 0; x < GEN_WIDTH; x++) {
@@ -64,14 +68,15 @@ public class LevelGenerator {
 
         for (int y = 1; y < GEN_HEIGHT; y += 2) {
             for (int x = 1; x < GEN_WIDTH; x += 2) {
-                carveMaze(new Point(x, y));
+                Point cell = new Point(x, y);
+                if(wallsOnAllSides(cell)) carveMaze(new Point(x, y));
             }
         }
 
         findAllConnectors();
         makeConnections();
 
-        removeDeadEnds();
+//        removeDeadEnds();
     }
 
     private void createRooms() {
@@ -112,7 +117,8 @@ public class LevelGenerator {
             LinkedList<Point> unvisitedNeighbours = getUnvisitedNeighbours(tile);
             if (!unvisitedNeighbours.isEmpty()) {
                 stack.add(tile);
-                Point neighbourTile = unvisitedNeighbours.get(getRandNumBetw(0, unvisitedNeighbours.size()));
+                Point neighbourTile = unvisitedNeighbours.get(r.nextInt(unvisitedNeighbours.size()));
+//                Point neighbourTile = unvisitedNeighbours.pop();
                 int xOffset = neighbourTile.x - tile.x;
                 int yOffset = neighbourTile.y - tile.y;
 
@@ -143,6 +149,26 @@ public class LevelGenerator {
             }
         }
         return ret;
+    }
+
+    private boolean wallsOnAllSides(Point p) {
+        for(Point dir : DIRECTIONS) {
+            Point offsetCoord = new Point(p.x + dir.x, p.y + dir.y);
+            if(this.cells.containsKey(offsetCoord) && this.cells.get(offsetCoord) == 0) {
+                return false;
+            }
+            if(!this.cells.containsKey(offsetCoord)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isOnEdge(Point p, Rectangle rect) {
+        return (p.x >= rect.x && p.x <= rect.x + rect.width && p.y == rect.y) ||
+                (p.x >= rect.x && p.x <= rect.x + rect.width && p.y == rect.y + rect.height) ||
+                (p.x == rect.x && p.y >= rect.y && p.y <= rect.y + rect.height) ||
+                (p.x == rect.x + rect.width && p.y >= rect.y && p.y <= rect.y + rect.height);
     }
 
     private void findAllConnectors() {
@@ -186,14 +212,74 @@ public class LevelGenerator {
     }
 
     private void makeConnections() {
-//        Room mainRoom = this.rooms.get(getRandNumBetw(0, this.rooms.size()));
-//        Point connector = mainRoom.connectors.get(getRandNumBetw(0, mainRoom.connectors.size()));
-//
-//        this.cells.put(connector, 0);
-        for(Room room : this.rooms) {
-            Point connector = room.connectors.get(getRandNumBetw(0, room.connectors.size()));
-            this.cells.put(connector, 0);
+        this.mainRoom = this.rooms.get(getRandNumBetw(0, this.rooms.size()));
+        Point connector = mainRoom.connectors.get(getRandNumBetw(0, mainRoom.connectors.size()));
+
+        mainRoom.setConnectors(new LinkedList<>());
+        mainRoom.setConnector(connector);
+        this.cells.put(connector, 0);
+//        this.mainRegion.add(connector);
+
+        LinkedList<Point> stack = new LinkedList<>();
+        stack.add(connector);
+
+        while(!stack.isEmpty()) {
+            System.out.println(stack.size());
+            Point currentCell = stack.pop();
+            if(this.cells.get(currentCell) == 0) this.mainRegion.add(currentCell);
+            LinkedList<Point> neighbours = getAllWalkableNeighbours(currentCell, stack);
+            if(!neighbours.isEmpty()) {
+                stack.addAll(neighbours);
+            }
         }
+
+//        LinkedList<Point> connectors = getAllConnectorsTouchingMainRegion();
+//        Point connector
+
+        // TODO: OLD CODE
+//        for(Room room : this.rooms) {
+//            Point connector = room.connectors.get(getRandNumBetw(0, room.connectors.size()));
+//            this.cells.put(connector, 0);
+//        }
+
+    }
+
+    private LinkedList<Point> getAllWalkableNeighbours(Point cell, LinkedList<Point> stack) {
+        LinkedList<Point> neighbours = new LinkedList<>();
+        for(Point dir : DIRECTIONS) {
+            Point offsetCoord = new Point(cell.x + dir.x, cell.y + dir.y);
+            if(this.cells.containsKey(offsetCoord) && this.cells.get(offsetCoord) == 0 && !this.mainRegion.contains(offsetCoord) && !stack.contains(offsetCoord)) {
+                neighbours.add(offsetCoord);
+            }
+        }
+        return neighbours;
+    }
+
+    private LinkedList<Point> getAllConnectorsTouchingMainRegion() {
+        LinkedList<Point> connectors = new LinkedList<>();
+        for(Room room : this.rooms) {
+            connectors.addAll(room.connectors);
+        }
+
+        LinkedList<Point> ret = new LinkedList<>();
+        for(Point connector : connectors) {
+            if(isTouchingMainRegion(connector)) ret.add(connector);
+        }
+        return ret;
+    }
+
+    private boolean isTouchingMainRegion(Point cell) {
+        for(Point regionCell : this.mainRegion) {
+            int xDiff = Math.abs(cell.x - regionCell.x);
+            int yDiff = Math.abs(cell.y - regionCell.y);
+            if(
+                    (xDiff == 1 && yDiff == 0) ||
+                    (yDiff == 1 && xDiff == 0)
+            ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void removeDeadEnds() {
@@ -235,6 +321,16 @@ public class LevelGenerator {
     }
 
     public void render(Graphics g) {
+        g.setColor(COLOR_PALETTE.yellow.color);
+//        for (Room room : this.rooms) {
+//            for(Point connection : room.connectors) {
+//                g.drawLine(connection.x, connection.y, connection.x, connection.y);
+//            }
+//        }
+        for(Point p : this.mainRegion) {
+            g.drawLine(p.x, p.y, p.x, p.y);
+        }
+
         g.setFont(Fonts.default_fonts.get(4));
         g.setColor(COLOR_PALETTE.light_green.color);
 //        for (Rectangle room : this.rooms) {
@@ -255,13 +351,6 @@ public class LevelGenerator {
                 g.drawLine(coord.x, coord.y, coord.x, coord.y);
             }
         }
-
-//        g.setColor(COLOR_PALETTE.yellow.color);
-//        for (Room room : this.rooms) {
-//            for(Point connection : room.connectors) {
-//                g.drawLine(connection.x, connection.y, connection.x, connection.y);
-//            }
-//        }
     }
 
     private boolean isInsideGeneration(Rectangle rect) {
