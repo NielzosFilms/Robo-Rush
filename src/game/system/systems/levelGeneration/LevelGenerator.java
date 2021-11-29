@@ -17,13 +17,12 @@ public class LevelGenerator {
     private Long seed;
 
     // sizes in tiles = 16
-    private static Integer GEN_WIDTH = 300;
-    private static Integer GEN_HEIGHT = 300;
+    private static Integer GEN_WIDTH = 301; // needs to be odd
+    private static Integer GEN_HEIGHT = 301; // needs to be odd
 
-    private static Integer ROOM_MIN_SIZE = 15, ROOM_MAX_SIZE = 30, ROOM_ATTEMPTS = 100;
+    private static Integer ROOM_MIN_SIZE = 15, ROOM_MAX_SIZE = 31, ROOM_ATTEMPTS = 1000;
 
     LinkedList<Rectangle> rooms;
-    LinkedList<LinkedList<Line>> hallways;
 
     /**
      * Integer is the state of the tile
@@ -36,7 +35,6 @@ public class LevelGenerator {
 
     public LevelGenerator() {
         this.rooms = new LinkedList<>();
-        this.hallways = new LinkedList<>();
         this.generatedTiles = new HashMap<>();
 
         for(int y = 0; y < GEN_HEIGHT; y++) {
@@ -58,18 +56,23 @@ public class LevelGenerator {
     }
 
     public void generate() {
-//        createRooms();
-//        carveRoomsInTiles();
+        createRooms();
+        carveRoomsInTiles();
 
         carveMaze();
     }
 
     private void createRooms() {
         for(int i = 0; i < ROOM_ATTEMPTS; i++) {
-            int randW = getRandNumBetw(ROOM_MIN_SIZE, ROOM_MAX_SIZE);
-            int randH = getRandNumBetw(ROOM_MIN_SIZE, ROOM_MAX_SIZE);
-            int randX = getRandNumBetw(0, GEN_WIDTH - randW);
-            int randY = getRandNumBetw(0, GEN_WIDTH - randH);
+            int randW = getRandNumBetw(ROOM_MIN_SIZE, ROOM_MAX_SIZE - 1);
+            int randH = getRandNumBetw(ROOM_MIN_SIZE, ROOM_MAX_SIZE - 1);
+            int randX = getRandNumBetw(0, GEN_WIDTH - randW - 1);
+            int randY = getRandNumBetw(0, GEN_WIDTH - randH - 1);
+            // Values need to be all odd for maze to be valid
+            if(randW % 2 == 0) randW += 1;
+            if(randH % 2 == 0) randH += 1;
+            if(randX % 2 == 0) randX += 1;
+            if(randY % 2 == 0) randY += 1;
             Rectangle room = new Rectangle(randX, randY, randW, randH);
 
             if(isInsideGeneration(room) && !isOverlapping(room)) {
@@ -97,12 +100,7 @@ public class LevelGenerator {
             LinkedList<Point> unvisitedNeighbours = getUnvisitedNeighbours(tile);
             if(!unvisitedNeighbours.isEmpty()) {
                 stack.add(tile);
-                Point neighbourTile = null;
-                if(unvisitedNeighbours.size() > 1) {
-                    neighbourTile = unvisitedNeighbours.get(getRandNumBetw(0, unvisitedNeighbours.size()));
-                } else {
-                    neighbourTile = unvisitedNeighbours.get(0);
-                }
+                Point neighbourTile = unvisitedNeighbours.get(getRandNumBetw(0, unvisitedNeighbours.size()));
                 int xOffset = neighbourTile.x - tile.x;
                 int yOffset = neighbourTile.y - tile.y;
 
@@ -162,48 +160,6 @@ public class LevelGenerator {
                 g.drawLine(coord.x, coord.y, coord.x, coord.y);
             }
         }
-
-        for (LinkedList<Line> hallway : this.hallways) {
-            for (Line path : hallway) {
-                switch (path.depth) {
-                    case 3:
-                        g.setColor(COLOR_PALETTE.red.color);
-                        break;
-                    case 2:
-                        g.setColor(COLOR_PALETTE.orange.color);
-                        break;
-                    case 1:
-                        g.setColor(COLOR_PALETTE.green.color);
-                        break;
-                    default:
-                        g.setColor(COLOR_PALETTE.white.color);
-                        break;
-                }
-                g.drawLine(path.x1, path.y1, path.x2, path.y2);
-            }
-        }
-    }
-
-    private void connectRooms(SplitRectangle room1, SplitRectangle room2, int depth) {
-        room1.setConnectedTo(room2.uuid);
-        room2.setConnectedTo(room1.uuid);
-
-        int room1CenX = (int) room1.rect.getCenterX();
-        int room1CenY = (int) room1.rect.getCenterY();
-
-        int room2CenX = (int) room2.rect.getCenterX();
-        int room2CenY = (int) room2.rect.getCenterY();
-
-        LinkedList<Line> hallwayPath = new LinkedList();
-        if (r.nextBoolean()) {
-            hallwayPath.add(new Line(room1CenX, room1CenY, room2CenX, room1CenY, depth)); // horizontal
-            hallwayPath.add(new Line(room2CenX, room1CenY, room2CenX, room2CenY, depth)); // vertical
-        } else {
-            hallwayPath.add(new Line(room1CenX, room1CenY, room1CenX, room2CenY, depth)); // vertical
-            hallwayPath.add(new Line(room1CenX, room2CenY, room2CenX, room2CenY, depth)); // horizontal
-        }
-
-        hallways.add(hallwayPath);
     }
 
     private boolean isInsideGeneration(Rectangle rect) {
