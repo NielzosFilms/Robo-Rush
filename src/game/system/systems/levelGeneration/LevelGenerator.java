@@ -11,10 +11,10 @@ public class LevelGenerator {
     private Long seed;
 
     // sizes in tiles = 16
-    private static final Integer GEN_WIDTH = 301; // needs to be odd
-    private static final Integer GEN_HEIGHT = 301; // needs to be odd
+    private static final Integer GEN_WIDTH = 101; // needs to be odd
+    private static final Integer GEN_HEIGHT = 101; // needs to be odd
 
-    private static final Integer ROOM_MIN_SIZE = 15, ROOM_MAX_SIZE = 31, ROOM_ATTEMPTS = 1000;
+    private static final Integer ROOM_MIN_SIZE = 11, ROOM_MAX_SIZE = 31, ROOM_ATTEMPTS = 1000;
 
     private static final Point[] DIRECTIONS = {
             new Point(0, -1),
@@ -31,6 +31,8 @@ public class LevelGenerator {
      * 1 = wall
      */
     HashMap<Point, Integer> cells;
+
+    HashMap<Room[], Point> connections;
 
     private Random r = new Random();
 
@@ -67,6 +69,9 @@ public class LevelGenerator {
         }
 
         findAllConnectors();
+        makeConnections();
+
+        removeDeadEnds();
     }
 
     private void createRooms() {
@@ -180,6 +185,55 @@ public class LevelGenerator {
                 (p.x == rect.x-1 && p.y == rect.y + rect.height);
     }
 
+    private void makeConnections() {
+//        Room mainRoom = this.rooms.get(getRandNumBetw(0, this.rooms.size()));
+//        Point connector = mainRoom.connectors.get(getRandNumBetw(0, mainRoom.connectors.size()));
+//
+//        this.cells.put(connector, 0);
+        for(Room room : this.rooms) {
+            Point connector = room.connectors.get(getRandNumBetw(0, room.connectors.size()));
+            this.cells.put(connector, 0);
+        }
+    }
+
+    private void removeDeadEnds() {
+        while(deadEndsExist()) {
+            for (int y = 1; y < GEN_HEIGHT; y += 1) {
+                for (int x = 1; x < GEN_WIDTH; x += 1) {
+                    Point p = new Point(x, y);
+                    if(this.cells.get(p) == 0) {
+                        if(isDeadEnd(p)) this.cells.put(p, 1);
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean deadEndsExist() {
+        for (int y = 1; y < GEN_HEIGHT; y += 1) {
+            for (int x = 1; x < GEN_WIDTH; x += 1) {
+                Point p = new Point(x, y);
+                if(isDeadEnd(p)) return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isDeadEnd(Point p) {
+        int wallSides = 0;
+        if (this.cells.get(p) == 0) {
+            for (Point dirOffset : DIRECTIONS) {
+                Point offsetCoord = new Point(p.x + dirOffset.x, p.y + dirOffset.y);
+                if (this.cells.containsKey(offsetCoord)) {
+                    if (this.cells.get(offsetCoord) == 1) {
+                        wallSides++;
+                    }
+                }
+            }
+        }
+        return wallSides >= 3;
+    }
+
     public void render(Graphics g) {
         g.setFont(Fonts.default_fonts.get(4));
         g.setColor(COLOR_PALETTE.light_green.color);
@@ -202,12 +256,12 @@ public class LevelGenerator {
             }
         }
 
-        g.setColor(COLOR_PALETTE.yellow.color);
-        for (Room room : this.rooms) {
-            for(Point connection : room.connectors) {
-                g.drawLine(connection.x, connection.y, connection.x, connection.y);
-            }
-        }
+//        g.setColor(COLOR_PALETTE.yellow.color);
+//        for (Room room : this.rooms) {
+//            for(Point connection : room.connectors) {
+//                g.drawLine(connection.x, connection.y, connection.x, connection.y);
+//            }
+//        }
     }
 
     private boolean isInsideGeneration(Rectangle rect) {
