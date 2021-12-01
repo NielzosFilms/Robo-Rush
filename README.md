@@ -1,7 +1,7 @@
 # Robo Rush
 
-This is a game i'm making in my free time.<br>
-Its made purely with Java.
+A Top Down, Bullet Hell, Dungeon Crawler made completely from scratch.<br>
+I will be working on this in my spare time.
 <br>
 
 Game Version: `ALPHA V 3.94 COMBAT & AI`<br>
