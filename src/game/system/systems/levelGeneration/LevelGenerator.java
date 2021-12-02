@@ -12,8 +12,8 @@ public class LevelGenerator {
     private Long seed;
 
     // sizes in tiles = 16
-    private static final Integer GEN_WIDTH = 31; // needs to be odd
-    private static final Integer GEN_HEIGHT = 31; // needs to be odd
+    private static final Integer GEN_WIDTH = 41; // needs to be odd
+    private static final Integer GEN_HEIGHT = 41; // needs to be odd
 
     private static final Integer ROOM_MIN_SIZE = 7, ROOM_MAX_SIZE = 27, ROOM_ATTEMPTS = 2000;
 
