@@ -4,19 +4,13 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
-import java.util.LinkedList;
 
-import game.assets.levels.def.Room;
 import game.enums.GAMESTATES;
 import game.enums.MENUSTATES;
 import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
-import game.system.systems.gameObject.GameObject;
-import game.system.systems.gameObject.Interactable;
 import game.system.main.*;
-import game.enums.ID;
 import game.system.systems.menu.MenuSystem;
-import game.textures.Textures;
 
 public class KeyInput extends KeyAdapter {
 
@@ -93,12 +87,12 @@ public class KeyInput extends KeyAdapter {
 	}
 
 	private void devKeyActions(int keycode) {
-		if(keycode == KeyEvent.VK_F5) {
-			for(Point roomkey : Game.gameController.getActiveLevel().getRooms().keySet()) {
-				Room room = Game.gameController.getActiveLevel().getRooms().get(roomkey);
-				room.setDiscovered(true);
-			}
-		}
+//		if(keycode == KeyEvent.VK_F5) {
+//			for(Point roomkey : Game.gameController.getActiveLevel().getRooms().keySet()) {
+//				Room room = Game.gameController.getActiveLevel().getRooms().get(roomkey);
+//				room.setDiscovered(true);
+//			}
+//		}
 	}
 
 	public void tick() {}

@@ -195,7 +195,8 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable, HUD_Rende
     }
 
     private void spawnEnemies() {
-        Game.gameController.getActiveLevel().getActiveRoom().addObject(new Shooting_Enemy(new Random().nextInt(200)-100, new Random().nextInt(200)-100));
+        // TODO spawn enemies
+//        Game.gameController.getActiveLevel().getActiveRoom().addObject(new Shooting_Enemy(new Random().nextInt(200)-100, new Random().nextInt(200)-100));
     }
 
     private void chooseNewAttack() {

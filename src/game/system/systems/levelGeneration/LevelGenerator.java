@@ -1,21 +1,23 @@
 package game.system.systems.levelGeneration;
 
-import game.textures.COLOR_PALETTE;
-import game.textures.Fonts;
+import game.assets.tiles.Tile_Static;
+import game.assets.tiles.tile.Tile;
+import game.system.systems.gameObject.GameObject;
+import game.textures.TEXTURE_LIST;
+import game.textures.Texture;
 
 import java.awt.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LevelGenerator {
 
     private Long seed;
 
     // sizes in tiles = 16
-    private static final Integer GEN_WIDTH = 41; // needs to be odd
-    private static final Integer GEN_HEIGHT = 41; // needs to be odd
+    private Integer GEN_WIDTH = 41; // needs to be odd
+    private Integer GEN_HEIGHT = 41; // needs to be odd
 
-    private static final Integer ROOM_MIN_SIZE = 7, ROOM_MAX_SIZE = 27, ROOM_ATTEMPTS = 2000;
+    private Integer ROOM_MIN_SIZE = 7, ROOM_MAX_SIZE = 27, ROOM_ATTEMPTS = 2000;
 
     private static final Point[] DIRECTIONS = {
             new Point(0, -1),
@@ -32,8 +34,6 @@ public class LevelGenerator {
      * 1 = wall
      */
     HashMap<Point, Integer> cells;
-
-    HashMap<Room[], Point> connections;
 
     Room mainRoom;
     LinkedList<Point> mainRegion;
@@ -52,16 +52,24 @@ public class LevelGenerator {
         }
 
         this.seed = new Random().nextLong();
-//        this.seed = -7022676857325916674L;
-//        this.seed = 106334210852436970L;
-        if (seed != null) {
-            setSeed(this.seed);
-        }
-        System.out.println("Level Seed: " + seed);
+        setSeed(this.seed);
     }
 
     public void setSeed(long seed) {
         this.r.setSeed(seed);
+    }
+
+    public void setGenerationParams(int genWidth, int genHeight, int minRoomSize, int maxRoomSize, int roomAttempts) {
+        if(genWidth % 2 != 0) genWidth++;
+        if(genHeight % 2 != 0) genHeight++;
+        if(minRoomSize % 2 != 0) minRoomSize++;
+        if(maxRoomSize % 2 != 0) maxRoomSize++;
+
+        this.GEN_WIDTH = genWidth;
+        this.GEN_HEIGHT = genHeight;
+        this.ROOM_MIN_SIZE = minRoomSize;
+        this.ROOM_MAX_SIZE = maxRoomSize;
+        this.ROOM_ATTEMPTS = roomAttempts;
     }
 
     public void generate() {
@@ -131,7 +139,6 @@ public class LevelGenerator {
             if (!unvisitedNeighbours.isEmpty()) {
                 stack.add(tile);
                 Point neighbourTile = unvisitedNeighbours.get(r.nextInt(unvisitedNeighbours.size()));
-//                Point neighbourTile = unvisitedNeighbours.pop();
                 int xOffset = neighbourTile.x - tile.x;
                 int yOffset = neighbourTile.y - tile.y;
 
@@ -246,7 +253,6 @@ public class LevelGenerator {
             if(!firstIteration) {
                 this.cells.put(connector, 0);
                 LinkedList<Room> rooms = getRoomsWithConnector(connector);
-//                Room room = rooms.get(r.nextInt(rooms.size()));
                 if(!rooms.isEmpty()) {
                     for(Room tmpRoom : rooms) {
                         LinkedList<Point> newConnectors = new LinkedList<>();
@@ -254,7 +260,6 @@ public class LevelGenerator {
                             if(!isTouchingMainRegion(roomConnector)) newConnectors.add(roomConnector);
                         }
                         tmpRoom.setConnectors(newConnectors);
-//                    room.clearConnectors();
                     }
 
                 }
@@ -365,43 +370,6 @@ public class LevelGenerator {
         return wallSides >= 3;
     }
 
-    public void render(Graphics g) {
-        g.setColor(COLOR_PALETTE.yellow.color);
-//        for (Room room : this.rooms) {
-//            for(Point connection : room.connectors) {
-//                g.drawLine(connection.x, connection.y, connection.x, connection.y);
-//            }
-//        }
-//        for (Point p : this.mainRegion) {
-//            g.drawLine(p.x, p.y, p.x, p.y);
-//        }
-
-        g.setColor(COLOR_PALETTE.salmon.color);
-        g.drawRect(mainRoom.rect.x, mainRoom.rect.y, mainRoom.rect.width-1, mainRoom.rect.height-1);
-
-        g.setFont(Fonts.default_fonts.get(4));
-        g.setColor(COLOR_PALETTE.light_green.color);
-//        for (Rectangle room : this.rooms) {
-//            if (Game.DEBUG_MODE) {
-//                g.drawString(room.toString(), room.x, room.y);
-//            }
-//            g.drawRect(room.x, room.y, room.width, room.height);
-//        }
-//        for (Rectangle room : this.rooms) {
-//            if (Game.DEBUG_MODE) {
-//                g.drawString(room.toString(), room.x * 16, room.y * 16);
-//            }
-//            g.drawRect(room.x * 16, room.y * 16, room.width * 16, room.height * 16);
-//        }
-
-        for (Point coord : this.cells.keySet()) {
-            if (this.cells.get(coord) == 1) {
-                g.drawRect(coord.x * 16 + 100, coord.y * 16 + 100, 16, 16);
-                g.drawLine(coord.x, coord.y, coord.x, coord.y);
-            }
-        }
-    }
-
     private boolean isInsideGeneration(Rectangle rect) {
         return rect.x > 0 && rect.y > 0 && rect.x + rect.width < GEN_WIDTH && rect.y + rect.height < GEN_HEIGHT;
     }
@@ -417,4 +385,34 @@ public class LevelGenerator {
         return this.r.nextInt(high - low) + low;
     }
 
+    public LinkedList<Room> getRooms() {
+        return this.rooms;
+    }
+
+    public HashMap<Point, Integer> getDungeonInCells() {
+        return cells;
+    }
+
+    public Room getMainRoom() {
+        return mainRoom;
+    }
+
+    public LinkedList<GameObject> getDungeonInTiles(TEXTURE_LIST tileSheet) {
+        LinkedList<GameObject> ret = new LinkedList<>();
+        for(Room room : this.rooms) {
+            ret.addAll(getTilesFromRoom(tileSheet, room));
+        }
+        return ret;
+    }
+
+    private LinkedList<GameObject> getTilesFromRoom(TEXTURE_LIST tileSheet, Room room) {
+        LinkedList<GameObject> ret = new LinkedList<>();
+        Rectangle rect = room.rect;
+        for (int y = rect.y; y < rect.y + rect.height; y++) {
+            for (int x = rect.x; x < rect.x + rect.width; x++) {
+                ret.add(new Tile_Static(x * 16, y * 16, 2, new Texture(tileSheet, 13, 1)));
+            }
+        }
+        return ret;
+    }
 }

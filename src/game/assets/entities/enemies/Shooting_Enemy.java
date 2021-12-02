@@ -89,8 +89,9 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable, HUD_R
                 Game.gameController.getHandler().findAndRemoveObject(this);
             }
             if(!hasDroppedItems) {
-                for(Orb orb : EnemyDrops.getSimpleDrops(x, y, 1, ID.Orb)) {
-                    Game.gameController.getActiveLevel().getActiveRoom().addObject(orb);
+                for (Orb orb : EnemyDrops.getSimpleDrops(x, y, 1, ID.Orb)) {
+                    // TODO add dropped orbs
+//                    Game.gameController.getActiveLevel().getActiveRoom().addObject(orb);
                 }
                 hasDroppedItems = true;
             }

@@ -27,6 +27,7 @@ public class EnergyOrb extends Orb{
     @Override
     public void triggered(Player player) {
         this.robot.addEnergy(energyAmount);
-        Game.gameController.getActiveLevel().getActiveRoom().removeObject(this);
+        // TODO remove orb
+//        Game.gameController.getActiveLevel().getActiveRoom().removeObject(this);
     }
 }
