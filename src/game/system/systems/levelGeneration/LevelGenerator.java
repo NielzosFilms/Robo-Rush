@@ -5,16 +5,17 @@ import game.textures.Fonts;
 
 import java.awt.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LevelGenerator {
 
     private Long seed;
 
     // sizes in tiles = 16
-    private static final Integer GEN_WIDTH = 71; // needs to be odd
-    private static final Integer GEN_HEIGHT = 71; // needs to be odd
+    private static final Integer GEN_WIDTH = 31; // needs to be odd
+    private static final Integer GEN_HEIGHT = 31; // needs to be odd
 
-    private static final Integer ROOM_MIN_SIZE = 11, ROOM_MAX_SIZE = 25, ROOM_ATTEMPTS = 2000;
+    private static final Integer ROOM_MIN_SIZE = 7, ROOM_MAX_SIZE = 27, ROOM_ATTEMPTS = 2000;
 
     private static final Point[] DIRECTIONS = {
             new Point(0, -1),
@@ -52,6 +53,7 @@ public class LevelGenerator {
 
         this.seed = new Random().nextLong();
 //        this.seed = -7022676857325916674L;
+//        this.seed = 106334210852436970L;
         if (seed != null) {
             setSeed(this.seed);
         }
@@ -80,14 +82,25 @@ public class LevelGenerator {
     }
 
     private void createRooms() {
+        //create mainRoom
+        int width = ROOM_MIN_SIZE;
+        int height = ROOM_MIN_SIZE;
+        int x = getRandNumBetw(0, GEN_WIDTH - width - 1);
+        int y = getRandNumBetw(0, GEN_HEIGHT - height - 1);
+        if (x % 2 == 0) x += 1;
+        if (y % 2 == 0) y += 1;
+        Rectangle mainRoomRect = new Rectangle(x, y, width, height);
+        Room mainRoom = new Room(mainRoomRect);
+        this.mainRoom = mainRoom;
+        this.rooms.add(mainRoom);
         for (int i = 0; i < ROOM_ATTEMPTS; i++) {
-            int randW = getRandNumBetw(ROOM_MIN_SIZE, ROOM_MAX_SIZE - 1);
             int randH = getRandNumBetw(ROOM_MIN_SIZE, ROOM_MAX_SIZE - 1);
+            int randW = getRandNumBetw(randH == ROOM_MIN_SIZE ? ROOM_MIN_SIZE + 2 : ROOM_MIN_SIZE, ROOM_MAX_SIZE - 1);
             int randX = getRandNumBetw(0, GEN_WIDTH - randW - 1);
             int randY = getRandNumBetw(0, GEN_WIDTH - randH - 1);
             // Values need to be all odd for maze to be valid
-            if (randW % 2 == 0) randW += 1;
             if (randH % 2 == 0) randH += 1;
+            if (randW % 2 == 0) randW += 1;
             if (randX % 2 == 0) randX += 1;
             if (randY % 2 == 0) randY += 1;
             Rectangle room = new Rectangle(randX, randY, randW, randH);
@@ -212,10 +225,14 @@ public class LevelGenerator {
     }
 
     private void makeConnections() {
-        this.mainRoom = this.rooms.get(getRandNumBetw(0, this.rooms.size()));
+//        this.mainRoom = this.rooms.get(getRandNumBetw(0, this.rooms.size()));
         Point connector = mainRoom.connectors.get(getRandNumBetw(0, mainRoom.connectors.size()));
 
-        mainRoom.setConnectors(new LinkedList<>());
+        LinkedList<Point> newMainRoomConnectors = new LinkedList<>();
+        for(Point conn : this.mainRoom.connectors) {
+            if(conn.x == connector.x || conn.y == connector.y) newMainRoomConnectors.add(conn);
+        }
+        mainRoom.setConnectors(newMainRoomConnectors);
         mainRoom.setConnector(connector);
 
         this.mainRegion.add(connector);
@@ -228,14 +245,18 @@ public class LevelGenerator {
         while (!connectors.isEmpty() || firstIteration) {
             if(!firstIteration) {
                 this.cells.put(connector, 0);
-                Room room = getRoomWithConnector(connector);
-                if(room != null) {
-                    room.setConnector(connector);
-                    LinkedList<Point> newConnectors = new LinkedList<>();
-                    for(Point roomConnector : room.connectors) {
-                        if(!isTouchingMainRegion(roomConnector)) newConnectors.add(roomConnector);
+                LinkedList<Room> rooms = getRoomsWithConnector(connector);
+//                Room room = rooms.get(r.nextInt(rooms.size()));
+                if(!rooms.isEmpty()) {
+                    for(Room tmpRoom : rooms) {
+                        LinkedList<Point> newConnectors = new LinkedList<>();
+                        for(Point roomConnector : tmpRoom.connectors) {
+                            if(!isTouchingMainRegion(roomConnector)) newConnectors.add(roomConnector);
+                        }
+                        tmpRoom.setConnectors(newConnectors);
+//                    room.clearConnectors();
                     }
-                    room.setConnectors(newConnectors);
+
                 }
             }
 
@@ -298,11 +319,12 @@ public class LevelGenerator {
         return false;
     }
 
-    private Room getRoomWithConnector(Point connector) {
+    private LinkedList<Room> getRoomsWithConnector(Point connector) {
+        LinkedList<Room> ret = new LinkedList<>();
         for (Room room : this.rooms) {
-            if (room.connectors.contains(connector)) return room;
+            if (room.connectors.contains(connector)) ret.add(room);
         }
-        return null;
+        return ret;
     }
 
     private void removeDeadEnds() {
@@ -354,6 +376,9 @@ public class LevelGenerator {
 //            g.drawLine(p.x, p.y, p.x, p.y);
 //        }
 
+        g.setColor(COLOR_PALETTE.salmon.color);
+        g.drawRect(mainRoom.rect.x, mainRoom.rect.y, mainRoom.rect.width-1, mainRoom.rect.height-1);
+
         g.setFont(Fonts.default_fonts.get(4));
         g.setColor(COLOR_PALETTE.light_green.color);
 //        for (Rectangle room : this.rooms) {
@@ -371,7 +396,7 @@ public class LevelGenerator {
 
         for (Point coord : this.cells.keySet()) {
             if (this.cells.get(coord) == 1) {
-//                g.drawRect(coord.x * 16, coord.y * 16, 16, 16);
+                g.drawRect(coord.x * 16 + 100, coord.y * 16 + 100, 16, 16);
                 g.drawLine(coord.x, coord.y, coord.x, coord.y);
             }
         }
