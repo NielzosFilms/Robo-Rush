@@ -399,8 +399,11 @@ public class LevelGenerator {
 
     public LinkedList<GameObject> getDungeonInTiles(TEXTURE_LIST tileSheet) {
         LinkedList<GameObject> ret = new LinkedList<>();
-        for(Room room : this.rooms) {
-            ret.addAll(getTilesFromRoom(tileSheet, room));
+//        for(Room room : this.rooms) {
+//            ret.addAll(getTilesFromRoom(tileSheet, room));
+//        }
+        for(Point cell : this.cells.keySet()) {
+            ret.add(new Tile_Static(cell.x * 16, cell.y * 16, 2, this.cells.get(cell) == 0 ? new Texture(tileSheet, 13, 1) : new Texture(tileSheet, 1, 0)));
         }
         return ret;
     }
