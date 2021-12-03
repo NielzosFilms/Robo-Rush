@@ -41,4 +41,8 @@ public abstract class Level {
     public LinkedList<GameObject> getObjects() {
         return this.objects;
     }
+
+    public LevelGenerator getGenerator() {
+        return this.generator;
+    }
 }

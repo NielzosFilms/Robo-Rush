@@ -21,8 +21,6 @@ public class Level_1 extends Level {
     protected void generateLevel(Random rand) {
         this.generator.generate();
         // convert the generation to tiles and objects;
-//        this.objects.add(new Tile_Static(16, 0, 2, new Texture(TEXTURE_LIST.dungeon, 13, 1)));
         this.objects.addAll(this.generator.getDungeonInTiles(TEXTURE_LIST.dungeon));
-//        this.objects.add(this.generator.getDungeonInTiles(TEXTURE_LIST.dungeon).get(0));
     }
 }

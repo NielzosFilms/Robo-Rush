@@ -13,6 +13,7 @@ import game.system.systems.gameObject.GameObject;
 import game.system.systems.hitbox.HitboxSystem;
 import game.system.systems.hud.HUD;
 import game.system.systems.levelGeneration.LevelGenerator;
+import game.system.systems.levelGeneration.Room;
 import game.system.systems.lighting.LightingSystem;
 import game.system.systems.particles.ParticleSystem;
 import game.textures.Textures;
@@ -140,6 +141,7 @@ public class GameController implements Serializable {
 
     public void generate() {
         loaded = false;
+//        this.player = new Character_Robot((int)mainRoom.rect.getCenterX(), (int)mainRoom.rect.getCenterY(), 10);
         this.player = new Character_Robot(0, 0, 10);
         this.handler.object_entities.clear();
         setRequirements(Game.textures, Game.keyInput, Game.mouseInput);
@@ -155,6 +157,9 @@ public class GameController implements Serializable {
 
         active_level = new Level_1();
         active_level.generate();//6092317668945018905L);
+        Room mainRoom = active_level.getGenerator().getMainRoom();
+        this.player.setX((int)mainRoom.rect.getCenterX() * 16);
+        this.player.setY((int)mainRoom.rect.getCenterY() * 16);
 
 
 //        this.gen = new LevelGenerator();

@@ -1,7 +1,9 @@
 package game.system.systems.levelGeneration;
 
+import game.assets.objects.BoundsObject;
 import game.assets.tiles.Tile_Static;
 import game.assets.tiles.tile.Tile;
+import game.system.helpers.Offsets;
 import game.system.systems.gameObject.GameObject;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
@@ -399,13 +401,127 @@ public class LevelGenerator {
 
     public LinkedList<GameObject> getDungeonInTiles(TEXTURE_LIST tileSheet) {
         LinkedList<GameObject> ret = new LinkedList<>();
-//        for(Room room : this.rooms) {
-//            ret.addAll(getTilesFromRoom(tileSheet, room));
-//        }
-        for(Point cell : this.cells.keySet()) {
-            ret.add(new Tile_Static(cell.x * 16, cell.y * 16, 2, this.cells.get(cell) == 0 ? new Texture(tileSheet, 13, 1) : new Texture(tileSheet, 1, 0)));
+
+        HashMap<Point, Integer> filteredCells = new HashMap<>();
+        for(Point cell : this.cells.keySet()) if(shouldBeTile(cell)) filteredCells.put(cell, this.cells.get(cell));
+
+        for(Point cell : filteredCells.keySet()) {
+            if(filteredCells.get(cell) == 1) {
+                ret.add(new BoundsObject(cell.x * 16, cell.y * 16, 16, 16));
+                boolean top = cellHasSameNeighbour(filteredCells, cell, 0, -1);
+                boolean bot = cellHasSameNeighbour(filteredCells, cell, 0, 1);
+                boolean rgt = cellHasSameNeighbour(filteredCells, cell, 1, 0);
+                boolean lft = cellHasSameNeighbour(filteredCells, cell, -1, 0);
+
+                Texture texture = new Texture(tileSheet, 0, 1);
+                if(top && bot && rgt) {
+                    texture.setX(3);
+                    texture.setY(1);
+                } else if(top && bot && lft) {
+                    texture.setX(3);
+                    texture.setY(0);
+                } else if(lft && rgt && top) {
+                    texture.setX(1);
+                    texture.setY(0);
+                    // wall
+//                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 + 16, 2, new Texture(tileSheet, 1, 1)));
+                } else if(lft && rgt && bot) {
+                    texture.setX(4);
+                    texture.setY(0);
+                } else if(lft && rgt) {
+                    texture.setX(1);
+                    texture.setY(0);
+                    // wall
+//                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 + 16, 2, new Texture(tileSheet, 1, 1)));
+                } else if(top && bot) {
+                    texture.setX(0);
+                    texture.setY(1);
+                } else if(top && rgt) {
+                    texture.setX(3);
+                    texture.setY(3);
+                } else if(top && lft) {
+                    texture.setX(3);
+                    texture.setY(2);
+                } else if(bot && rgt) {
+                    texture.setX(3);
+                    texture.setY(1);
+                } else if(bot && lft) {
+                    texture.setX(3);
+                    texture.setY(0);
+                } else if(top) {
+                    texture.setX(0);
+                    texture.setY(2);
+                } else if(bot) {
+                    texture.setX(0);
+                    texture.setY(0);
+                } else if(lft) {
+                    texture.setX(3);
+                    texture.setY(2);
+                } else if(rgt) {
+                    texture.setX(3);
+                    texture.setY(3);
+                }
+                ret.add(new Tile_Static(cell.x * 16, cell.y * 16, 2, texture));
+            } else {
+                boolean top = cellHasSameNeighbour(filteredCells, cell, 0, -1);
+                boolean bot = cellHasSameNeighbour(filteredCells, cell, 0, 1);
+                boolean rgt = cellHasSameNeighbour(filteredCells, cell, 1, 0);
+                boolean lft = cellHasSameNeighbour(filteredCells, cell, -1, 0);
+
+                Texture texture = new Texture(tileSheet, 13, 1);
+                if(top && bot && lft && rgt) {
+                    texture.setX(13);
+                    texture.setY(1);
+                } else if(top && bot && rgt) {
+                    texture.setX(12);
+                    texture.setY(1);
+                } else if(top && bot && lft) {
+                    texture.setX(14);
+                    texture.setY(1);
+                } else if(rgt && lft && top) {
+                    texture.setX(13);
+                    texture.setY(2);
+                } else if(rgt && lft && bot) {
+                    texture.setX(13);
+                    texture.setY(0);
+                } else if(lft && bot) {
+                    texture.setX(14);
+                    texture.setY(0);
+                } else if(top && lft) {
+                    texture.setX(14);
+                    texture.setY(2);
+                } else if(rgt && top) {
+                    texture.setX(12);
+                    texture.setY(2);
+                } else if(bot && rgt) {
+                    texture.setX(12);
+                    texture.setY(0);
+                }
+                ret.add(new Tile_Static(cell.x * 16, cell.y * 16, 1, texture));
+            }
         }
         return ret;
+    }
+
+    private boolean shouldBeTile(Point cell) {
+        int neighbourWalls = 0;
+        for(Point offset : Offsets.all_offsets) {
+            Point offsetCell = new Point(cell.x + offset.x, cell.y + offset.y);
+            if(this.cells.containsKey(offsetCell)) {
+                if(this.cells.get(offsetCell) == 1) neighbourWalls ++;
+            } else {
+                neighbourWalls++;
+            }
+        }
+        return neighbourWalls < 8;
+    }
+
+    private boolean cellHasSameNeighbour(HashMap<Point, Integer> cells, Point cell, int xOffset, int yOffset) {
+        Point offsetCell = new Point(cell.x + xOffset, cell.y + yOffset);
+        if(cells.containsKey(offsetCell)) {
+            return cells.get(cell).equals(cells.get(offsetCell));
+        }
+        return false;
     }
 
     private LinkedList<GameObject> getTilesFromRoom(TEXTURE_LIST tileSheet, Room room) {
