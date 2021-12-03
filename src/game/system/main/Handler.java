@@ -1,15 +1,12 @@
 package game.system.main;
 
-import game.assets.tiles.tile.Tile;
 import game.enums.ID;
-import game.system.helpers.Logger;
+import game.system.helpers.Helpers;
 import game.system.systems.gameObject.*;
-import game.system.systems.lighting.Light;
 import game.system.systems.particles.ParticleSystem;
 
 import java.awt.*;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Handler implements Serializable {
@@ -38,12 +35,6 @@ public class Handler implements Serializable {
 			for (int i = 0; i < list.size(); i++) {
 				GameObject tempObject = list.get(i);
 				tempObject.tick();
-//				if (tempObject.getId() == ID.Player) {
-//					tempObject.tick();
-//				} else {
-//					gameController.addEntityToActiveRoom(tempObject);
-//					list.remove(tempObject);
-//				}
 			}
 		}
 
@@ -53,27 +44,9 @@ public class Handler implements Serializable {
 				tempObject.tick();
 			}
 		}
-
-//		for (Light light : lights) {
-//			if(world.addLightToChunk(light)) lights.remove(light);
-//		}
-
-//		for (int i=0; i<tiles.size(); i++) {
-//			Tile tile = tiles.get(i);
-//			Chunk chunk = world.getChunkWithCoordsPoint(world.getChunkPointWithCoords(tile.getX(), tile.getY()));
-//			if(chunk != null) {
-//				tile.setChunk(chunk);
-//				if(!chunk.tileExists(tile)) {
-//					chunk.addTile(tile);
-//				}
-//				tiles.remove(tile);
-//			}
-//		}
 	}
 
 	public void render(Graphics g, int width, int height) {
-		int camX = (int)-cam.getX();
-		int camY = (int)-cam.getY();
 		LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
 
 		// RENDER
@@ -81,33 +54,17 @@ public class Handler implements Serializable {
 		for (int i=0; i < all_game_objects.size(); i++) {
 			LinkedList<GameObject> layer_game_objects = new LinkedList<>(all_game_objects.get(i));
 
-			if(i == gameController.getPlayer().getZIndex()) {
-				//layer_game_objects.add(gameController.getPlayer());
-			}
-
 			if(i < object_entities.size()) {
 				layer_game_objects.addAll(object_entities.get(i));
 			}
 
 			LinkedList<GameObject> y_sorted = new LinkedList<>();
 			while (layer_game_objects.size() > 0) {
-//				GameObject lowest = layer_game_objects.get(0);
-//				int lowestY = lowest.getY();
-//				if (lowest instanceof Bounds) {
-//					if (((Bounds) lowest).getBounds() != null) {
-//						lowestY = (int) (((Bounds) lowest).getBounds().getY() + ((Bounds) lowest).getBounds().getHeight());
-//					}
-//				}
 				GameObject lowest = null;
 				int lowestY = 0;
-				for (int y = 0; y < layer_game_objects.size(); y++) {
-					GameObject new_ent = layer_game_objects.get(y);
-					int newY = new_ent.getY();
-//					if (new_ent instanceof Bounds) {
-//						if (((Bounds) new_ent).getBounds() != null) {
-//							newY = (int) (((Bounds) new_ent).getBounds().getY() + ((Bounds) new_ent).getBounds().getHeight());
-//						}
-//					}
+				for (GameObject new_ent : layer_game_objects) {
+					// TODO fix the y sorting; it works just looks wierd with the player
+					int newY = new_ent.getY() + 16;
 					if (newY < lowestY || lowest == null) {
 						lowest = new_ent;
 						lowestY = newY;
@@ -117,9 +74,16 @@ public class Handler implements Serializable {
 				layer_game_objects.remove(lowest);
 			}
 			for (GameObject entity : y_sorted) {
-				entity.render(g);
+				if(isEntityOnScreen(entity)) {
+					entity.render(g);
+				}
 			}
 		}
+	}
+
+	private boolean isEntityOnScreen(GameObject entity) {
+		Point screenCoords = Helpers.getScreenCoords(entity.getX(), entity.getY(), this.cam);
+		return screenCoords.x > -32 && screenCoords.y > -32  && screenCoords.x < Game.GAME_WIDTH && screenCoords.y < Game.GAME_WIDTH;
 	}
 
 	public void addObject(GameObject object) {
@@ -228,7 +192,6 @@ public class Handler implements Serializable {
 	public LinkedList<GameObject> getSelectableObjects() {
 		LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
 		LinkedList<GameObject> ret = new LinkedList<GameObject>();
-		// ID[] ids = { ID.Tree, ID.Mushroom, ID.Item, ID.Pebble };
 
 		for (LinkedList<GameObject> list : object_entities) {
 			for (int i = 0; i < list.size(); i++) {
@@ -281,20 +244,6 @@ public class Handler implements Serializable {
 		return ret;
 	}
 
-//	public LinkedList<Light> getLights() {
-//		LinkedList<Chunk> chunks_on_screen = world.getChunksOnScreen();
-//		LinkedList<Light> lights = new LinkedList<Light>();
-//
-//		for (Chunk chunk : chunks_on_screen) {
-//			LinkedList<Light> chunk_content = chunk.lights;
-//			for (Light obj : chunk_content) {
-//				lights.add(obj);
-//			}
-//		}
-//
-//		return lights;
-//	}
-
 	private Boolean isInArray(ID[] arr, ID val) {
 		for (ID tmp : arr) {
 			if (tmp == val) {
@@ -336,13 +285,6 @@ public class Handler implements Serializable {
 				}
 			}
 		}
-
-
-//		for(GameObject obj : chunks.get(z_index)) {
-//			if(obj.x == tileCoords.x && obj.y == tileCoords.y) {
-//				return true;
-//			}
-//		}
 
 		for(LinkedList<GameObject> list : all_game_objects) {
 			for(GameObject obj : list) {

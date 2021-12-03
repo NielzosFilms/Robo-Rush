@@ -94,7 +94,7 @@ public class HUD implements Serializable {
 		}
 
 		drawPlayerHud(g, this.player, new Point(0, Game.getGameSize().y - 20));
-		drawMiniMap(g, new Point(Game.getGameSize().x - 8*4, 25));
+//		drawMiniMap(g, new Point(Game.getGameSize().x - 8*4, 25));
 
 		if(Game.DEBUG_MODE) debugHUD.render(g, g2d);
 	}
@@ -122,16 +122,16 @@ public class HUD implements Serializable {
 	}
 
 	private void drawNeighbourRooms(Graphics g, Point draw_pos, Level active_level, int room_size, int minimap_view_depth) {
-		Point active_room = active_level.getActiveRoomKey();
-		for(int y=-minimap_view_depth; y<=minimap_view_depth; y++) {
-			for(int x=-minimap_view_depth; x<=minimap_view_depth; x++) {
-				Point current_room = new Point(active_room.x + x, active_room.y + y);
-				if(active_level.getRooms().containsKey(current_room)) {
-					active_level.getRooms().get(current_room)
-							.drawRoomMiniMap(g, draw_pos.x + x * room_size, draw_pos.y + y * room_size, room_size, active_room.equals(current_room));
-				}
-			}
-		}
+//		Point active_room = active_level.getActiveRoomKey();
+//		for(int y=-minimap_view_depth; y<=minimap_view_depth; y++) {
+//			for(int x=-minimap_view_depth; x<=minimap_view_depth; x++) {
+//				Point current_room = new Point(active_room.x + x, active_room.y + y);
+//				if(active_level.getRooms().containsKey(current_room)) {
+//					active_level.getRooms().get(current_room)
+//							.drawRoomMiniMap(g, draw_pos.x + x * room_size, draw_pos.y + y * room_size, room_size, active_room.equals(current_room));
+//				}
+//			}
+//		}
 	}
 
 	private int getWorldCoordX(int screen_x) {

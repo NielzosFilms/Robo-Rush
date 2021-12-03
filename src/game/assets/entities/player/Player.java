@@ -32,8 +32,8 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 		put(PLAYER_STAT.health, 8f);
 		put(PLAYER_STAT.rate_of_fire, 15f);
 		put(PLAYER_STAT.dash_speed, 8f);
-		put(PLAYER_STAT.dash_duration, 20f);
-		put(PLAYER_STAT.dash_cooldown, 60f);
+		put(PLAYER_STAT.dash_duration, 15f);
+		put(PLAYER_STAT.dash_cooldown, 45f);
 	}}, original_stats;
 	protected HealthBar_Player health_player = new HealthBar_Player(0, Game.getGameSize().y - 16, 0, Math.round(player_stats.get(PLAYER_STAT.health)), 1);
 

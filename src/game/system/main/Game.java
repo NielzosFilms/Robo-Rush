@@ -28,11 +28,11 @@ public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 852753996046178928L;
 	public static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final float RATIO = (float) SCREEN_SIZE.width / SCREEN_SIZE.height;
-	public static final int GAME_WIDTH = 16*24;
+	public static final int GAME_WIDTH = 16*18;//16*24;
 	public static final float SCALE_FINAL = 6.7f;
 	public static float scale = SCALE_FINAL;
-	public static final String TITLE = "Top Down Java Game";
-	public static final String VERSION = "ALPHA V 3.94 COMBAT & AI";
+	public static final String TITLE = "Robo Rush";
+	public static final String VERSION = "ALPHA V 4.0";
 
 	public static Window window;
 	public static Point windowSize = new Point(SCREEN_SIZE.width, SCREEN_SIZE.height);

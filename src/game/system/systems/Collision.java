@@ -3,11 +3,8 @@ package game.system.systems;
 import java.awt.*;
 import java.util.LinkedList;
 
-import game.assets.entities.bullets.EnemyBullet;
 import game.assets.entities.player.Player;
 import game.assets.entities.bullets.Bullet;
-import game.assets.items.Item_Ground;
-import game.assets.levels.RoomDoorTrigger;
 import game.enums.ID;
 import game.system.helpers.Helpers;
 import game.system.main.Game;

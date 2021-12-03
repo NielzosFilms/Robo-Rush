@@ -27,6 +27,7 @@ public class HealthOrb extends Orb {
     @Override
     public void triggered(Player player) {
         player.getHealth_player().addHealth(healthAmount);
-        Game.gameController.getActiveLevel().getActiveRoom().removeObject(this);
+        // TODO remove orb
+//        Game.gameController.getActiveLevel().getActiveRoom().removeObject(this);
     }
 }
