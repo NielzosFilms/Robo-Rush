@@ -1,6 +1,6 @@
 package game.system.systems.gameObject;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.io.Serializable;
 
 import game.enums.ID;

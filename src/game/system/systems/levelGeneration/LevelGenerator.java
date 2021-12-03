@@ -399,6 +399,12 @@ public class LevelGenerator {
         return cells;
     }
 
+    public HashMap<Point, Integer> getDungeonInCellsMinimal() {
+        HashMap<Point, Integer> filteredCells = new HashMap<>();
+        for(Point cell : this.cells.keySet()) if(shouldBeTile(cell)) filteredCells.put(cell, this.cells.get(cell));
+        return filteredCells;
+    }
+
     public Room getMainRoom() {
         return mainRoom;
     }
@@ -406,8 +412,7 @@ public class LevelGenerator {
     public LinkedList<GameObject> getDungeonInTiles(TEXTURE_LIST tileSheet) {
         LinkedList<GameObject> ret = new LinkedList<>();
 
-        HashMap<Point, Integer> filteredCells = new HashMap<>();
-        for(Point cell : this.cells.keySet()) if(shouldBeTile(cell)) filteredCells.put(cell, this.cells.get(cell));
+        HashMap<Point, Integer> filteredCells = getDungeonInCellsMinimal();
 
         for(Point cell : filteredCells.keySet()) {
             if(filteredCells.get(cell) == 1) {
