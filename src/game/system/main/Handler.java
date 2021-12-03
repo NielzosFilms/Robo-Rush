@@ -63,7 +63,8 @@ public class Handler implements Serializable {
 				GameObject lowest = null;
 				int lowestY = 0;
 				for (GameObject new_ent : layer_game_objects) {
-					int newY = new_ent.getY();
+					// TODO fix the y sorting; it works just looks wierd with the player
+					int newY = new_ent.getY() + 16;
 					if (newY < lowestY || lowest == null) {
 						lowest = new_ent;
 						lowestY = newY;

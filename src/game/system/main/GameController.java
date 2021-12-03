@@ -141,19 +141,11 @@ public class GameController implements Serializable {
 
     public void generate() {
         loaded = false;
-//        this.player = new Character_Robot((int)mainRoom.rect.getCenterX(), (int)mainRoom.rect.getCenterY(), 10);
         this.player = new Character_Robot(0, 0, 10);
         this.handler.object_entities.clear();
         setRequirements(Game.textures, Game.keyInput, Game.mouseInput);
 
-        //Logger.print("[seed]: " + this.seed);
         Logger.print("World Generating...");
-        //JsonStructureLoader jsonLoader = new JsonStructureLoader("assets/structures/dungeon_map.json");
-//        chunks = jsonLoader.getChunks();
-//        if(jsonLoader.getPlayerSpawn() != null) {
-//            getPlayer().setX(jsonLoader.getPlayerSpawn().x);
-//            getPlayer().setY(jsonLoader.getPlayerSpawn().y);
-//        }
 
         active_level = new Level_1();
         active_level.generate();//6092317668945018905L);
@@ -161,12 +153,6 @@ public class GameController implements Serializable {
         this.player.setX((int)mainRoom.rect.getCenterX() * 16);
         this.player.setY((int)mainRoom.rect.getCenterY() * 16);
 
-
-//        this.gen = new LevelGenerator();
-//        this.gen.generate();
-
-        //handler.addObject(new Enemy(80, 64, 10, ID.Enemy));
-        //handler.addObject(new Tree(64, 64, 10, ID.Tree, null));
         loaded = true;
     }
 

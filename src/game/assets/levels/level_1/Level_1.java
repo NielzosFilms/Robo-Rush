@@ -22,5 +22,8 @@ public class Level_1 extends Level {
         this.generator.generate();
         // convert the generation to tiles and objects;
         this.objects.addAll(this.generator.getDungeonInTiles(TEXTURE_LIST.dungeon));
+        for(Point connection : this.generator.getConnections()) {
+            this.objects.add(new Tile_Static(connection.x * 16, connection.y * 16, 10, new Texture(TEXTURE_LIST.dungeon, 6, 7)));
+        }
     }
 }

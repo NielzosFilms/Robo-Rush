@@ -40,12 +40,15 @@ public class LevelGenerator {
     Room mainRoom;
     LinkedList<Point> mainRegion;
 
+    LinkedList<Point> connections;
+
     private Random r = new Random();
 
     public LevelGenerator() {
         this.rooms = new LinkedList<>();
         this.cells = new HashMap<>();
         this.mainRegion = new LinkedList<>();
+        this.connections = new LinkedList<>();
 
         for (int y = 0; y < GEN_HEIGHT; y++) {
             for (int x = 0; x < GEN_WIDTH; x++) {
@@ -254,6 +257,7 @@ public class LevelGenerator {
         while (!connectors.isEmpty() || firstIteration) {
             if(!firstIteration) {
                 this.cells.put(connector, 0);
+                this.connections.add(connector);
                 LinkedList<Room> rooms = getRoomsWithConnector(connector);
                 if(!rooms.isEmpty()) {
                     for(Room tmpRoom : rooms) {
@@ -413,7 +417,7 @@ public class LevelGenerator {
                 boolean rgt = cellHasSameNeighbour(filteredCells, cell, 1, 0);
                 boolean lft = cellHasSameNeighbour(filteredCells, cell, -1, 0);
 
-                Texture texture = new Texture(tileSheet, 0, 1);
+                Texture texture = new Texture(tileSheet, 4, 1);
                 if(top && bot && rgt) {
                     texture.setX(3);
                     texture.setY(1);
@@ -524,14 +528,7 @@ public class LevelGenerator {
         return false;
     }
 
-    private LinkedList<GameObject> getTilesFromRoom(TEXTURE_LIST tileSheet, Room room) {
-        LinkedList<GameObject> ret = new LinkedList<>();
-        Rectangle rect = room.rect;
-        for (int y = rect.y; y < rect.y + rect.height; y++) {
-            for (int x = rect.x; x < rect.x + rect.width; x++) {
-                ret.add(new Tile_Static(x * 16, y * 16, 2, new Texture(tileSheet, 13, 1)));
-            }
-        }
-        return ret;
+    public LinkedList<Point> getConnections() {
+        return this.connections;
     }
 }
