@@ -72,6 +72,10 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 
 		initAnimations();
 
+		hurt.setCallback(() -> {hurt_animation = false;hurt.resetAnimation();});
+		dash_end.setCallback(() -> dashing = false);
+		blink.setCallback(() -> {blink.resetAnimation();idle_timer.resetTimer();});
+
 		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
 		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
 		items.add(new Item(new Texture(TEXTURE_LIST.items, 2, 0), ITEM_ID.power_up, new HashMap<>()));
@@ -217,19 +221,12 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 
 	protected void updateAnimations() {
 		if(hurt_animation) {
-			if(hurt.animationEnded()) {
-				hurt_animation = false;
-				hurt.resetAnimation();
-			}
 			hurt.runAnimation();
 		} else {
 			if(dashing) {
 				if(!dash.timerOver()) {
 					dash_start.runAnimation();
 				} else {
-					if(dash_end.animationEnded()) {
-						dashing = false;
-					}
 					dash_end.runAnimation();
 				}
 			} else {
@@ -238,10 +235,6 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 				if (velX == 0 && velY == 0) {
 					if (idle_timer.timerOver()) {
 						blink.runAnimation();
-						if (blink.animationEnded()) {
-							blink.resetAnimation();
-							idle_timer.resetTimer();
-						}
 					} else {
 						idle.runAnimation();
 					}
@@ -301,11 +294,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 
 	protected void drawPlayerAnimations(Graphics g, boolean mirror) {
 		if(hurt_animation) {
-			if(mirror) {
-				hurt.drawAnimationMirroredH(g, x, y);
-			} else {
-				hurt.drawAnimation(g, x, y);
-			}
+			drawAnimation(g, hurt, x, y, mirror);
 		} else {
 			if(dashing) {
 				if(!dash.timerOver()) {
@@ -316,42 +305,30 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 							g.drawImage(dash_idle.getTexure(), x, y, null);
 						}
 					} else {
-						if(mirror) {
-							dash_start.drawAnimationMirroredH(g, x, y);
-						} else {
-							dash_start.drawAnimation(g, x, y);
-						}
+						drawAnimation(g, dash_start, x, y, mirror);
 					}
 				} else {
-					if(mirror) {
-						dash_end.drawAnimationMirroredH(g, x, y);
-					} else {
-						dash_end.drawAnimation(g, x, y);
-					}
+					drawAnimation(g, dash_end, x, y, mirror);
 				}
 			} else {
 				if (velX == 0 && velY == 0) {
-					if (mirror) {
-						if (idle_timer.timerOver()) {
-							blink.drawAnimationMirroredH(g, x, y);
-						} else {
-							idle.drawAnimationMirroredH(g, x, y);
-						}
+					if(idle_timer.timerOver()) {
+						drawAnimation(g, blink, x, y, mirror);
 					} else {
-						if (idle_timer.timerOver()) {
-							blink.drawAnimation(g, x, y);
-						} else {
-							idle.drawAnimation(g, x, y);
-						}
+						drawAnimation(g, idle, x, y, mirror);
 					}
 				} else {
-					if (mirror) {
-						run.drawAnimationMirroredH(g, x, y);
-					} else {
-						run.drawAnimation(g, x, y);
-					}
+					drawAnimation(g, run, x, y, mirror);
 				}
 			}
+		}
+	}
+
+	private void drawAnimation(Graphics g, Animation animation, int x, int y, boolean mirror) {
+		if(mirror) {
+			animation.drawAnimationMirroredH(g, x, y);
+		} else {
+			animation.drawAnimation(g, x, y);
 		}
 	}
 
@@ -404,7 +381,8 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 
 	@Override
 	public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
-		health_player.subtractHealth(damage);
+//		health_player.subtractHealth(damage);
+		health_player.setHidden(false);
 		invincible_timer.resetTimer();
 		invincible_timer.setDelay(50);
 		Game.gameController.getCam().screenShake(2f, 6);

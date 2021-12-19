@@ -5,6 +5,7 @@ import game.assets.entities.player.Player;
 import game.assets.levels.def.Level;
 import game.assets.levels.level_1.Level_1;
 import game.enums.ID;
+import game.system.helpers.Helpers;
 import game.system.helpers.Logger;
 import game.system.inputs.KeyInput;
 import game.system.inputs.MouseInput;
@@ -168,10 +169,12 @@ public class GameController implements Serializable {
             ret.get(player_z_index).add(player);
 
         for(GameObject object : levelObjects) {
-            for (int i = ret.size(); i <= object.getZIndex(); i++) {
-                ret.add(new LinkedList<>());
+            if(isEntityOnScreen(object)){
+                for (int i = ret.size(); i <= object.getZIndex(); i++) {
+                    ret.add(new LinkedList<>());
+                }
+                ret.get(object.getZIndex()).add(object);
             }
-            ret.get(object.getZIndex()).add(object);
         }
 
         return ret;
@@ -258,5 +261,10 @@ public class GameController implements Serializable {
 
     public Level getActiveLevel() {
         return this.active_level;
+    }
+
+    private boolean isEntityOnScreen(GameObject entity) {
+        Point screenCoords = Helpers.getScreenCoords(entity.getX(), entity.getY(), this.cam);
+        return screenCoords.x > -32 && screenCoords.y > -32 && screenCoords.x < Game.GAME_WIDTH && screenCoords.y < Game.GAME_WIDTH;
     }
 }

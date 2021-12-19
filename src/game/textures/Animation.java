@@ -5,6 +5,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 
 public class Animation implements Serializable {
 
@@ -18,6 +19,8 @@ public class Animation implements Serializable {
 	
 	private Texture[] images;
 	private Texture currentImg;
+
+	private AnimationCallback animationCallback;
 	
 	public Animation(int speed, Texture... args) {
 		this.speed = speed;
@@ -29,12 +32,17 @@ public class Animation implements Serializable {
 		frames = args.length;
 		currentImg = images[0];
 	}
+
+	public void setCallback(AnimationCallback callback) {
+		this.animationCallback = callback;
+	}
 	
 	public void runAnimation() {
 		index++;
 		if(index >= speed) {
 			index = 0;
 			if(last_frame) {
+				if(animationCallback != null) animationCallback.callback();
 				ended = true;
 			}
 			nextFrame();

@@ -46,9 +46,9 @@ public class Window extends JApplet {
 			f.setUndecorated(true);
 
 			// Fix for ubuntu not fullscreen
-			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			GraphicsDevice device = env.getDefaultScreenDevice();
-			device.setFullScreenWindow(f);
+//			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//			GraphicsDevice device = env.getDefaultScreenDevice();
+//			device.setFullScreenWindow(f);
 		} else {
 			f.setPreferredSize(new Dimension(Math.round(width / 1.2f), Math.round(height / 1.2f)));
 			f.setResizable(true);

@@ -68,6 +68,9 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable, HUD_R
     public Shooting_Enemy(int x, int y) {
         super(x, y, Game.gameController.getPlayer().getZIndex(), ID.Enemy);
         attack_timer.resetTimer();
+        this.death.setCallback(() -> Game.gameController.getHandler().findAndRemoveObject(this));
+        this.attacking.setCallback(() -> {attacking.resetAnimation(); currentRunningAnimation = idleTargeting;});
+        this.hit.setCallback(() -> {hit.resetAnimation(); currentRunningAnimation = idleTargeting;});
     }
 
     @Override
@@ -85,9 +88,6 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable, HUD_R
             health.setHidden(true);
             this.velX = 0;
             this.velY = 0;
-            if(death.animationEnded()) {
-                Game.gameController.getHandler().findAndRemoveObject(this);
-            }
             if(!hasDroppedItems) {
                 for (Orb orb : EnemyDrops.getSimpleDrops(x, y, 1, ID.Orb)) {
                     // TODO add dropped orbs
@@ -101,23 +101,11 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable, HUD_R
             this.velY = ai.getVelY();
             if (ai.inCombat()) {
                 attack_timer.tick();
-                if((currentRunningAnimation == attacking || currentRunningAnimation == hit) && currentRunningAnimation.animationEnded()) {
-                    currentRunningAnimation = idleTargeting;
-                    attacking.resetAnimation();
-                    hit.resetAnimation();
-                }
                 if (attack_timer.timerOver()) {
                     currentRunningAnimation = attacking;
                     attack();
                     attack_timer.resetTimer();
                     attack_timer.setDelay(160);
-                }
-            } else {
-                attack_timer.resetTimer();
-                if((currentRunningAnimation == attacking || currentRunningAnimation == hit) && currentRunningAnimation.animationEnded()) {
-                    currentRunningAnimation = idle;
-                    attacking.resetAnimation();
-                    hit.resetAnimation();
                 }
             }
         }
@@ -130,9 +118,7 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable, HUD_R
     public void render(Graphics g) {
         g.setColor(COLOR_PALETTE.red.color);
 
-        if(!death.animationEnded()) {
-            currentRunningAnimation.drawAnimation(g, x, y, 16, 16);
-        }
+        currentRunningAnimation.drawAnimation(g, x, y, 16, 16);
     }
 
     @Override

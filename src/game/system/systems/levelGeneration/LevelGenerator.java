@@ -536,4 +536,8 @@ public class LevelGenerator {
     public LinkedList<Point> getConnections() {
         return this.connections;
     }
+
+    public Random getRandom() {
+        return this.r;
+    }
 }
