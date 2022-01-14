@@ -35,12 +35,12 @@ This can change.
 - [Joris ter Wolbeek](https://github.com/JoristerWolbeek/)
 
 ## Game Default Key Bindings
-| Key | Action |
-| --- | ------ |
-| `W,A,S,D` | Movement |
-| `SHIFT` | Dash |
-| `Left Click, Space` | Shoot |
-| `B` | Open inventory |
-| `ESC` | Pause game |
-| `F4` | Debug mode |
-| `F11` | Switch fullscreen / windowed |
+| Key                 | Action                       |
+|---------------------|------------------------------|
+| `W,A,S,D`           | Movement                     |
+| `SHIFT`             | Dash                         |
+| `Left Click, Space` | Shoot                        |
+| `B`                 | Open inventory               |
+| `ESC`               | Pause game                   |
+| `F4`                | Debug mode                   |
+| `F11`               | Switch fullscreen / windowed |
