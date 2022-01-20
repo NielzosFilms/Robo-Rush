@@ -93,6 +93,22 @@ public class Level_1 extends Level {
         rooms.remove(itemRoom2);
         distance = -1;
         furthest = null;
+
+
+        // get the furthest room from spawn
+        for(Room rm : rooms) {
+            double dist = Helpers.getDistanceBetweenBounds(itemRoom2.rect, rm.rect);
+            if(dist > distance) {
+                distance = dist;
+                furthest = rm;
+            }
+        }
+
+        Room itemRoom3 = new Room(new Rectangle(0, 0, 10, 10));
+        this.generator.addExtraStraightHallwayRoom(itemRoom3, furthest, 5, 10);
+        rooms.remove(itemRoom3);
+        distance = -1;
+        furthest = null;
     }
 
     private void addEnemies() {

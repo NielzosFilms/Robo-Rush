@@ -571,8 +571,7 @@ public class LevelGenerator {
                 Rectangle tmpRect = new Rectangle(startX + dir.x * i, startY + dir.y *i, extraRoom.rect.width, extraRoom.rect.height);
                 boolean collides = false;
                 for(Point cell : this.cells.keySet()) {
-                    boolean isWall = this.cells.get(cell) == 1;
-                    if(isWall && tmpRect.contains(cell)) {
+                    if(tmpRect.contains(cell) && this.cells.containsKey(cell)) {
                         collides = true;
                         break;
                     }
