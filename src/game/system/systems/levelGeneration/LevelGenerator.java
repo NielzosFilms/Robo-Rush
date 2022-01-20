@@ -540,4 +540,103 @@ public class LevelGenerator {
     public Random getRandom() {
         return this.r;
     }
+
+    public void putCell(int x, int y, boolean isWall) {
+        this.cells.put(new Point(x, y), isWall ? 1 : 0);
+    }
+
+    public void addExtraStraightHallwayRoom(Room extraRoom, Room roomToExtend, int minOffset, int maxOffset) {
+        int roomCenX = roomToExtend.rect.x + roomToExtend.rect.width/2;
+        int roomCenY = roomToExtend.rect.y + roomToExtend.rect.height/2;
+        int startX = roomCenX - extraRoom.rect.width/2;
+        int startY = roomCenY - extraRoom.rect.height/2;
+        Rectangle roomRect = null;
+        Point finalDirection = null;
+        int usedOffset = minOffset;
+        for(Point dir : DIRECTIONS) {
+            for(int i = minOffset; i < maxOffset; i++) {
+                if(dir.x > 0) {
+                    startX = roomToExtend.rect.x + roomToExtend.rect.width;
+                    startY = roomCenY - extraRoom.rect.height/2;
+                } else if(dir.x < 0) {
+                    startX = roomToExtend.rect.x - extraRoom.rect.width;
+                    startY = roomCenY - extraRoom.rect.height/2;
+                } else if(dir.y > 0) {
+                    startX = roomCenX - extraRoom.rect.width/2;
+                    startY = roomToExtend.rect.y + roomToExtend.rect.height;
+                } else if(dir.y < 0) {
+                    startX = roomCenX - extraRoom.rect.width/2;
+                    startY = roomToExtend.rect.y - extraRoom.rect.height;
+                }
+                Rectangle tmpRect = new Rectangle(startX + dir.x * i, startY + dir.y *i, extraRoom.rect.width, extraRoom.rect.height);
+                boolean collides = false;
+                for(Point cell : this.cells.keySet()) {
+                    boolean isWall = this.cells.get(cell) == 1;
+                    if(isWall && tmpRect.contains(cell)) {
+                        collides = true;
+                        break;
+                    }
+                }
+                if(!collides) {
+                    roomRect = tmpRect;
+                    finalDirection = dir;
+                    usedOffset = i;
+                    break;
+                }
+            }
+            if(roomRect != null) break;
+        }
+
+        // add the room
+        Rectangle roomMarginRect = new Rectangle(roomRect.x - 1, roomRect.y - 1, extraRoom.rect.width + 1, extraRoom.rect.height + 1);
+        extraRoom.rect.setLocation(roomRect.x, roomRect.y);
+        this.rooms.add(extraRoom);
+        for(int y = roomMarginRect.y; y <= roomMarginRect.y + roomMarginRect.height; y++) {
+            for(int x = roomMarginRect.x; x <= roomMarginRect.x + roomMarginRect.width; x++) {
+                if(isOnEdge(new Point(x, y), roomMarginRect)) {
+                    this.cells.put(new Point(x, y), 1);
+                } else {
+                    this.cells.put(new Point(x, y), 0);
+                }
+            }
+        }
+
+        // make the hallway
+        Point inverseDirection = new Point(finalDirection.x * -1, finalDirection.y * -1);
+        int hallwayStartX = extraRoom.rect.x + extraRoom.rect.width / 2;
+        int hallwayStartY = extraRoom.rect.y + extraRoom.rect.height / 2;
+
+        if(inverseDirection.x > 0) {
+            hallwayStartX = extraRoom.rect.x + extraRoom.rect.width;
+        } else if(inverseDirection.x < 0) {
+            hallwayStartX = extraRoom.rect.x - 1;
+        } else if(inverseDirection.y > 0) {
+            hallwayStartY = extraRoom.rect.y + extraRoom.rect.height;
+        } else if(inverseDirection.y < 0) {
+            hallwayStartY = extraRoom.rect.y - 1;
+        }
+
+        for(int i = 0; i < usedOffset; i++) {
+            if(inverseDirection.x == 0) {
+                putExtraCellPathPreference(new Point(hallwayStartX - 1, hallwayStartY + inverseDirection.y * i), 1);
+                putExtraCellPathPreference(new Point(hallwayStartX, hallwayStartY + inverseDirection.y * i), 0);
+                putExtraCellPathPreference(new Point(hallwayStartX + 1, hallwayStartY + inverseDirection.y * i), 1);
+            } else {
+                putExtraCellPathPreference(new Point(hallwayStartX + inverseDirection.x * i, hallwayStartY - 1), 1);
+                putExtraCellPathPreference(new Point(hallwayStartX + inverseDirection.x * i, hallwayStartY), 0);
+                putExtraCellPathPreference(new Point(hallwayStartX + inverseDirection.x * i, hallwayStartY + 1), 1);
+            }
+        }
+
+    }
+
+    private void putExtraCellPathPreference(Point cell, int state) {
+        if(this.cells.containsKey(cell)) {
+            if(state == 0 && this.cells.get(cell) == 1) {
+                this.cells.put(cell, state);
+            }
+        } else {
+            this.cells.put(cell, state);
+        }
+    }
 }

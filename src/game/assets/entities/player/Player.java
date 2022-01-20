@@ -30,7 +30,7 @@ public abstract class Player extends GameObject implements Bounds, Hitable, HUD_
 		put(PLAYER_STAT.move_speed, 1f);
 		put(PLAYER_STAT.damage, 1f);
 		put(PLAYER_STAT.health, 8f);
-		put(PLAYER_STAT.rate_of_fire, 15f);
+		put(PLAYER_STAT.rate_of_fire, 30f);
 		put(PLAYER_STAT.dash_speed, 8f);
 		put(PLAYER_STAT.dash_duration, 15f);
 		put(PLAYER_STAT.dash_cooldown, 45f);

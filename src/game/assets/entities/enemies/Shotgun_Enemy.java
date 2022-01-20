@@ -4,11 +4,9 @@ import game.assets.HealthBar;
 import game.assets.entities.bullets.EnemyBullet;
 import game.assets.entities.enemies.ai.AI_ACTION;
 import game.assets.entities.enemies.ai.Enemy_AI;
-import game.assets.entities.orbs.EnergyOrb;
 import game.assets.entities.orbs.Orb;
 import game.audio.SoundEffect;
 import game.enums.ID;
-import game.system.helpers.Helpers;
 import game.system.helpers.Timer;
 import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
@@ -24,53 +22,53 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class Shooting_Enemy extends GameObject implements Bounds, Hitable, HUD_Rendering {
+public class Shotgun_Enemy extends GameObject implements Bounds, Hitable, HUD_Rendering {
     Enemy_AI ai = new Enemy_AI(Game.gameController.getPlayer(), this);
 
-    private Animation idle = new Animation(8,
-            new Texture(TEXTURE_LIST.enemy_1, 0, 0),
-            new Texture(TEXTURE_LIST.enemy_1, 1, 0),
-            new Texture(TEXTURE_LIST.enemy_1, 2, 0),
-            new Texture(TEXTURE_LIST.enemy_1, 3, 0)
-            );
+//    private Animation idle = new Animation(8,
+//            new Texture(TEXTURE_LIST.enemy_1, 0, 0),
+//            new Texture(TEXTURE_LIST.enemy_1, 1, 0),
+//            new Texture(TEXTURE_LIST.enemy_1, 2, 0),
+//            new Texture(TEXTURE_LIST.enemy_1, 3, 0)
+//            );
+//
+//    private Animation idleTargeting = new Animation(8,
+//            new Texture(TEXTURE_LIST.enemy_1, 0, 1),
+//            new Texture(TEXTURE_LIST.enemy_1, 1, 1),
+//            new Texture(TEXTURE_LIST.enemy_1, 2, 1),
+//            new Texture(TEXTURE_LIST.enemy_1, 3, 1)
+//    );
+//
+//    private Animation attacking = new Animation(8,
+//            new Texture(TEXTURE_LIST.enemy_1, 1, 2),
+//            new Texture(TEXTURE_LIST.enemy_1, 2, 2),
+//            new Texture(TEXTURE_LIST.enemy_1, 3, 2)
+//    );
+//
+//    private Animation hit = new Animation(3,
+//            new Texture(TEXTURE_LIST.enemy_1, 1, 3)
+//    );
+//
+//    private Animation death = new Animation(5,
+//            new Texture(TEXTURE_LIST.enemy_1, 0, 4),
+//            new Texture(TEXTURE_LIST.enemy_1, 1, 4),
+//            new Texture(TEXTURE_LIST.enemy_1, 2, 4),
+//            new Texture(TEXTURE_LIST.enemy_1, 3, 4)
+//    );
 
-    private Animation idleTargeting = new Animation(8,
-            new Texture(TEXTURE_LIST.enemy_1, 0, 1),
-            new Texture(TEXTURE_LIST.enemy_1, 1, 1),
-            new Texture(TEXTURE_LIST.enemy_1, 2, 1),
-            new Texture(TEXTURE_LIST.enemy_1, 3, 1)
-    );
+//    private Animation currentRunningAnimation = idle;
 
-    private Animation attacking = new Animation(8,
-            new Texture(TEXTURE_LIST.enemy_1, 1, 2),
-            new Texture(TEXTURE_LIST.enemy_1, 2, 2),
-            new Texture(TEXTURE_LIST.enemy_1, 3, 2)
-    );
-
-    private Animation hit = new Animation(3,
-            new Texture(TEXTURE_LIST.enemy_1, 1, 3)
-    );
-
-    private Animation death = new Animation(5,
-            new Texture(TEXTURE_LIST.enemy_1, 0, 4),
-            new Texture(TEXTURE_LIST.enemy_1, 1, 4),
-            new Texture(TEXTURE_LIST.enemy_1, 2, 4),
-            new Texture(TEXTURE_LIST.enemy_1, 3, 4)
-    );
-
-    private Animation currentRunningAnimation = idle;
-
-    private Timer attack_timer = new Timer(60 + new Random().nextInt(4) * 20);
-    private HealthBar health = new HealthBar(0, 0, 0, 3, 1);
+    private Timer attack_timer = new Timer(120 + new Random().nextInt(4) * 20);
+    private HealthBar health = new HealthBar(0, 0, 0, 8, 1);
 
     private boolean hasDroppedItems = false;
 
-    public Shooting_Enemy(int x, int y) {
+    public Shotgun_Enemy(int x, int y) {
         super(x, y, Game.gameController.getPlayer().getZIndex(), ID.Enemy);
         attack_timer.resetTimer();
-        this.death.setCallback(() -> Game.gameController.getHandler().findAndRemoveObject(this));
-        this.attacking.setCallback(() -> {attacking.resetAnimation(); currentRunningAnimation = idleTargeting;});
-        this.hit.setCallback(() -> {hit.resetAnimation(); currentRunningAnimation = idleTargeting;});
+//        this.death.setCallback(() -> Game.gameController.getHandler().findAndRemoveObject(this));
+//        this.attacking.setCallback(() -> {attacking.resetAnimation(); currentRunningAnimation = idleTargeting;});
+//        this.hit.setCallback(() -> {hit.resetAnimation(); currentRunningAnimation = idleTargeting;});
     }
 
     @Override
@@ -84,10 +82,11 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable, HUD_R
 
         health.tick();
         if (health.dead()) {
-            currentRunningAnimation = death;
+//            currentRunningAnimation = death;
             health.setHidden(true);
             this.velX = 0;
             this.velY = 0;
+            Game.gameController.getHandler().findAndRemoveObject(this);
             if(!hasDroppedItems) {
                 for (Orb orb : EnemyDrops.getSimpleDrops(x, y, 1, ID.Orb)) {
                     // TODO add dropped orbs
@@ -102,67 +101,72 @@ public class Shooting_Enemy extends GameObject implements Bounds, Hitable, HUD_R
             if (ai.inCombat()) {
                 attack_timer.tick();
                 if (attack_timer.timerOver()) {
-                    currentRunningAnimation = attacking;
+//                    currentRunningAnimation = attacking;
                     attack();
                     attack_timer.resetTimer();
-                    attack_timer.setDelay(60 + new Random().nextInt(4) * 20);
+                    attack_timer.setDelay(120 + new Random().nextInt(4) * 20);
                 }
             }
         }
         health.setXY(x-4, y-4);
 
-        currentRunningAnimation.runAnimation();
+//        currentRunningAnimation.runAnimation();
     }
 
     @Override
     public void render(Graphics g) {
-        g.setColor(COLOR_PALETTE.red.color);
-
-        currentRunningAnimation.drawAnimation(g, x, y, 16, 16);
+        g.setColor(COLOR_PALETTE.oak.color);
+        g.fillRect(x, y, 16, 16);
+//        currentRunningAnimation.drawAnimation(g, x, y, 16, 16);
     }
 
     @Override
     public Rectangle getBounds() {
         if(health.dead()) return null;
-        return new Rectangle(x, y, 16, 10);
+        return new Rectangle(x, y, 16, 16);
     }
 
     @Override
     public Rectangle getTopBounds() {
         if(health.dead()) return null;
-        return new Rectangle(x+2, y, 12, 5);
+        return new Rectangle(x+2, y, 12, 8);
     }
 
     @Override
     public Rectangle getBottomBounds() {
         if(health.dead()) return null;
-        return new Rectangle(x+2, y+5, 12, 5);
+        return new Rectangle(x+2, y+8, 12, 8);
     }
 
     @Override
     public Rectangle getLeftBounds() {
         if(health.dead()) return null;
-        return new Rectangle(x, y+2, 2, 6);
+        return new Rectangle(x, y+2, 2, 12);
     }
 
     @Override
     public Rectangle getRightBounds() {
         if(health.dead()) return null;
-        return new Rectangle(x+14, y+2, 2, 6);
+        return new Rectangle(x+14, y+2, 2, 12);
     }
 
     public void attack() {
         SoundEffect.enemy_attack.play();
         int target_angle = ai.getTargetAngle();
-        Game.gameController.getHandler().addObject(new EnemyBullet(x+8, y+8, z_index, target_angle, this));
+        float max_vel = 1.2f;
+        Game.gameController.getHandler().addObject(new EnemyBullet(x+8, y+8, z_index, target_angle - 30, max_vel, this));
+        Game.gameController.getHandler().addObject(new EnemyBullet(x+8, y+8, z_index, target_angle - 15, max_vel, this));
+        Game.gameController.getHandler().addObject(new EnemyBullet(x+8, y+8, z_index, target_angle, max_vel, this));
+        Game.gameController.getHandler().addObject(new EnemyBullet(x+8, y+8, z_index, target_angle + 15, max_vel, this));
+        Game.gameController.getHandler().addObject(new EnemyBullet(x+8, y+8, z_index, target_angle + 30, max_vel, this));
         ai.setVelX((float) (-1.5f * Math.cos(Math.toRadians(target_angle))));
         ai.setVelY((float) (-1.5f * Math.sin(Math.toRadians(target_angle))));
     }
 
     @Override
     public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
-        hit.resetAnimation();
-        currentRunningAnimation = hit;
+//        hit.resetAnimation();
+//        currentRunningAnimation = hit;
         health.subtractHealth(damage);
         SoundEffect.enemy_hurt.play();
         ai.setVelX((float) (knockback * Math.cos(Math.toRadians(knockback_angle))));

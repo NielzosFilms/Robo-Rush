@@ -17,6 +17,14 @@ public class EnemyBullet extends Bullet {
         updateVelocity();
     }
 
+    public EnemyBullet(int x, int y, int z_index, int angle, float max_vel, GameObject created_by) {
+        super(x, y, z_index, angle, created_by);
+        this.id = ID.EnemyBullet;
+        this.tex = new Texture(TEXTURE_LIST.bullets, 0, 2);
+        this.max_vel = max_vel;
+        updateVelocity();
+    }
+
     @Override
     public Rectangle getBounds() {
         return new Rectangle(x-3, y-3, 6, 6);
