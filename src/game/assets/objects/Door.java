@@ -21,6 +21,7 @@ public class Door extends GameObject implements Bounds {
     public Door(int x, int y, int z_index, boolean vertical) {
         super(x, y, z_index, ID.Door);
         this.mayOpen = true;
+        this.vertical = vertical;
     }
 
     @Override
