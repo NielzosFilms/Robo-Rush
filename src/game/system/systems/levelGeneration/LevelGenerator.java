@@ -430,18 +430,36 @@ public class LevelGenerator {
                     texture.setX(3);
                     texture.setY(0);
                 } else if(lft && rgt && top) {
-                    texture.setX(1);
-                    texture.setY(0);
-                    // wall
-//                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 + 16, 2, new Texture(tileSheet, 1, 1)));
+                    boolean wallAbove = cellHasSameNeighbour(filteredCells, cell, 0, 1);
+                    if(!wallAbove) {
+                        texture.setX(1);
+                        texture.setY(0);
+//                        ret.add(new BoundsObject(cell.x * 16, cell.y * 16 + 16, 16, 16));
+//                        ret.add(new Tile_Static(cell.x * 16, cell.y * 16 + 16, 2, new Texture(tileSheet, 1, 1)));
+                    } else {
+                        texture.setX(1);
+                        texture.setY(1);
+                        // wall
+//                        ret.add(new BoundsObject(cell.x * 16, cell.y * 16 - 16, 16, 16));
+//                        ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, 2, new Texture(tileSheet, 1, 0)));
+                    }
                 } else if(lft && rgt && bot) {
                     texture.setX(4);
                     texture.setY(0);
                 } else if(lft && rgt) {
-                    texture.setX(1);
-                    texture.setY(0);
-                    // wall
-//                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 + 16, 2, new Texture(tileSheet, 1, 1)));
+                    boolean wallAbove = cellHasSameNeighbour(filteredCells, cell, 0, 1);
+                    if(!wallAbove) {
+                        texture.setX(1);
+                        texture.setY(0);
+//                        ret.add(new BoundsObject(cell.x * 16, cell.y * 16 + 16, 16, 16));
+//                        ret.add(new Tile_Static(cell.x * 16, cell.y * 16 + 16, 2, new Texture(tileSheet, 1, 1)));
+                    } else {
+                        texture.setX(1);
+                        texture.setY(1);
+                        // wall
+//                        ret.add(new BoundsObject(cell.x * 16, cell.y * 16 - 16, 16, 16));
+//                        ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, 2, new Texture(tileSheet, 1, 0)));
+                    }
                 } else if(top && bot) {
                     texture.setX(0);
                     texture.setY(1);
@@ -636,6 +654,29 @@ public class LevelGenerator {
             }
         } else {
             this.cells.put(cell, state);
+        }
+    }
+
+    public void changeWallHeight(int wallHeight) {
+//        LinkedList<Integer> movedLayers = new LinkedList<>();
+        for(Point cell : this.cells.keySet()) {
+            if(this.cells.get(cell) == 1) {
+                boolean top = cellHasSameNeighbour(this.cells, cell, 0, -1);
+                boolean bot = cellHasSameNeighbour(this.cells, cell, 0, 1);
+                boolean rgt = cellHasSameNeighbour(this.cells, cell, 1, 0);
+                boolean lft = cellHasSameNeighbour(this.cells, cell, -1, 0);
+                if((!top || !bot) && (lft || rgt)) {
+//                    movedLayers.add(cell.y);
+                    HashMap<Point, Integer> newCells = new HashMap<>(this.cells);
+                    for(Point cell2 : this.cells.keySet()) {
+                        if(cell2.y == cell.y) {
+                            newCells.put(new Point(cell2.x, cell2.y - 1), this.cells.get(cell2));
+//                            newCells.put(cell2, 1);
+                        }
+                    }
+                    this.cells = newCells;
+                }
+            }
         }
     }
 }

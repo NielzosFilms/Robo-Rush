@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class GameController implements Serializable {
+public class GameController {
     //    public HashMap<Point, Chunk> chunks = new HashMap<Point, Chunk>();
     public static boolean loaded = false;
     private transient Textures textures;
@@ -88,8 +88,8 @@ public class GameController implements Serializable {
         handler.tick();
         ps.tick();
 
-//        if(active_level != null)
-//            active_level.tick();
+        if(active_level != null)
+            active_level.tick();
 
         runWaterAnimations();
 //        player.tick();
@@ -169,7 +169,7 @@ public class GameController implements Serializable {
             ret.get(player_z_index).add(player);
 
         for(GameObject object : levelObjects) {
-            if(isEntityOnScreen(object)){
+            if(Helpers.isEntityOnScreen(object, this.cam)) {
                 for (int i = ret.size(); i <= object.getZIndex(); i++) {
                     ret.add(new LinkedList<>());
                 }
@@ -261,10 +261,5 @@ public class GameController implements Serializable {
 
     public Level getActiveLevel() {
         return this.active_level;
-    }
-
-    private boolean isEntityOnScreen(GameObject entity) {
-        Point screenCoords = Helpers.getScreenCoords(entity.getX(), entity.getY(), this.cam);
-        return screenCoords.x > -32 && screenCoords.y > -32 && screenCoords.x < Game.GAME_WIDTH && screenCoords.y < Game.GAME_WIDTH;
     }
 }

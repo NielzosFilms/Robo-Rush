@@ -19,7 +19,7 @@ public abstract class Level {
         this.objects = new LinkedList<>();
     }
 
-//    public abstract void tick();
+    public abstract void tick();
 //    public abstract void render(Graphics g);
 
     public void generate() {

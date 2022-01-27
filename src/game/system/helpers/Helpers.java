@@ -3,7 +3,9 @@ package game.system.helpers;
 import game.assets.entities.player.PLAYER_STAT;
 import game.enums.DIRECTIONS;
 import game.system.main.Camera;
+import game.system.main.Game;
 import game.system.systems.gameObject.Bounds;
+import game.system.systems.gameObject.GameObject;
 
 import java.awt.*;
 import java.io.File;
@@ -133,5 +135,18 @@ public class Helpers {
     public static boolean sameRectangle(Rectangle rect1, Rectangle rect2) {
         return rect1.x == rect2.x && rect1.y == rect2.y && rect1.width == rect2.width && rect1.height == rect2.height;
 
+    }
+
+    public static Rectangle convertRectToWorld(Rectangle rect) {
+        return new Rectangle(rect.x * 16, rect.y * 16, rect.width * 16, rect.height * 16);
+    }
+
+    public static Rectangle marginRectangle(Rectangle rect, int margin) {
+        return new Rectangle(rect.x - margin, rect.y - margin, rect.width + margin*2, rect.height + margin*2);
+    }
+
+    public static boolean isEntityOnScreen(GameObject entity, Camera cam) {
+        Point screenCoords = Helpers.getScreenCoords(entity.getX(), entity.getY(), cam);
+        return screenCoords.x > -32 && screenCoords.y > -32 && screenCoords.x < Game.GAME_WIDTH && screenCoords.y < Game.GAME_WIDTH;
     }
 }

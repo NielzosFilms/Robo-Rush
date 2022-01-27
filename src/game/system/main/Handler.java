@@ -36,15 +36,13 @@ public class Handler implements Serializable {
 
         for (LinkedList<GameObject> list : object_entities) {
             for (int i = 0; i < list.size(); i++) {
-                GameObject tempObject = list.get(i);
-                tempObject.tick();
+                if(Helpers.isEntityOnScreen(list.get(i), this.cam)) list.get(i).tick();
             }
         }
 
         for (LinkedList<GameObject> list : all_game_objects) {
             for (int i = 0; i < list.size(); i++) {
-                GameObject tempObject = list.get(i);
-                tempObject.tick();
+                if(Helpers.isEntityOnScreen(list.get(i), this.cam)) list.get(i).tick();
             }
         }
     }
@@ -67,13 +65,10 @@ public class Handler implements Serializable {
                 y_sorted.add(lowest.get());
                 layer_game_objects.remove(lowest.get());
             }
-            y_sorted.forEach(ent -> ent.render(g));
+            for(GameObject ent : y_sorted) {
+                if(Helpers.isEntityOnScreen(ent, this.cam)) ent.render(g);
+            }
         }
-    }
-
-    private boolean isEntityOnScreen(GameObject entity) {
-        Point screenCoords = Helpers.getScreenCoords(entity.getX(), entity.getY(), this.cam);
-        return screenCoords.x > -32 && screenCoords.y > -32 && screenCoords.x < Game.GAME_WIDTH && screenCoords.y < Game.GAME_WIDTH;
     }
 
     public void addObject(GameObject object) {
@@ -152,9 +147,9 @@ public class Handler implements Serializable {
     }
 
     public LinkedList<GameObject> getObjectsWithIds(ID... args) {
-        ID[] ids = new ID[args.length];
-        for (int i = 0; i < args.length; i++) {
-            ids[i] = args[i];
+        LinkedList<ID> ids = new LinkedList<>();
+        for (ID arg : args) {
+            ids.push(arg);
         }
         LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
         LinkedList<GameObject> ret = new LinkedList<>();
@@ -211,7 +206,9 @@ public class Handler implements Serializable {
     public LinkedList<GameObject> getShadowObjects() {
         LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
         LinkedList<GameObject> ret = new LinkedList<GameObject>();
-        ID[] ids = {ID.Tree, ID.Player};
+        LinkedList<ID> ids = new LinkedList<ID>();
+        ids.push(ID.Tree);
+        ids.push(ID.Player);
 
         for (LinkedList<GameObject> list : object_entities) {
             for (int i = 0; i < list.size(); i++) {
@@ -234,7 +231,7 @@ public class Handler implements Serializable {
         return ret;
     }
 
-    private Boolean isInArray(ID[] arr, ID val) {
+    private Boolean isInArray(LinkedList<ID> arr, ID val) {
         for (ID tmp : arr) {
             if (tmp == val) {
                 return true;

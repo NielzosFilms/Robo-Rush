@@ -224,8 +224,8 @@ public class Boss_Enemy extends GameObject implements Bounds, Hitable, HUD_Rende
     public void hit(int damage, int knockback_angle, float knockback, GameObject hit_by) {
         health.subtractHealth(damage);
         SoundEffect.enemy_hurt.play();
-        ai.setVelX(0);
-        ai.setVelY(0);
+//        ai.setVelX(0);
+//        ai.setVelY(0);
         if(ai.getAction() == AI_ACTION.stand_still) {
             ai.setAction(AI_ACTION.circle_target);
         }
