@@ -28,7 +28,7 @@ public class HitboxSystem {
         for(int i=0; i<hitboxContainers.size(); i++) {
             hitboxContainers.get(i).tick();
         }
-        LinkedList<GameObject> objects_w_bounds = handler.getBoundsObjects();
+        var objects_w_bounds = handler.getBoundsObjects();
         for(GameObject object : objects_w_bounds) {
             for(int i=0; i<hitboxContainers.size(); i++) {
                 if(hitboxContainers.get(i).canHitObject(object)) {

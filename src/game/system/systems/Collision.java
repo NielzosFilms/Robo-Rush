@@ -2,6 +2,7 @@ package game.system.systems;
 
 import java.awt.*;
 import java.util.LinkedList;
+import java.util.List;
 
 import game.assets.entities.player.Player;
 import game.assets.entities.bullets.Bullet;
@@ -29,9 +30,9 @@ public class Collision {
 	}
 
 	public void tick() {
-		LinkedList<GameObject> objects_w_bounds = handler.getBoundsObjects();
+		var objects_w_bounds = handler.getBoundsObjects();
 
-		LinkedList<GameObject> triggers = handler.getTriggerObjects();
+		var triggers = handler.getTriggerObjects();
 
 		for(GameObject entity : objects_w_bounds) {
 			for(GameObject trigger_object : triggers) {
@@ -59,7 +60,7 @@ public class Collision {
 
 	}
 
-	private void checkBulletCollision(LinkedList<GameObject> objects, LinkedList<GameObject> triggers) {
+	private void checkBulletCollision(List<GameObject> objects, List<GameObject> triggers) {
 		for(GameObject bullet : handler.getObjectsWithIds(ID.Bullet, ID.EnemyBullet)) {
 			Bullet bullet_cast = (Bullet) bullet;
 			for(GameObject entity : objects) {

@@ -41,7 +41,7 @@ public class Level_1 extends Level {
     @Override
     public void tick() {
         bossRoomOpen = handler.getObjectsWithIds(ID.Enemy).size() == 0;
-        LinkedList<GameObject> doors = handler.getObjectsWithIds(ID.Door);
+        var doors = handler.getObjectsWithIds(ID.Door);
         Door bossDoor = null;
         for(Room rm : this.generator.getRooms()) {
             if(!Objects.equals(rm.roomType, "boss")) continue;
@@ -230,7 +230,7 @@ public class Level_1 extends Level {
     }
 
     private boolean roomHasEnemies(Room rm, boolean includeBoss) {
-        LinkedList<GameObject> enemies = includeBoss ? handler.getObjectsWithIds(ID.Enemy, ID.Boss) : handler.getObjectsWithIds(ID.Enemy);
+        var enemies = includeBoss ? handler.getObjectsWithIds(ID.Enemy, ID.Boss) : handler.getObjectsWithIds(ID.Enemy);
         Rectangle roomWorld = Helpers.convertRectToWorld(rm.rect);
         roomWorld = Helpers.marginRectangle(roomWorld, 16);
         boolean currRoomHasEnemies = false;

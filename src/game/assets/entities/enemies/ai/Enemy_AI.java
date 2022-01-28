@@ -9,8 +9,10 @@ import game.system.systems.gameObject.Bounds;
 import game.system.systems.gameObject.GameObject;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class Enemy_AI {
@@ -249,7 +251,7 @@ public class Enemy_AI {
     }
 
     private void setAnglesToAvoid() {
-        LinkedList<Rectangle> bounds = getAllBounds();
+        var bounds = getAllBounds();
 
         for(int angle : angles.keySet()) {
             if(angles.get(angle) < 0) {
@@ -262,11 +264,11 @@ public class Enemy_AI {
         }
     }
 
-    private LinkedList<Rectangle> getAllBounds() {
-        LinkedList<GameObject> objects = Game.gameController.getHandler().getObjectsWithIds(ID.Enemy);
+    private List<Rectangle> getAllBounds() {
+        var objects = Game.gameController.getHandler().getObjectsWithIds(ID.Enemy);
         objects.addAll(Game.gameController.getHandler().getBoundsObjects());
 
-        LinkedList<Rectangle> all_bounds = new LinkedList<>();
+        var all_bounds = new ArrayList<Rectangle>();
 
         for(GameObject object : objects) {
 //            if(action == Action.goto_target || action == Action.wander) {

@@ -3,6 +3,7 @@ package game.system.systems.hud;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -28,8 +29,8 @@ public class HUD implements Serializable {
 	private transient GameController gameController;
 	private transient Camera cam;
 
-	private LinkedList<LinkedList<GameObject>> objects_on_hud = new LinkedList<>();
-	private LinkedList<LinkedList<GameObject>> objects_on_hud_static = new LinkedList<>();
+	private ArrayList<ArrayList<GameObject>> objects_on_hud = new ArrayList<>();
+	private ArrayList<ArrayList<GameObject>> objects_on_hud_static = new ArrayList<>();
 
 	private Selection selection = new Selection();
 
@@ -47,8 +48,8 @@ public class HUD implements Serializable {
 	}
 
 	public void tick() {
-		objects_on_hud = new LinkedList<>();
-		objects_on_hud_static = new LinkedList<>();
+		objects_on_hud = new ArrayList<>();
+		objects_on_hud_static = new ArrayList<>();
 		for(var layer : gameController.getAllGameObjects()) {
 			for(GameObject object : layer) {
 				if(object instanceof HUD_Rendering) {
@@ -67,13 +68,13 @@ public class HUD implements Serializable {
 	}
 
 	public void renderCam(Graphics g, Graphics2D g2d) {
-		for(LinkedList<GameObject> z_list : objects_on_hud) {
+		for(var z_list : objects_on_hud) {
 			for(GameObject object : z_list) {
 				object.render(g);
 			}
 		}
 
-		LinkedList<GameObject> objs = handler.getSelectableObjects();
+		var objs = handler.getSelectableObjects();
 		for (GameObject obj : objs) {
 			if (((Interactable)obj).getSelectBounds() != null) {
 				if (mouseInput.mouseOverWorldVar(((Interactable)obj).getSelectBounds().x, ((Interactable)obj).getSelectBounds().y,
@@ -89,7 +90,7 @@ public class HUD implements Serializable {
 	}
 
 	public void render(Graphics g, Graphics2D g2d) {
-		for(LinkedList<GameObject> layer : objects_on_hud_static) {
+		for(var layer : objects_on_hud_static) {
 			for(GameObject object : layer) {
 				object.render(g);
 			}
@@ -160,7 +161,7 @@ public class HUD implements Serializable {
 	private void addHudObject(GameObject object) {
 		int z_index = object.getZIndex();
 		for(int i=objects_on_hud.size(); i<=z_index; i++) {
-			this.objects_on_hud.add(new LinkedList<GameObject>());
+			this.objects_on_hud.add(new ArrayList<GameObject>());
 		}
 
 		this.objects_on_hud.get(z_index).add(object);
@@ -169,7 +170,7 @@ public class HUD implements Serializable {
 	private void addHudObjectStatic(GameObject object) {
 		int z_index = object.getZIndex();
 		for(int i=objects_on_hud_static.size(); i<=z_index; i++) {
-			this.objects_on_hud_static.add(new LinkedList<GameObject>());
+			this.objects_on_hud_static.add(new ArrayList<GameObject>());
 		}
 
 		this.objects_on_hud_static.get(z_index).add(object);

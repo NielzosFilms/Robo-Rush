@@ -160,13 +160,13 @@ public class GameController {
         loaded = true;
     }
 
+    // ArrayLists are basically faster, because the links between objects aren't there any more
+    // Also instead of using ArrayList as parameter use the parent e.g. List
+    // var initializes the variable to the correct type
+    // also streams are a lot more extensive
     public ArrayList<ArrayList<GameObject>> getAllGameObjects() {
         var ret = new ArrayList<ArrayList<GameObject>>();
         var levelObjects = active_level.getObjects();
-
-        // ArrayLists are basically faster, because the links between objects aren't there any more
-        // Also instead of using ArrayList as parameter use the parent e.g. List
-        // var initializes the variable to the correct type
 
         var player_z_index = player.getZIndex();
         for (var i = ret.size(); i <= player_z_index; i++) {
@@ -176,12 +176,14 @@ public class GameController {
             ret.get(player_z_index).add(player);
 
         for(var object : levelObjects) {
-            if(Helpers.isEntityOnScreen(object, this.cam)) {
-                for (int i = ret.size(); i <= object.getZIndex(); i++) {
-                    ret.add(new ArrayList<>());
-                }
-                ret.get(object.getZIndex()).add(object);
+//            if(Helpers.isEntityOnScreen(object, this.cam)) {
+            if((object.getId() == ID.Static_Tile || object.getId() == ID.Animation_tile || object.getId() == ID.Tile) && !Helpers.isEntityOnScreen(object, this.cam)) continue;
+
+            for (int i = ret.size(); i <= object.getZIndex(); i++) {
+                ret.add(new ArrayList<>());
             }
+            ret.get(object.getZIndex()).add(object);
+//            }
         }
 
         return ret;

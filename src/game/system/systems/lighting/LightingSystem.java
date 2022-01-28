@@ -42,9 +42,9 @@ public class LightingSystem {
 		BufferedImage overlay = getBufferedImageMap(null, null, null);
 		g.drawImage(overlay, 0, 0, null);
 		
-		LinkedList<Light> lights = new LinkedList<>();//handler.getLights();
-		LinkedList<GameObject> objects = handler.getShadowObjects();
-		for(Light light : lights) {
+		var lights = new LinkedList<>();//handler.getLights();
+		var objects = handler.getShadowObjects();
+		for(var light : lights) {
 //			int lightMap_x = light.getX()-80;
 //			int lightMap_y = light.getY()-80;
 //			int light_x = light.getX();
@@ -66,7 +66,7 @@ public class LightingSystem {
 //			for(Point tmp : tmp_point) {
 //				g.setColor(Color.blue);
 //				if(tmp != null) g.drawRect(tmp.x, tmp.y, 1, 1);
-//			}
+//			}ids.add(ID.Tree);
 			
 			/*while(tmp_point.size() > 0) {
 				for(Point tmp : tmp_point) {

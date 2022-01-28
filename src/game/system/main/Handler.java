@@ -8,20 +8,20 @@ import game.system.systems.particles.ParticleSystem;
 
 import java.awt.*;
 import java.io.Serializable;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.Optional;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.List;
 
 public class Handler {
     private transient GameController gameController;
     private transient Camera cam;
     private transient ParticleSystem ps;
 
-    public LinkedList<LinkedList<GameObject>> object_entities = new LinkedList<>();
+    public List<List<GameObject>> object_entities = new ArrayList<>();
 
     public Handler() {
         for (int i = 0; i < 4; i++) {
-            this.object_entities.add(new LinkedList<GameObject>());
+            this.object_entities.add(new ArrayList<GameObject>());
         }
     }
 
@@ -34,7 +34,7 @@ public class Handler {
     public void tick() {
         var all_game_objects = gameController.getAllGameObjects();
 
-        for (LinkedList<GameObject> list : object_entities) {
+        for (var list : object_entities) {
             for (int i = 0; i < list.size(); i++) {
                 list.get(i).tick();
             }
@@ -53,13 +53,13 @@ public class Handler {
         // RENDER
 
         for (int i = 0; i < all_game_objects.size(); i++) {
-            LinkedList<GameObject> layer_game_objects = new LinkedList<>(all_game_objects.get(i));
+            ArrayList<GameObject> layer_game_objects = new ArrayList<>(all_game_objects.get(i));
 
             if (i < object_entities.size()) {
                 layer_game_objects.addAll(object_entities.get(i));
             }
 
-            LinkedList<GameObject> y_sorted = new LinkedList<>();
+            ArrayList<GameObject> y_sorted = new ArrayList<>();
             while (layer_game_objects.size() > 0) {
                 Optional<GameObject> lowest = layer_game_objects.stream().min(Comparator.comparing(GameObject::getY));
                 y_sorted.add(lowest.get());
@@ -74,7 +74,7 @@ public class Handler {
     public void addObject(GameObject object) {
         int z_index = object.getZIndex();
         for (int i = object_entities.size(); i <= z_index; i++) {
-            this.object_entities.add(new LinkedList<GameObject>());
+            this.object_entities.add(new ArrayList<GameObject>());
         }
 
         this.object_entities.get(z_index).add(object);
@@ -88,11 +88,11 @@ public class Handler {
 		// remove tile
 	}*/
 
-    public LinkedList<GameObject> getBoundsObjects() {
+    public List<GameObject> getBoundsObjects() {
         var all_game_objects = gameController.getAllGameObjects();
-        LinkedList<GameObject> ret = new LinkedList<>();
+        var ret = new ArrayList<GameObject>();
 
-        for (LinkedList<GameObject> list : object_entities) {
+        for (var list : object_entities) {
             for (int i = 0; i < list.size(); i++) {
                 GameObject tempObject = list.get(i);
                 if (tempObject instanceof Bounds && !(tempObject instanceof Trigger)) {
@@ -117,11 +117,11 @@ public class Handler {
         return ret;
     }
 
-    public LinkedList<GameObject> getTriggerObjects() {
+    public List<GameObject> getTriggerObjects() {
         var all_game_objects = gameController.getAllGameObjects();
-        LinkedList<GameObject> ret = new LinkedList<>();
+        var ret = new ArrayList<GameObject>();
 
-        for (LinkedList<GameObject> list : object_entities) {
+        for (var list : object_entities) {
             for (int i = 0; i < list.size(); i++) {
                 GameObject tempObject = list.get(i);
                 if (tempObject instanceof Bounds && tempObject instanceof Trigger) {
@@ -146,15 +146,12 @@ public class Handler {
         return ret;
     }
 
-    public LinkedList<GameObject> getObjectsWithIds(ID... args) {
-        LinkedList<ID> ids = new LinkedList<>();
-        for (ID arg : args) {
-            ids.push(arg);
-        }
+    public List<GameObject> getObjectsWithIds(ID... args) {
+        var ids = new ArrayList<ID>(Arrays.asList(args));
         var all_game_objects = gameController.getAllGameObjects();
-        LinkedList<GameObject> ret = new LinkedList<>();
+        var ret = new ArrayList<GameObject>();
 
-        for (LinkedList<GameObject> list : object_entities) {
+        for (var list : object_entities) {
             for (int i = 0; i < list.size(); i++) {
                 GameObject tempObject = list.get(i);
                 if (isInArray(ids, tempObject.getId())) {
@@ -174,11 +171,11 @@ public class Handler {
         return ret;
     }
 
-    public LinkedList<GameObject> getSelectableObjects() {
+    public List<GameObject> getSelectableObjects() {
         var all_game_objects = gameController.getAllGameObjects();
-        LinkedList<GameObject> ret = new LinkedList<GameObject>();
+        var ret = new ArrayList<GameObject>();
 
-        for (LinkedList<GameObject> list : object_entities) {
+        for (var list : object_entities) {
             for (int i = 0; i < list.size(); i++) {
                 GameObject tempObject = list.get(i);
                 if (tempObject instanceof Interactable) {
@@ -203,14 +200,14 @@ public class Handler {
         return ret;
     }
 
-    public LinkedList<GameObject> getShadowObjects() {
+    public List<GameObject> getShadowObjects() {
         var all_game_objects = gameController.getAllGameObjects();
-        LinkedList<GameObject> ret = new LinkedList<GameObject>();
-        LinkedList<ID> ids = new LinkedList<ID>();
-        ids.push(ID.Tree);
-        ids.push(ID.Player);
+        ArrayList<GameObject> ret = new ArrayList<GameObject>();
+        ArrayList<ID> ids = new ArrayList<ID>();
+        ids.add(ID.Tree);
+        ids.add(ID.Player);
 
-        for (LinkedList<GameObject> list : object_entities) {
+        for (var list : object_entities) {
             for (int i = 0; i < list.size(); i++) {
                 GameObject tempObject = list.get(i);
                 if (isInArray(ids, tempObject.getId())) {
@@ -231,7 +228,7 @@ public class Handler {
         return ret;
     }
 
-    private Boolean isInArray(LinkedList<ID> arr, ID val) {
+    private Boolean isInArray(List<ID> arr, ID val) {
         for (ID tmp : arr) {
             if (tmp == val) {
                 return true;
@@ -262,7 +259,7 @@ public class Handler {
     public boolean objectExistsAtCoords(Point coords) {
         var all_game_objects = gameController.getAllGameObjects();
 
-        for (LinkedList<GameObject> list : object_entities) {
+        for (var list : object_entities) {
             for (GameObject obj : list) {
                 if (obj instanceof Bounds) {
                     if (((Bounds) obj).getBounds().contains(coords) || obj.getX() == coords.x && obj.getY() == coords.y) {
