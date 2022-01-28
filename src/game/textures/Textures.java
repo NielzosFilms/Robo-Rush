@@ -76,7 +76,7 @@ public class Textures {
 		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/cursor.png"), 8, 8, texture_lists.get(TEXTURE_LIST.cursors));
 		fillListWithSpriteSheet(loader.loadImage("assets/entities/skeleton/lil_skeleton.png"), 16, 24, texture_lists.get(TEXTURE_LIST.lil_skeleton_list));
 		fillListWithSpriteSheet(loader.loadImage("assets/entities/bullets.png"), 16, 16, texture_lists.get(TEXTURE_LIST.bullets));
-		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/dungeon_tile_sheet_compressed_simplified.png"), 16, 16, texture_lists.get(TEXTURE_LIST.dungeon));
+		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/dungeon_tile_sheet_compressed_simplified_small_walls.png"), 16, 16, texture_lists.get(TEXTURE_LIST.dungeon));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/hud/minimap.png"), 8, 8, texture_lists.get(TEXTURE_LIST.minimap));
 		fillListWithSpriteSheet(loader.loadImage("assets/main/tile_sheets/items.png"), 16, 16, texture_lists.get(TEXTURE_LIST.items));
 		fillListWithSpriteSheet(loader.loadImage("assets/entities/spider_chip.png"), 16, 16, texture_lists.get(TEXTURE_LIST.spider));

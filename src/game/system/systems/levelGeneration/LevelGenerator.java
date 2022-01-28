@@ -1,9 +1,11 @@
 package game.system.systems.levelGeneration;
 
+import game.assets.entities.player.Player;
 import game.assets.objects.BoundsObject;
 import game.assets.tiles.Tile_Static;
 import game.assets.tiles.tile.Tile;
 import game.system.helpers.Offsets;
+import game.system.main.Game;
 import game.system.systems.gameObject.GameObject;
 import game.textures.TEXTURE_LIST;
 import game.textures.Texture;
@@ -414,6 +416,8 @@ public class LevelGenerator {
 
         HashMap<Point, Integer> filteredCells = getDungeonInCellsMinimal();
 
+        Player player = Game.gameController.getPlayer();
+
         for(Point cell : filteredCells.keySet()) {
             if(filteredCells.get(cell) == 1) {
                 ret.add(new BoundsObject(cell.x * 16, cell.y * 16, 16, 16));
@@ -424,69 +428,76 @@ public class LevelGenerator {
 
                 Texture texture = new Texture(tileSheet, 4, 1);
                 if(top && bot && rgt) {
-                    texture.setX(3);
+                    texture.setX(0);
                     texture.setY(1);
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 3, 1)));
                 } else if(top && bot && lft) {
-                    texture.setX(3);
-                    texture.setY(0);
+                    texture.setX(0);
+                    texture.setY(1);
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 3, 0)));
                 } else if(lft && rgt && top) {
-                    boolean wallAbove = cellHasSameNeighbour(filteredCells, cell, 0, 1);
-                    if(!wallAbove) {
-                        texture.setX(1);
-                        texture.setY(0);
+//                    boolean wallAbove = cellHasSameNeighbour(filteredCells, cell, 0, 1);
+                    texture.setX(1);
+                    texture.setY(1);
 //                        ret.add(new BoundsObject(cell.x * 16, cell.y * 16 + 16, 16, 16));
-//                        ret.add(new Tile_Static(cell.x * 16, cell.y * 16 + 16, 2, new Texture(tileSheet, 1, 1)));
-                    } else {
-                        texture.setX(1);
-                        texture.setY(1);
-                        // wall
-//                        ret.add(new BoundsObject(cell.x * 16, cell.y * 16 - 16, 16, 16));
-//                        ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, 2, new Texture(tileSheet, 1, 0)));
-                    }
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 1, 0)));
                 } else if(lft && rgt && bot) {
-                    texture.setX(4);
-                    texture.setY(0);
+                    texture.setX(0);
+                    texture.setY(1);
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 4, 0)));
                 } else if(lft && rgt) {
-                    boolean wallAbove = cellHasSameNeighbour(filteredCells, cell, 0, 1);
-                    if(!wallAbove) {
-                        texture.setX(1);
-                        texture.setY(0);
-//                        ret.add(new BoundsObject(cell.x * 16, cell.y * 16 + 16, 16, 16));
-//                        ret.add(new Tile_Static(cell.x * 16, cell.y * 16 + 16, 2, new Texture(tileSheet, 1, 1)));
-                    } else {
-                        texture.setX(1);
-                        texture.setY(1);
-                        // wall
-//                        ret.add(new BoundsObject(cell.x * 16, cell.y * 16 - 16, 16, 16));
-//                        ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, 2, new Texture(tileSheet, 1, 0)));
-                    }
+                    texture.setX(1);
+                    texture.setY(1);
+                    // wall
+//                    ret.add(new BoundsObject(cell.x * 16, cell.y * 16 - 16, 16, 16));
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 1, 0)));
                 } else if(top && bot) {
                     texture.setX(0);
                     texture.setY(1);
                 } else if(top && rgt) {
-                    texture.setX(3);
-                    texture.setY(3);
-                } else if(top && lft) {
-                    texture.setX(3);
-                    texture.setY(2);
-                } else if(bot && rgt) {
-                    texture.setX(3);
+                    texture.setX(1);
                     texture.setY(1);
-                } else if(bot && lft) {
-                    texture.setX(3);
-                    texture.setY(0);
-                } else if(top) {
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 3, 3)));
+
+                } else if(top && lft) {
+                    texture.setX(1);
+                    texture.setY(1);
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 3, 2)));
+
+                } else if(bot && rgt) {
                     texture.setX(0);
-                    texture.setY(2);
+                    texture.setY(1);
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 3, 1)));
+
+                } else if(bot && lft) {
+                    texture.setX(0);
+                    texture.setY(1);
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 3, 0)));
+
+                } else if(top) {
+                    texture.setX(1);
+                    texture.setY(1);
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 0, 2)));
+
                 } else if(bot) {
                     texture.setX(0);
-                    texture.setY(0);
+                    texture.setY(1);
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 0, 0)));
+
                 } else if(lft) {
-                    texture.setX(3);
-                    texture.setY(2);
+                    texture.setX(1);
+                    texture.setY(1);
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 3, 2)));
+
                 } else if(rgt) {
-                    texture.setX(3);
-                    texture.setY(3);
+                    texture.setX(1);
+                    texture.setY(1);
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 3, 3)));
+
+                } else {
+                    texture.setX(1);
+                    texture.setY(1);
+                    ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 1, 0)));
                 }
                 ret.add(new Tile_Static(cell.x * 16, cell.y * 16, 2, texture));
             } else {

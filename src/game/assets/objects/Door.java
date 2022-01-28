@@ -17,10 +17,12 @@ import java.awt.*;
 public class Door extends GameObject implements Bounds {
     private boolean vertical, open, locked, discovered, playedSound;
 
-    private Texture verticalClosed = new Texture(TEXTURE_LIST.dungeon, 4, 6),
+    private Texture verticalTopClosed = new Texture(TEXTURE_LIST.dungeon, 4, 6),
+            verticalBotClosed = new Texture(TEXTURE_LIST.dungeon, 6, 5),
             verticalOpen = new Texture(TEXTURE_LIST.dungeon, 5, 6);
 
-    private Texture verticalLockedClosed = new Texture(TEXTURE_LIST.dungeon, 4, 5);
+    private Texture verticalTopLockedClosed = new Texture(TEXTURE_LIST.dungeon, 4, 5),
+            verticalBotLockedClosed = new Texture(TEXTURE_LIST.dungeon, 6, 3);
 
     private Texture horizontalBotClosed = new Texture(TEXTURE_LIST.dungeon, 6, 7),
             horizontalBotOpen = new Texture(TEXTURE_LIST.dungeon, 6, 5),
@@ -64,22 +66,27 @@ public class Door extends GameObject implements Bounds {
         g.setColor(COLOR_PALETTE.red.color);
         if(locked) {
             if (vertical) {
-                g.drawImage(verticalLockedClosed.getTexure(), x, y, 16, 16, null);
+                g.drawImage(verticalTopLockedClosed.getTexure(), x, y-16, 16, 16, null);
+                g.drawImage(verticalBotLockedClosed.getTexure(), x, y, 16, 16, null);
             } else {
-                g.drawImage(horizontalTopLockedClosed.getTexure(), x, y, 16, 16, null);
+                g.drawImage(horizontalTopLockedClosed.getTexure(), x, y-16, 16, 16, null);
+                g.drawImage(horizontalBotLockedClosed.getTexure(), x, y, 16, 16, null);
             }
         } else {
             if (vertical) {
                 if (open) {
-                    g.drawImage(verticalOpen.getTexure(), x, y, 16, 16, null);
+                    g.drawImage(verticalOpen.getTexure(), x, y-16, 16, 16, null);
                 } else {
-                    g.drawImage(verticalClosed.getTexure(), x, y, 16, 16, null);
+                    g.drawImage(verticalTopClosed.getTexure(), x, y-16, 16, 16, null);
+                    g.drawImage(verticalBotClosed.getTexure(), x, y, 16, 16, null);
                 }
             } else {
                 if (open) {
-                    g.drawImage(horizontalTopOpen.getTexure(), x, y, 16, 16, null);
+                    g.drawImage(horizontalTopOpen.getTexure(), x, y-16, 16, 16, null);
+                    g.drawImage(horizontalBotOpen.getTexure(), x, y, 16, 16, null);
                 } else {
-                    g.drawImage(horizontalTopClosed.getTexure(), x, y, 16, 16, null);
+                    g.drawImage(horizontalTopClosed.getTexure(), x, y-16, 16, 16, null);
+                    g.drawImage(horizontalBotClosed.getTexure(), x, y, 16, 16, null);
                 }
             }
         }

@@ -60,9 +60,9 @@ public class BoundsObject extends GameObject implements Bounds {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(COLOR_PALETTE.gray_2.color);
-        g.fillRect(this.x, this.y, this.width, this.height);
         if(Game.DEBUG_MODE) {
+            g.setColor(COLOR_PALETTE.gray_2.color);
+            g.fillRect(this.x, this.y, this.width, this.height);
             g.setColor(Color.decode("#c0cbdc"));
             g.drawRect(this.x, this.y, this.width, this.height);
         }

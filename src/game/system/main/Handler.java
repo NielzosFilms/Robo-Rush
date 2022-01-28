@@ -36,13 +36,13 @@ public class Handler implements Serializable {
 
         for (LinkedList<GameObject> list : object_entities) {
             for (int i = 0; i < list.size(); i++) {
-                if(Helpers.isEntityOnScreen(list.get(i), this.cam)) list.get(i).tick();
+                list.get(i).tick();
             }
         }
 
         for (LinkedList<GameObject> list : all_game_objects) {
             for (int i = 0; i < list.size(); i++) {
-                if(Helpers.isEntityOnScreen(list.get(i), this.cam)) list.get(i).tick();
+                list.get(i).tick();
             }
         }
     }
