@@ -164,6 +164,8 @@ public class GameController {
     // Also instead of using ArrayList as parameter use the parent e.g. List
     // var initializes the variable to the correct type
     // also streams are a lot more extensive
+
+    // use profiler to test speed of functions
     public ArrayList<ArrayList<GameObject>> getAllGameObjects() {
         var ret = new ArrayList<ArrayList<GameObject>>();
         var levelObjects = active_level.getObjects();
