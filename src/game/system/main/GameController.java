@@ -21,6 +21,9 @@ import game.textures.Textures;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -157,21 +160,25 @@ public class GameController {
         loaded = true;
     }
 
-    public LinkedList<LinkedList<GameObject>> getAllGameObjects() {
-        LinkedList<LinkedList<GameObject>> ret = new LinkedList<LinkedList<GameObject>>();
-        LinkedList<GameObject> levelObjects = active_level.getObjects();
+    public ArrayList<ArrayList<GameObject>> getAllGameObjects() {
+        var ret = new ArrayList<ArrayList<GameObject>>();
+        var levelObjects = active_level.getObjects();
 
-        int player_z_index = player.getZIndex();
-        for (int i = ret.size(); i <= player_z_index; i++) {
-            ret.add(new LinkedList<>());
+        // ArrayLists are basically faster, because the links between objects aren't there any more
+        // Also instead of using ArrayList as parameter use the parent e.g. List
+        // var initializes the variable to the correct type
+
+        var player_z_index = player.getZIndex();
+        for (var i = ret.size(); i <= player_z_index; i++) {
+            ret.add(new ArrayList<>());
         }
         if (!ret.get(player_z_index).contains(player))
             ret.get(player_z_index).add(player);
 
-        for(GameObject object : levelObjects) {
+        for(var object : levelObjects) {
             if(Helpers.isEntityOnScreen(object, this.cam)) {
                 for (int i = ret.size(); i <= object.getZIndex(); i++) {
-                    ret.add(new LinkedList<>());
+                    ret.add(new ArrayList<>());
                 }
                 ret.get(object.getZIndex()).add(object);
             }

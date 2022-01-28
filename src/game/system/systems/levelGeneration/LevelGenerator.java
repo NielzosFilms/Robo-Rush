@@ -499,7 +499,7 @@ public class LevelGenerator {
                     texture.setY(1);
                     ret.add(new Tile_Static(cell.x * 16, cell.y * 16 - 16, player.getZIndex()+1, new Texture(tileSheet, 1, 0)));
                 }
-                ret.add(new Tile_Static(cell.x * 16, cell.y * 16, 2, texture));
+                ret.add(new Tile_Static(cell.x * 16, cell.y * 16, player.getZIndex(), texture));
             } else {
                 boolean top = cellHasSameNeighbour(filteredCells, cell, 0, -1);
                 boolean bot = cellHasSameNeighbour(filteredCells, cell, 0, 1);

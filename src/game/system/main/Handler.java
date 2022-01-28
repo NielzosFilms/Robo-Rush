@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Optional;
 
-public class Handler implements Serializable {
+public class Handler {
     private transient GameController gameController;
     private transient Camera cam;
     private transient ParticleSystem ps;
@@ -32,7 +32,7 @@ public class Handler implements Serializable {
     }
 
     public void tick() {
-        LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
+        var all_game_objects = gameController.getAllGameObjects();
 
         for (LinkedList<GameObject> list : object_entities) {
             for (int i = 0; i < list.size(); i++) {
@@ -40,7 +40,7 @@ public class Handler implements Serializable {
             }
         }
 
-        for (LinkedList<GameObject> list : all_game_objects) {
+        for (var list : all_game_objects) {
             for (int i = 0; i < list.size(); i++) {
                 list.get(i).tick();
             }
@@ -48,7 +48,7 @@ public class Handler implements Serializable {
     }
 
     public void render(Graphics g, int width, int height) {
-        LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
+        var all_game_objects = gameController.getAllGameObjects();
 
         // RENDER
 
@@ -89,7 +89,7 @@ public class Handler implements Serializable {
 	}*/
 
     public LinkedList<GameObject> getBoundsObjects() {
-        LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
+        var all_game_objects = gameController.getAllGameObjects();
         LinkedList<GameObject> ret = new LinkedList<>();
 
         for (LinkedList<GameObject> list : object_entities) {
@@ -103,7 +103,7 @@ public class Handler implements Serializable {
             }
         }
 
-        for (LinkedList<GameObject> layer_game_objects : all_game_objects) {
+        for (var layer_game_objects : all_game_objects) {
             for (int i = 0; i < layer_game_objects.size(); i++) {
                 GameObject tempObject = layer_game_objects.get(i);
                 if (tempObject instanceof Bounds && !(tempObject instanceof Trigger)) {
@@ -118,7 +118,7 @@ public class Handler implements Serializable {
     }
 
     public LinkedList<GameObject> getTriggerObjects() {
-        LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
+        var all_game_objects = gameController.getAllGameObjects();
         LinkedList<GameObject> ret = new LinkedList<>();
 
         for (LinkedList<GameObject> list : object_entities) {
@@ -132,7 +132,7 @@ public class Handler implements Serializable {
             }
         }
 
-        for (LinkedList<GameObject> layer_game_objects : all_game_objects) {
+        for (var layer_game_objects : all_game_objects) {
             for (int i = 0; i < layer_game_objects.size(); i++) {
                 GameObject tempObject = layer_game_objects.get(i);
                 if (tempObject instanceof Bounds && tempObject instanceof Trigger) {
@@ -151,7 +151,7 @@ public class Handler implements Serializable {
         for (ID arg : args) {
             ids.push(arg);
         }
-        LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
+        var all_game_objects = gameController.getAllGameObjects();
         LinkedList<GameObject> ret = new LinkedList<>();
 
         for (LinkedList<GameObject> list : object_entities) {
@@ -163,7 +163,7 @@ public class Handler implements Serializable {
             }
         }
 
-        for (LinkedList<GameObject> layer_game_objects : all_game_objects) {
+        for (var layer_game_objects : all_game_objects) {
             for (int i = 0; i < layer_game_objects.size(); i++) {
                 GameObject tempObject = layer_game_objects.get(i);
                 if (isInArray(ids, tempObject.getId())) {
@@ -175,7 +175,7 @@ public class Handler implements Serializable {
     }
 
     public LinkedList<GameObject> getSelectableObjects() {
-        LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
+        var all_game_objects = gameController.getAllGameObjects();
         LinkedList<GameObject> ret = new LinkedList<GameObject>();
 
         for (LinkedList<GameObject> list : object_entities) {
@@ -189,7 +189,7 @@ public class Handler implements Serializable {
             }
         }
 
-        for (LinkedList<GameObject> list : all_game_objects) {
+        for (var list : all_game_objects) {
             for (int i = 0; i < list.size(); i++) {
                 GameObject tempObject = list.get(i);
                 if (tempObject instanceof Interactable) {
@@ -204,7 +204,7 @@ public class Handler implements Serializable {
     }
 
     public LinkedList<GameObject> getShadowObjects() {
-        LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
+        var all_game_objects = gameController.getAllGameObjects();
         LinkedList<GameObject> ret = new LinkedList<GameObject>();
         LinkedList<ID> ids = new LinkedList<ID>();
         ids.push(ID.Tree);
@@ -219,7 +219,7 @@ public class Handler implements Serializable {
             }
         }
 
-        for (LinkedList<GameObject> list : all_game_objects) {
+        for (var list : all_game_objects) {
             for (int i = 0; i < list.size(); i++) {
                 GameObject tempObject = list.get(i);
                 if (isInArray(ids, tempObject.getId())) {
@@ -242,7 +242,7 @@ public class Handler implements Serializable {
 
     public void findAndRemoveObject(GameObject object) {
         if (object.getId() == ID.Enemy) Logger.print("enemy removed");
-        LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
+        var all_game_objects = gameController.getAllGameObjects();
 
         if (object.getZIndex() < object_entities.size()) {
             object_entities.get(object.getZIndex()).remove(object);
@@ -260,7 +260,7 @@ public class Handler implements Serializable {
     }
 
     public boolean objectExistsAtCoords(Point coords) {
-        LinkedList<LinkedList<GameObject>> all_game_objects = gameController.getAllGameObjects();
+        var all_game_objects = gameController.getAllGameObjects();
 
         for (LinkedList<GameObject> list : object_entities) {
             for (GameObject obj : list) {
@@ -276,8 +276,8 @@ public class Handler implements Serializable {
             }
         }
 
-        for (LinkedList<GameObject> list : all_game_objects) {
-            for (GameObject obj : list) {
+        for (var list : all_game_objects) {
+            for (var obj : list) {
                 if (obj instanceof Bounds) {
                     if (((Bounds) obj).getBounds().contains(coords) || obj.getX() == coords.x && obj.getY() == coords.y) {
                         return true;

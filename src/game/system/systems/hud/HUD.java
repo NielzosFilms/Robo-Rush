@@ -49,7 +49,7 @@ public class HUD implements Serializable {
 	public void tick() {
 		objects_on_hud = new LinkedList<>();
 		objects_on_hud_static = new LinkedList<>();
-		for(LinkedList<GameObject> layer : gameController.getAllGameObjects()) {
+		for(var layer : gameController.getAllGameObjects()) {
 			for(GameObject object : layer) {
 				if(object instanceof HUD_Rendering) {
 					for(GameObject hud_object : ((HUD_Rendering) object).getHudObjects()) {
