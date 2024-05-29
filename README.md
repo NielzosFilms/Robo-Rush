@@ -31,8 +31,7 @@ This can change.
 - [NielzosFilmsSchool](https://github.com/NielzosFilmsSchool)
 - [TimoTie02](https://github.com/TimoTie02)
 - [Sploem](https://github.com/Sploem)
-### Moral Support
-- [Joris ter Wolbeek](https://github.com/JoristerWolbeek/)
+
 
 ## Game Default Key Bindings
 | Key                 | Action                       |
